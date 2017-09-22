@@ -14,14 +14,27 @@ INCLUDEPATH += .
 HEADERS += data.h log.h mainclass.h window.h \
     enum.h \
     os.h \
-    install.h
+    install.h \
+    zlib/unzipper.h \
+    zlib/zipper.h \
+    zlib/ioapi.h \
+    zlib/unzip.h \
+    zlib/zconf.h \
+    zlib/zip.h
 FORMS += window.ui
 SOURCES += data.cpp \
            log.cpp \
            main.cpp \
            mainclass.cpp \
            window.cpp \
-    install.cpp
+    install.cpp \
+    zlib/unzipper.cpp \
+    zlib/zipper.cpp \
+    zlib/ioapi.c \
+    zlib/unzip.c \
+    zlib/zip.c
 
 RESOURCES += \
     resource.qrc
+
+LIBS += -lz

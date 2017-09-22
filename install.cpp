@@ -1,6 +1,6 @@
-#include <install.h>
+#include "install.h"
+#include "zlib/unzipper.h"
 #include <string>
-#include <zlib.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -8,7 +8,6 @@
 #include <QErrorMessage>
 #include <QFile>
 #include <QDebug>
-#include <functional>
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString n) {
     systems.push_back(install::_installSet(b, t, p, n));
@@ -152,7 +151,10 @@ void install::grubConfigure(QString way) {
            << "}\n";
 }
 
-
+void install::unpackSystem() {
+    using namespace ziputils;
+    unzipper unz;
+}
 
 
 

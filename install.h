@@ -33,7 +33,7 @@ public:
     void read();
     void write();
 
-    void installSystem();
+    void unpackSystem();
     void installBootloader();
     void installGrub2();
     void grubConfigure(QString);

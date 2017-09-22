@@ -88,9 +88,10 @@ void Window::on_installButtonMain_clicked()
     ui->radioInstallOnDir->setChecked(true);
 
     ui->radioDownload->setEnabled(false);
+    ui->radioDownloadDataimgInstall->setEnabled(false);
     ui->radioChooseFromDisk->setChecked(true);
 
-    ui->progressInstall->setRange(0, 100);
+    //ui->progressInstall->setRange(0, 100);
     ui->progressInstall->setValue(0);
 
     setWindowTitle("YourDroid | Установка");
