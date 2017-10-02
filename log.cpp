@@ -1,8 +1,9 @@
 #include <log.h>
+#include <QErrorMessage>
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
-void log::message(int level, QString file, int line, QString mess) {
+void log::message(int level, QString file, int line, QString mess, QString rusMess) {
     using namespace std;
     static ofstream logFile("log.txt");
     QString typeName;
@@ -30,4 +31,14 @@ void log::message(int level, QString file, int line, QString mess) {
 #if OS == 1
     system("color 00");
 #endif
+    if(rusMess != "NULL") {
+        switch(level) {
+        case 0: typeName.clear(); break;
+        case 1: typeName = "Внимание! "; break;
+        case 2: typeName = "Ошибка! "; break;
+        }
+        QErrorMessage mess;
+        mess.showMessage(typeName + rusMess);
+        mess.exec();
+    }
 }

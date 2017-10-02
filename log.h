@@ -9,7 +9,7 @@
 
 class log {
 public:
-    static void message(int, QString, int, QString);
+    static void message(int, QString, int, QString, QString = "NULL");
 };
 
 #endif // LOG_H

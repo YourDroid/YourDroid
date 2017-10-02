@@ -4,22 +4,21 @@
 #include <string>
 #include "install.h"
 
-Window::Window(bool f, options *d, QWidget *parent) :
+Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
     fierst(!f),
     dat(d),
+    insDat(ins),
     ui(new Ui::Window)
 {
-    log::message(0, __FILE__, __LINE__, "Start window");
-
     lastPage = 0;
 
     setWindowIcon(QIcon(":/icon/yourdroid.png"));
 
+    log::message(0, __FILE__, __LINE__, "Start window");
+
     ui->setupUi(this);
     setLabelSetInfo();
-
-    insDat.read();
 
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->settingsMini,SIGNAL(clicked()),SLOT(Settings_clicked()));
@@ -31,7 +30,7 @@ Window::Window(bool f, options *d, QWidget *parent) :
     if(fierst) Settings_clicked();
     else returnMainWindow();
 
-    insDat.write();
+
 }
 
 void Window::setLabelSetInfo() {
@@ -144,6 +143,12 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
+//    auto error = [](QString mess, QString enmess) {
+
+//    };
+
+    ui->returnInstallButton->setEnabled(false);
+    ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage("Проверка");
     log::message(0, __FILE__, __LINE__, "Checking data for install...");
     QString image, dir, name;
@@ -168,8 +173,8 @@ void Window::on_buttonInstallInstall_clicked()
         (new QErrorMessage(this))->showMessage("Выберите имя!");
         exit = true;
     }
-    else for(int i = 0; i < insDat.systemsVector().length(); i++) {
-        if(ui->editName->text() == (insDat.systemsVector())[i].name) {
+    else for(int i = 0; i < insDat->systemsVector().length(); i++) {
+        if(ui->editName->text() == (insDat->systemsVector())[i].name) {
             (new QErrorMessage(this))->showMessage("Уже сущуствует система с таким именем!");
             exit = true;
         }
@@ -189,9 +194,12 @@ void Window::on_buttonInstallInstall_clicked()
     else if(boot == "Windows BOOTMGR") boot = "BOOTMGR";
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
-    insDat.addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editName->text());
-    insDat.write();
-    insDat.installBootloader();
+    insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+    insDat->write();
+    insDat->unpackSystem(ui->progressInstall);
+    //insDat.installBootloader();
+    ui->returnInstallButton->setEnabled(true);
+    ui->buttonInstallInstall->setEnabled(true);
 }
 
 void Window::on_buttonAboutMain_clicked()
@@ -216,7 +224,7 @@ void Window::on_deleteButtonMain_clicked()
     ui->progressDelete->setRange(0, 100);
     ui->progressDelete->setValue(0);
 
-    for(int i = 0; i < insDat.cntSys(); i++) ui->comboSystemDelete->addItem(insDat.systemsVector()[i].name);
+    for(int i = 0; i < insDat->cntSys(); i++) ui->comboSystemDelete->addItem(insDat->systemsVector()[i].name);
 
     setWindowTitle("YourDroid | Удаление");
     ui->windows->setCurrentWidget(ui->daletePage);
@@ -224,6 +232,6 @@ void Window::on_deleteButtonMain_clicked()
 
 void Window::on_comboSystemDelete_currentIndexChanged(int index)
 {
-    ui->labelPlaceDeleteText->setText(insDat.systemsVector()[index].place);
-    ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(insDat.systemsVector()[index].bootloader)));
+    ui->labelPlaceDeleteText->setText(insDat->systemsVector()[index].place);
+    ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(insDat->systemsVector()[index].bootloader)));
 }

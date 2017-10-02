@@ -10,6 +10,7 @@
 #include <QErrorMessage>
 #include <log.h>
 #include "install.h"
+#include <QCoreApplication>
 
 extern const QString VERSION;
 
@@ -22,7 +23,7 @@ class Window : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Window(bool, options*, QWidget *parent = 0);
+    explicit Window(install*, bool, options*, QWidget *parent = 0);
 
     void setLabelSetInfo();
 
@@ -60,11 +61,10 @@ private slots:
     void on_deleteButtonMain_clicked();
 
     void on_comboSystemDelete_currentIndexChanged(int index);
-
 private:
     bool fierst;
     options *dat;
-    install insDat;
+    install *insDat;
     Ui::Window *ui;
     char lastPage = 0;
 };
