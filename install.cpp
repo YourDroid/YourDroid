@@ -120,7 +120,9 @@ void install::installBootloader() {
 }
 
 void install::installGummi() {
-
+    system("mountvol a: /s");
+    QFile::copy("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "c:\\bootmgfw_back.efi");
+    system("mountvol a: /d");
 }
 
 void install::installGrub2() {
@@ -159,12 +161,16 @@ void install::unpackSystem(QProgressBar *progress) {
     progressBar = progress;
     int rc = 0;
     auto checkRc = [](int rc) -> void {
+        QString error;
         if(rc <= 0) {
-            QString error = bk_get_error_string(rc);
+#if OS == 0
+            error = bk_get_error_string(rc);
+#elif OS == 1
+#endif
             log::message(2, __FILE__, __LINE__, error, QString("Ошибка при разархивировании: ") + error);
         }
     };
-
+#if OS == 0
     VolInfo volInfo;
     checkRc(bk_init_vol_info(&volInfo, true));
     checkRc(bk_open_image(&volInfo, systems[cntSystems - 1].image.toStdString().c_str()));
@@ -188,6 +194,8 @@ void install::unpackSystem(QProgressBar *progress) {
 
         /* we're finished with this ISO, so clean up */
         bk_destroy_vol_info(&volInfo);
+#elif OS == 1
+#endif
 }
 
 void install::createDataImg(int size) {
@@ -197,5 +205,8 @@ void install::createDataImg(int size) {
             QString("M -a data ") + systems[cntSystems - 1].place + QString("/data.img ") +
             workDir + QString("/data/make_ext4fs/data")).toStdString().c_str());
 #elif OS == 1
+    system((workDir + QString("\\data\\make_ext4fs\\make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
+            QString("M -a data ") + systems[cntSystems - 1].place + QString("\\data.img ") +
+            workDir + QString("\\data\\make_ext4fs\\data >> ") + workDir + "\\log.txt").toStdString().c_str());
 #endif
 }

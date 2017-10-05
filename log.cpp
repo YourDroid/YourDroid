@@ -1,5 +1,6 @@
 #include <log.h>
 #include <QErrorMessage>
+#include "os.h"
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
@@ -21,15 +22,16 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
     }
     QString messFull = color + typeName + QString(' ') + mess + "\x1b[0m";
 #elif OS == 1
-    switch(level) {
-    case 1: system("color 09"); break;
-    case 2: system("color 0c"); break;
-    }
+//    switch(level) {
+//    case 1: system("color 09"); break;
+//    case 2: system("color 0c"); break;
+//    }
+    QString messFull = typeName + QString(' ') + mess;
 #endif
     logFile << "FILE: " << file.toStdString() << " LINE: " << line << " " << typeName.toStdString() << " " << mess.toStdString() << endl;
     cout << messFull.toStdString() << endl;
 #if OS == 1
-    system("color 00");
+//    system("color 00");
 #endif
     if(rusMess != "NULL") {
         switch(level) {

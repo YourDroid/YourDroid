@@ -67,4 +67,4 @@ SOURCES += bkisofs/bkAdd.c \
 RESOURCES += \
     resource.qrc
 
-LIBS += -lz -lpcre
+LIBS += -lz
