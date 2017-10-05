@@ -42,15 +42,17 @@ public slots:
 
     void on_buttonAboutMain_clicked();
 
+    void on_back_settings_clicked();
+
 private slots:
 
 //    void on_exitButton_clicked();
 
 //    void on_returnInstallButton_clicked();
 
-    void on_buttonChooseImage_clicked();
+    void settingMiniClicked();
 
-    void on_back_settings_clicked();
+    void on_buttonChooseImage_clicked();
 
     void on_buttonChooseDirForInstall_clicked();
 

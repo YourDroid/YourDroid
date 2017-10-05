@@ -71,9 +71,8 @@ public:
     QPushButton *restoreSettings;
     QPushButton *applaySettings;
     QWidget *installPage;
-    QVBoxLayout *verticalLayout_6;
-    QHBoxLayout *horizontalLayout_7;
-    QVBoxLayout *verticalLayout_5;
+    QGridLayout *gridLayout_6;
+    QGridLayout *gridLayout_4;
     QGroupBox *groupFrom;
     QGridLayout *gridLayout_5;
     QHBoxLayout *horizontalLayout_4;
@@ -86,23 +85,10 @@ public:
     QRadioButton *radioDownload;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
-    QRadioButton *radioDownloadDataimgInstall;
     QHBoxLayout *horizontalLayout_17;
-    QLabel *labelSizeDownloadDataInstall;
-    QComboBox *comboSizeDownloadDataInstall;
-    QRadioButton *radioChooseDataDiskInstall;
-    QHBoxLayout *horizontalLayout_18;
-    QLineEdit *editDataDiskInstall;
-    QPushButton *pushChooseDataInstall;
-    QVBoxLayout *verticalLayout_4;
-    QGroupBox *groupWhere;
-    QGridLayout *gridLayout_2;
-    QRadioButton *radioInstallOnPart;
-    QRadioButton *radioInstallOnDir;
-    QHBoxLayout *horizontalLayout_6;
-    QLineEdit *editDirForInstall;
-    QPushButton *buttonChooseDirForInstall;
-    QLabel *labelinfoPartIns;
+    QLabel *labelSizeDataInstall;
+    QLineEdit *editSizeDataInstall;
+    QSpacerItem *verticalSpacer_4;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout;
@@ -113,6 +99,14 @@ public:
     QComboBox *comboBoot;
     QHBoxLayout *horizontalLayout_19;
     QLabel *labelAboutBootloader;
+    QGroupBox *groupWhere;
+    QGridLayout *gridLayout_2;
+    QRadioButton *radioInstallOnPart;
+    QRadioButton *radioInstallOnDir;
+    QHBoxLayout *horizontalLayout_6;
+    QLineEdit *editDirForInstall;
+    QPushButton *buttonChooseDirForInstall;
+    QLabel *labelinfoPartIns;
     QProgressBar *progressInstall;
     QHBoxLayout *horizontalLayout_8;
     QPushButton *returnInstallButton;
@@ -294,12 +288,10 @@ public:
         windows->addWidget(settingsPage);
         installPage = new QWidget();
         installPage->setObjectName(QStringLiteral("installPage"));
-        verticalLayout_6 = new QVBoxLayout(installPage);
-        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        horizontalLayout_7 = new QHBoxLayout();
-        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
-        verticalLayout_5 = new QVBoxLayout();
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        gridLayout_6 = new QGridLayout(installPage);
+        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        gridLayout_4 = new QGridLayout();
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         groupFrom = new QGroupBox(installPage);
         groupFrom->setObjectName(QStringLiteral("groupFrom"));
         gridLayout_5 = new QGridLayout(groupFrom);
@@ -345,96 +337,33 @@ public:
         gridLayout_5->addWidget(radioDownload, 0, 0, 1, 1);
 
 
-        verticalLayout_5->addWidget(groupFrom);
+        gridLayout_4->addWidget(groupFrom, 0, 0, 2, 1);
 
         groupBox = new QGroupBox(installPage);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         verticalLayout_2 = new QVBoxLayout(groupBox);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        radioDownloadDataimgInstall = new QRadioButton(groupBox);
-        radioDownloadDataimgInstall->setObjectName(QStringLiteral("radioDownloadDataimgInstall"));
-
-        verticalLayout_2->addWidget(radioDownloadDataimgInstall);
-
         horizontalLayout_17 = new QHBoxLayout();
         horizontalLayout_17->setObjectName(QStringLiteral("horizontalLayout_17"));
-        labelSizeDownloadDataInstall = new QLabel(groupBox);
-        labelSizeDownloadDataInstall->setObjectName(QStringLiteral("labelSizeDownloadDataInstall"));
+        labelSizeDataInstall = new QLabel(groupBox);
+        labelSizeDataInstall->setObjectName(QStringLiteral("labelSizeDataInstall"));
 
-        horizontalLayout_17->addWidget(labelSizeDownloadDataInstall);
+        horizontalLayout_17->addWidget(labelSizeDataInstall);
 
-        comboSizeDownloadDataInstall = new QComboBox(groupBox);
-        comboSizeDownloadDataInstall->setObjectName(QStringLiteral("comboSizeDownloadDataInstall"));
+        editSizeDataInstall = new QLineEdit(groupBox);
+        editSizeDataInstall->setObjectName(QStringLiteral("editSizeDataInstall"));
 
-        horizontalLayout_17->addWidget(comboSizeDownloadDataInstall);
+        horizontalLayout_17->addWidget(editSizeDataInstall);
 
 
         verticalLayout_2->addLayout(horizontalLayout_17);
 
-        radioChooseDataDiskInstall = new QRadioButton(groupBox);
-        radioChooseDataDiskInstall->setObjectName(QStringLiteral("radioChooseDataDiskInstall"));
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_2->addWidget(radioChooseDataDiskInstall);
-
-        horizontalLayout_18 = new QHBoxLayout();
-        horizontalLayout_18->setObjectName(QStringLiteral("horizontalLayout_18"));
-        editDataDiskInstall = new QLineEdit(groupBox);
-        editDataDiskInstall->setObjectName(QStringLiteral("editDataDiskInstall"));
-
-        horizontalLayout_18->addWidget(editDataDiskInstall);
-
-        pushChooseDataInstall = new QPushButton(groupBox);
-        pushChooseDataInstall->setObjectName(QStringLiteral("pushChooseDataInstall"));
-
-        horizontalLayout_18->addWidget(pushChooseDataInstall);
+        verticalLayout_2->addItem(verticalSpacer_4);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_18);
-
-
-        verticalLayout_5->addWidget(groupBox);
-
-
-        horizontalLayout_7->addLayout(verticalLayout_5);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        groupWhere = new QGroupBox(installPage);
-        groupWhere->setObjectName(QStringLiteral("groupWhere"));
-        gridLayout_2 = new QGridLayout(groupWhere);
-        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        radioInstallOnPart = new QRadioButton(groupWhere);
-        radioInstallOnPart->setObjectName(QStringLiteral("radioInstallOnPart"));
-
-        gridLayout_2->addWidget(radioInstallOnPart, 0, 0, 1, 1);
-
-        radioInstallOnDir = new QRadioButton(groupWhere);
-        radioInstallOnDir->setObjectName(QStringLiteral("radioInstallOnDir"));
-
-        gridLayout_2->addWidget(radioInstallOnDir, 2, 0, 1, 1);
-
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        editDirForInstall = new QLineEdit(groupWhere);
-        editDirForInstall->setObjectName(QStringLiteral("editDirForInstall"));
-
-        horizontalLayout_6->addWidget(editDirForInstall);
-
-        buttonChooseDirForInstall = new QPushButton(groupWhere);
-        buttonChooseDirForInstall->setObjectName(QStringLiteral("buttonChooseDirForInstall"));
-
-        horizontalLayout_6->addWidget(buttonChooseDirForInstall);
-
-
-        gridLayout_2->addLayout(horizontalLayout_6, 3, 0, 1, 1);
-
-        labelinfoPartIns = new QLabel(groupWhere);
-        labelinfoPartIns->setObjectName(QStringLiteral("labelinfoPartIns"));
-
-        gridLayout_2->addWidget(labelinfoPartIns, 1, 0, 1, 1);
-
-
-        verticalLayout_4->addWidget(groupWhere);
+        gridLayout_4->addWidget(groupBox, 2, 0, 1, 1);
 
         groupBox_2 = new QGroupBox(installPage);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
@@ -481,19 +410,53 @@ public:
         verticalLayout_3->addLayout(horizontalLayout_19);
 
 
-        verticalLayout_4->addWidget(groupBox_2);
+        gridLayout_4->addWidget(groupBox_2, 2, 1, 1, 1);
+
+        groupWhere = new QGroupBox(installPage);
+        groupWhere->setObjectName(QStringLiteral("groupWhere"));
+        gridLayout_2 = new QGridLayout(groupWhere);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        radioInstallOnPart = new QRadioButton(groupWhere);
+        radioInstallOnPart->setObjectName(QStringLiteral("radioInstallOnPart"));
+
+        gridLayout_2->addWidget(radioInstallOnPart, 0, 0, 1, 1);
+
+        radioInstallOnDir = new QRadioButton(groupWhere);
+        radioInstallOnDir->setObjectName(QStringLiteral("radioInstallOnDir"));
+
+        gridLayout_2->addWidget(radioInstallOnDir, 2, 0, 1, 1);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        editDirForInstall = new QLineEdit(groupWhere);
+        editDirForInstall->setObjectName(QStringLiteral("editDirForInstall"));
+
+        horizontalLayout_6->addWidget(editDirForInstall);
+
+        buttonChooseDirForInstall = new QPushButton(groupWhere);
+        buttonChooseDirForInstall->setObjectName(QStringLiteral("buttonChooseDirForInstall"));
+
+        horizontalLayout_6->addWidget(buttonChooseDirForInstall);
 
 
-        horizontalLayout_7->addLayout(verticalLayout_4);
+        gridLayout_2->addLayout(horizontalLayout_6, 3, 0, 1, 1);
+
+        labelinfoPartIns = new QLabel(groupWhere);
+        labelinfoPartIns->setObjectName(QStringLiteral("labelinfoPartIns"));
+
+        gridLayout_2->addWidget(labelinfoPartIns, 1, 0, 1, 1);
 
 
-        verticalLayout_6->addLayout(horizontalLayout_7);
+        gridLayout_4->addWidget(groupWhere, 0, 1, 2, 1);
+
+
+        gridLayout_6->addLayout(gridLayout_4, 0, 0, 1, 1);
 
         progressInstall = new QProgressBar(installPage);
         progressInstall->setObjectName(QStringLiteral("progressInstall"));
         progressInstall->setValue(24);
 
-        verticalLayout_6->addWidget(progressInstall);
+        gridLayout_6->addWidget(progressInstall, 1, 0, 1, 1);
 
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
@@ -517,7 +480,7 @@ public:
         horizontalLayout_8->addWidget(buttonInstallInstall);
 
 
-        verticalLayout_6->addLayout(horizontalLayout_8);
+        gridLayout_6->addLayout(horizontalLayout_8, 2, 0, 1, 1);
 
         windows->addWidget(installPage);
         daletePage = new QWidget();
@@ -638,7 +601,7 @@ public:
 
         retranslateUi(Window);
 
-        windows->setCurrentIndex(2);
+        windows->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(Window);
@@ -679,20 +642,17 @@ public:
         buttonChooseImage->setText(QApplication::translate("Window", "...", Q_NULLPTR));
         radioChooseFromDisk->setText(QApplication::translate("Window", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 I&SO \320\276\320\261\321\200\320\260\320\267 \321\201 \320\264\320\270\321\201\320\272\320\260", Q_NULLPTR));
         radioDownload->setText(QApplication::translate("Window", "\320\241\320\272\320\260\321\207\320\260\321\202\321\214 &ISO \320\276\320\261\321\200\320\260\320\267", Q_NULLPTR));
-        groupBox->setTitle(QApplication::translate("Window", "\320\236\321\202\320\272\321\203\320\264\320\260 \320\262\320\267\321\217\321\202\321\214 data.img(\320\222 \320\275\321\221\320\274 \320\261\321\203\320\264\321\203\321\202 \320\264\320\260\320\275\320\275\321\213\320\265)?", Q_NULLPTR));
-        radioDownloadDataimgInstall->setText(QApplication::translate("Window", "&\320\241\320\272\320\260\321\207\320\260\321\202\321\214 \320\270\320\267 \320\270\320\275\321\202\320\265\321\200\320\275\320\265\321\202\320\260", Q_NULLPTR));
-        labelSizeDownloadDataInstall->setText(QApplication::translate("Window", "\320\240\320\260\320\267\320\274\320\265\321\200:", Q_NULLPTR));
-        radioChooseDataDiskInstall->setText(QApplication::translate("Window", "&\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \321\201 \320\264\320\270\321\201\320\272\320\260", Q_NULLPTR));
-        pushChooseDataInstall->setText(QApplication::translate("Window", "PushButton", Q_NULLPTR));
+        groupBox->setTitle(QApplication::translate("Window", "\320\241\320\272\320\276\320\273\321\214\320\272\320\276 \320\262\321\213\320\264\320\265\320\273\320\270\321\202\321\214 \320\274\320\265\321\201\321\202\320\260 \320\277\320\276\320\264 \320\264\320\260\320\275\320\275\321\213\320\265?", Q_NULLPTR));
+        labelSizeDataInstall->setText(QApplication::translate("Window", "\320\240\320\260\320\267\320\274\320\265\321\200 data.img(\320\274\320\261):", Q_NULLPTR));
+        groupBox_2->setTitle(QApplication::translate("Window", "\320\232\320\260\320\272 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214?", Q_NULLPTR));
+        labelName->setText(QApplication::translate("Window", "\320\230\320\274\321\217", Q_NULLPTR));
+        labelBoot->setText(QApplication::translate("Window", "\320\227\320\260\320\263\321\200\321\203\320\267\321\207\320\270\320\272", Q_NULLPTR));
+        labelAboutBootloader->setText(QString());
         groupWhere->setTitle(QApplication::translate("Window", "\320\232\321\203\320\264\320\260 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214?", Q_NULLPTR));
         radioInstallOnPart->setText(QApplication::translate("Window", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\275\320\260 &\321\200\320\260\320\267\320\264\320\265\320\273", Q_NULLPTR));
         radioInstallOnDir->setText(QApplication::translate("Window", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\262 \320\264\320\270\321\200\320\265\320\272\321\202\320\276\321\200\320\270\321\216", Q_NULLPTR));
         buttonChooseDirForInstall->setText(QApplication::translate("Window", "...", Q_NULLPTR));
         labelinfoPartIns->setText(QApplication::translate("Window", "\320\241\320\272\320\276\321\200\320\276", Q_NULLPTR));
-        groupBox_2->setTitle(QApplication::translate("Window", "\320\232\320\260\320\272 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214?", Q_NULLPTR));
-        labelName->setText(QApplication::translate("Window", "\320\230\320\274\321\217", Q_NULLPTR));
-        labelBoot->setText(QApplication::translate("Window", "\320\227\320\260\320\263\321\200\321\203\320\267\321\207\320\270\320\272", Q_NULLPTR));
-        labelAboutBootloader->setText(QString());
         returnInstallButton->setText(QApplication::translate("Window", "\320\235\320\260\320\267\320\260\320\264, \320\262 \320\263\320\273\320\260\320\262\320\275\320\276\320\265 \320\274\320\265\320\275\321\216", Q_NULLPTR));
         buttonStopInstall->setText(QApplication::translate("Window", "\320\241\321\202\320\276\320\277", Q_NULLPTR));
         buttonInstallInstall->setText(QApplication::translate("Window", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214", Q_NULLPTR));

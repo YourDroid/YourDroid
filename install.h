@@ -7,6 +7,7 @@
 #include <QProgressBar>
 #include "enum.h"
 #include "os.h"
+#include <bkisofs/bk.h>
 
 STRING_ENUM(_bootloader, Grub2, Grub_legasy, rEFInd, Gummiboot, NTLDR, BOOTMGR)
 STRING_ENUM(_typePlace, dir, partition)
@@ -27,7 +28,10 @@ class install {
     QVector<install::_installSet> systems;
     int cntSystems = 0;
     bool _oldSysEdit = false;
+    QProgressBar *progressBar;
+    QString workDir;
 public:
+    install(QString workdir) : workDir(workdir) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
@@ -40,6 +44,7 @@ public:
     void installGrub2();
     void grubConfigure(QString);
     void installGummi();
+    void createDataImg(int);
 
 };
 

@@ -8,7 +8,19 @@
 
 int mainclass::exec(int argc, char **argv) {
     options set;
-    install ins;
+    QString workDir;
+#if OS == 0
+    FILE *fp = popen("echo $(cd $(dirname $0) && pwd)", "r");
+    char buf[256];
+    fgets(buf, sizeof(buf) - 1, fp);
+    pclose(fp);
+    workDir = buf;
+    workDir = workDir.left(workDir.indexOf('\n'));
+#elif OS == 1
+    workDir = getenv("%~dp0");
+#endif
+    log::message(0, __FILE__, __LINE__, QString("Work dir is ") + workDir);
+    install ins(workDir);
     QApplication app(argc,argv);
     ins.read();
     (new Window(&ins, set.read_set(false), &set))->show();

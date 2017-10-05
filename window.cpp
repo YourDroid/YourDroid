@@ -21,7 +21,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     setLabelSetInfo();
 
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
-    connect(ui->settingsMini,SIGNAL(clicked()),SLOT(Settings_clicked()));
+    connect(ui->settingsMini,SIGNAL(clicked()),SLOT(settingMiniClicked()));
     connect(ui->buttonAboutReturn,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->buttonReturnMainDelete,SIGNAL(clicked()),SLOT(returnMainWindow()));
 
@@ -31,6 +31,11 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     else returnMainWindow();
 
 
+}
+
+void Window::settingMiniClicked() {
+    if(ui->windows->currentWidget() == ui->settingsPage) on_back_settings_clicked();
+    else Settings_clicked();
 }
 
 void Window::setLabelSetInfo() {
@@ -87,7 +92,6 @@ void Window::on_installButtonMain_clicked()
     ui->radioInstallOnDir->setChecked(true);
 
     ui->radioDownload->setEnabled(false);
-    ui->radioDownloadDataimgInstall->setEnabled(false);
     ui->radioChooseFromDisk->setChecked(true);
 
     //ui->progressInstall->setRange(0, 100);
@@ -146,7 +150,7 @@ void Window::on_buttonInstallInstall_clicked()
 //    auto error = [](QString mess, QString enmess) {
 
 //    };
-
+    ui->progressInstall->setValue(0);
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage("Проверка");
@@ -197,7 +201,8 @@ void Window::on_buttonInstallInstall_clicked()
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
     insDat->write();
     insDat->unpackSystem(ui->progressInstall);
-    //insDat.installBootloader();
+    insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+    insDat->installBootloader();
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
 }

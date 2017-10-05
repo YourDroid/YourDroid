@@ -1,5 +1,4 @@
 #include "install.h"
-#include "zlib/unzipper.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -11,6 +10,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QVector>
+#include <bkisofs/bk.h>
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n) {
     systems.push_back(install::_installSet(b, t, p, i, n));
@@ -42,7 +42,7 @@ void install::write() {
         system.setValue("type_place", _typePlaceHelper::to_string(systems[i].typePlace).c_str());
         system.setValue("place", systems[i].place);
         system.setValue("image", systems[i].image);
-        system.setValue("name", systems[i].name);
+        //system.setValue("name", systems[i].name);
         system.setValue("os", systems[i].os);
         system.setValue("ended", systems[i].ended);
         system.endGroup();
@@ -60,11 +60,13 @@ void install::read() {
     cntSystems = install.value("count_systems", 0).toInt();
 
     for(int i = 0; i < cntSystems; i++) {
-        QString sys = install.value(QString("system_") + QString::number(i), 0).toString();
+        QString name = install.value(QString("system_") + QString::number(i), 0).toString();
+        QString sys = name + ".ini";
+        log::message(0, __FILE__, __LINE__, install.value(QString("system_") + QString::number(i), 0).toString());
         if(!QFile::exists(sys)) {
-            log::message(1, __FILE__, __LINE__,
-                         QString("System ") + install.value(QString("config of system ") + QString::number(i + 1), 0).toString() + " does not exist",
-                         QString("Файл настроек системы ") + install.value(QString("Настройки системы ") + QString::number(i + 1), 0).toString() + " не существует!");
+            log::message(2, __FILE__, __LINE__,
+                         QString("Config of system ") + name + " does not exist",
+                         QString("Файл настроек системы ") + name + " не существует!");
             _oldSysEdit = true;
             cntSystems = cntSystems - 1;
             continue;
@@ -80,9 +82,9 @@ void install::read() {
         else if(!system.contains("place")) {
             log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section place", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о месте установки");
         }
-        else if(!system.contains("name")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section name", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
-        }
+//        else if(!system.contains("name")) {
+//            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section name", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
+//        }
         if(!system.contains("os")) {
             log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section os", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о системе, на которой устанавливался андроид");
         }
@@ -95,7 +97,7 @@ void install::read() {
         typePlace = _typePlaceHelper::from_string(system.value("type_place", "Error of read!").toString().toStdString());
         QString place = system.value("place", "Error of read!").toString();
         QString image = system.value("image", "Error of read!").toString();
-        QString name = install.value(QString("system_") + QString::number(i), 0).toString();
+//        QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         bool os = system.value("os", false).toBool();
         bool ended = system.value("ended", false).toBool();
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " read succesfull");
@@ -153,7 +155,47 @@ void install::grubConfigure(QString way) {
 }
 
 void install::unpackSystem(QProgressBar *progress) {
+    progress->setRange(0, 125);
+    progressBar = progress;
+    int rc = 0;
+    auto checkRc = [](int rc) -> void {
+        if(rc <= 0) {
+            QString error = bk_get_error_string(rc);
+            log::message(2, __FILE__, __LINE__, error, QString("Ошибка при разархивировании: ") + error);
+        }
+    };
+
+    VolInfo volInfo;
+    checkRc(bk_init_vol_info(&volInfo, true));
+    checkRc(bk_open_image(&volInfo, systems[cntSystems - 1].image.toStdString().c_str()));
+    checkRc(bk_read_vol_info(&volInfo));
+    if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
+            rc = bk_read_dir_tree(&volInfo, FNTYPE_ROCKRIDGE, true, 0);
+    else if(volInfo.filenameTypes & FNTYPE_JOLIET)
+            rc = bk_read_dir_tree(&volInfo, FNTYPE_JOLIET, false, 0);
+    else
+            rc = bk_read_dir_tree(&volInfo, FNTYPE_9660, false, 0);
+    checkRc(rc);
+    char *files[5] = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs"};
+        for(int i = 0; i < 5; i++) {
+            progress->setValue(progress->value() + 25);
+            rc = bk_extract(&volInfo, files[i],
+                            systems[cntSystems - 1].place.toStdString().c_str(),
+                            false,
+                    0);
+        checkRc(rc);
+        }
+
+        /* we're finished with this ISO, so clean up */
+        bk_destroy_vol_info(&volInfo);
 }
 
-
-
+void install::createDataImg(int size) {
+#if OS == 0
+    system((QString("chmod 777 ") + workDir + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+    system((workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+            QString("M -a data ") + systems[cntSystems - 1].place + QString("/data.img ") +
+            workDir + QString("/data/make_ext4fs/data")).toStdString().c_str());
+#elif OS == 1
+#endif
+}

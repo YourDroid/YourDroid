@@ -68,7 +68,7 @@
     <item row="2" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -265,221 +265,198 @@
        </layout>
       </widget>
       <widget class="QWidget" name="installPage">
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QGroupBox" name="groupFrom">
-              <property name="title">
-               <string>Откуда установить?</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_5">
-               <item row="1" column="0">
-                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                 <item>
-                  <widget class="QLabel" name="labelVersionDown">
-                   <property name="text">
-                    <string>Версия:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="comboVersionDown"/>
-                 </item>
-                </layout>
-               </item>
-               <item row="3" column="0">
-                <layout class="QHBoxLayout" name="horizontalLayout_5">
-                 <item>
-                  <widget class="QLineEdit" name="editImageFromDisk"/>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="buttonChooseImage">
-                   <property name="text">
-                    <string>...</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="radioChooseFromDisk">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0" rowspan="2">
+           <widget class="QGroupBox" name="groupFrom">
+            <property name="title">
+             <string>Откуда установить?</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="1" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QLabel" name="labelVersionDown">
                  <property name="text">
-                  <string>Выбрать I&amp;SO образ с диска</string>
+                  <string>Версия:</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="radioDownload">
+               <item>
+                <widget class="QComboBox" name="comboVersionDown"/>
+               </item>
+              </layout>
+             </item>
+             <item row="3" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <widget class="QLineEdit" name="editImageFromDisk"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonChooseImage">
                  <property name="text">
-                  <string>Скачать &amp;ISO образ</string>
+                  <string>...</string>
                  </property>
                 </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox">
-              <property name="title">
-               <string>Откуда взять data.img(В нём будут данные)?</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_2">
-               <item>
-                <widget class="QRadioButton" name="radioDownloadDataimgInstall">
-                 <property name="text">
-                  <string>&amp;Скачать из интернета</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_17">
-                 <item>
-                  <widget class="QLabel" name="labelSizeDownloadDataInstall">
-                   <property name="text">
-                    <string>Размер:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="comboSizeDownloadDataInstall"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioChooseDataDiskInstall">
-                 <property name="text">
-                  <string>&amp;Выбрать с диска</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_18">
-                 <item>
-                  <widget class="QLineEdit" name="editDataDiskInstall"/>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushChooseDataInstall">
-                   <property name="text">
-                    <string>PushButton</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="radioChooseFromDisk">
+               <property name="text">
+                <string>Выбрать I&amp;SO образ с диска</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="radioDownload">
+               <property name="text">
+                <string>Скачать &amp;ISO образ</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QGroupBox" name="groupWhere">
-              <property name="title">
-               <string>Куда установить?</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="radioInstallOnPart">
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="title">
+             <string>Сколько выделить места под данные?</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_17">
+               <item>
+                <widget class="QLabel" name="labelSizeDataInstall">
                  <property name="text">
-                  <string>Установить на &amp;раздел</string>
+                  <string>Размер data.img(мб):</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="radioInstallOnDir">
+               <item>
+                <widget class="QLineEdit" name="editSizeDataInstall"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string>Как установить?</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QLabel" name="labelName">
                  <property name="text">
-                  <string>Установить в директорию</string>
+                  <string>Имя</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
-                <layout class="QHBoxLayout" name="horizontalLayout_6">
-                 <item>
-                  <widget class="QLineEdit" name="editDirForInstall"/>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="buttonChooseDirForInstall">
-                   <property name="text">
-                    <string>...</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+               <item>
+                <widget class="QLineEdit" name="editName"/>
                </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="labelinfoPartIns">
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="labelBoot">
                  <property name="text">
-                  <string>Скоро</string>
+                  <string>Загрузчик</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBoot"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_19">
+               <item>
+                <widget class="QLabel" name="labelAboutBootloader">
+                 <property name="text">
+                  <string/>
                  </property>
                 </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="title">
-               <string>Как установить?</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1" rowspan="2">
+           <widget class="QGroupBox" name="groupWhere">
+            <property name="title">
+             <string>Куда установить?</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="radioInstallOnPart">
+               <property name="text">
+                <string>Установить на &amp;раздел</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="radioInstallOnDir">
+               <property name="text">
+                <string>Установить в директорию</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout">
-                 <item>
-                  <widget class="QLabel" name="labelName">
-                   <property name="text">
-                    <string>Имя</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="editName"/>
-                 </item>
-                </layout>
+                <widget class="QLineEdit" name="editDirForInstall"/>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_3">
-                 <item>
-                  <widget class="QLabel" name="labelBoot">
-                   <property name="text">
-                    <string>Загрузчик</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="comboBoot"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_19">
-                 <item>
-                  <widget class="QLabel" name="labelAboutBootloader">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="QPushButton" name="buttonChooseDirForInstall">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-           </layout>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelinfoPartIns">
+               <property name="text">
+                <string>Скоро</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </item>
-        <item>
+        <item row="1" column="0">
          <widget class="QProgressBar" name="progressInstall">
           <property name="value">
            <number>24</number>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="2" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
            <widget class="QPushButton" name="returnInstallButton">
