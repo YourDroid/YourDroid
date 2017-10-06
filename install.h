@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QSettings>
 #include <QProgressBar>
+#include <QStatusBar>
 #include "enum.h"
 #include "os.h"
 #include <bkisofs/bk.h>
@@ -28,7 +29,6 @@ class install {
     QVector<install::_installSet> systems;
     int cntSystems = 0;
     bool _oldSysEdit = false;
-    QProgressBar *progressBar;
     QString workDir;
 public:
     install(QString workdir) : workDir(workdir) {}
@@ -39,7 +39,7 @@ public:
     void read();
     void write();
 
-    void unpackSystem(QProgressBar*);
+    void unpackSystem(QProgressBar*, QStatusBar*);
     void installBootloader();
     void installGrub2();
     void grubConfigure(QString);

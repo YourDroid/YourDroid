@@ -50,8 +50,6 @@ private slots:
 
 //    void on_returnInstallButton_clicked();
 
-    void settingMiniClicked();
-
     void on_buttonChooseImage_clicked();
 
     void on_buttonChooseDirForInstall_clicked();
@@ -68,7 +66,7 @@ private:
     options *dat;
     install *insDat;
     Ui::Window *ui;
-    char lastPage = 0;
+    QWidget *lastPage;
 };
 
 #endif // WINDOW_H

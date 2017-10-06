@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QString>
 
-const QString VERSION = "0.0.1 alpha";
+const QString VERSION = "0.0.2 alpha";
 
 int main(int argc, char *argv[])
 {

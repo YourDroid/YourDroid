@@ -601,7 +601,7 @@ public:
 
         retranslateUi(Window);
 
-        windows->setCurrentIndex(1);
+        windows->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(Window);

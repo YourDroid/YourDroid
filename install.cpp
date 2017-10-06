@@ -145,6 +145,7 @@ void install::installGrub2() {
         //system("mkdir /etc/grub.d/android");
     }
     grubConfigure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
+    system("update-grub");
 }
 
 void install::grubConfigure(QString way) {
@@ -156,9 +157,8 @@ void install::grubConfigure(QString way) {
            << "}\n";
 }
 
-void install::unpackSystem(QProgressBar *progress) {
+void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
     progress->setRange(0, 125);
-    progressBar = progress;
     int rc = 0;
     auto checkRc = [](int rc) -> void {
         QString error;
@@ -167,12 +167,12 @@ void install::unpackSystem(QProgressBar *progress) {
             error = bk_get_error_string(rc);
 #elif OS == 1
 #endif
-            log::message(2, __FILE__, __LINE__, error, QString("Ошибка при разархивировании: ") + error);
+            log::message(2, __FILE__, __LINE__, error, QString("Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
         }
     };
 #if OS == 0
     VolInfo volInfo;
-    checkRc(bk_init_vol_info(&volInfo, true));
+    checkRc(bk_init_vol_info(&volInfo, false));
     checkRc(bk_open_image(&volInfo, systems[cntSystems - 1].image.toStdString().c_str()));
     checkRc(bk_read_vol_info(&volInfo));
     if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
@@ -185,6 +185,7 @@ void install::unpackSystem(QProgressBar *progress) {
     char *files[5] = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs"};
         for(int i = 0; i < 5; i++) {
             progress->setValue(progress->value() + 25);
+            statusBar->showMessage(QString("Extracting ") + files[i]);
             rc = bk_extract(&volInfo, files[i],
                             systems[cntSystems - 1].place.toStdString().c_str(),
                             false,

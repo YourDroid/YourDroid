@@ -3,6 +3,7 @@
 #include "enum.h"
 #include <string>
 #include "install.h"
+#include <QValidator>
 
 Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +12,9 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     insDat(ins),
     ui(new Ui::Window)
 {
-    lastPage = 0;
+    if(dat->tbios = false || OS) {
+        log::message(2, __FILE__, __LINE__, "This programm does not supported your PC", "Ваш компьютер пока не поддерживается");
+    }
 
     setWindowIcon(QIcon(":/icon/yourdroid.png"));
 
@@ -21,21 +24,24 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     setLabelSetInfo();
 
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
-    connect(ui->settingsMini,SIGNAL(clicked()),SLOT(settingMiniClicked()));
+    connect(ui->settingsMini,&QPushButton::clicked,[=](){
+        if(ui->windows->currentWidget() == ui->settingsPage) on_back_settings_clicked();
+        else Settings_clicked();
+    });
     connect(ui->buttonAboutReturn,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->buttonReturnMainDelete,SIGNAL(clicked()),SLOT(returnMainWindow()));
+    connect(ui->windows, &QStackedWidget::currentChanged, [=](){
+        if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
+    });
 
     ui->labelVersion->setText(QString("<b>Версия: ") + VERSION + QString("<\b>"));
+    ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
+    ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я]{0,999}")));
 
     if(fierst) Settings_clicked();
     else returnMainWindow();
 
 
-}
-
-void Window::settingMiniClicked() {
-    if(ui->windows->currentWidget() == ui->settingsPage) on_back_settings_clicked();
-    else Settings_clicked();
 }
 
 void Window::setLabelSetInfo() {
@@ -60,7 +66,6 @@ void Window::returnMainWindow() {
 void Window::Settings_clicked()
 {
     if(ui->windows->currentIndex() == 1) return;
-    lastPage = ui->windows->currentIndex();
     //dat->read_set(false);
     ui->typeBios->setCurrentIndex((int)dat->tbios);
     ui->arch->setCurrentIndex((int)dat->arch);
@@ -128,12 +133,11 @@ void Window::on_back_settings_clicked()
         dat->autowrite_set();
         returnMainWindow();
     }
-    else switch(lastPage) {
-    case 0: returnMainWindow(); break;
-    case 2: on_installButtonMain_clicked(); break;
-    case 3: on_deleteButtonMain_clicked(); break;
-    case 4: on_buttonAboutMain_clicked(); break;
-    }
+    else if(lastPage == ui->settingsPage) Settings_clicked();
+    else if(lastPage == ui->mainWindowPage) returnMainWindow();
+    else if(lastPage == ui->aboutPage) on_buttonAboutMain_clicked();
+    else if(lastPage == ui->installPage) on_installButtonMain_clicked();
+    else if(lastPage == ui->daletePage) on_deleteButtonMain_clicked();
 }
 
 void Window::on_buttonChooseDirForInstall_clicked()
@@ -147,9 +151,6 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
-//    auto error = [](QString mess, QString enmess) {
-
-//    };
     ui->progressInstall->setValue(0);
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
@@ -158,34 +159,47 @@ void Window::on_buttonInstallInstall_clicked()
     QString image, dir, name;
     bool exit = false;
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        (new QErrorMessage(this))->showMessage("Выберите образ для установки!");
+        log::message(2, __FILE__, __LINE__, "Not chosen image", "Выберите образ для установки!");
         exit = true;
     }
     else if(!QFile::exists(image)) {
-        (new QErrorMessage(this))->showMessage("Выбранный образ не существует!");
+        log::message(2, __FILE__, __LINE__, "Choosen image does not exist", "Выбранный образ не существует!");
         exit = true;
     }
-    else if((dir = ui->editDirForInstall->text()).length() < 4) {
-        (new QErrorMessage(this))->showMessage("Выберите папку для установки!");
+    else if((dir = ui->editDirForInstall->text()).length() == 0 ) {
+        log::message(2, __FILE__, __LINE__, "Not chosen folder", "Выберите папку для установки!");
+        exit = true;
+    }
+    else if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
+        log::message(2, __FILE__, __LINE__, "Choosen folder is root", "Нельзя устанавливать в корень!");
+        exit = true;
+    }
+    else if(!ui->editDirForInstall->hasAcceptableInput()) {
+        log::message(2, __FILE__, __LINE__, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу!");
         exit = true;
     }
     else if(!(new QDir())->exists(dir)) {
-        (new QErrorMessage(this))->showMessage("Выбранная папка не существует!");
+        log::message(2, __FILE__, __LINE__, "Selected folder does not exist", "Выбранная папка не существует!");
         exit = true;
     }
     else if((name = ui->editName->text()).length() == 0) {
-        (new QErrorMessage(this))->showMessage("Выберите имя!");
+        log::message(2, __FILE__, __LINE__, "Not written the name", "Напишите имя!");
+        exit = true;
+    }
+    else if((name = ui->editSizeDataInstall->text()).length() == 0) {
+        log::message(2, __FILE__, __LINE__, "Not written the size of data.img", "Напишите размер data.img!");
         exit = true;
     }
     else for(int i = 0; i < insDat->systemsVector().length(); i++) {
         if(ui->editName->text() == (insDat->systemsVector())[i].name) {
-            (new QErrorMessage(this))->showMessage("Уже сущуствует система с таким именем!");
+            log::message(2, __FILE__, __LINE__, "The system with writеen name already exists", "Уже существует система с таким именем!");
             exit = true;
         }
     }
     if(exit) {
-        log::message(0, __FILE__, __LINE__, "Data for install invalid");
         ui->statusbar->clearMessage();
+        ui->returnInstallButton->setEnabled(true);
+        ui->buttonInstallInstall->setEnabled(true);
         return;
     }
 
@@ -200,7 +214,7 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
     insDat->write();
-    insDat->unpackSystem(ui->progressInstall);
+    insDat->unpackSystem(ui->progressInstall, ui->statusbar);
     insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
     insDat->installBootloader();
     ui->returnInstallButton->setEnabled(true);
