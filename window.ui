@@ -313,60 +313,50 @@
             <property name="title">
              <string>Как установить?</string>
             </property>
-            <widget class="QLabel" name="labelAboutBootloader">
-             <property name="geometry">
-              <rect>
-               <x>11</x>
-               <y>158</y>
-               <width>16</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>ttt</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelAboutBootloader_2">
-             <property name="geometry">
-              <rect>
-               <x>11</x>
-               <y>139</y>
-               <width>47</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-            <widget class="QWidget" name="">
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <item>
-               <widget class="QLabel" name="labelName">
-                <property name="text">
-                 <string>Имя:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="editName"/>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="">
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="labelBoot">
-                <property name="text">
-                 <string>Загрузчик:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="comboBoot"/>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QLabel" name="labelName">
+                 <property name="text">
+                  <string>Имя:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="editName"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="labelBoot">
+                 <property name="text">
+                  <string>Загрузчик:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBoot"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelAboutBootloader_2">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelAboutBootloader">
+               <property name="text">
+                <string>ttt</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item row="0" column="0" rowspan="2">
