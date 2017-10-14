@@ -14,7 +14,8 @@ INCLUDEPATH += .
 HEADERS += data.h log.h mainclass.h window.h \
     enum.h \
     os.h \
-    install.h
+    install.h \
+    version.h
 unix: {
 HEADERS += bkisofs/bk.h \
     bkisofs/bkAdd.h \
@@ -64,7 +65,13 @@ SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkWrite.c \
     bkisofs/bkWrite7x.c
 }
+LIBS += -lz
+
 RESOURCES += \
     resource.qrc
 
-LIBS += -lz
+win32 {
+RC_FILE = info.rc
+#CONFIG += embed_manifest_exe
+#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:"level='requireAdministrator'"
+}

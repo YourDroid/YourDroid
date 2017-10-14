@@ -16,6 +16,7 @@ class options : public QObject {
     Q_OBJECT
 public:
     friend class Window;
+    friend class install;
 private:
     bool needSave = false;
     bool tbios;

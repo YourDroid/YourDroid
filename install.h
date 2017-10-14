@@ -7,6 +7,7 @@
 #include <QProgressBar>
 #include <QStatusBar>
 #include "enum.h"
+#include "data.h"
 #include "os.h"
 #include <bkisofs/bk.h>
 
@@ -29,9 +30,10 @@ class install {
     QVector<install::_installSet> systems;
     int cntSystems = 0;
     bool _oldSysEdit = false;
+    options *dat;
     QString workDir;
 public:
-    install(QString workdir) : workDir(workdir) {}
+    install(QString workdir, options *d) : workDir(workdir), dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }

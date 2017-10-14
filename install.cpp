@@ -120,8 +120,31 @@ void install::installBootloader() {
 }
 
 void install::installGummi() {
+    using namespace std;
+    auto copy = [](string src, string dest){
+        ifstream source(src, ios::binary);
+        ofstream destination(dest, ios::binary);
+        if(!source) log::message(2, __FILE__, __LINE__, QString("Can not read ") + QString::fromStdString(src), "Невозможно прочитать " + QString::fromStdString(src));
+        if(!destination) log::message(2, __FILE__, __LINE__, QString("Can not write ") + QString::fromStdString(dest), "Невозможно записать " + QString::fromStdString(dest));
+        for(char ch; source;) {
+            source.read((char*)&ch,sizeof(char));
+            destination.write((char*)&ch,sizeof(char));
+        }
+    };
+
     system("mountvol a: /s");
-    QFile::copy("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "c:\\bootmgfw_back.efi");
+    //QFile::rename("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
+    system("cp A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
+    //copy(QString((workDir + "\\data\\bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");
+    system(QString(QString("cp ") +
+                   (workDir + "\\data\\bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
+                   QString(" A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi")).toStdString().c_str());
+    //QDir().mkdir("A:\\loader");
+    system("A:\\loader");
+    copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\" + "loader.conf").toStdString(), "A:\\loader\\loader.conf");
+    QDir().mkdir("A:\\loader\\entries");
+    copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\entries\\" + "0windows.conf").toStdString(), "A:\\loader\\entries\\0windows.conf");
+    grubConfigure(QString("A:\\loader\\entries\\") + systems[cntSystems - 1].name);
     system("mountvol a: /d");
 }
 

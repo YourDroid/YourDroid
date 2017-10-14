@@ -1,8 +1,9 @@
 #include "mainclass.h"
+#include "version.h"
 #include <QApplication>
 #include <QString>
 
-const QString VERSION = "0.0.2 alpha";
+const QString VERSION = VER_PRODUCTVERSION_STR;
 
 int main(int argc, char *argv[])
 {

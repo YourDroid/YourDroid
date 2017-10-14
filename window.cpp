@@ -12,11 +12,11 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     insDat(ins),
     ui(new Ui::Window)
 {
-    if(dat->tbios = false || OS) {
-        log::message(2, __FILE__, __LINE__, "This programm does not supported your PC", "Ваш компьютер пока не поддерживается");
+    if(dat->tbios == false || OS) {
+        log::message(2, __FILE__, __LINE__, "This PC does not supported", "Ваш компьютер пока не поддерживается");
     }
 
-    setWindowIcon(QIcon(":/icon/yourdroid.png"));
+    setWindowIcon(QIcon(":/yourdroid.png"));
 
     log::message(0, __FILE__, __LINE__, "Start window");
 
@@ -230,8 +230,14 @@ void Window::on_buttonAboutMain_clicked()
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
     log::message(0,__FILE__,__LINE__,QString("Choose ") + arg1);
-    if(arg1 == "Grub2") ui->labelAboutBootloader->setText("Рекомендуется для компьютеров. Текстовый");
-    else if(arg1 == "Gummiboot") ui->labelAboutBootloader->setText("Рекомендуется для планшетов. Управление качалкой громкости");
+    if(arg1 == "Grub2") {
+        ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
+        ui->labelAboutBootloader_2->setText("Текстовый.");
+    }
+    else if(arg1 == "Gummiboot") {
+        ui->labelAboutBootloader->setText("Рекомендуется для планшетов.");
+        ui->labelAboutBootloader_2->setText("Управление качалкой громкости.");
+    }
     else if(arg1 == "rEFInd") ui->labelAboutBootloader->setText("Поддержка сенс. экрана, работает не везде");
     else if(arg1 == "Windows BOOTMGR") ui->labelAboutBootloader->setText("Рекомендуется для планшетов, c win 8+. В win 8+ сенсорный");
     else if(arg1 == "Windows NTDLR") ui->labelAboutBootloader->setText("Не рекомендуется. Текстовый");

@@ -7,6 +7,8 @@
 #include <sstream>
 #include <string>
 
+extern const QString VERSION;
+
 class log {
 public:
     static void message(int, QString, int, QString, QString = "NULL");

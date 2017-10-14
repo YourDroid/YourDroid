@@ -8,7 +8,6 @@
 
 int mainclass::exec(int argc, char **argv) {
     QApplication app(argc,argv);
-    options set;
     QString workDir;
 //#if OS == 0
 //    FILE *fp = popen("echo $(cd $(dirname $0) && pwd)", "r");
@@ -25,7 +24,8 @@ int mainclass::exec(int argc, char **argv) {
 //#endif
     workDir = app.applicationDirPath();
     log::message(0, __FILE__, __LINE__, QString("Work dir is ") + workDir);
-    install ins(workDir);
+    options set;
+    install ins(workDir, &set);
     ins.read();
     (new Window(&ins, set.read_set(false), &set))->show();
     log::message(0, __FILE__, __LINE__, "Window exec");

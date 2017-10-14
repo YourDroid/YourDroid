@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'window.ui'
 **
-** Created by: Qt User Interface Compiler version 5.7.1
+** Created by: Qt User Interface Compiler version 5.9.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -72,6 +72,7 @@ public:
     QPushButton *applaySettings;
     QWidget *installPage;
     QGridLayout *gridLayout_6;
+    QProgressBar *progressInstall;
     QGridLayout *gridLayout_4;
     QGroupBox *groupFrom;
     QGridLayout *gridLayout_5;
@@ -97,7 +98,7 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *labelBoot;
     QComboBox *comboBoot;
-    QHBoxLayout *horizontalLayout_19;
+    QLabel *labelAboutBootloader_2;
     QLabel *labelAboutBootloader;
     QGroupBox *groupWhere;
     QGridLayout *gridLayout_2;
@@ -107,7 +108,6 @@ public:
     QLineEdit *editDirForInstall;
     QPushButton *buttonChooseDirForInstall;
     QLabel *labelinfoPartIns;
-    QProgressBar *progressInstall;
     QHBoxLayout *horizontalLayout_8;
     QPushButton *returnInstallButton;
     QSpacerItem *horizontalSpacer_3;
@@ -290,6 +290,12 @@ public:
         installPage->setObjectName(QStringLiteral("installPage"));
         gridLayout_6 = new QGridLayout(installPage);
         gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        progressInstall = new QProgressBar(installPage);
+        progressInstall->setObjectName(QStringLiteral("progressInstall"));
+        progressInstall->setValue(24);
+
+        gridLayout_6->addWidget(progressInstall, 1, 0, 1, 1);
+
         gridLayout_4 = new QGridLayout();
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         groupFrom = new QGroupBox(installPage);
@@ -399,15 +405,15 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_3);
 
-        horizontalLayout_19 = new QHBoxLayout();
-        horizontalLayout_19->setObjectName(QStringLiteral("horizontalLayout_19"));
+        labelAboutBootloader_2 = new QLabel(groupBox_2);
+        labelAboutBootloader_2->setObjectName(QStringLiteral("labelAboutBootloader_2"));
+
+        verticalLayout_3->addWidget(labelAboutBootloader_2);
+
         labelAboutBootloader = new QLabel(groupBox_2);
         labelAboutBootloader->setObjectName(QStringLiteral("labelAboutBootloader"));
 
-        horizontalLayout_19->addWidget(labelAboutBootloader);
-
-
-        verticalLayout_3->addLayout(horizontalLayout_19);
+        verticalLayout_3->addWidget(labelAboutBootloader);
 
 
         gridLayout_4->addWidget(groupBox_2, 2, 1, 1, 1);
@@ -451,12 +457,6 @@ public:
 
 
         gridLayout_6->addLayout(gridLayout_4, 0, 0, 1, 1);
-
-        progressInstall = new QProgressBar(installPage);
-        progressInstall->setObjectName(QStringLiteral("progressInstall"));
-        progressInstall->setValue(24);
-
-        gridLayout_6->addWidget(progressInstall, 1, 0, 1, 1);
 
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
@@ -645,8 +645,9 @@ public:
         groupBox->setTitle(QApplication::translate("Window", "\320\241\320\272\320\276\320\273\321\214\320\272\320\276 \320\262\321\213\320\264\320\265\320\273\320\270\321\202\321\214 \320\274\320\265\321\201\321\202\320\260 \320\277\320\276\320\264 \320\264\320\260\320\275\320\275\321\213\320\265?", Q_NULLPTR));
         labelSizeDataInstall->setText(QApplication::translate("Window", "\320\240\320\260\320\267\320\274\320\265\321\200 data.img(\320\274\320\261):", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("Window", "\320\232\320\260\320\272 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214?", Q_NULLPTR));
-        labelName->setText(QApplication::translate("Window", "\320\230\320\274\321\217", Q_NULLPTR));
-        labelBoot->setText(QApplication::translate("Window", "\320\227\320\260\320\263\321\200\321\203\320\267\321\207\320\270\320\272", Q_NULLPTR));
+        labelName->setText(QApplication::translate("Window", "\320\230\320\274\321\217:", Q_NULLPTR));
+        labelBoot->setText(QApplication::translate("Window", "\320\227\320\260\320\263\321\200\321\203\320\267\321\207\320\270\320\272:", Q_NULLPTR));
+        labelAboutBootloader_2->setText(QApplication::translate("Window", "TextLabel", Q_NULLPTR));
         labelAboutBootloader->setText(QString());
         groupWhere->setTitle(QApplication::translate("Window", "\320\232\321\203\320\264\320\260 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214?", Q_NULLPTR));
         radioInstallOnPart->setText(QApplication::translate("Window", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\275\320\260 &\321\200\320\260\320\267\320\264\320\265\320\273", Q_NULLPTR));
@@ -666,15 +667,15 @@ public:
         textBrowser->setHtml(QApplication::translate("Window", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt;\">\320\236\320\277\320\270\321\201\320\260\320\275\320\270\320\265:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt; font-style:italic;\">\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\260 \321\201 \320\276\321\202\320\272\321\200\321\213\321\202\321\213\320\274 \320\270\321\201\321\205\320\276\320\264\320\275\321\213\320\274 \320\272\320\276\320\264\320\276"
-                        "\320\274 \320\264\320\273\321\217 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\272\320\270 \320\277\320\276\321\200\321\202\320\260 \320\260\320\275\320\264\321\200\320\276\320\270\320\264\320\260 \320\275\320\260 \320\277\320\272, android x86</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt; font-style:italic;\">\320\237\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\260 \321\201 \320\276\321\202\320\272\321\200\321\213\321\202\321\213\320\274 \320\270\321\201\321\205\320\276\320\264\320\275\321\213\320\274 \320\272\320\276\320"
+                        "\264\320\276\320\274 \320\264\320\273\321\217 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\272\320\270 \320\277\320\276\321\200\321\202\320\260 \320\260\320\275\320\264\321\200\320\276\320\270\320\264\320\260 \320\275\320\260 \320\277\320\272, android x86</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:11pt; font-style:italic;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt;\">\320\220\320\262\321\202\320\276\321\200\321\213:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt; font-style:italic;\">Profi_GMan</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px"
-                        "; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:11pt; font-style:italic;\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margi"
+                        "n-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:11pt; font-style:italic;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt;\">\320\236\321\201\320\276\320\261\321\213\320\265 \320\261\320\273\320\260\320\263\320\276\320\264\320\260\321\200\320\275\320\276\321\201\321\202\320\270:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Ubuntu'; font-size:11pt; font-style:italic;\">Atchan</span></p></body></html>", Q_NULLPTR));
         buttonAboutReturn->setText(QApplication::translate("Window", "\320\222\320\265\321\200\320\275\321\203\321\202\321\214\321\201\321\217 \320\262 \320\274\320\265\320\275\321\216", Q_NULLPTR));

@@ -1,12 +1,22 @@
 #include <log.h>
 #include <QErrorMessage>
+#include <QDebug>
+#include <QTextStream>
+#include <QFile>
+#include <QTime>
 #include "os.h"
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
 void log::message(int level, QString file, int line, QString mess, QString rusMess) {
     using namespace std;
-    static ofstream logFile("log.txt");
+    static QFile preLog("log.txt");
+    static QTextStream logFile(&preLog);
+    if(!preLog.isOpen()) {
+        preLog.open(QIODevice::WriteOnly);
+        logFile << "### Created by YourDroid " << VERSION << " ###" << endl << endl;
+    }
+    //static ofstream logFile("log.txt");
     QString typeName;
     switch(level) {
     case 0: typeName = "DEBUG:"; break;
@@ -28,7 +38,7 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 //    }
     QString messFull = typeName + QString(' ') + mess;
 #endif
-    logFile << "FILE: " << file.toStdString() << " LINE: " << line << " " << typeName.toStdString() << " " << mess.toStdString() << endl;
+    logFile << "FILE: " << file << " LINE: " << line << " TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " " << typeName << " " << mess << endl;
     cout << messFull.toStdString() << endl;
 #if OS == 1
 //    system("color 00");
