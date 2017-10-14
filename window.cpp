@@ -16,7 +16,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         log::message(2, __FILE__, __LINE__, "This PC does not supported", "Ваш компьютер пока не поддерживается");
     }
 
-    setWindowIcon(QIcon(":/yourdroid.png"));
+    //setWindowIcon(QIcon(":/yourdroid.png"));
 
     log::message(0, __FILE__, __LINE__, "Start window");
 

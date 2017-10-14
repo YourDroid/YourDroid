@@ -1,4 +1,4 @@
-//IDI_ICON1 ICON "yourdroid.png"
+IDI_ICON1 ICON "yourdroid.ico"
 
 #include <windows.h>
 #include "version.h"
