@@ -206,6 +206,7 @@ void Window::on_buttonInstallInstall_clicked()
     log::message(0, __FILE__, __LINE__, "Data for install valid");
     ui->statusbar->clearMessage();
 
+    ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
     if(boot == "Grub legasy") boot = "Grub_legasy";
     else if(boot == "Windows NTLDR") boot = "NTLDR";

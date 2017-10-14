@@ -185,7 +185,6 @@ void install::grubConfigure(QString way) {
 }
 
 void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
-    progress->setRange(0, 125);
     int rc = 0;
     auto checkRc = [](int rc) -> void {
         QString error;

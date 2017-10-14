@@ -11,7 +11,7 @@ TARGET = yourdroid
 INCLUDEPATH += .
 
 # Input
-HEADERS += data.h log.h mainclass.h window.h \
+HEADERS += data.h log.h window.h \
     enum.h \
     os.h \
     install.h \
@@ -42,7 +42,6 @@ FORMS += window.ui
 SOURCES += data.cpp \
            log.cpp \
            main.cpp \
-           mainclass.cpp \
            window.cpp \
     install.cpp
 unix: {
