@@ -8,7 +8,6 @@
 #include <QStatusBar>
 #include "enum.h"
 #include "data.h"
-#include "os.h"
 #include <bkisofs/bk.h>
 
 STRING_ENUM(_bootloader, Grub2, Grub_legasy, rEFInd, Gummiboot, NTLDR, BOOTMGR)

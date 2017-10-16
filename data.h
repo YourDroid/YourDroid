@@ -6,7 +6,6 @@
 #include <QFile>
 #include <QString>
 #include <QSettings>
-#include "os.h"
 #if OS == 1
 #include <windows.h>
 #endif

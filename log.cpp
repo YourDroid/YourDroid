@@ -4,7 +4,6 @@
 #include <QTextStream>
 #include <QFile>
 #include <QTime>
-#include "os.h"
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
