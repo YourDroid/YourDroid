@@ -61,7 +61,6 @@ private slots:
     void on_deleteButtonMain_clicked();
 
     void on_comboSystemDelete_currentIndexChanged(int index);
-    void on_pushButton_2_clicked();
 
     void on_buttonDeleteDelete_clicked();
 

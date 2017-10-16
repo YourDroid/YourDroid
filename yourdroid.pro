@@ -69,7 +69,10 @@ LIBS += -lz
 RESOURCES += \
     resource.qrc
 
+unix:DEFINES += "OS=0"
+
 win32 {
+DEFINES += "OS=1"
 RC_FILE = info.rc
 #CONFIG += embed_manifest_exe
 #QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:"level='requireAdministrator'"

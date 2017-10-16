@@ -248,7 +248,6 @@ void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 
 void Window::on_deleteButtonMain_clicked()
 {
-    ui->progressDelete->setRange(0, 100);
     ui->progressDelete->setValue(0);
 
     for(int i = 0; i < insDat->cntSys(); i++) ui->comboSystemDelete->addItem(insDat->systemsVector()[i].name);
@@ -264,5 +263,5 @@ void Window::on_comboSystemDelete_currentIndexChanged(int index)
 }
 void Window::on_buttonDeleteDelete_clicked()
 {
-    ui->progressDelete->setRange(0);
+    ui->progressDelete->setRange(0, 5);
 }
