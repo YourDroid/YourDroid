@@ -11,6 +11,11 @@
 #include <QDebug>
 #include <QVector>
 #include <bkisofs/bk.h>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QUrl>
+#include <QTextCodec>
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n) {
     systems.push_back(install::_installSet(b, t, p, i, n));
@@ -236,4 +241,33 @@ void install::createDataImg(int size) {
             QString("M -a data ") + systems[cntSystems - 1].place + QString("\\data.img ") +
             workDir + QString("\\data\\make_ext4fs\\data >> ") + workDir + "\\log.txt").toStdString().c_str());
 #endif
+}
+
+void install::downloadFile(QString url, QString dest) {
+
+       /* создаем объект для запрос
+
+       // Выполняем запрос, получаем указатель на объект
+       // ответственный за ответ
+       QNetworkReply* reply=  (new QNetworkAccessManager())->get(QNetworkRequest(QUrl(url)));
+
+    // Подписываемся на сигнал о готовности загрузки
+    QObject::connect(reply, &QNetworkReply::finished, [=]() -> void {
+        if (reply->error() == QNetworkReply::NoError)
+        {
+          QFile file(dest);
+          if( file.open(QIODevice::WriteOnly) )
+          {
+            QByteArray content = reply->readAll();
+            file.write(content); // пишем в файл
+          }
+        }
+        else {
+           QString err = reply->errorString();
+           log::message(2, __FILE__, __LINE__, err, err);
+        }
+
+
+        reply->deleteLater();
+    });*/
 }

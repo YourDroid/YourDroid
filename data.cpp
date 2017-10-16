@@ -88,11 +88,6 @@ bool options::defarch() {
     log::message(0, __FILE__, __LINE__, "Defining architecture...");
 #if OS == 0
     FILE *fp = popen("uname -m", "r");
-    if (!fp)
-    {
-        std::cerr << "popen(): " << strerror(errno) << std::endl;
-        return 1;
-    }
 
     char buf[8];
     fgets(buf, sizeof(buf) - 1, fp);

@@ -1,5 +1,5 @@
-#include "mainclass.h"
 #include "data.h"
+#include "window.h"
 #include "install.h"
 #include <version.h>
 #include "log.h"

@@ -47,6 +47,7 @@ public:
     void grubConfigure(QString);
     void installGummi();
     void createDataImg(int);
+    void downloadFile(QString, QString);
 
 };
 
