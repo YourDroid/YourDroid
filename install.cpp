@@ -19,7 +19,7 @@
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n) {
     systems.push_back(install::_installSet(b, t, p, i, n));
-    cntSystems++; //hhhh
+    cntSystems++;
 }
 
 void install::write() {
