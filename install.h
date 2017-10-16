@@ -10,7 +10,7 @@
 #include "data.h"
 #include <bkisofs/bk.h>
 
-STRING_ENUM(_bootloader, Grub2, Grub_legasy, rEFInd, Gummiboot, NTLDR, BOOTMGR)
+STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)
 STRING_ENUM(_typePlace, dir, partition)
 
 class install {

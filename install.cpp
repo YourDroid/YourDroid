@@ -119,8 +119,8 @@ void install::read() {
 void install::installBootloader() {
     log::message(0, __FILE__, __LINE__, "Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::Grub2: installGrub2(); break;
-    case _bootloader::Gummiboot: installGummi(); break;
+    case _bootloader::grub2: installGrub2(); break;
+    case _bootloader::gummiboot: installGummi(); break;
     }
 }
 

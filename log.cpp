@@ -37,7 +37,7 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 //    }
     QString messFull = typeName + QString(' ') + mess;
 #endif
-    logFile << "FILE: " << file << " LINE: " << line << " TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " " << typeName << " " << mess << endl;
+    logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << file << " LINE: " << line << " " << typeName << " " << mess << endl;
     cout << messFull.toStdString() << endl;
 #if OS == 1
 //    system("color 00");

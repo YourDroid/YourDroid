@@ -208,9 +208,10 @@ void Window::on_buttonInstallInstall_clicked()
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
-    if(boot == "Grub legasy") boot = "Grub_legasy";
-    else if(boot == "Windows NTLDR") boot = "NTLDR";
-    else if(boot == "Windows BOOTMGR") boot = "BOOTMGR";
+    if(boot == "Grub legasy") boot = "grub_legasy";
+    else if(boot == "Windows NTLDR") boot = "ntldr";
+    else if(boot == "Windows BOOTMGR") boot = "bootmgr";
+    else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
