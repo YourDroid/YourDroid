@@ -67,7 +67,7 @@ void install::read() {
     for(int i = 0; i < cntSystems; i++) {
         QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         QString sys = name + ".ini";
-        log::message(0, __FILE__, __LINE__, install.value(QString("system_") + QString::number(i), 0).toString());
+        log::message(0, __FILE__, __LINE__, /*install.value(QString("system_") + QString::number(i), 0).toString()*/name);
         if(!QFile::exists(sys)) {
             log::message(2, __FILE__, __LINE__,
                          QString("Config of system ") + name + " does not exist",
@@ -106,7 +106,7 @@ void install::read() {
         bool os = system.value("os", false).toBool();
         bool ended = system.value("ended", false).toBool();
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " read succesfull");
-        systems.push_back(_installSet(boot, typePlace, place, name, image, ended, os));
+        systems.push_back(_installSet(boot, typePlace, place, image, name, ended, os));
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " push succesfull");
         system.endGroup();
     }
