@@ -262,3 +262,7 @@ void Window::on_comboSystemDelete_currentIndexChanged(int index)
     ui->labelPlaceDeleteText->setText(insDat->systemsVector()[index].place);
     ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(insDat->systemsVector()[index].bootloader)));
 }
+void Window::on_buttonDeleteDelete_clicked()
+{
+    ui->progressDelete->setRange(0);
+}
