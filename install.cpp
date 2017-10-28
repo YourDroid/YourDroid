@@ -25,7 +25,7 @@ void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QStri
 void install::write() {
     bool sysDel;
     int sysCnt = _oldSysEdit ? (cntSystems) : 0;
-    cntSystems -= deletedSys.length();
+    //cntSystems -= deletedSys.length();
 
     log::message(0, __FILE__, __LINE__, "Writing install settings...");
 
@@ -200,7 +200,7 @@ void install::unpackSystem() {
     int rc = 0;
     auto checkRc = [](int rc) -> void {
         QString error;
-        if(rc <= 0) {
+        if(rc <= 0 && rc != -1026) {
 #if OS == 0
             error = bk_get_error_string(rc);
 #elif OS == 1

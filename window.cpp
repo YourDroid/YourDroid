@@ -271,11 +271,21 @@ void Window::on_comboSystemDelete_currentIndexChanged(int index)
 }
 void Window::on_buttonDeleteDelete_clicked()
 {
+    if(ui->comboSystemDelete->currentIndex() == -1) return;
+    ui->buttonDeleteDelete->setEnabled(false);
+    ui->buttonReturnMainDelete->setEnabled(false);
+    ui->settingsMini->setEnabled(false);
+    ui->comboSystemDelete->setEnabled(false);
     insDat->delSystemFiles(ui->comboSystemDelete->currentIndex());
     insDat->deleteBootloader(ui->comboSystemDelete->currentIndex());
     insDat->oldSysEdit() = true;
     (insDat->deletedSystems()).push_back(ui->comboSystemDelete->currentIndex());
+    insDat->write();
     insDat->read();
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage("Готово");
+    ui->buttonDeleteDelete->setEnabled(true);
+    ui->buttonReturnMainDelete->setEnabled(true);
+    ui->settingsMini->setEnabled(true);
+    ui->comboSystemDelete->setEnabled(true);
 }
