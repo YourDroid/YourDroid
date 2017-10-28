@@ -278,10 +278,11 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->comboSystemDelete->setEnabled(false);
     insDat->delSystemFiles(ui->comboSystemDelete->currentIndex());
     insDat->deleteBootloader(ui->comboSystemDelete->currentIndex());
+    LOG(0, "Deleting config...");
+    QFile(insDat->systemsVector()[ui->comboSystemDelete->currentIndex()].name + ".cfg").remove();
     insDat->oldSysEdit() = true;
     (insDat->deletedSystems()).push_back(ui->comboSystemDelete->currentIndex());
-    insDat->write();
-    insDat->read();
+
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage("Готово");
     ui->buttonDeleteDelete->setEnabled(true);
