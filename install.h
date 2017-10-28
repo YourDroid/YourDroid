@@ -31,22 +31,31 @@ class install {
     bool _oldSysEdit = false;
     options *dat;
     QString workDir;
+    QProgressBar *progressBarInstall;
+    QProgressBar *progressBarDelete;
+    QStatusBar *statusBar;
+    QVector<int> deletedSys;
 public:
     install(QString workdir, options *d) : workDir(workdir), dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
+    QVector<int> &deletedSystems() { return deletedSys; }
     void addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n);
     void read();
     void write();
+    void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
-    void unpackSystem(QProgressBar*, QStatusBar*);
+    void unpackSystem();
     void installBootloader();
     void installGrub2();
     void grubConfigure(QString);
     void installGummi();
     void createDataImg(int);
     void downloadFile(QString, QString);
+    void delSystemFiles(int);
+    void deleteBootloader(int);
+    void deleteGrub2(int);
 
 };
 

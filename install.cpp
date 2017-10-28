@@ -23,7 +23,9 @@ void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QStri
 }
 
 void install::write() {
+    bool sysDel;
     int sysCnt = _oldSysEdit ? (cntSystems) : 0;
+    cntSystems -= deletedSys.length();
 
     log::message(0, __FILE__, __LINE__, "Writing install settings...");
 
@@ -31,6 +33,9 @@ void install::write() {
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     for(int i = sysCnt; i < cntSystems; i++) {
+        sysDel = false;
+        for(auto sys : deletedSys) if(sys = i) { sysDel = true; break; }
+        if(sysDel) continue;
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register...");
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register succesfull");
@@ -40,6 +45,9 @@ void install::write() {
     log::message(0, __FILE__, __LINE__, "System configs register succesfull");
 
     for(int i = sysCnt; i < cntSystems; i++) {
+        sysDel = false;
+        for(auto sys : deletedSys) if(sys = i) { sysDel = true; break; }
+        if(sysDel) continue;
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + QString(" writing..."));
         QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
@@ -47,7 +55,6 @@ void install::write() {
         system.setValue("type_place", _typePlaceHelper::to_string(systems[i].typePlace).c_str());
         system.setValue("place", systems[i].place);
         system.setValue("image", systems[i].image);
-        //system.setValue("name", systems[i].name);
         system.setValue("os", systems[i].os);
         system.setValue("ended", systems[i].ended);
         system.endGroup();
@@ -189,7 +196,7 @@ void install::grubConfigure(QString way) {
            << "}\n";
 }
 
-void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
+void install::unpackSystem() {
     int rc = 0;
     auto checkRc = [](int rc) -> void {
         QString error;
@@ -204,7 +211,7 @@ void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
 #if OS == 0
     VolInfo volInfo;
     checkRc(bk_init_vol_info(&volInfo, false));
-    checkRc(bk_open_image(&volInfo, systems[cntSystems - 1].image.toStdString().c_str()));
+    checkRc(bk_open_image(&volInfo, systems.back().image.toStdString().c_str()));
     checkRc(bk_read_vol_info(&volInfo));
     if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
             rc = bk_read_dir_tree(&volInfo, FNTYPE_ROCKRIDGE, true, 0);
@@ -215,10 +222,10 @@ void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
     checkRc(rc);
     char *files[5] = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs"};
         for(int i = 0; i < 5; i++) {
-            progress->setValue(progress->value() + 25);
-            statusBar->showMessage(QString("Extracting ") + files[i]);
+            progressBarInstall->setValue(progressBarInstall->value() + 25);
+            statusBar->showMessage(QString("Распаковывается ") + files[i]);
             rc = bk_extract(&volInfo, files[i],
-                            systems[cntSystems - 1].place.toStdString().c_str(),
+                            systems.back().place.toStdString().c_str(),
                             false,
                     0);
         checkRc(rc);
@@ -233,14 +240,14 @@ void install::unpackSystem(QProgressBar *progress, QStatusBar *statusBar) {
 void install::createDataImg(int size) {
 #if OS == 0
     system((QString("chmod 777 ") + workDir + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-    system((workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
-            QString("M -a data ") + systems[cntSystems - 1].place + QString("/data.img ") +
-            workDir + QString("/data/make_ext4fs/data")).toStdString().c_str());
+    QString command = workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+                       QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif OS == 1
-    system((workDir + QString("\\data\\make_ext4fs\\make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
-            QString("M -a data ") + systems[cntSystems - 1].place + QString("\\data.img ") +
-            workDir + QString("\\data\\make_ext4fs\\data >> ") + workDir + "\\log.txt").toStdString().c_str());
+    QString command = workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+                       QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
+    LOG(0, command)
+    system(command.toStdString().c_str());
 }
 
 void install::downloadFile(QString url, QString dest) {
@@ -270,4 +277,38 @@ void install::downloadFile(QString url, QString dest) {
 
         reply->deleteLater();
     });*/
+}
+
+void install::delSystemFiles(int numSys) {
+    progressBarDelete->setValue(0);
+    LOG(0, "Deleting system files...");
+    QVector<QString> files = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs", "/data.img"};
+    for(auto file : files) {
+        progressBarDelete->setValue(progressBarDelete->value() + 1);
+        LOG(0, QString("Delete ") + systems[numSys].place + file);
+        statusBar->showMessage(QString("Удаление ") + file);
+        QFile(systems[numSys].place + file).remove();
+    }
+}
+
+void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QStatusBar *status) {
+    LOG(0, "Exec progress and status bars");
+    progressBarInstall = progressins;
+    progressBarDelete = progressdel;
+    statusBar = status;
+}
+
+void install::deleteBootloader(int numSys) {
+    log::message(0, __FILE__, __LINE__, "Deleting bootloader...");
+    switch(systems[numSys].bootloader) {
+    case _bootloader::grub2: deleteGrub2(numSys); break;
+    }
+}
+
+void install::deleteGrub2(int numSys) {
+    LOG(0, "Deleting android from grub2...");
+    statusBar->showMessage("Удаление android из grub2");
+    QFile(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove();
+    system("update-grub");
+    progressBarDelete->setValue(7);
 }

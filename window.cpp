@@ -16,8 +16,6 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         log::message(2, __FILE__, __LINE__, "This PC does not supported", "Ваш компьютер пока не поддерживается");
     }
 
-    LOG(0, "HJHH")
-
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
     log::message(0, __FILE__, __LINE__, "Start window");
@@ -36,9 +34,12 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
 
+    ui->progressDelete->setRange(0, 7);
+    ui->progressDelete->setValue(0);
     ui->labelVersion->setText(QString("<b>Версия: ") + VERSION + QString("<\b>"));
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я]{0,999}")));
+    insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
 
     if(fierst) Settings_clicked();
     else returnMainWindow();
@@ -199,14 +200,14 @@ void Window::on_buttonInstallInstall_clicked()
         }
     }
     if(exit) {
-        ui->statusbar->clearMessage();
+        ui->statusbar->showMessage("Готово");
         ui->returnInstallButton->setEnabled(true);
         ui->buttonInstallInstall->setEnabled(true);
         return;
     }
 
     log::message(0, __FILE__, __LINE__, "Data for install valid");
-    ui->statusbar->clearMessage();
+    ui->statusbar->showMessage("Готово");
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
@@ -218,11 +219,16 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
     insDat->write();
-    insDat->unpackSystem(ui->progressInstall, ui->statusbar);
+    insDat->unpackSystem();
+    LOG(0, "Creating data.img...");
+    ui->statusbar->showMessage("Создание data.img");
     insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+    LOG(0, "Installing bootloader...");
+    ui->statusbar->showMessage("Установка загрузчика");
     insDat->installBootloader();
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
+    ui->statusbar->showMessage("Готово");
 }
 
 void Window::on_buttonAboutMain_clicked()
@@ -265,5 +271,11 @@ void Window::on_comboSystemDelete_currentIndexChanged(int index)
 }
 void Window::on_buttonDeleteDelete_clicked()
 {
-    ui->progressDelete->setRange(0, 5);
+    insDat->delSystemFiles(ui->comboSystemDelete->currentIndex());
+    insDat->deleteBootloader(ui->comboSystemDelete->currentIndex());
+    insDat->oldSysEdit() = true;
+    (insDat->deletedSystems()).push_back(ui->comboSystemDelete->currentIndex());
+    insDat->read();
+    on_deleteButtonMain_clicked();
+    ui->statusbar->showMessage("Готово");
 }
