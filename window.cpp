@@ -281,8 +281,8 @@ void Window::on_buttonDeleteDelete_clicked()
     LOG(0, "Deleting config...");
     QFile(insDat->systemsVector()[ui->comboSystemDelete->currentIndex()].name + ".cfg").remove();
     insDat->oldSysEdit() = true;
-    (insDat->deletedSystems()).push_back(ui->comboSystemDelete->currentIndex());
-
+    beg = insDat->systemsVector().begin() + int(ui->comboSystemDelete->currentIndex());
+    insDat->systemsVector().erase(auto(beg));
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage("Готово");
     ui->buttonDeleteDelete->setEnabled(true);

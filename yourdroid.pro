@@ -13,7 +13,6 @@ INCLUDEPATH += .
 # Input
 HEADERS += data.h log.h window.h \
     enum.h \
-    os.h \
     install.h \
     version.h
 unix: {
