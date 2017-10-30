@@ -32,10 +32,7 @@ void install::write() {
     QSettings install("install.ini", QSettings::IniFormat);
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
-    for(int i = sysCnt; i < cntSystems; i++) {
-        sysDel = false;
-        for(auto sys : deletedSys) if(sys = i) { sysDel = true; break; }
-        if(sysDel) continue;
+    for(int i = 0; i < sysCnt; i++) {
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register...");
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register succesfull");
@@ -44,10 +41,7 @@ void install::write() {
 
     log::message(0, __FILE__, __LINE__, "System configs register succesfull");
 
-    for(int i = sysCnt; i < cntSystems; i++) {
-        sysDel = false;
-        for(auto sys : deletedSys) if(sys = i) { sysDel = true; break; }
-        if(sysDel) continue;
+    for(int i = 0; i < sysCnt; i++) {
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + QString(" writing..."));
         QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
@@ -311,4 +305,11 @@ void install::deleteGrub2(int numSys) {
     QFile(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove();
     system("update-grub");
     progressBarDelete->setValue(7);
+}
+
+void install::deleteEntry(int num) {
+    systems.erase(systems.begin() + num);
+    QVector<_installSet>(systems).swap(systems);
+    bool goodDel = QFile(workDir + QString('/') + systems[num].name + ".ini").remove();
+    LOG(!goodDel * 2, QString("Config deleted ") + (goodDel ? "succesfully" : "unsuccesfully!"));
 }

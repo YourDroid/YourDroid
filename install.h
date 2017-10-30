@@ -38,6 +38,7 @@ class install {
 public:
     install(QString workdir, options *d) : workDir(workdir), dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
+    QString &getWorkDir() { return workDir; }
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
@@ -56,6 +57,7 @@ public:
     void delSystemFiles(int);
     void deleteBootloader(int);
     void deleteGrub2(int);
+    void deleteEntry(int);
 
 };
 

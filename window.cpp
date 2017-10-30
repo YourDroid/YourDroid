@@ -257,8 +257,11 @@ void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
+    LOG(0, "Clearing systems list...");
+    if(insDat->oldSysEdit()) ui->comboSystemDelete = new QComboBox(this);
 
-    for(int i = 0; i < insDat->cntSys(); i++) ui->comboSystemDelete->addItem(insDat->systemsVector()[i].name);
+    LOG(0, "Filling systems list...");
+    for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
     setWindowTitle("YourDroid | Удаление");
     ui->windows->setCurrentWidget(ui->daletePage);
@@ -276,13 +279,13 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->buttonReturnMainDelete->setEnabled(false);
     ui->settingsMini->setEnabled(false);
     ui->comboSystemDelete->setEnabled(false);
-    insDat->delSystemFiles(ui->comboSystemDelete->currentIndex());
-    insDat->deleteBootloader(ui->comboSystemDelete->currentIndex());
+    int num = ui->comboSystemDelete->currentIndex();
+    LOG(0, QString("Deleting ") + (insDat->systemsVector().begin() + num)->name);
+    insDat->delSystemFiles(num);
+    insDat->deleteBootloader(num);
     LOG(0, "Deleting config...");
-    QFile(insDat->systemsVector()[ui->comboSystemDelete->currentIndex()].name + ".cfg").remove();
     insDat->oldSysEdit() = true;
-    beg = insDat->systemsVector().begin() + int(ui->comboSystemDelete->currentIndex());
-    insDat->systemsVector().erase(auto(beg));
+    insDat->deleteEntry(num);
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage("Готово");
     ui->buttonDeleteDelete->setEnabled(true);
