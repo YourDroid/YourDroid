@@ -11,6 +11,7 @@
 #include <log.h>
 #include "install.h"
 #include <QCoreApplication>
+#include <QComboBox>
 
 extern const QString VERSION;
 

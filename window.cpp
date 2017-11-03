@@ -257,8 +257,11 @@ void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
+
     LOG(0, "Clearing systems list...");
-    if(insDat->oldSysEdit()) ui->comboSystemDelete = new QComboBox(this);
+    ui->comboSystemDelete->blockSignals(true);
+    ui->comboSystemDelete->clear();
+    ui->comboSystemDelete->blockSignals(false);
 
     LOG(0, "Filling systems list...");
     for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
@@ -283,7 +286,6 @@ void Window::on_buttonDeleteDelete_clicked()
     LOG(0, QString("Deleting ") + (insDat->systemsVector().begin() + num)->name);
     insDat->delSystemFiles(num);
     insDat->deleteBootloader(num);
-    LOG(0, "Deleting config...");
     insDat->oldSysEdit() = true;
     insDat->deleteEntry(num);
     on_deleteButtonMain_clicked();

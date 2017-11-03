@@ -308,8 +308,11 @@ void install::deleteGrub2(int numSys) {
 }
 
 void install::deleteEntry(int num) {
-    systems.erase(systems.begin() + num);
-    QVector<_installSet>(systems).swap(systems);
+    LOG(0, "Deleting system's entry...");
+    systems.remove(num);
+    cntSystems--;
+    LOG(0, "System's entry deleted succesfull");
+    LOG(0, "Deleting system's config...");
     bool goodDel = QFile(workDir + QString('/') + systems[num].name + ".ini").remove();
     LOG(!goodDel * 2, QString("Config deleted ") + (goodDel ? "succesfully" : "unsuccesfully!"));
 }
