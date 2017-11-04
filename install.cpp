@@ -138,23 +138,23 @@ void install::installGummi() {
         }
     };
 
-    system("mountvol a: /s");
+    system("mountvol b: /s");
     //QFile::rename("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
-    system("cp A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
-    //copy(QString((workDir + "\\data\\bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");
+    system("cp B:/EFI/Microsoft/Boot/bootmgfw.efi B:/EFI/Microsoft/Boot/bootmgfw_back.efi");
+    //copy(QString((workDir + "/data/bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");
     system(QString(QString("cp ") +
-                   (workDir + "\\data\\bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
-                   QString(" A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi")).toStdString().c_str());
+                   (workDir + "/data/bootloaders/gummi/") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
+                   QString(" A:/EFI/Microsoft/Boot/bootmgfw.efi")).toStdString().c_str());
     //QDir().mkdir("A:\\loader");
-    system("mk A:\\loader");
+    system("mk A:/loader");
     //copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\" + "loader.conf").toStdString(), "A:\\loader\\loader.conf");
-    system(QString(QString("cp ") + workDir + "\\data\\bootloaders\\gummi\\loader\\loader.conf A:\\loader\\loader.conf").toStdString().c_str());
+    system(QString(QString("cp ") + workDir + "/data/bootloaders/gummi/loader/loader.conf A:/loader/loader.conf").toStdString().c_str());
     //QDir().mkdir("A:\\loader\\entries");
-    system("mk A:\\loader\\entries");
+    system("mk A:/loader/entries");
     //copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\entries\\" + "0windows.conf").toStdString(), "A:\\loader\\entries\\0windows.conf");
-    system(QString(QString("cp ") + workDir + "\\data\\bootloaders\\gummi\\loader\\entries\\0windows.conf A:\\loader\\entries\\0windows.conf").toStdString().c_str());
+    system(QString(QString("cp ") + workDir + "/data/bootloaders/gummi/loader/entries/0windows.conf A:/loader/entries/0windows.conf").toStdString().c_str());
     grubConfigure(workDir + "/tempGrubConf");
-    system((QString("cp ") + workDir + QString("\\tempGrubConf ") + QString("A:\\loader\\entries\\") + systems.back().name + ".conf").toStdString().c_str());
+    system((QString("cp ") + workDir + QString("/tempGrubConf ") + QString("A:/loader/entries/") + systems.back().name + ".conf").toStdString().c_str());
     system("mountvol a: /d");
 }
 

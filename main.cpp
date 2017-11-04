@@ -1,13 +1,13 @@
 #include "data.h"
 #include "window.h"
 #include "install.h"
-#include <version.h>
+//#include <version.h>
 #include "log.h"
 #include <QApplication>
 #include <QErrorMessage>
 #include <QString>
 
-const QString VERSION = VER_PRODUCTVERSION_STR;
+const QString VERSION = vvv;
 
 int main(int argc, char *argv[])
 {

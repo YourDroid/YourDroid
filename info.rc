@@ -1,12 +1,13 @@
 IDI_ICON1 ICON "yourdroid.ico"
 
+
 #include <windows.h>
 #include "version.h"
 
 #define VER_FILEDESCRIPTION_STR     "YourDroid"
 #define VER_INTERNALNAME_STR        "Sensor"
 #define VER_LEGALCOPYRIGHT_STR      "Copyright (C) 2017, YourDroid-Group"
-#define VER_ORIGINALFILENAME_STR    "yourdroid-qt.exe"
+#define VER_ORIGINALFILENAME_STR    "yourdroid.exe"
 #define VER_PRODUCTNAME_STR         "YourDroid"
 
 VS_VERSION_INFO VERSIONINFO

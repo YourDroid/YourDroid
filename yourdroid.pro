@@ -67,12 +67,17 @@ LIBS += -lz
 
 RESOURCES += \
     resource.qrc
-
+DEFINES += "vvv=0.0.5"
+VERSION = vvv
+RC_ICONS = yourdroid.ico
+QMAKE_TARGET_PRODUCT = YourDroid
+QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
+QMAKE_TARGET_COMPANY = YourDroid-Group
 unix:DEFINES += "OS=0"
 
 win32 {
 DEFINES += "OS=1"
-RC_FILE = info.rc
-#CONFIG += embed_manifest_exe
-#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:"level='requireAdministrator'"
+#RC_FILE = info.rc
+CONFIG += embed_manifest_exe
+#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:level=requireAdministrator
 }
