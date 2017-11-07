@@ -14,7 +14,8 @@ INCLUDEPATH += .
 HEADERS += data.h log.h window.h \
     enum.h \
     install.h \
-    version.h
+    version.h \
+    download.h
 unix: {
 HEADERS += bkisofs/bk.h \
     bkisofs/bkAdd.h \
@@ -42,7 +43,8 @@ SOURCES += data.cpp \
            log.cpp \
            main.cpp \
            window.cpp \
-    install.cpp
+    install.cpp \
+    download.cpp
 unix: {
 SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkCache.c \
@@ -68,7 +70,9 @@ LIBS += -lz
 RESOURCES += \
     resource.qrc
 
-unix:DEFINES += "OS=0"
+unix {
+DEFINES += "OS=0"
+}
 
 win32 {
 DEFINES += "OS=1"
