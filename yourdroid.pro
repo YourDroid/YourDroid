@@ -14,8 +14,7 @@ INCLUDEPATH += .
 HEADERS += data.h log.h window.h \
     enum.h \
     install.h \
-    version.h \
-    download.h
+    version.h
 unix: {
 HEADERS += bkisofs/bk.h \
     bkisofs/bkAdd.h \
@@ -43,8 +42,7 @@ SOURCES += data.cpp \
            log.cpp \
            main.cpp \
            window.cpp \
-    install.cpp \
-    download.cpp
+    install.cpp
 unix: {
 SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkCache.c \
@@ -69,14 +67,17 @@ LIBS += -lz
 
 RESOURCES += \
     resource.qrc
-
-unix {
-DEFINES += "OS=0"
-}
+#VERSION = 0.0.4
+#DEFINES += VERSION=\\\"$$VERSION\\\"
+#RC_ICONS = yourdroid.ico
+#QMAKE_TARGET_PRODUCT = YourDroid
+#QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
+#QMAKE_TARGET_COMPANY = YourDroid-Group
+unix:DEFINES += "OS=0"
 
 win32 {
 DEFINES += "OS=1"
 RC_FILE = info.rc
 #CONFIG += embed_manifest_exe
-#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:"level='requireAdministrator'"
+#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:level=requireAdministrator
 }
