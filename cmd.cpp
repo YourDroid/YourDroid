@@ -1,7 +1,7 @@
 #include "cmd.h"
 #include <QFile>
 
-int cmd::exec(QString command) {
+QPair<int, QString> cmd::exec(QString command) {
 #if OS == 1
     QString home = getenv("USERPROFILE");
     QString strcmd = command + QString(">") + home + QString("\\temp_cmd 2>&1");
@@ -17,9 +17,9 @@ int cmd::exec(QString command) {
         _output = tempCmd.readAll();
         tempCmd.close();
     }
-    return _res;
+    return QPair<int, QString>(_res, _output);
 }
 
 int cmd::exec() {
-    return exec(_command);
+    return exec(_command).first;
 }

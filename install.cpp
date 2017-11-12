@@ -5,6 +5,7 @@
 #include <iostream>
 #include "log.h"
 #include "window.h"
+#include "cmd.h"
 #include <QErrorMessage>
 #include <QFile>
 #include <QDir>
@@ -240,8 +241,8 @@ void install::createDataImg(int size) {
     QString command = workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
-    LOG(0, command)
-    system(command.toStdString().c_str());
+    auto res = cmd().exec(command);
+    LOG(res.first * 2, res.second);
 }
 
 void install::downloadFile(QString url, QString dest) {

@@ -2,6 +2,7 @@
 #define CMD_H
 
 #include <QString>
+#include <QPair>
 
 class cmd {
     QString _command;
@@ -10,7 +11,7 @@ class cmd {
 public:
     cmd(QString command) : _command(command) {}
     cmd() {}
-    int exec(QString);
+    QPair<int, QString> exec(QString);
     int exec();
     void setCommand(QString command) {_command = command;}
     QString output() {return _output;}
