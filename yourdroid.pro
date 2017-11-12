@@ -14,7 +14,8 @@ INCLUDEPATH += .
 HEADERS += data.h log.h window.h \
     enum.h \
     install.h \
-    version.h
+    version.h \
+    cmd.h
 unix: {
 HEADERS += bkisofs/bk.h \
     bkisofs/bkAdd.h \
@@ -42,7 +43,8 @@ SOURCES += data.cpp \
            log.cpp \
            main.cpp \
            window.cpp \
-    install.cpp
+    install.cpp \
+    cmd.cpp
 unix: {
 SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkCache.c \
