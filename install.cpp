@@ -121,25 +121,21 @@ void install::read() {
 void install::installBootloader() {
     log::message(0, __FILE__, __LINE__, "Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: installGrub2(); break;
-    case _bootloader::gummiboot: installGummi(); break;
+    case _bootloader::grub2: installGrub2(); LOG(0, "Registering to grub2"); break;
+    case _bootloader::gummiboot: installGummi(); LOG(0, "Registering to gummiboot"); break;
     }
 }
 
 void install::installGummi() {
-    using namespace std;
-    auto copy = [](string src, string dest){
-        ifstream source(src, ios::binary);
-        ofstream destination(dest, ios::binary);
-        if(!source) log::message(2, __FILE__, __LINE__, QString("Can not read ") + QString::fromStdString(src), "Невозможно прочитать " + QString::fromStdString(src));
-        if(!destination) log::message(2, __FILE__, __LINE__, QString("Can not write ") + QString::fromStdString(dest), "Невозможно записать " + QString::fromStdString(dest));
-        for(char ch; source;) {
-            source.read((char*)&ch,sizeof(char));
-            destination.write((char*)&ch,sizeof(char));
-        }
-    };
+    auto command = [](QString _command) {
 
-    system("mountvol b: /s");
+    };
+    cmd _cmd;
+    _cmd.exec("mountvol b: /s");
+    if(_cmd.returnedValue()) {
+        LOG(2, QString("Error while rergistering: ") + _cmd.output(), QString("Ошибка при записи в загрузчик: ") + _cmd.output());
+        return;
+    }
     //QFile::rename("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
     system("cp B:/EFI/Microsoft/Boot/bootmgfw.efi B:/EFI/Microsoft/Boot/bootmgfw_back.efi");
     //copy(QString((workDir + "/data/bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");

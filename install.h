@@ -13,7 +13,8 @@
 STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)
 STRING_ENUM(_typePlace, dir, partition)
 
-class install {
+class install : public QObject {
+    Q_OBJECT
     struct _installSet {
         _bootloader bootloader;
         _typePlace typePlace;
@@ -35,6 +36,8 @@ class install {
     QProgressBar *progressBarDelete;
     QStatusBar *statusBar;
     QVector<int> deletedSys;
+//public signals:
+//    void abort();
 public:
     install(QString workdir, options *d) : workDir(workdir), dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }

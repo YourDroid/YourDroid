@@ -1,8 +1,10 @@
 #include "cmd.h"
+#include "log.h"
 #include <QFile>
 #include <stdlib.h>
 
 QPair<int, QString> cmd::exec(QString command) {
+    LOG(0, QString("Executing ") + command);
 //#if OS == 1
 //    QString home = getenv("USERPROFILE");
 //    QString strcmd = command + QString(">") + home + QString("\\temp_cmd 2>&1");
@@ -21,8 +23,12 @@ QPair<int, QString> cmd::exec(QString command) {
     FILE *trm = popen(command.toStdString().c_str(), "r");
     char tmp;
     _output = "";
-    while(!feof(trm)) do _output += tmp; while(fgets(&tmp, 1, trm) != "\n");
+    while(!feof(trm)) while(fgets(&tmp, 1, trm)) {
+        _output += tmp;
+        if(tmp == '\n') break;
+    }
     _res = pclose(trm);
+    if(_res) LOG(2, "Error while executing!");
     return QPair<int, QString>(_res, _output);
 }
 
