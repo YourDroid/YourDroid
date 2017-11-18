@@ -217,21 +217,22 @@ void Window::on_buttonInstallInstall_clicked()
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
-#define ABORT() if(abort) return
+    insDat->eraseAbort();
+#define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-    ABORT();
+    CHECK_ABORT();
     insDat->write();
-    ABORT();
+    CHECK_ABORT();
     insDat->unpackSystem();
-    ABORT();
+    CHECK_ABORT();
     LOG(0, "Creating data.img...");
     ui->statusbar->showMessage("Создание data.img");
     insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
-    ABORT();
+    CHECK_ABORT();
     LOG(0, "Installing bootloader...");
     ui->statusbar->showMessage("Установка загрузчика");
     insDat->installBootloader();
-    ABORT();
+    CHECK_ABORT();
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
     ui->statusbar->showMessage("Готово");

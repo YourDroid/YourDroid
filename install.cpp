@@ -131,25 +131,35 @@ void install::installGummi() {
     cmd _cmd;
     char i[1];
     for(i[1] = 0; i[1] < 27 && !QDir(QString(i) + ":/").exists(); i[1]++);
+#define ABORT() abort = 1; return;
     QString symbol = i;
-    if(_cmd.exec(QString("mountvol ") + symbol + QString(": /s")).first) {
-
-    }
-    if(_cmd.exec(QString("mkdir ") + symbol + ":/EFI/yourdroid_gummiboot").first);
-    system(QString(QString("cp ") +
-                   (workDir + "/data/bootloaders/gummi/") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
-                   QString(" A:/EFI/Microsoft/Boot/bootmgfw.efi")).toStdString().c_str());
-    //QDir().mkdir("A:\\loader");
-    system("mk A:/loader");
-    //copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\" + "loader.conf").toStdString(), "A:\\loader\\loader.conf");
-    system(QString(QString("cp ") + workDir + "/data/bootloaders/gummi/loader/loader.conf A:/loader/loader.conf").toStdString().c_str());
-    //QDir().mkdir("A:\\loader\\entries");
-    system("mk A:/loader/entries");
-    //copy(QString(workDir + "\\data\\bootloaders\\gummi\\loader\\entries\\" + "0windows.conf").toStdString(), "A:\\loader\\entries\\0windows.conf");
-    system(QString(QString("cp ") + workDir + "/data/bootloaders/gummi/loader/entries/0windows.conf A:/loader/entries/0windows.conf").toStdString().c_str());
     grubConfigure(workDir + "/tempGrubConf");
-    system((QString("cp ") + workDir + QString("/tempGrubConf ") + QString("A:/loader/entries/") + systems.back().name + ".conf").toStdString().c_str());
-    system("mountvol a: /d");
+    QVector<QString> commands = { QString("mountvol ") + symbol + QString(": /s"),        //1
+                                QString("mkdir ") + symbol + ":/EFI/yourdroid_gummiboot", //2
+                                QString("cp ") +
+                                (workDir + "/data/bootloaders/gummi/") +
+                                  (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
+                                  QString(" A:/EFI/yourdroid_gummiboot/"),                //3
+                                "mk A:/loader",
+                                QString("cp ") + workDir +
+                                  "/data/bootloaders/gummi/loader/loader.conf "
+                                  "A:/loader/loader.conf",                                //4
+                                "mk A:/loader/entries",                                   //5
+                                QString("cp ") + workDir +
+                                  "/data/bootloaders/gummi/loader/entries/0windows.conf "
+                                  "A:/loader/entries/0windows.conf",                      //6
+                                QString("cp ") + workDir +
+                                  QString("/tempGrubConf ") +
+                                  QString("A:/loader/entries/") +
+                                  systems.back().name + ".conf",                          //7
+                                "mountvol a: /d"                                          //8
+                                };                                                        //***
+    for(int i = 0; i < 9; i++) {
+        if(_cmd.exec(commands[i]).first) {
+            LOG(2, QString("Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
+            ABORT();
+        }
+    }
 }
 
 void install::installGrub2() {
@@ -176,12 +186,17 @@ void install::installGrub2() {
 }
 
 void install::grubConfigure(QString way) {
-    std::ofstream config(way.toStdString());
-    config << "menuentry '" << systems.back().name.toStdString() << "' --class android-x86 {\n"
-           << "\tsearch --file --no-floppy --set=root " << systems.back().place.toStdString() << "/kernel\n"
-           << "\tlinux " << systems.back().place.toStdString() << "/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n"
-           << "\tinitrd " << systems.back().place.toStdString() << "/initrd.img\n"
-           << "}\n";
+    QString place = systems.back().name;
+#if OS == 1
+    place = place.left(1);
+#endif
+    QFile config(way);
+    config.open(QIODevice::WriteOnly);
+    config.write(QString("menuentry '") + place + QString("' --class android-x86 {\n") +
+           QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
+           QString("\tlinux ") + place + QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
+           QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
+    config.flush();
 }
 
 void install::unpackSystem() {
