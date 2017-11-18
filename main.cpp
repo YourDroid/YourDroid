@@ -3,6 +3,7 @@
 #include "install.h"
 #include <version.h>
 #include "log.h"
+#include "cmd.h"
 #include <QApplication>
 #include <QErrorMessage>
 #include <QString>

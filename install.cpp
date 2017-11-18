@@ -127,9 +127,6 @@ void install::installBootloader() {
 }
 
 void install::installGummi() {
-    auto command = [](QString _command) {
-
-    };
     cmd _cmd;
     _cmd.exec("mountvol b: /s");
     if(_cmd.returnedValue()) {

@@ -23,6 +23,11 @@ QPair<int, QString> cmd::exec(QString command) {
     FILE *trm = popen(command.toStdString().c_str(), "r");
     char tmp;
     _output = "";
+    char buffer[128];
+    while(!feof(trm)) {
+         if(fgets(buffer, 128, trm) != NULL)
+             _output += buffer;
+    }
     while(!feof(trm)) while(fgets(&tmp, 1, trm)) {
         _output += tmp;
         if(tmp == '\n') break;
