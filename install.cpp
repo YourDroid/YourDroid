@@ -128,12 +128,14 @@ void install::installBootloader() {
 
 void install::installGummi() {
     LOG(0, "Mounting efi-partition");
-    for(char i = 0; i < 27; i++)
-    if(cmd("mountvol b: /s").exec());
-    if(cmd("mkdir "))
-    //QFile::rename("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
-    system("cp B:/EFI/Microsoft/Boot/bootmgfw.efi B:/EFI/Microsoft/Boot/bootmgfw_back.efi");
-    //copy(QString((workDir + "/data/bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");
+    cmd _cmd;
+    char i[1];
+    for(i[1] = 0; i[1] < 27 && !QDir(QString(i) + ":/").exists(); i[1]++);
+    QString symbol = i;
+    if(_cmd.exec(QString("mountvol ") + symbol + QString(": /s")).first) {
+
+    }
+    if(_cmd.exec(QString("mkdir ") + symbol + ":/EFI/yourdroid_gummiboot").first);
     system(QString(QString("cp ") +
                    (workDir + "/data/bootloaders/gummi/") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
                    QString(" A:/EFI/Microsoft/Boot/bootmgfw.efi")).toStdString().c_str());

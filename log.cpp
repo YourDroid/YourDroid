@@ -1,10 +1,10 @@
 #include <log.h>
-#include <QErrorMessage>
 #include <QDebug>
 #include <QTextStream>
 #include <QFile>
 #include <QTime>
 #include <QDialog>
+#include <QMessageBox>
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
@@ -45,12 +45,23 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 #endif
     if(rusMess != "NULL") {
         switch(level) {
-        case 0: typeName.clear(); break;
-        case 1: typeName = "Внимание! "; break;
-        case 2: typeName = "Ошибка! "; break;
+        case 0: QMessageBox::information(0, "YourDroid",
+                                         rusMess,
+                                         QMessageBox::Ok); break;
+        case 1: QMessageBox::warning(0, "Внимание!",
+                                     rusMess,
+                                     QMessageBox::Ok); break;
+        case 2: QMessageBox::critical(0, "Ошибка!",
+                                      rusMess,
+                                      QMessageBox::Ok); break;
         }
-        QErrorMessage mess;
-        mess.showMessage(typeName + rusMess);
-        mess.exec();
     }
 }
+
+
+
+
+
+
+
+

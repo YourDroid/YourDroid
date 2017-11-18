@@ -71,6 +71,7 @@ private:
     install *insDat;
     Ui::Window *ui;
     QWidget *lastPage;
+    int abort = 0;
 };
 
 #endif // WINDOW_H

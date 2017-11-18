@@ -217,15 +217,21 @@ void Window::on_buttonInstallInstall_clicked()
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
+#define ABORT() if(abort) return
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+    ABORT();
     insDat->write();
+    ABORT();
     insDat->unpackSystem();
+    ABORT();
     LOG(0, "Creating data.img...");
     ui->statusbar->showMessage("Создание data.img");
     insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+    ABORT();
     LOG(0, "Installing bootloader...");
     ui->statusbar->showMessage("Установка загрузчика");
     insDat->installBootloader();
+    ABORT();
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
     ui->statusbar->showMessage("Готово");
