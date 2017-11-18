@@ -127,12 +127,10 @@ void install::installBootloader() {
 }
 
 void install::installGummi() {
-    cmd _cmd;
-    _cmd.exec("mountvol b: /s");
-    if(_cmd.returnedValue()) {
-        LOG(2, QString("Error while rergistering: ") + _cmd.output(), QString("Ошибка при записи в загрузчик: ") + _cmd.output());
-        return;
-    }
+    LOG(0, "Mounting efi-partition");
+    for(char i = 0; i < 27; i++)
+    if(cmd("mountvol b: /s").exec());
+    if(cmd("mkdir "))
     //QFile::rename("A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi", "A:\\EFI\\Microsoft\\Boot\\bootmgfw_back.efi");
     system("cp B:/EFI/Microsoft/Boot/bootmgfw.efi B:/EFI/Microsoft/Boot/bootmgfw_back.efi");
     //copy(QString((workDir + "/data/bootloaders\\gummi\\") + (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")).toStdString(), "A:\\EFI\\Microsoft\\Boot\\bootmgfw.efi");
