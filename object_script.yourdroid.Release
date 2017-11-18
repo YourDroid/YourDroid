@@ -1,0 +1,12 @@
+INPUT(
+./release\data.o
+./release\log.o
+./release\main.o
+./release\window.o
+./release\install.o
+./release\cmd.o
+./release\qrc_resource.o
+./release\moc_data.o
+./release\moc_window.o
+./release\moc_install.o
+);

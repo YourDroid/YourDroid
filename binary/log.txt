@@ -1,0 +1,27 @@
+### Created by YourDroid 0.0.4 alpha ###
+
+TIME: 11:00:06 FILE: main.cpp LINE: 30 DEBUG: Work dir is C:/Users/Profi/Documents/YourDroid/binary
+TIME: 11:00:06 FILE: install.cpp LINE: 61 DEBUG: Reading install settings...
+TIME: 11:00:06 FILE: install.cpp LINE: 117 DEBUG: Systems read succesfull
+TIME: 11:00:06 FILE: data.cpp LINE: 34 DEBUG: Reading settings...
+TIME: 11:00:06 FILE: data.cpp LINE: 40 DEBUG: Settings does exist
+TIME: 11:00:06 FILE: data.cpp LINE: 109 DEBUG: Defining windows version
+TIME: 11:00:06 FILE: data.cpp LINE: 110 DEBUG: c:\users does exists
+TIME: 11:00:06 FILE: window.cpp LINE: 16 ERROR: This PC does not supported
+TIME: 11:00:08 FILE: window.cpp LINE: 21 DEBUG: Start window
+TIME: 11:00:08 FILE: install.cpp LINE: 289 DEBUG: Exec progress and status bars
+TIME: 11:00:08 FILE: main.cpp LINE: 35 DEBUG: Window exec
+TIME: 11:00:10 FILE: window.cpp LINE: 242 DEBUG: Choose Gummiboot
+TIME: 11:00:13 FILE: window.cpp LINE: 261 DEBUG: Clearing systems list...
+TIME: 11:00:13 FILE: window.cpp LINE: 266 DEBUG: Filling systems list...
+TIME: 11:00:20 FILE: window.cpp LINE: 242 DEBUG: Choose 
+TIME: 11:00:20 FILE: window.cpp LINE: 242 DEBUG: Choose Gummiboot
+TIME: 11:00:23 FILE: window.cpp LINE: 242 DEBUG: Choose 
+TIME: 11:00:23 FILE: window.cpp LINE: 242 DEBUG: Choose Gummiboot
+TIME: 11:00:26 FILE: main.cpp LINE: 37 DEBUG: Window closed
+TIME: 11:00:26 FILE: data.cpp LINE: 10 DEBUG: Writing settings...
+TIME: 11:00:26 FILE: data.cpp LINE: 30 DEBUG: Settings wrote succesfull
+TIME: 11:00:26 FILE: install.cpp LINE: 30 DEBUG: Writing install settings...
+TIME: 11:00:26 FILE: install.cpp LINE: 42 DEBUG: System configs register succesfull
+TIME: 11:00:26 FILE: install.cpp LINE: 57 DEBUG: Systems wrote succesfull
+TIME: 11:00:26 FILE: main.cpp LINE: 40 DEBUG: Exiting... Returned 0

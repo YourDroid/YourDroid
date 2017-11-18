@@ -22,7 +22,7 @@ QPair<int, QString> cmd::exec(QString command) {
 //    }
     FILE *trm = popen(command.toStdString().c_str(), "r");
     char tmp;
-    _output = "";
+    _output.clear();
     char buffer[128];
     while(!feof(trm)) {
          if(fgets(buffer, 128, trm) != NULL)
@@ -33,7 +33,9 @@ QPair<int, QString> cmd::exec(QString command) {
         if(tmp == '\n') break;
     }
     _res = pclose(trm);
+    LOG(0, _output);
     if(_res) LOG(2, "Error while executing!");
+    else LOG(0, "Command executed succesful");
     return QPair<int, QString>(_res, _output);
 }
 
