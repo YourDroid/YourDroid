@@ -65,7 +65,7 @@ SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkWrite.c \
     bkisofs/bkWrite7x.c
 }
-LIBS += -lz
+LIBS += -lz -std=gnu++17
 
 RESOURCES += \
     resource.qrc
