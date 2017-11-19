@@ -154,9 +154,9 @@ void install::installGummi() {
                                   QString("/tempGrubConf ") +
                                   QString("A:/loader/entries/") +
                                   systems.back().name + ".conf",                          //8
-                                "mountvol a: /d"                                          //9
+                                QString("mountvol a: /d"                                          //9
                                 "bcdedit /set {bootmgr} path "
-                                  "/EFI/yourdroid_gummiboot/" +
+                                  "/EFI/yourdroid_gummiboot/") +
                                   (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"),    //10
                                 "bcdedit /set {bootmgr} description "
                                   "\"YourDroid Gummiboot\""                               //11

@@ -1,5 +1,6 @@
 #include "data.h"
 #include "log.h"
+#include "cmd.h"
 //#include <fstream>
 
 void options::autowrite_set() {
@@ -69,9 +70,11 @@ bool options::read_set(bool dflt) {
 bool options::defbios() {
     log::message(0, __FILE__, __LINE__, "Defining type bios...");
 #if OS == 0
-    bool boot = QDir().exists("/boot/efi");
-    log::message(0, __FILE__, __LINE__, (boot ? "/boot/efi exists" : "/boot/efi does not exists"));
-    return boot;
+    bool efiExist = QDir().exists("/boot/efi");
+    bool efibootmgr = !cmd("efibootmgr").exec();
+    log::message(0, __FILE__, __LINE__, (efiExist ? "/boot/efi exists" : "/boot/efi does not exist"));
+    LOG(0, efibootmgr ? "efibootmgr exists" : "efibootmgr does not exist");
+    return efiExist || efibootmgr;
 #elif OS == 1
     system("mountvol a: /s");
     bool efi = QDir().exists("a:\\efi");
