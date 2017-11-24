@@ -106,7 +106,6 @@ void install::read() {
         typePlace = _typePlaceHelper::from_string(system.value("type_place", "Error of read!").toString().toStdString());
         QString place = system.value("place", "Error of read!").toString();
         QString image = system.value("image", "Error of read!").toString();
-//        QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         bool os = system.value("os", false).toBool();
         bool ended = system.value("ended", false).toBool();
         log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " read succesfull");
