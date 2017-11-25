@@ -32,6 +32,7 @@
 #include <string>
 
 extern const QString VERSION;
+extern const QString &WORK_DIR;
 
 class log {
 public:

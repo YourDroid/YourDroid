@@ -12,7 +12,7 @@
 void log::message(int level, QString file, int line, QString mess, QString rusMess) {
     using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
-    static QFile preLog(QString("log/log-") + QDate().currentDate().toString("d.M.yy") + QString("-") + QTime::currentTime().toString("hh:mm:ss") + QString(".txt"));
+    static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + QString(".txt"));
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
@@ -47,7 +47,7 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 #endif
     if(rusMess != "NULL") {
         switch(level) {
-        case 0: QMessageBox::information(0, "YourDroid",
+        case 0: QMessageBox::information(0, "Информация",
                                          rusMess,
                                          QMessageBox::Ok); break;
         case 1: QMessageBox::warning(0, "Внимание!",

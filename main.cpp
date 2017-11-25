@@ -9,13 +9,14 @@
 #include <QString>
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
+static QString workDir;
+const QString &WORK_DIR = workDir;
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
-    QString workDir;
     workDir = app.applicationDirPath();
-    log::message(0, __FILE__, __LINE__, QString("Work dir is ") + workDir);
+    log::message(0, __FILE__, __LINE__, QString("Work dir is ") + WORK_DIR);
     options set;
     install ins(workDir, &set);
     ins.read();
