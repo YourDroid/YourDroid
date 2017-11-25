@@ -5,6 +5,8 @@
 
 QPair<int, QString> cmd::exec(QString command) {
     LOG(0, QString("Executing ") + command);
+    QString _output = "";
+    int _res;
 //#if OS == 1
 //    QString home = getenv("USERPROFILE");
 //    QString strcmd = command + QString(">") + home + QString("\\temp_cmd 2>&1");
@@ -22,7 +24,7 @@ QPair<int, QString> cmd::exec(QString command) {
 //    }
     FILE *trm = popen(command.toStdString().c_str(), "r");
     char tmp;
-    _output.clear();
+    //_output.clear();
     char buffer[128];
     while(!feof(trm)) {
          if(fgets(buffer, 128, trm) != NULL)
@@ -39,9 +41,9 @@ QPair<int, QString> cmd::exec(QString command) {
     return QPair<int, QString>(_res, _output);
 }
 
-int cmd::exec() {
-    return exec(_command).first;
-}
+//QPair<int, QString> cmd::exec() {
+//    return exec(_command);
+//}
 
 
 

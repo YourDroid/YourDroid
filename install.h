@@ -13,6 +13,8 @@
 STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)
 STRING_ENUM(_typePlace, dir, partition)
 
+extern const QString &WORK_DIR;
+
 class install : public QObject {
     Q_OBJECT
     struct _installSet {
@@ -31,7 +33,6 @@ class install : public QObject {
     int cntSystems = 0;
     bool _oldSysEdit = false;
     options *dat;
-    QString workDir;
     QProgressBar *progressBarInstall;
     QProgressBar *progressBarDelete;
     QStatusBar *statusBar;
@@ -40,9 +41,8 @@ class install : public QObject {
 //public signals:
 //    void abort();
 public:
-    install(QString workdir, options *d) : workDir(workdir), dat(d) {}
+    install(options *d) : dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
-    QString &getWorkDir() { return workDir; }
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
@@ -54,9 +54,11 @@ public:
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
     void unpackSystem();
-    void installBootloader();
-    void installGrub2();
+    void registerBootloader();
+    void registerGrub2();
     void grubConfigure(QString);
+    void registerGummi();
+    bool isInstalledGummi();
     void installGummi();
     void createDataImg(int);
     void downloadFile(QString, QString);

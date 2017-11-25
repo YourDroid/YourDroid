@@ -13,12 +13,12 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui(new Ui::Window)
 {
     if(dat->tbios == false || OS) {
-        log::message(2, __FILE__, __LINE__, "This PC does not supported", "Ваш компьютер пока не поддерживается");
+        LOG(2, "This PC does not supported", "Ваш компьютер пока не поддерживается");
     }
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    log::message(0, __FILE__, __LINE__, "Start window");
+    LOG(0, "Start window");
 
     ui->setupUi(this);
     setLabelSetInfo();
@@ -125,7 +125,7 @@ void Window::on_buttonChooseImage_clicked()
     QString image = QFileDialog::getOpenFileName(0, "Выберите образ для установки", "", "*.iso");
     if(image.length() > 0) {
         ui->editImageFromDisk->setText(image);
-        log::message(0, __FILE__, __LINE__, QString("Choose image for install: ") + image);
+        LOG(0, QString("Choose image for install: ") + image);
     }
 }
 
@@ -148,7 +148,7 @@ void Window::on_buttonChooseDirForInstall_clicked()
     QString dir = QFileDialog::getExistingDirectory(0, "Выберите директории для установки", "");
     if(dir.length() > 0) {
         ui->editDirForInstall->setText(dir);
-        log::message(0, __FILE__, __LINE__, QString("Choose dir for install: ") + dir);
+        LOG(0, QString("Choose dir for install: ") + dir);
     }
 }
 
@@ -158,44 +158,44 @@ void Window::on_buttonInstallInstall_clicked()
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage("Проверка");
-    log::message(0, __FILE__, __LINE__, "Checking data for install...");
+    LOG(0, "Checking data for install...");
     QString image, dir, name;
     bool exit = false;
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        log::message(2, __FILE__, __LINE__, "Not chosen image", "Выберите образ для установки!");
+        LOG(2, "Not chosen image", "Выберите образ для установки!");
         exit = true;
     }
     else if(!QFile::exists(image)) {
-        log::message(2, __FILE__, __LINE__, "Choosen image does not exist", "Выбранный образ не существует!");
+        LOG(2, "Choosen image does not exist", "Выбранный образ не существует!");
         exit = true;
     }
     else if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        log::message(2, __FILE__, __LINE__, "Not chosen folder", "Выберите папку для установки!");
+        LOG(2, "Not chosen folder", "Выберите папку для установки!");
         exit = true;
     }
     else if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-        log::message(2, __FILE__, __LINE__, "Choosen folder is root", "Нельзя устанавливать в корень!");
+        LOG(2, "Choosen folder is root", "Нельзя устанавливать в корень!");
         exit = true;
     }
     else if(!ui->editDirForInstall->hasAcceptableInput()) {
-        log::message(2, __FILE__, __LINE__, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу!");
+        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу!");
         exit = true;
     }
     else if(!(new QDir())->exists(dir)) {
-        log::message(2, __FILE__, __LINE__, "Selected folder does not exist", "Выбранная папка не существует!");
+        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
         exit = true;
     }
     else if((name = ui->editName->text()).length() == 0) {
-        log::message(2, __FILE__, __LINE__, "Not written the name", "Напишите имя!");
+        LOG(2, "Not written the name", "Напишите имя!");
         exit = true;
     }
     else if((name = ui->editSizeDataInstall->text()).length() == 0) {
-        log::message(2, __FILE__, __LINE__, "Not written the size of data.img", "Напишите размер data.img!");
+        LOG(2, "Not written the size of data.img", "Напишите размер data.img!");
         exit = true;
     }
     else for(int i = 0; i < insDat->systemsVector().length(); i++) {
         if(ui->editName->text() == (insDat->systemsVector())[i].name) {
-            log::message(2, __FILE__, __LINE__, "The system with writеen name already exists", "Уже существует система с таким именем!");
+            LOG(2, "The system with writеen name already exists", "Уже существует система с таким именем!");
             exit = true;
         }
     }
@@ -206,7 +206,7 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    log::message(0, __FILE__, __LINE__, "Data for install valid");
+    LOG(0, "Data for install valid");
     ui->statusbar->showMessage("Готово");
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
@@ -219,6 +219,7 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
+    auto c = [=](){
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
     CHECK_ABORT();
     insDat->write();
@@ -231,11 +232,14 @@ void Window::on_buttonInstallInstall_clicked()
     CHECK_ABORT();
     LOG(0, "Installing bootloader...");
     ui->statusbar->showMessage("Установка загрузчика");
-    insDat->installBootloader();
+    insDat->registerBootloader();
     CHECK_ABORT();
+    };
+    c();
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
     ui->statusbar->showMessage("Готово");
+#undef CHECK_ABORT
 }
 
 void Window::on_buttonAboutMain_clicked()
@@ -246,7 +250,7 @@ void Window::on_buttonAboutMain_clicked()
 
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
-    log::message(0,__FILE__,__LINE__,QString("Choose ") + arg1);
+    LOG(0, QString("Choose ") + arg1);
     if(arg1 == "Grub2") {
         ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
         ui->labelAboutBootloader_2->setText("Текстовый.");

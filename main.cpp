@@ -16,16 +16,17 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
-    log::message(0, __FILE__, __LINE__, QString("Work dir is ") + WORK_DIR);
+    cmd::exec("help");
+    LOG(0, QString("Work dir is ") + WORK_DIR);
     options set;
-    install ins(workDir, &set);
+    install ins(&set);
     ins.read();
     (new Window(&ins, set.read_set(false), &set))->show();
-    log::message(0, __FILE__, __LINE__, "Window exec");
+    LOG(0, "Window exec");
     int res = app.exec();
-    log::message(0, __FILE__, __LINE__, "Window closed");
+    LOG(0, "Window closed");
     set.autowrite_set();
     ins.write();
-    log::message(0, __FILE__, __LINE__, QString("Exiting... Returned ") + QString::number(res));
+    LOG(0, QString("Exiting... Returned ") + QString::number(res));
     return res;
 }

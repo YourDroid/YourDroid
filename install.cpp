@@ -30,22 +30,22 @@ void install::write() {
     int sysCnt = _oldSysEdit ? (cntSystems) : 0;
     //cntSystems -= deletedSys.length();
 
-    log::message(0, __FILE__, __LINE__, "Writing install settings...");
+    LOG(0, "Writing install settings...");
 
     QSettings install("install.ini", QSettings::IniFormat);
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     for(int i = 0; i < sysCnt; i++) {
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register...");
+        LOG(0, QString("System ") + QString::number(i + 1) + " config register...");
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " config register succesfull");
+        LOG(0, QString("System ") + QString::number(i + 1) + " config register succesfull");
     }
     install.endGroup();
 
-    log::message(0, __FILE__, __LINE__, "System configs register succesfull");
+    LOG(0, "System configs register succesfull");
 
     for(int i = 0; i < sysCnt; i++) {
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + QString(" writing..."));
+        LOG(0, QString("System ") + QString::number(i + 1) + QString(" writing..."));
         QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
         system.setValue("bootloader", _bootloaderHelper::to_string(systems[i].bootloader).c_str());
@@ -55,13 +55,13 @@ void install::write() {
         system.setValue("os", systems[i].os);
         system.setValue("ended", systems[i].ended);
         system.endGroup();
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + QString(" wrote succesfull"));
+        LOG(0, QString("System ") + QString::number(i + 1) + QString(" wrote succesfull"));
     }
-    log::message(0, __FILE__, __LINE__, "Systems wrote succesfull");
+    LOG(0, "Systems wrote succesfull");
 }
 
 void install::read() {
-    log::message(0, __FILE__, __LINE__, "Reading install settings...");
+    LOG(0, "Reading install settings...");
 
     QSettings install("install.ini", QSettings::IniFormat);
 
@@ -71,9 +71,9 @@ void install::read() {
     for(int i = 0; i < cntSystems; i++) {
         QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         QString sys = name + ".ini";
-        log::message(0, __FILE__, __LINE__, /*install.value(QString("system_") + QString::number(i), 0).toString()*/name);
+        LOG(0, /*install.value(QString("system_") + QString::number(i), 0).toString()*/name);
         if(!QFile::exists(sys)) {
-            log::message(2, __FILE__, __LINE__,
+            LOG(2,
                          QString("Config of system ") + name + " does not exist",
                          QString("Файл настроек системы ") + name + " не существует!");
             _oldSysEdit = true;
@@ -83,22 +83,22 @@ void install::read() {
         QSettings system(sys, QSettings::IniFormat);
         system.beginGroup("about");
         if(!system.contains("bootloader")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section bootloader", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о загрузчике");
+            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section bootloader", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о загрузчике");
         }
         else if(!system.contains("type_place")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section type_place", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о типе установки(дериктория/раздел)");
+            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section type_place", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о типе установки(дериктория/раздел)");
         }
         else if(!system.contains("place")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section place", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о месте установки");
+            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section place", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о месте установки");
         }
 //        else if(!system.contains("name")) {
-//            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section name", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
+//            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section name", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
 //        }
         if(!system.contains("os")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section os", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о системе, на которой устанавливался андроид");
+            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section os", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о системе, на которой устанавливался андроид");
         }
         if(!system.contains("ended")) {
-            log::message(2, __FILE__, __LINE__, QString("Config of system ") + QString::number(i + 1) + " does not have section ended", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о успешной установке");
+            LOG(2, QString("Config of system ") + QString::number(i + 1) + " does not have section ended", QString("В настройках системы ") + QString::number(i + 1) + " отсутствует секция о успешной установке");
         }
         _bootloader boot;
         boot = _bootloaderHelper::from_string(system.value("bootloader", "Gummiboot").toString().toStdString());
@@ -108,48 +108,49 @@ void install::read() {
         QString image = system.value("image", "Error of read!").toString();
         bool os = system.value("os", false).toBool();
         bool ended = system.value("ended", false).toBool();
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " read succesfull");
+        LOG(0, QString("System ") + QString::number(i + 1) + " read succesfull");
         systems.push_back(_installSet(boot, typePlace, place, image, name, ended, os));
-        log::message(0, __FILE__, __LINE__, QString("System ") + QString::number(i + 1) + " push succesfull");
+        LOG(0, QString("System ") + QString::number(i + 1) + " push succesfull");
         system.endGroup();
     }
 
     install.endGroup();
 
-    log::message(0, __FILE__, __LINE__, "Systems read succesfull");
+    LOG(0, "Systems read succesfull");
 }
 
-void install::installBootloader() {
-    log::message(0, __FILE__, __LINE__, "Registering to bootloader...");
+void install::registerBootloader() {
+    LOG(0, "Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: installGrub2(); LOG(0, "Registering to grub2"); break;
-    case _bootloader::gummiboot: installGummi(); LOG(0, "Registering to gummiboot"); break;
+    case _bootloader::grub2: LOG(0, "Registering to grub2"); registerGrub2(); break;
+    case _bootloader::gummiboot: LOG(0, "Registering to gummiboot"); registerGummi(); break;
     }
 }
 
-void install::installGummi() {
-    LOG(0, "Mounting efi-partition");
+void install::registerGummi() {
+    if(!isInstalledGummi()) installGummi();
+    return;
     cmd _cmd;
-    char i[1];
-    for(i[1] = 0; i[1] < 27 && !QDir(QString(i) + ":/").exists(); i[1]++);
+    char i[2] = {'a', '\0'};
+    for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
     QString symbol = i;
-    grubConfigure(workDir + "/tempGrubConf");
+    grubConfigure(WORK_DIR + "/tempGrubConf");
     QVector<QString> commands = { QString("mountvol ") + symbol + QString(": /s"),        //1
                                 QString("mkdir ") + symbol + ":/EFI/yourdroid_gummiboot", //2
                                 QString("cp ") +
-                                (workDir + "/data/bootloaders/gummi/") +
+                                (WORK_DIR + "/data/bootloaders/gummi/") +
                                   (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
                                   QString(" ") + symbol +
                                   QString(":/EFI/yourdroid_gummiboot/"),                  //3
                                 QString("mk ") + symbol + ":/loader",                     //4
-                                QString("cp ") + workDir +
+                                QString("cp ") + WORK_DIR +
                                   "/data/bootloaders/gummi/loader/loader.conf "
                                   "A:/loader/loader.conf",                                //5
                                 "mk A:/loader/entries",                                   //6
-                                QString("cp ") + workDir +
+                                QString("cp ") + WORK_DIR +
                                   "/data/bootloaders/gummi/loader/entries/0windows.conf "
                                   "A:/loader/entries/0windows.conf",                      //7
-                                QString("cp ") + workDir +
+                                QString("cp ") + WORK_DIR +
                                   QString("/tempGrubConf ") +
                                   QString("A:/loader/entries/") +
                                   systems.back().name + ".conf",                          //8
@@ -162,15 +163,76 @@ void install::installGummi() {
                                 };                                                        //***
     for(int i = 0; i < 9; i++) {
 
-        if(_cmd.exec(commands[i]).first) {
-            LOG(2, QString("Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
-            ABORT();
-        }
+//        if(_cmd.exec(commands[i]).first) {
+//            LOG(2, QString("Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
+//            ABORT();
+//        }
     }
 }
 
-void install::installGrub2() {
-    log::message(0, __FILE__, __LINE__, "Registering to grub2...");
+bool install::isInstalledGummi() {
+    LOG(0, "Checking gummiboot");
+    cmd::exec(QString("bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
+    bool res = !cmd::exec(QString("find \"YourDroid Gummiboot\" <") + WORK_DIR + "/tempEnum").first;
+    LOG(0, res ? "Gummiboot installed" : "Gummiboot did not installed");
+    return res;
+}
+
+void install::installGummi() {
+    LOG(0, "Installing gummiboot...");
+#define CHECK_ABORT() if(addNew.first)  { \
+    LOG(2, QString("Fatal Error: ") + addNew.second, "Критическая ошибка: " + addNew.second); ABORT(); }
+
+#define execAbort(command) addNew = cmd::exec(command); CHECK_ABORT();
+
+    QPair<int, QString> addNew;
+    execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Gummiboot\"");
+
+    QString output = addNew.second;
+    int begin = output.indexOf('{'), end = output.indexOf('}');
+    QString id = output.mid(begin, end);
+
+    execAbort(QString("/set ") + id + QString(" path /EFI/yourdroid_gummiboot/") +
+                       (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"));
+
+    char i[2] = {'a', '\0'};
+    for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
+    QString s = i;
+
+    execAbort(QString("mountvol") + s + QString(": /s"));
+
+    execAbort(QString("mkdir ") + s + ":/EFI/yourdroid_gummiboot");
+
+    execAbort(QString("cp ") +
+                       (WORK_DIR + "/data/bootloaders/gummi/") +
+                       (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
+                       QString(" ") + s +
+                       QString(":/EFI/yourdroid_gummiboot/"));
+
+    execAbort(QString("mkdir ") + s + ":/loader");
+
+
+    execAbort(QString("cp ") + WORK_DIR +
+              QString("/data/bootloaders/gummi/loader/loader.conf ") + s +
+              ":/loader/loader.conf");
+
+    execAbort(QString("cp ") + WORK_DIR +
+              QString("/data/bootloaders/gummi/loader/entries/0windows.conf ") + s +
+              ":/loader/entries/0windows.conf");
+
+    execAbort(QString("mkdir ") + s +
+              QString(":/efi/grub"));
+
+    execAbort(QString("mkdir ") + s +
+              QString(":/efi/grub/"));
+
+    LOG(0, "Gummiboot installed succes");
+
+#undef CHECK_ABORT
+}
+
+void install::registerGrub2() {
+    LOG(0, "Registering to grub2...");
     using namespace std;
     ostringstream tempGrub;
     fstream grub("/etc/grub.d/40_custom", ios::in | ios::out);
@@ -180,7 +242,7 @@ void install::installGrub2() {
         getline(grub, temp);
         grubStr.push_back(temp);
     }
-    for(int i = 0; i < grubStr.length(); i++) log::message(0, __FILE__, __LINE__, QString::fromStdString(grubStr[i]));
+    for(int i = 0; i < grubStr.length(); i++) LOG(0, QString::fromStdString(grubStr[i]));
     if(grubStr[1] != "cat /etc/grub.d/android/*.cfg | more") {
         tempGrub << grubStr[0] << "\ncat /etc/grub.d/android/*.cfg | more\n";
         for(int i = 1; i < grubStr.length(); i++) tempGrub << grubStr[i] << '\n';
@@ -216,7 +278,7 @@ void install::unpackSystem() {
             error = bk_get_error_string(rc);
 #elif OS == 1
 #endif
-            log::message(2, __FILE__, __LINE__, error, QString("Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
+            LOG(2, error, QString("Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
         }
     };
 #if OS == 0
@@ -250,15 +312,14 @@ void install::unpackSystem() {
 
 void install::createDataImg(int size) {
 #if OS == 0
-    system((QString("chmod 777 ") + workDir + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-    QString command = workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+    system((QString("chmod 777 ") + WORK_DIR + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif OS == 1
-    QString command = workDir + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
     auto res = cmd().exec(command);
-    LOG(res.first * 2, res.second);
 }
 
 void install::downloadFile(QString url, QString dest) {
@@ -282,7 +343,7 @@ void install::downloadFile(QString url, QString dest) {
         }
         else {
            QString err = reply->errorString();
-           log::message(2, __FILE__, __LINE__, err, err);
+           LOG(2, err, err);
         }
 
 
@@ -310,7 +371,7 @@ void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QSt
 }
 
 void install::deleteBootloader(int numSys) {
-    log::message(0, __FILE__, __LINE__, "Deleting bootloader...");
+    LOG(0, "Deleting bootloader...");
     switch(systems[numSys].bootloader) {
     case _bootloader::grub2: deleteGrub2(numSys); break;
     }
@@ -330,6 +391,6 @@ void install::deleteEntry(int num) {
     cntSystems--;
     LOG(0, "System's entry deleted succesfull");
     LOG(0, "Deleting system's config...");
-    bool goodDel = QFile(workDir + QString('/') + systems[num].name + ".ini").remove();
+    bool goodDel = QFile(WORK_DIR + QString('/') + systems[num].name + ".ini").remove();
     LOG(!goodDel * 2, QString("Config deleted ") + (goodDel ? "succesfully" : "unsuccesfully!"));
 }
