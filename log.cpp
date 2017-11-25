@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QFile>
+#include <QDir>
 #include <QTime>
 #include <QDialog>
 #include <QMessageBox>
@@ -10,7 +11,8 @@
 
 void log::message(int level, QString file, int line, QString mess, QString rusMess) {
     using namespace std;
-    static QFile preLog("log.txt");
+    if(!QDir("log").exists()) QDir().mkdir("log");
+    static QFile preLog(QString("log/log-") + QDate().currentDate().toString("d.M.yy") + QString("-") + QTime::currentTime().toString("hh:mm:ss") + QString(".txt"));
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
