@@ -71,7 +71,7 @@ bool options::defbios() {
     LOG(0, "Defining type bios...");
 #if OS == 0
     bool efiExist = QDir().exists("/boot/efi");
-    bool efibootmgr = !cmd("efibootmgr").exec();
+    bool efibootmgr = !cmd().exec("efibootmgr").first;
     LOG(0, (efiExist ? "/boot/efi exists" : "/boot/efi does not exist"));
     LOG(0, efibootmgr ? "efibootmgr exists" : "efibootmgr does not exist");
     return efiExist || efibootmgr;
