@@ -4,6 +4,7 @@
 #include <string>
 #include "install.h"
 #include <QValidator>
+#include <QtConcurrent/QtConcurrentRun>
 
 Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
@@ -219,7 +220,9 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
-    auto c = [=](){
+    QtConcurrent::run([=](){
+    ui->statusbar->showMessage("kkk");
+    return;
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
     CHECK_ABORT();
     insDat->write();
@@ -234,8 +237,7 @@ void Window::on_buttonInstallInstall_clicked()
     ui->statusbar->showMessage("Установка загрузчика");
     insDat->registerBootloader();
     CHECK_ABORT();
-    };
-    c();
+    });
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
     ui->statusbar->showMessage("Готово");
