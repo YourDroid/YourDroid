@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     options set;
     install ins(&set);
     ins.read();
-    (new Window(&ins, set.read_set(false), &set))->show();
+    (new Window(&app, &ins, set.read_set(false), &set))->show();
     LOG(0, "Window exec");
     int res = app.exec();
     LOG(0, "Window closed");

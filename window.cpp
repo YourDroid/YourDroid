@@ -6,9 +6,11 @@
 #include <QValidator>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
+#include <QFutureWatcher>
 
-Window::Window(install *ins, bool f, options *d, QWidget *parent) :
+Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
+    qapp(app),
     fierst(!f),
     dat(d),
     insDat(ins),
@@ -209,7 +211,7 @@ void Window::on_buttonInstallInstall_clicked()
     }
 
     LOG(0, "Data for install valid");
-    ui->statusbar->showMessage("Готово");
+    ui->statusbar->showMessage("Указаные длZ установки сведения правильны");
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
@@ -222,10 +224,10 @@ void Window::on_buttonInstallInstall_clicked()
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-        while(1);
-        ui->statusbar->showMessage("kkk");
-        return;
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+        int i = 0;
+        while(1) LOG(0, QString::number(i++));
+        return;
         CHECK_ABORT();
         insDat->write();
         CHECK_ABORT();
@@ -240,13 +242,16 @@ void Window::on_buttonInstallInstall_clicked()
         insDat->registerBootloader();
         CHECK_ABORT();
     });
-    connect(ui->pushCancelInstall, &QPushButton::clicked, [&]() {
-        res.cancel();
+    QFutureWatcher<void> resMonitor;
+    resMonitor.setFuture(res);
+    connect(ui->pushCancelInstall, &QPushButton::clicked, &resMonitor, &QFutureWatcher<void>::cancel);
+    connect(&resMonitor, &QFutureWatcher<void>::finished, [=](){
+        ui->returnInstallButton->setEnabled(true);
+        ui->buttonInstallInstall->setEnabled(true);
+        ui->statusbar->showMessage("Готово");
     });
-    while(res.isFinished());
-    ui->returnInstallButton->setEnabled(true);
-    ui->buttonInstallInstall->setEnabled(true);
-    ui->statusbar->showMessage("Готово");
+    connect(qapp, &QApplication::aboutToQuit, &resMonitor, &QFutureWatcher<void>::cancel);
+    res.cancel();
 #undef CHECK_ABORT
 }
 

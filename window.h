@@ -24,7 +24,7 @@ class Window : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Window(install*, bool, options*, QWidget *parent = 0);
+    explicit Window(QApplication*, install*, bool, options*, QWidget *parent = 0);
 
     void setLabelSetInfo();
 
@@ -66,6 +66,7 @@ private slots:
     void on_buttonDeleteDelete_clicked();
 
 private:
+    QApplication *qapp;
     bool fierst;
     options *dat;
     install *insDat;
