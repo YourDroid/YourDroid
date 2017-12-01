@@ -5,6 +5,7 @@
 #include "install.h"
 #include <QValidator>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QFuture>
 
 Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
@@ -220,24 +221,29 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
-    QtConcurrent::run([=](){
-    ui->statusbar->showMessage("kkk");
-    return;
-    insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-    CHECK_ABORT();
-    insDat->write();
-    CHECK_ABORT();
-    insDat->unpackSystem();
-    CHECK_ABORT();
-    LOG(0, "Creating data.img...");
-    ui->statusbar->showMessage("Создание data.img");
-    insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
-    CHECK_ABORT();
-    LOG(0, "Installing bootloader...");
-    ui->statusbar->showMessage("Установка загрузчика");
-    insDat->registerBootloader();
-    CHECK_ABORT();
+    auto res = QtConcurrent::run([=](){ // auto - QFuture
+        while(1);
+        ui->statusbar->showMessage("kkk");
+        return;
+        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+        CHECK_ABORT();
+        insDat->write();
+        CHECK_ABORT();
+        insDat->unpackSystem();
+        CHECK_ABORT();
+        LOG(0, "Creating data.img...");
+        ui->statusbar->showMessage("Создание data.img");
+        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+        CHECK_ABORT();
+        LOG(0, "Installing bootloader...");
+        ui->statusbar->showMessage("Установка загрузчика");
+        insDat->registerBootloader();
+        CHECK_ABORT();
     });
+    connect(ui->pushCancelInstall, &QPushButton::clicked, [&]() {
+        res.cancel();
+    });
+    while(res.isFinished());
     ui->returnInstallButton->setEnabled(true);
     ui->buttonInstallInstall->setEnabled(true);
     ui->statusbar->showMessage("Готово");
