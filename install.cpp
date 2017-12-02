@@ -251,7 +251,7 @@ void install::registerGrub2() {
         //system("mkdir /etc/grub.d/android");
     }
     grubConfigure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
-    if(cmd::exec("update-grub").first) ABORT();
+    system("update-grub");
 }
 
 void install::grubConfigure(QString way) {
@@ -278,7 +278,7 @@ void install::unpackSystem() {
             error = bk_get_error_string(rc);
 #elif OS == 1
 #endif
-            LOG(2, QString("Error while unpacking image: ") + error, QString("Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
+            LOG(2, error, QString("Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
         }
     };
 #if OS == 0
