@@ -4,9 +4,8 @@
 #include <string>
 #include "install.h"
 #include <QValidator>
-#include <QtConcurrent/QtConcurrentRun>
-#include <QFuture>
-#include <QFutureWatcher>
+#include <QThread>
+#include <QEventLoop>
 
 Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +42,7 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
     ui->labelVersion->setText(QString("<b>Версия: ") + VERSION + QString("<\b>"));
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я]{0,999}")));
+    ui->pushCancelInstall->setVisible(false);
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
 
     if(fierst) Settings_clicked();
@@ -211,7 +211,7 @@ void Window::on_buttonInstallInstall_clicked()
     }
 
     LOG(0, "Data for install valid");
-    ui->statusbar->showMessage("Указаные длZ установки сведения правильны");
+    ui->statusbar->showMessage("Указаные для установки сведения правильны");
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
@@ -223,35 +223,41 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
-    auto res = QtConcurrent::run([=](){ // auto - QFuture
+
+    QThread* thread = new QThread(this);
+    QObject context;
+
+    context.moveToThread(thread);
+
+    connect(thread, &QThread::started, &context, [&](){
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-        int i = 0;
-        while(1) LOG(0, QString::number(i++));
-        return;
         CHECK_ABORT();
         insDat->write();
         CHECK_ABORT();
         insDat->unpackSystem();
         CHECK_ABORT();
         LOG(0, "Creating data.img...");
-        ui->statusbar->showMessage("Создание data.img");
+        //ui->statusbar->showMessage("Создание data.img");
         insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
         LOG(0, "Installing bootloader...");
-        ui->statusbar->showMessage("Установка загрузчика");
+        //ui->statusbar->showMessage("Установка загрузчика");
         insDat->registerBootloader();
         CHECK_ABORT();
-    });
-    QFutureWatcher<void> resMonitor;
-    resMonitor.setFuture(res);
-    connect(ui->pushCancelInstall, &QPushButton::clicked, &resMonitor, &QFutureWatcher<void>::cancel);
-    connect(&resMonitor, &QFutureWatcher<void>::finished, [=](){
         ui->returnInstallButton->setEnabled(true);
         ui->buttonInstallInstall->setEnabled(true);
         ui->statusbar->showMessage("Готово");
     });
-    connect(qapp, &QApplication::aboutToQuit, &resMonitor, &QFutureWatcher<void>::cancel);
-    res.cancel();
+    //connect(ui->pushCancelInstall, &QPushButton::clicked, &loop, &QEventLoop::quit);
+    connect(thread, &QThread::finished, [=](){
+
+    });
+
+    thread->start();
+
+
+//    connect(qapp, &QApplication::aboutToQuit, &resMonitor, &QFutureWatcher<void>::cancel);
+//    res.cancel();
 #undef CHECK_ABORT
 }
 
