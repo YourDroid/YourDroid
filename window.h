@@ -30,6 +30,9 @@ public:
 
     ~Window();
 
+signals:
+    void sendMesToStausbar(QString);
+
 public slots:
     void returnMainWindow();
 
@@ -50,6 +53,8 @@ private slots:
 //    void on_exitButton_clicked();
 
 //    void on_returnInstallButton_clicked();
+
+    void receiveMesToStatusbar(QString);
 
     void on_buttonChooseImage_clicked();
 

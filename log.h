@@ -30,12 +30,15 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <QTextBrowser>
 
 extern const QString VERSION;
 extern const QString &WORK_DIR;
 
 class log {
+    static QTextBrowser *browser = new QTextBrowser;
 public:
+    static const QTextBrowser *getTextBrowser() { return browser; }
     static void message(int, QString, int, QString, QString = "NULL");
 };
 

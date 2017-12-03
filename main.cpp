@@ -15,6 +15,7 @@ const QString &WORK_DIR = workDir;
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
+    if(argc == 2 && argv[1] == "c") log::getTextBrowser()->show();
     workDir = app.applicationDirPath();
     cmd::exec("help");
     LOG(0, QString("Work dir is ") + WORK_DIR);

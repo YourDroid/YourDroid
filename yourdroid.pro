@@ -16,7 +16,8 @@ HEADERS += data.h log.h window.h \
     enum.h \
     install.h \
     version.h \
-    cmd.h
+    cmd.h \
+    console.h
 unix: {
 HEADERS += bkisofs/bk.h \
     bkisofs/bkAdd.h \

@@ -37,12 +37,13 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
     connect(ui->windows, &QStackedWidget::currentChanged, [=](){
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
+    connect(this, &Window::sendMesToStausbar, &Window::receiveMesToStatusbar);
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
     ui->labelVersion->setText(QString("<b>Версия: ") + VERSION + QString("<\b>"));
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
-    ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я]{0,999}")));
+    ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
 
     if(fierst) Settings_clicked();
@@ -166,7 +167,7 @@ void Window::on_buttonInstallInstall_clicked()
     QString image, dir, name;
     bool exit = false;
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        LOG(2, "Not chosen image", "Выберите образ для установки!");
+        LOG(2, "Did not choose image", "Выберите образ для установки!");
         exit = true;
     }
     else if(!QFile::exists(image)) {
@@ -174,7 +175,7 @@ void Window::on_buttonInstallInstall_clicked()
         exit = true;
     }
     else if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        LOG(2, "Not chosen folder", "Выберите папку для установки!");
+        LOG(2, "Did not choose folder", "Выберите папку для установки!");
         exit = true;
     }
     else if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
@@ -182,7 +183,7 @@ void Window::on_buttonInstallInstall_clicked()
         exit = true;
     }
     else if(!ui->editDirForInstall->hasAcceptableInput()) {
-        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу!");
+        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу и пробелы!");
         exit = true;
     }
     else if(!(new QDir())->exists(dir)) {
@@ -190,16 +191,16 @@ void Window::on_buttonInstallInstall_clicked()
         exit = true;
     }
     else if((name = ui->editName->text()).length() == 0) {
-        LOG(2, "Not written the name", "Напишите имя!");
+        LOG(2, "Did not fill in the name", "Напишите имя!");
         exit = true;
     }
     else if((name = ui->editSizeDataInstall->text()).length() == 0) {
-        LOG(2, "Not written the size of data.img", "Напишите размер data.img!");
+        LOG(2, "Did not fill in the size of data.img", "Напишите размер data.img!");
         exit = true;
     }
     else for(int i = 0; i < insDat->systemsVector().length(); i++) {
         if(ui->editName->text() == (insDat->systemsVector())[i].name) {
-            LOG(2, "The system with writеen name already exists", "Уже существует система с таким именем!");
+            LOG(2, "The system with written name already exists", "Уже существует система с таким именем!");
             exit = true;
         }
     }
@@ -223,6 +224,12 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
     insDat->eraseAbort();
 #define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
+    QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
+    connect(resMonitor, &QFutureWatcher<void>::finished, [=](){
+        ui->returnInstallButton->setEnabled(true);
+        ui->buttonInstallInstall->setEnabled(true);
+        ui->statusbar->showMessage("Готово");
+    });
     auto res = QtConcurrent::run([&](){ // auto - QFuture
         LOG(0, "Start install");
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
@@ -232,22 +239,16 @@ void Window::on_buttonInstallInstall_clicked()
         insDat->unpackSystem();
         CHECK_ABORT();
         LOG(0, "Creating data.img...");
-        ui->statusbar->showMessage("Создание data.img");
+        emit sendMesToStausbar("Создание data.img");
         insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
         LOG(0, "Installing bootloader...");
-        ui->statusbar->showMessage("Установка загрузчика");
-        //insDat->registerBootloader();
+        emit sendMesToStausbar("Установка загрузчика");
+        insDat->registerBootloader();
         CHECK_ABORT();
 		LOG(0, "Finish install");
     });
-    QFutureWatcher<void> resMonitor;
-    resMonitor.setFuture(res);
-    connect(&resMonitor, &QFutureWatcher<void>::finished, [=](){
-        ui->returnInstallButton->setEnabled(true);
-        ui->buttonInstallInstall->setEnabled(true);
-        ui->statusbar->showMessage("Готово");
-    });
+    resMonitor->setFuture(res);
 #undef CHECK_ABORT
 }
 
@@ -314,4 +315,8 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->buttonReturnMainDelete->setEnabled(true);
     ui->settingsMini->setEnabled(true);
     ui->comboSystemDelete->setEnabled(true);
+}
+
+void Window::receiveMesToStatusbar(QString mes) {
+    ui->statusbar->showMessage(mes);
 }

@@ -479,13 +479,6 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushCancelInstall">
-            <property name="text">
-             <string>Отменить</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="buttonInstallInstall">
             <property name="text">
              <string>Установить</string>
