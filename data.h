@@ -22,9 +22,11 @@ private:
     bool arch;
     const bool os = OS;
     bool winv = true;
+    bool conEnable = false;
 public slots:
-    void write_set(bool, bool, bool, bool);
+    void write_set(bool, bool, bool, bool, bool);
 public:
+    bool getConEnable() { return conEnable; }
     void autowrite_set();
     bool read_set(bool);
     bool defbios();

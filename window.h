@@ -31,9 +31,13 @@ public:
     ~Window();
 
 signals:
+    void closed();
+
     void sendMesToStausbar(QString);
 
 public slots:
+    void consoleHided();
+
     void returnMainWindow();
 
     void Settings_clicked();
@@ -71,6 +75,8 @@ private slots:
     void on_buttonDeleteDelete_clicked();
 
 private:
+    void closeEvent(QCloseEvent *);
+    void changeEvent(QEvent *);
     QApplication *qapp;
     bool fierst;
     options *dat;

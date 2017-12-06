@@ -42,7 +42,14 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 #endif
     logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << file << " LINE: " << line << " " << typeName << " " << mess << endl;
     cout << messFull.toStdString() << endl;
-    browser->setText(browser->
+
+    Qt::GlobalColor _color;
+    switch(level) {
+    case 0: _color = Qt::white; break;
+    case 1: _color = Qt::yellow; break;
+    case 2: _color = Qt::red; break;
+    }
+    con->output(typeName + QString(' ') + mess, _color);
 #if OS == 1
 //    system("color 00");
 #endif

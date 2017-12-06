@@ -4,10 +4,10 @@
 //#include <fstream>
 
 void options::autowrite_set() {
-    write_set(false,arch,tbios,winv);
+    write_set(false, arch, tbios, winv, conEnable);
 }
 
-void options::write_set(bool needSet, bool a, bool tb, bool wv) {
+void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con) {
     LOG(0, "Writing settings...");
 
     if(needSet) {
@@ -16,9 +16,14 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv) {
 #if OS == 1
         winv = wv;
 #endif
+        conEnable = con;
     }
 
     QSettings settings("config.ini", QSettings::IniFormat);
+
+    settings.beginGroup("settings");
+    settings.setValue("enable_debug_console", con);
+    settings.endGroup();
 
     settings.beginGroup("feutures_of_pc");
     settings.setValue("archeticture", QString((a) ? "x64" : "x86"));
@@ -41,6 +46,10 @@ bool options::read_set(bool dflt) {
         LOG(0, "Settings does exist");
 
         QSettings settings("config.ini", QSettings::IniFormat);
+
+        settings.beginGroup("settings");
+        conEnable = settings.value("enable_debug_console", false).toBool();
+        settings.endGroup();
 
         settings.beginGroup("feutures_of_pc");
         arch = (settings.value("archeticture", "x86").toString() == "x86") ? 0 : 1;

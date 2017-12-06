@@ -81,13 +81,15 @@ void Window::Settings_clicked()
 #if OS == 0
     ui->winVer->setEnabled(false);
 #endif
+    ui->checkEnableConSettings->setChecked(dat->getConEnable());
     ui->windows->setCurrentWidget(ui->settingsPage);
     setWindowTitle("YourDroid | Настройки");
 }
 
 void Window::on_applaySettings_clicked()
 {
-    dat->write_set(true,ui->arch->currentIndex(),ui->typeBios->currentIndex(),ui->winVer->currentIndex());
+    dat->write_set(true,ui->arch->currentIndex(),ui->typeBios->currentIndex(),ui->winVer->currentIndex(), ui->checkEnableConSettings->checkState() == Qt::Checked);
+    log::setEnabledCon(ui->checkEnableConSettings->checkState() == Qt::Checked);
     setLabelSetInfo();
 }
 
@@ -319,4 +321,19 @@ void Window::on_buttonDeleteDelete_clicked()
 
 void Window::receiveMesToStatusbar(QString mes) {
     ui->statusbar->showMessage(mes);
+}
+
+void Window::closeEvent(QCloseEvent *event) {
+    emit closed();
+    event->accept();
+}
+
+void Window::changeEvent(QEvent *event) {
+//    if(event->type() == QEvent::WindowStateChange) emit deactived();
+//    else if(event->type() == QEvent::WindowActivate) emit actived();
+    event->accept();
+}
+
+void Window::consoleHided() {
+
 }

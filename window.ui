@@ -72,7 +72,7 @@
     <item row="2" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -210,6 +210,13 @@
            </spacer>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkEnableConSettings">
+          <property name="text">
+           <string>Выводить отладочную консоль</string>
+          </property>
+         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer">

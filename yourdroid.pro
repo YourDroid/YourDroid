@@ -46,7 +46,8 @@ SOURCES += data.cpp \
            main.cpp \
            window.cpp \
     install.cpp \
-    cmd.cpp
+    cmd.cpp \
+    console.cpp
 unix: {
 SOURCES += bkisofs/bkAdd.c \
     bkisofs/bkCache.c \

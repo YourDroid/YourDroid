@@ -30,15 +30,16 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <QTextBrowser>
+#include "console.h"
 
 extern const QString VERSION;
 extern const QString &WORK_DIR;
 
 class log {
-    static QTextBrowser *browser = new QTextBrowser;
+    static console *con;
 public:
-    static const QTextBrowser *getTextBrowser() { return browser; }
+    static console *init(QWidget *widget = 0) { con = new console(widget); con->setWindowTitle("YourDroid"); return con; }
+    static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
     static void message(int, QString, int, QString, QString = "NULL");
 };
 

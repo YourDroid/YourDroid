@@ -22,7 +22,7 @@ QPair<int, QString> cmd::exec(QString command) {
 //        _output = tempCmd.readAll();
 //        tempCmd.close();
 //    }
-    FILE *trm = popen(command.toStdString().c_str(), "r");
+    FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
     char tmp;
     //_output.clear();
     char buffer[128];
