@@ -27,6 +27,7 @@ public slots:
     void write_set(bool, bool, bool, bool, bool);
 public:
     bool getConEnable() { return conEnable; }
+    void setConEnable(bool con) { conEnable = con; }
     void autowrite_set();
     bool read_set(bool);
     bool defbios();

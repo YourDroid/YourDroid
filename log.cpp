@@ -9,7 +9,8 @@
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
-void log::message(int level, QString file, int line, QString mess, QString rusMess) {
+void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &mess/*, QString rusMess*/) {
+    QString rusMess = "kkkk";
     using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
     static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + QString(".txt"));
@@ -40,7 +41,7 @@ void log::message(int level, QString file, int line, QString mess, QString rusMe
 //    }
     QString messFull = typeName + QString(' ') + mess;
 #endif
-    logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << file << " LINE: " << line << " " << typeName << " " << mess << endl;
+    logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << endl;
     cout << messFull.toStdString() << endl;
 
     Qt::GlobalColor _color;

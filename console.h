@@ -6,6 +6,7 @@
 #include <QtGui>
 
 class console : public QPlainTextEdit {
+    Q_OBJECT
     void keyPressEvent(QKeyEvent *) {}
     void mousePressEvent(QMouseEvent *) { }
     void mouseDoubleClickEvent(QMouseEvent *) {}
@@ -14,7 +15,7 @@ class console : public QPlainTextEdit {
     void hideEvent(QHideEvent *event) { emit hided(); event->accept(); }
     void scrollDown();
 signals:
-    void hided() {}
+    void hided();
 public:
     explicit console(QWidget *parent = 0);
     void output(QString, Qt::GlobalColor);

@@ -22,7 +22,7 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    LOG(0, "Start window");
+    qCritical("Start window");
 
     ui->setupUi(this);
     setLabelSetInfo();
@@ -38,6 +38,16 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
     connect(this, &Window::sendMesToStausbar, &Window::receiveMesToStatusbar);
+    auto enableApply = [=](int i = 0) {
+        ui->applaySettings->setEnabled(true);
+    };
+
+//    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
+//        ui->applaySettings->setEnabled(true);
+//    });
+//    connect(ui->typeBios, &QComboBox::currentIndexChanged, [=]() {
+//        ui->applaySettings->setEnabled(true);
+//    });
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
@@ -82,6 +92,7 @@ void Window::Settings_clicked()
     ui->winVer->setEnabled(false);
 #endif
     ui->checkEnableConSettings->setChecked(dat->getConEnable());
+    //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
     setWindowTitle("YourDroid | Настройки");
 }
@@ -335,5 +346,7 @@ void Window::changeEvent(QEvent *event) {
 }
 
 void Window::consoleHided() {
-
+    dat->setConEnable(false);
+    dat->autowrite_set();
+    ui->checkEnableConSettings->setChecked(false);
 }

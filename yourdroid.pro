@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 TARGET = yourdroid
 INCLUDEPATH += .
-CONFIG += c++17
+CONFIG += c++17 console
 
 # Input
 HEADERS += data.h log.h window.h \
@@ -79,6 +79,7 @@ RESOURCES += \
 #QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
 #QMAKE_TARGET_COMPANY = YourDroid-Group
 unix:DEFINES += "OS=0"
+#"linux(commands)=#ifdef Q_OS_UNIX" "win=Q_OS_WIN"
 
 win32 {
 DEFINES += "OS=1"

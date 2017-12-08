@@ -40,7 +40,8 @@ class log {
 public:
     static console *init(QWidget *widget = 0) { con = new console(widget); con->setWindowTitle("YourDroid"); return con; }
     static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
-    static void message(int, QString, int, QString, QString = "NULL");
+    static void messagenew(QtMsgType, const QMessageLogContext&, const QString&/*, QString = "NULL"*/);
+    static void message(int, QString, int, QString, QString = "hhh") {}
 };
 
 #endif // LOG_H
