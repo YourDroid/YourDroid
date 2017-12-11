@@ -1,5 +1,4 @@
 #include <log.h>
-#include <QDebug>
 #include <QTextStream>
 #include <QFile>
 #include <QDir>
@@ -9,11 +8,13 @@
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
-void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &mess/*, QString rusMess*/) {
-    QString rusMess = "kkkk";
+void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &message/*, QString rusMess*/) {
+    QString mess = message;
+    mess.remove('\"');
+    QString rusMess = "NULL";
     using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
-    static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + QString(".txt"));
+    static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + qApp->translate("log", ".txt"));
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);

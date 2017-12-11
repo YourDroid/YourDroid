@@ -8,9 +8,8 @@
 #include <QFuture>
 #include <QFutureWatcher>
 
-Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *parent) :
+Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
-    qapp(app),
     fierst(!f),
     dat(d),
     insDat(ins),
@@ -22,7 +21,7 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    qCritical("Start window");
+    qDebug("Start window");
 
     ui->setupUi(this);
     setLabelSetInfo();
@@ -39,19 +38,19 @@ Window::Window(QApplication *app, install *ins, bool f, options *d, QWidget *par
     });
     connect(this, &Window::sendMesToStausbar, &Window::receiveMesToStatusbar);
     auto enableApply = [=](int i = 0) {
-        ui->applaySettings->setEnabled(true);
+        ui->qApplaySettings->setEnabled(true);
     };
 
 //    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
-//        ui->applaySettings->setEnabled(true);
+//        ui->qApplaySettings->setEnabled(true);
 //    });
 //    connect(ui->typeBios, &QComboBox::currentIndexChanged, [=]() {
-//        ui->applaySettings->setEnabled(true);
+//        ui->qApplaySettings->setEnabled(true);
 //    });
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
-    ui->labelVersion->setText(QString("<b>Версия: ") + VERSION + QString("<\b>"));
+    ui->labelVersion->setText(QString("<b>") + qApp->translate("log", "Версия: ") + VERSION + qApp->translate("log", "<\b>"));
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
@@ -92,14 +91,28 @@ void Window::Settings_clicked()
     ui->winVer->setEnabled(false);
 #endif
     ui->checkEnableConSettings->setChecked(dat->getConEnable());
-    //ui->applaySettings->setEnabled(false);
+    ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
+    //ui->qApplaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
     setWindowTitle("YourDroid | Настройки");
 }
 
-void Window::on_applaySettings_clicked()
+void Window::on_qApplaySettings_clicked()
 {
-    dat->write_set(true,ui->arch->currentIndex(),ui->typeBios->currentIndex(),ui->winVer->currentIndex(), ui->checkEnableConSettings->checkState() == Qt::Checked);
+    if(langChanged) {
+        langChanged = false;
+        QTranslator translator;
+        translator.load(QString("yourdroid_") +
+                        QString::fromStdString(_langHelper::to_string(
+                                                   (_lang)ui->comboLanguageSettings->currentIndex())));
+        qApp->installTranslator(&translator);
+        ui->retranslateUi(this);
+    }
+    dat->write_set(true, ui->arch->currentIndex(),
+                   ui->typeBios->currentIndex(),
+                   ui->winVer->currentIndex(),
+                   ui->checkEnableConSettings->checkState() == Qt::Checked,
+                   (_lang)ui->comboLanguageSettings->currentIndex());
     log::setEnabledCon(ui->checkEnableConSettings->checkState() == Qt::Checked);
     setLabelSetInfo();
 }
@@ -110,6 +123,8 @@ void Window::on_restoreSettings_clicked()
     ui->typeBios->setCurrentIndex((int)dat->tbios);
     ui->arch->setCurrentIndex((int)dat->arch);
     ui->winVer->setCurrentIndex((int)dat->winv);
+    ui->checkEnableConSettings->setChecked(dat->getConEnable());
+    ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
 }
 
 void Window::on_installButtonMain_clicked()
@@ -143,7 +158,7 @@ void Window::on_buttonChooseImage_clicked()
     QString image = QFileDialog::getOpenFileName(0, "Выберите образ для установки", "", "*.iso");
     if(image.length() > 0) {
         ui->editImageFromDisk->setText(image);
-        LOG(0, QString("Choose image for install: ") + image);
+        qDebug() << qApp->translate("log", "Choose image for install: ") + image;
     }
 }
 
@@ -166,7 +181,7 @@ void Window::on_buttonChooseDirForInstall_clicked()
     QString dir = QFileDialog::getExistingDirectory(0, "Выберите директории для установки", "");
     if(dir.length() > 0) {
         ui->editDirForInstall->setText(dir);
-        LOG(0, QString("Choose dir for install: ") + dir);
+        qDebug() << qApp->translate("log", "Choose dir for install: ") + dir;
     }
 }
 
@@ -176,7 +191,7 @@ void Window::on_buttonInstallInstall_clicked()
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage("Проверка");
-    LOG(0, "Checking data for install...");
+    qDebug() << "Checking data for install...";
     QString image, dir, name;
     bool exit = false;
     if((image = ui->editImageFromDisk->text()).length() == 0) {
@@ -224,7 +239,7 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    LOG(0, "Data for install valid");
+    qDebug() << "Data for install valid";
     ui->statusbar->showMessage("Указаные длZ установки сведения правильны");
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
@@ -244,22 +259,22 @@ void Window::on_buttonInstallInstall_clicked()
         ui->statusbar->showMessage("Готово");
     });
     auto res = QtConcurrent::run([&](){ // auto - QFuture
-        LOG(0, "Start install");
+        qDebug() << "Start install";
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
         CHECK_ABORT();
         insDat->write();
         CHECK_ABORT();
         insDat->unpackSystem();
         CHECK_ABORT();
-        LOG(0, "Creating data.img...");
+        qDebug() << "Creating data.img...";
         emit sendMesToStausbar("Создание data.img");
         insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
-        LOG(0, "Installing bootloader...");
+        qDebug() << "Installing bootloader...";
         emit sendMesToStausbar("Установка загрузчика");
         insDat->registerBootloader();
         CHECK_ABORT();
-		LOG(0, "Finish install");
+		qDebug() << "Finish install";
     });
     resMonitor->setFuture(res);
 #undef CHECK_ABORT
@@ -273,7 +288,7 @@ void Window::on_buttonAboutMain_clicked()
 
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
-    LOG(0, QString("Choose ") + arg1);
+    qDebug() << qApp->translate("log", "Choose ") + arg1;
     if(arg1 == "Grub2") {
         ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
         ui->labelAboutBootloader_2->setText("Текстовый.");
@@ -292,12 +307,12 @@ void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
 
-    LOG(0, "Clearing systems list...");
+    qDebug() << "Clearing systems list...";
     ui->comboSystemDelete->blockSignals(true);
     ui->comboSystemDelete->clear();
     ui->comboSystemDelete->blockSignals(false);
 
-    LOG(0, "Filling systems list...");
+    qDebug() << "Filling systems list...";
     for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
     setWindowTitle("YourDroid | Удаление");
@@ -317,7 +332,7 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->settingsMini->setEnabled(false);
     ui->comboSystemDelete->setEnabled(false);
     int num = ui->comboSystemDelete->currentIndex();
-    LOG(0, QString("Deleting ") + (insDat->systemsVector().begin() + num)->name);
+    qDebug() << qApp->translate("log", "Deleting ") + (insDat->systemsVector().begin() + num)->name;
     insDat->delSystemFiles(num);
     insDat->deleteBootloader(num);
     insDat->oldSysEdit() = true;
@@ -335,6 +350,7 @@ void Window::receiveMesToStatusbar(QString mes) {
 }
 
 void Window::closeEvent(QCloseEvent *event) {
+    exiting = true;
     emit closed();
     event->accept();
 }
@@ -346,7 +362,13 @@ void Window::changeEvent(QEvent *event) {
 }
 
 void Window::consoleHided() {
+    if(exiting) return;
     dat->setConEnable(false);
     dat->autowrite_set();
     ui->checkEnableConSettings->setChecked(false);
+}
+
+void Window::on_comboLanguageSettings_currentIndexChanged(int index)
+{
+    langChanged = true;
 }

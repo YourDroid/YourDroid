@@ -4,17 +4,17 @@
 #include <stdlib.h>
 
 QPair<int, QString> cmd::exec(QString command) {
-    LOG(0, QString("Executing ") + command);
+    qDebug() << qApp->translate("log", "Executing ") + command;
     QString _output = "";
     int _res;
 //#if OS == 1
 //    QString home = getenv("USERPROFILE");
-//    QString strcmd = command + QString(">") + home + QString("\\temp_cmd 2>&1");
-//    QFile tempCmd(home + QString("\\temp_cmd"));
+//    QString strcmd = command + qApp->translate("log", ">") + home + qApp->translate("log", "\\temp_cmd 2>&1");
+//    QFile tempCmd(home + qApp->translate("log", "\\temp_cmd"));
 //#elif OS == 0
 //    QString home = getenv("home");
-//    QString strcmd = command + QString(" &> ") + home + QString("/temp_cmd");
-//    QFile tempCmd(home + QString("/temp_cmd"));
+//    QString strcmd = command + qApp->translate("log", " &> ") + home + qApp->translate("log", "/temp_cmd");
+//    QFile tempCmd(home + qApp->translate("log", "/temp_cmd"));
 //#endif
 //    _res = system(strcmd.toStdString().c_str());
 //    if (tempCmd.open(QIODevice::ReadOnly))
@@ -35,9 +35,9 @@ QPair<int, QString> cmd::exec(QString command) {
         if(tmp == '\n') break;
     }
     _res = pclose(trm);
-    LOG(0, _output);
-    if(_res) LOG(2, "Error while executing!");
-    else LOG(0, "Command executed succesful");
+    qDebug() << _output;
+    if(_res) qCritical() << "Error while executing!";
+    else qDebug() << qApp->translate("log", "Command executed succesful");
     return QPair<int, QString>(_res, _output);
 }
 

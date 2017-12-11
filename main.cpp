@@ -8,7 +8,6 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QString>
-#include <QDebug>
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
 static QString workDir;
@@ -18,26 +17,32 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
+    workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
+#ifdef Q_OS_LINUX
+    if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
+        system("touch ~/.config/QtProject/qtlogging.ini");
+#endif
     console *widget = log::init(0);
     options set;
     bool readSet = set.read_set(false);
+    QTranslator translator;
+    translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
+    app.installTranslator(&translator);
     if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
-    workDir = app.applicationDirPath();
     cmd::exec("help");
-    LOG(0, QString("Work dir is ") + WORK_DIR);
-    qDebug() << "fiest valid mes!";
+    qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
     install ins(&set);
     ins.read();
-    Window *window = new Window(&app, &ins, readSet, &set);
+    Window *window = new Window(&ins, readSet, &set);
     window->show();
     QObject::connect(window, &Window::closed, [=](){ widget->close(); });
     QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
-    LOG(0, "Window exec");
+    qDebug() << app.translate("log", "Window exec");
     int res = app.exec();
-    LOG(0, "Window closed");
+    qDebug() << app.translate("log", "Window closed");
     set.autowrite_set();
     ins.write();
-    LOG(0, QString("Exiting... Returned ") + QString::number(res));
+    qDebug() << app.translate("log", "Exiting... Returned ") << QString::number(res);
     return res;
 }

@@ -4,11 +4,11 @@
 //#include <fstream>
 
 void options::autowrite_set() {
-    write_set(false, arch, tbios, winv, conEnable);
+    write_set(false, arch, tbios, winv, conEnable, lang);
 }
 
-void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con) {
-    LOG(0, "Writing settings...");
+void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang l) {
+    qDebug() << qApp->translate("log", "Writing settings...");
 
     if(needSet) {
         arch = a;
@@ -17,12 +17,14 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con) {
         winv = wv;
 #endif
         conEnable = con;
+        lang = l;
     }
 
     QSettings settings("config.ini", QSettings::IniFormat);
 
     settings.beginGroup("settings");
     settings.setValue("enable_debug_console", con);
+    settings.setValue("language", QString::fromStdString(_langHelper::to_string(lang)));
     settings.endGroup();
 
     settings.beginGroup("feutures_of_pc");
@@ -33,22 +35,23 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con) {
 #endif
     settings.endGroup();
 
-    LOG(0, "Settings wrote succesfull");
+    qDebug() << qApp->translate("log", "Settings wrote succesfull");
 }
 
 bool options::read_set(bool dflt) {
-    LOG(0, "Reading settings...");
+    qDebug() << qApp->translate("log", "Reading settings...");
 
     bool existConf;
     if (!dflt) existConf = QFile::exists("config.ini");
     else existConf = false;
     if(existConf) {
-        LOG(0, "Settings does exist");
+        qDebug() << qApp->translate("log", "Settings does exist");
 
         QSettings settings("config.ini", QSettings::IniFormat);
 
         settings.beginGroup("settings");
         conEnable = settings.value("enable_debug_console", false).toBool();
+        lang = _langHelper::from_string(settings.value("language", QLocale::system().name().mid(0, 2)).toString().toStdString());
         settings.endGroup();
 
         settings.beginGroup("feutures_of_pc");
@@ -64,32 +67,34 @@ bool options::read_set(bool dflt) {
         settings.endGroup();
     }
     else {
-        LOG(0, "Settings does not exist or settings restoring default");
+        qDebug() << qApp->translate("log", "Settings does not exist or settings restoring default");
         tbios = defbios();
         arch = defarch();
 #if OS == 1
         winv = defwinv();
 #endif
+        conEnable = false;
+        lang = _langHelper::from_string(QLocale::system().name().mid(0, 2).toStdString());
     }
     return existConf;
 
-    LOG(0, "Settings read succesfull");
+    qDebug() << qApp->translate("log", "Settings read succesfull");
 }
 
 bool options::defbios() {
-    LOG(0, "Defining type bios...");
+    qDebug() << qApp->translate("log", "Defining type of bios...");
 #if OS == 0
     bool efiExist = QDir().exists("/boot/efi");
     bool efibootmgr = !cmd().exec("efibootmgr").first;
-    LOG(0, (efiExist ? "/boot/efi exists" : "/boot/efi does not exist"));
-    LOG(0, efibootmgr ? "efibootmgr exists" : "efibootmgr does not exist");
+    qDebug() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
+    qDebug() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
     return efiExist || efibootmgr;
 #elif OS == 1
     system("mountvol a: /s");
     bool efi = QDir().exists("a:\\efi");
-    LOG(0, (efi ? "a:\\efi exists" : "a:\\efi does not exist"));
+    qDebug() << "a:/efi " << qApp->translate("log", (efi ? "exists" : "does not exist"));
     bool bios = QDir().exists("a:\\program files");
-    LOG(0, (bios ? "a:\\program files exists" : "a:\\program files does not exist"));
+    qDebug() << "a:/program files " << qApp->translate("log", (bios ? "exists" : "does not exist"));
     bool ret = efi && !bios;
     system("mountvol a: /d");
     return ret;
@@ -97,7 +102,7 @@ bool options::defbios() {
 }
 
 bool options::defarch() {
-    LOG(0, "Defining architecture...");
+    qDebug() << qApp->translate("log", "Defining architecture...");
 #if OS == 0
     FILE *fp = popen("uname -m", "r");
 
@@ -106,20 +111,20 @@ bool options::defarch() {
     pclose(fp);
 
     QString tarch = buf;
-    LOG(0, (QString("Uname returned ") + tarch));
+    qDebug() << (qApp->translate("log", "Uname returned ") + tarch);
     return (tarch=="x86\n") ? 0 : 1;
 #elif OS == 1
     SYSTEM_INFO inf;
     GetNativeSystemInfo(&inf);
-    LOG(0, QString("Processor type is ") + char(inf.dwProcessorType + 48));
+    qDebug() << qApp->translate("log", "Processor type is ") + char(inf.dwProcessorType + 48);
     return inf.dwProcessorType;
 #endif
 }
 
 #if OS == 1
 bool options::defwinv() {
-    LOG(0, "Defining windows version");
-    LOG(0, (QDir().exists("c:\\users") ? "c:\\users does exists" : "c:\\users does not exists"));
+    qDebug() << "Defining windows version";
+    qDebug() << "c:/users " << qApp->translate("log", (QDir().exists("c:\\users") ? "exists" : "does not exists"));
     return QDir().exists("c:\\users");
 }
 #endif

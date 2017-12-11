@@ -4,7 +4,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QFile>
 #include <QUrl>
-#include <QDebug>
+#include <qDebug()>
 #include <functional>
 
 class download : public QObject

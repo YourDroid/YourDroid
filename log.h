@@ -41,7 +41,7 @@ public:
     static console *init(QWidget *widget = 0) { con = new console(widget); con->setWindowTitle("YourDroid"); return con; }
     static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
     static void messagenew(QtMsgType, const QMessageLogContext&, const QString&/*, QString = "NULL"*/);
-    static void message(int, QString, int, QString, QString = "hhh") {}
+    static void message(int level, QString file, int line, QString mes, QString = "NULL") {  }
 };
 
 #endif // LOG_H

@@ -72,6 +72,7 @@ LIBS += -lz -std=gnu++17
 
 RESOURCES += \
     resource.qrc
+TRANSLATIONS = yourdroid_ru.ts
 #VERSION = 0.0.4
 #DEFINES += VERSION=\\\"$$VERSION\\\"
 #RC_ICONS = yourdroid.ico
@@ -79,7 +80,7 @@ RESOURCES += \
 #QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
 #QMAKE_TARGET_COMPANY = YourDroid-Group
 unix:DEFINES += "OS=0"
-#"linux(commands)=#ifdef Q_OS_UNIX" "win=Q_OS_WIN"
+#"linux=Q_OS_UNIX" "windows=Q_OS_WIN"
 
 win32 {
 DEFINES += "OS=1"

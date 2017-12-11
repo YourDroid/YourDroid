@@ -24,7 +24,7 @@ class Window : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Window(QApplication*, install*, bool, options*, QWidget *parent = 0);
+    explicit Window(install*, bool, options*, QWidget *parent = 0);
 
     void setLabelSetInfo();
 
@@ -42,7 +42,7 @@ public slots:
 
     void Settings_clicked();
 
-    void on_applaySettings_clicked();
+    void on_qApplaySettings_clicked();
 
     void on_restoreSettings_clicked();
 
@@ -74,11 +74,14 @@ private slots:
 
     void on_buttonDeleteDelete_clicked();
 
+    void on_comboLanguageSettings_currentIndexChanged(int index);
+
 private:
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
-    QApplication *qapp;
     bool fierst;
+    bool exiting = false;
+    bool langChanged = false;
     options *dat;
     install *insDat;
     Ui::Window *ui;
