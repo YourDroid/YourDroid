@@ -42,7 +42,7 @@ public slots:
 
     void Settings_clicked();
 
-    void on_qApplaySettings_clicked();
+    void on_applaySettings_clicked();
 
     void on_restoreSettings_clicked();
 

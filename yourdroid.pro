@@ -72,7 +72,7 @@ LIBS += -lz -std=gnu++17
 
 RESOURCES += \
     resource.qrc
-TRANSLATIONS = yourdroid_ru.ts
+TRANSLATIONS = yourdroid_ru.ts yourdroid_en.ts
 #VERSION = 0.0.4
 #DEFINES += VERSION=\\\"$$VERSION\\\"
 #RC_ICONS = yourdroid.ico

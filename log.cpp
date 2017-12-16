@@ -44,6 +44,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
 #endif
     logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << endl;
     cout << messFull.toStdString() << endl;
+    logFile.flush();
 
     Qt::GlobalColor _color;
     switch(level) {

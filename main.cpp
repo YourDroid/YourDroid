@@ -8,6 +8,8 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QString>
+#include <QVector>
+#include <stdio.h>
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
 static QString workDir;
@@ -17,6 +19,8 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
+//    freopen("err.txt", "w", stderr);
+//    freopen("err.txt", "w", stdout);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
 #ifdef Q_OS_LINUX

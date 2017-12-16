@@ -1,22 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.1" language="en_US">
 <context>
     <name>Window</name>
     <message>
+        <location filename="window.ui" line="59"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="95"/>
+        <location filename="window.ui" line="694"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="102"/>
+        <location filename="window.ui" line="561"/>
+        <source>Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="122"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="window.ui" line="135"/>
         <source>Features of pc</source>
-        <translation>Конфигурация пк</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="143"/>
+        <source>Architecture </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="167"/>
+        <source>Type of bios</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="191"/>
         <source>Windows version</source>
-        <oldsource>Версия Windows</oldsource>
-        <translation>Версия Windows</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings of the qApp</source>
-        <translation type="obsolete">Настройки приложения</translation>
+        <location filename="window.ui" line="233"/>
+        <source>Settings of the app</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="241"/>
@@ -24,45 +56,78 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="window.ui" line="267"/>
+        <source>Output debugging console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="309"/>
+        <location filename="window.ui" line="541"/>
+        <location filename="window.ui" line="674"/>
+        <source>To main menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="331"/>
+        <source>Restore defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="window.ui" line="338"/>
         <source>Apply</source>
-        <translation>Применить</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="355"/>
+        <source>Space for data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="363"/>
+        <source>Size of data.img(mb):</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="391"/>
         <source>Data</source>
-        <translation>Как установить?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="399"/>
         <source>Title:</source>
-        <translation>Название:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="413"/>
         <location filename="window.ui" line="619"/>
         <source>Bootloader:</source>
-        <translation>Загрузчик:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="442"/>
         <source>Input</source>
-        <translation>Откуда установить?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="448"/>
         <source>Download &amp;ISO image</source>
-        <translation>Скачать &amp;ISO образ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="457"/>
         <source>Version:</source>
-        <translation>Версия:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="469"/>
         <source>Choose I&amp;SO image from HD</source>
-        <translation>Выбрать I&amp;SO образ с диска</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="481"/>
+        <location filename="window.ui" line="518"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.ui" line="493"/>
@@ -90,6 +155,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="window.ui" line="601"/>
+        <source>Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="window.ui" line="707"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -103,96 +173,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Описание:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Программа с открытым исходным кодом для установки порта андроида на пк, android x86&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Авторы:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Profi_GMan&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="59"/>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="95"/>
-        <location filename="window.ui" line="694"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="102"/>
-        <location filename="window.ui" line="561"/>
-        <source>Install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="122"/>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="143"/>
-        <source>Architecture </source>
-        <translation>Архитектура </translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="167"/>
-        <source>Type of bios</source>
-        <translation>Тип биоса</translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="233"/>
-        <source>Settings of the app</source>
-        <translation>Настройки приложения</translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="267"/>
-        <source>Output debugging console</source>
-        <translation>Выводить отладочную консоль</translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="309"/>
-        <location filename="window.ui" line="541"/>
-        <location filename="window.ui" line="674"/>
-        <source>To main menu</source>
-        <translation>В главное меню</translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="331"/>
-        <source>Restore defaults</source>
-        <oldsource>Restore default</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="355"/>
-        <source>Space for data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="363"/>
-        <source>Size of data.img(mb):</source>
-        <oldsource>Размер data.img(мб):</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="481"/>
-        <location filename="window.ui" line="518"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="601"/>
-        <source>Path:</source>
-        <oldsource>Путь:</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -213,26 +193,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>log</name>
-    <message>
-        <location filename="main.cpp" line="40"/>
-        <source>Work dir is </source>
-        <translation>Рабочая папка - </translation>
-    </message>
-    <message>
-        <location filename="main.cpp" line="47"/>
-        <source>Window exec</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="main.cpp" line="49"/>
-        <source>Window closed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="main.cpp" line="52"/>
-        <source>Exiting... Returned </source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="cmd.cpp" line="7"/>
         <source>Executing </source>
@@ -585,6 +545,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="log.cpp" line="17"/>
         <source>.txt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="40"/>
+        <source>Work dir is </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="47"/>
+        <source>Window exec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="49"/>
+        <source>Window closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="52"/>
+        <source>Exiting... Returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>

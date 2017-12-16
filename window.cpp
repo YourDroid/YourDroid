@@ -38,7 +38,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     });
     connect(this, &Window::sendMesToStausbar, &Window::receiveMesToStatusbar);
     auto enableApply = [=](int i = 0) {
-        ui->qApplaySettings->setEnabled(true);
+        ui->applaySettings->setEnabled(true);
     };
 
 //    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
@@ -50,7 +50,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
-    ui->labelVersion->setText(QString("<b>") + qApp->translate("log", "Версия: ") + VERSION + qApp->translate("log", "<\b>"));
+    ui->labelVersion->setText(QString("<b>") + tr("Версия: ") + VERSION + "<\b>");
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
@@ -97,7 +97,7 @@ void Window::Settings_clicked()
     setWindowTitle("YourDroid | Настройки");
 }
 
-void Window::on_qApplaySettings_clicked()
+void Window::on_applaySettings_clicked()
 {
     if(langChanged) {
         langChanged = false;
@@ -107,6 +107,7 @@ void Window::on_qApplaySettings_clicked()
                                                    (_lang)ui->comboLanguageSettings->currentIndex())));
         qApp->installTranslator(&translator);
         ui->retranslateUi(this);
+        ui->labelVersion->setText(QString("<b>") + tr("Version: ") + VERSION + "<\b>");
     }
     dat->write_set(true, ui->arch->currentIndex(),
                    ui->typeBios->currentIndex(),
@@ -166,7 +167,7 @@ void Window::on_back_settings_clicked()
 {
     if(fierst) {
         fierst = !fierst;
-        dat->autowrite_set();
+        on_applaySettings_clicked();
         returnMainWindow();
     }
     else if(lastPage == ui->settingsPage) Settings_clicked();
