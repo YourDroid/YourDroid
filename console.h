@@ -13,9 +13,9 @@ class console : public QPlainTextEdit {
     void mouseDoubleClickEvent(QMouseEvent *) {}
     void contextMenuEvent(QContextMenuEvent *) {}
     void focusInEvent(QFocusEvent *) { }
-    void hideEvent(QHideEvent *event) { emit hided(); event->accept(); }
-    bool event(QEvent *);
-    bool gestureEvent(QGestureEvent *);
+    void closeEvent(QCloseEvent *event) { emit hided(); hide(); event->ignore(); }
+//    bool event(QEvent *);
+//    bool gestureEvent(QGestureEvent *);
     void scrollDown();
 signals:
     void hided();

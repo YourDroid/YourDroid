@@ -73,6 +73,7 @@ LIBS += -lz -std=gnu++17
 RESOURCES += \
     resource.qrc
 TRANSLATIONS = yourdroid_ru.ts yourdroid_en.ts
+DEFINES += "LINUX=\"defined(Q_OS_LINUX)\"" "WIN=\"defined(Q_OS_WIN)\""
 #VERSION = 0.0.4
 #DEFINES += VERSION=\\\"$$VERSION\\\"
 #RC_ICONS = yourdroid.ico

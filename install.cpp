@@ -17,7 +17,7 @@
 #include <QUrl>
 #include <QTextCodec>
 
-#define ABORT() abort = 1; return;
+#define ABORT(what) emit abort(what);
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n) {
     systems.push_back(install::_installSet(b, t, p, i, n));
@@ -169,7 +169,7 @@ void install::registerGummi() {
 
 bool install::isInstalledGummi() {
     qDebug() << "Checking gummiboot";
-    cmd::exec(qApp->translate("log", "bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
+    cmd::exec(QString("bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
     bool res = !cmd::exec(QString("find \"YourDroid Gummiboot\" <") + WORK_DIR + "/tempEnum").first;
     qDebug() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
     return res;
@@ -224,8 +224,6 @@ void install::installGummi() {
               qApp->translate("log", ":/efi/grub/"));
 
     qDebug() << "Gummiboot installed succes";
-
-#undef CHECK_ABORT
 }
 
 void install::registerGrub2() {
@@ -247,23 +245,28 @@ void install::registerGrub2() {
         QDir().mkdir("/etc/grub.d/android");
         //system("mkdir /etc/grub.d/android");
     }
-    grubConfigure(qApp->translate("log", "/etc/grub.d/android/") + systems.back().name + ".cfg");
-    system("update-grub");
+    grubConfigure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
+    qDebug() << "Updating grub...";
+    CMD_ASSERT(cmd::exec("update-grub"));
 }
 
 void install::grubConfigure(QString way) {
     QString place = systems.back().name;
-#if OS == 1
+#if WIN
     place = place.left(1);
 #endif
     QFile _config(way);
     if(!_config.open(QIODevice::WriteOnly)) ABORT();
     QTextStream config(&_config);
-    config << (qApp->translate("log", "menuentry '") + place + qApp->translate("log", "' --class android-x86 {\n") +
-           qApp->translate("log", "\tsearch --file --no-floppy --set=root ") + place +  qApp->translate("log", "/kernel\n") +
+    config << (QString("menuentry '") + place + QString("' --class android-x86 {\n") +
+           QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
            qApp->translate("log", "\tlinux ") + place + qApp->translate("log", "/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
            qApp->translate("log", "\tinitrd ") + place + qApp->translate("log", "/initrd.img\n") + "}\n");
     _config.close();
+}
+
+void install::mountImage(QString image) {
+
 }
 
 void install::unpackSystem() {
@@ -293,7 +296,7 @@ void install::unpackSystem() {
     char *files[5] = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs"};
         for(int i = 0; i < 5; i++) {
             progressBarInstall->setValue(progressBarInstall->value() + 25);
-            statusBar->showMessage(qApp->translate("log", "Распаковывается ") + files[i]);
+            statusBar->showMessage(qApp->translate("log", "Unpacking ") + files[i]);
             rc = bk_extract(&volInfo, files[i],
                             systems.back().place.toStdString().c_str(),
                             false,
@@ -309,14 +312,14 @@ void install::unpackSystem() {
 
 void install::createDataImg(int size) {
 #if OS == 0
-    system((qApp->translate("log", "chmod 777 ") + WORK_DIR + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-    QString command = WORK_DIR + qApp->translate("log", "/data/make_ext4fs/make_ext4fs") + qApp->translate("log", " -l ") + QString::number(size) +
-                       qApp->translate("log", "M -a data ") + systems.back().place + qApp->translate("log", "/data.img ");
+    system((QString("chmod 777 ") + WORK_DIR + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+                       QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif OS == 1
-    QString command = WORK_DIR + qApp->translate("log", "/data/make_ext4fs/make_ext4fs.exe") + qApp->translate("log", " -l ") + QString::number(size) +
-                       qApp->translate("log", "M -a data ") + systems.back().place + qApp->translate("log", "/data.img ");
+    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
+                       QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
-    auto res = cmd().exec(command);
+    cmd::exec(command);
 }
 
 void install::downloadFile(QString url, QString dest) {

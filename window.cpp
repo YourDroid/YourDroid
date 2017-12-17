@@ -50,10 +50,11 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
-    ui->labelVersion->setText(QString("<b>") + tr("Версия: ") + VERSION + "<\b>");
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
+
+    retranslateUi(QString::fromStdString(_langHelper::to_string(dat->getLang())));
 
     if(fierst) Settings_clicked();
     else returnMainWindow();
@@ -68,6 +69,14 @@ void Window::setLabelSetInfo() {
 #endif
     info = QString("<b>") + info + "<\b>";
     ui->labelSetInfo->setText(info);
+}
+
+void Window::retranslateUi(QString lang) {
+    QTranslator translator;
+    translator.load(QString("yourdroid_") + lang);
+    qApp->installTranslator(&translator);
+    ui->retranslateUi(this);
+    ui->labelVersion->setText(QString("<b>") + tr("Version: ") + VERSION + "<\b>");
 }
 
 Window::~Window()
@@ -101,13 +110,8 @@ void Window::on_applaySettings_clicked()
 {
     if(langChanged) {
         langChanged = false;
-        QTranslator translator;
-        translator.load(QString("yourdroid_") +
-                        QString::fromStdString(_langHelper::to_string(
-                                                   (_lang)ui->comboLanguageSettings->currentIndex())));
-        qApp->installTranslator(&translator);
-        ui->retranslateUi(this);
-        ui->labelVersion->setText(QString("<b>") + tr("Version: ") + VERSION + "<\b>");
+        retranslateUi(QString::fromStdString(_langHelper::to_string(
+                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
     dat->write_set(true, ui->arch->currentIndex(),
                    ui->typeBios->currentIndex(),
@@ -260,6 +264,9 @@ void Window::on_buttonInstallInstall_clicked()
         ui->statusbar->showMessage("Готово");
     });
     auto res = QtConcurrent::run([&](){ // auto - QFuture
+        connect(dat, &install::abort, [](QString mes){
+
+        });
         qDebug() << "Start install";
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
         CHECK_ABORT();

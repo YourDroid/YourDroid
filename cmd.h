@@ -4,6 +4,8 @@
 #include <QString>
 #include <QPair>
 
+#define CMD_ASSERT(expr) ABORT(expr.second);
+
 class cmd {
 //    QString _command;
 //    QString _output;

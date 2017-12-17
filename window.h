@@ -28,6 +28,8 @@ public:
 
     void setLabelSetInfo();
 
+    void retranslateUi(QString);
+
     ~Window();
 
 signals:

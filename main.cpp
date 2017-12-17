@@ -19,11 +19,9 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
-//    freopen("err.txt", "w", stderr);
-//    freopen("err.txt", "w", stdout);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
-#ifdef Q_OS_LINUX
+#if LINUX
     if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
         system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
