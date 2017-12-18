@@ -195,8 +195,8 @@ void Window::on_buttonInstallInstall_clicked()
     ui->progressInstall->setValue(0);
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
-    ui->statusbar->showMessage("Проверка");
-    qDebug() << "Checking data for install...";
+    ui->statusbar->showMessage(tr("Checking"));
+    qDebug() << tr("Checking data for install...");
     QString image, dir, name;
     bool exit = false;
     if((image = ui->editImageFromDisk->text()).length() == 0) {
@@ -255,18 +255,19 @@ void Window::on_buttonInstallInstall_clicked()
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
-    insDat->eraseAbort();
-#define CHECK_ABORT() if(insDat->getAbort()) { LOG(2, "Fatal error while installing. Aborting.", "Произошла критическая ошибка при установке!"); return; }
+#define CHECK_ABORT() if(abort) return;
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, [=](){
         ui->returnInstallButton->setEnabled(true);
         ui->buttonInstallInstall->setEnabled(true);
         ui->statusbar->showMessage("Готово");
     });
-    auto res = QtConcurrent::run([&](){ // auto - QFuture
-        connect(dat, &install::abort, [](QString mes){
-
-        });
+    bool abort = false;
+    connect(insDat, &install::abort, [&](QString mes){
+        abort = true;
+        //qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+    });
+    auto res = QtConcurrent::run([=](){ // auto - QFuture
         qDebug() << "Start install";
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
         CHECK_ABORT();

@@ -178,7 +178,7 @@ bool install::isInstalledGummi() {
 void install::installGummi() {
     qDebug() << "Installing gummiboot...";
 #define CHECK_ABORT() if(addNew.first)  { \
-    LOG(2, qApp->translate("log", "Fatal Error: ") + addNew.second, "Критическая ошибка: " + addNew.second); ABORT(); }
+    emit abort(addNew.second); }
 
 #define execAbort(command) addNew = cmd::exec(command); CHECK_ABORT();
 
@@ -256,12 +256,13 @@ void install::grubConfigure(QString way) {
     place = place.left(1);
 #endif
     QFile _config(way);
-    if(!_config.open(QIODevice::WriteOnly)) ABORT();
+    if(!_config.open(QIODevice::WriteOnly)) emit abort(QObject::tr("Could not open the config-file"));
     QTextStream config(&_config);
     config << (QString("menuentry '") + place + QString("' --class android-x86 {\n") +
            QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
-           qApp->translate("log", "\tlinux ") + place + qApp->translate("log", "/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
-           qApp->translate("log", "\tinitrd ") + place + qApp->translate("log", "/initrd.img\n") + "}\n");
+           QString("\tlinux ") + place +
+               QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
+           QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
     _config.close();
 }
 

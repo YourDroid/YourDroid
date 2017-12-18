@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="install.cpp" line="259"/>
+        <source>Could not open the config-file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="log.cpp" line="67"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="log.cpp" line="70"/>
+        <source>Warning!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="log.cpp" line="73"/>
+        <source>Error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="log.cpp" line="76"/>
+        <source>Fatal error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Window</name>
     <message>
         <location filename="window.ui" line="59"/>
@@ -51,17 +79,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.ui" line="241"/>
-        <source>Language/Язык</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="window.ui" line="267"/>
         <source>Output debugging console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.ui" line="309"/>
         <location filename="window.ui" line="541"/>
         <location filename="window.ui" line="674"/>
         <source>To main menu</source>
@@ -70,6 +92,11 @@
     <message>
         <location filename="window.ui" line="331"/>
         <source>Restore defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="309"/>
+        <source>Return</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -124,9 +151,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.ui" line="481"/>
-        <location filename="window.ui" line="518"/>
-        <source>...</source>
+        <location filename="window.ui" line="725"/>
+        <source>Return to main menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -164,6 +190,18 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Description:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;The open-source program installing android to pc(android x86)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Authors:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Profi_GMan&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Speciality thanks:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Описание:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Программа с открытым исходным кодом для установки порта андроида на пк, android x86&lt;/span&gt;&lt;/p&gt;
@@ -172,22 +210,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Profi_GMan&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.ui" line="725"/>
-        <source>Вернуться в меню</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.cpp" line="53"/>
-        <source>Версия: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.cpp" line="110"/>
+        <location filename="window.cpp" line="79"/>
         <source>Version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="198"/>
+        <source>Checking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="199"/>
+        <source>Checking data for install...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -390,16 +428,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="172"/>
-        <source>bcdedit /enum firmware &gt; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="181"/>
-        <source>Fatal Error: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="install.cpp" line="192"/>
         <source>/set </source>
         <translation type="unfinished"></translation>
@@ -435,155 +463,99 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="250"/>
-        <location filename="install.cpp" line="380"/>
+        <location filename="install.cpp" line="299"/>
+        <source>Unpacking </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="383"/>
         <source>/etc/grub.d/android/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="262"/>
-        <source>menuentry &apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="262"/>
-        <source>&apos; --class android-x86 {
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="install.cpp" line="263"/>
-        <source>	search --file --no-floppy --set=root </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="263"/>
-        <source>/kernel
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="264"/>
         <source>	linux </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="264"/>
+        <location filename="install.cpp" line="263"/>
         <source>/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="265"/>
+        <location filename="install.cpp" line="264"/>
         <source>	initrd </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="265"/>
+        <location filename="install.cpp" line="264"/>
         <source>/initrd.img
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="278"/>
+        <location filename="install.cpp" line="281"/>
         <source>Ошибка при разархивировании: #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="296"/>
-        <source>Распаковывается </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="312"/>
-        <source>chmod 777 </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="313"/>
-        <source>/data/make_ext4fs/make_ext4fs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="313"/>
-        <location filename="install.cpp" line="316"/>
-        <source> -l </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="314"/>
-        <location filename="install.cpp" line="317"/>
-        <source>M -a data </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="314"/>
-        <location filename="install.cpp" line="317"/>
-        <source>/data.img </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="316"/>
-        <source>/data/make_ext4fs/make_ext4fs.exe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="357"/>
+        <location filename="install.cpp" line="360"/>
         <source>Delete </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="358"/>
+        <location filename="install.cpp" line="361"/>
         <source>Удаление </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="392"/>
+        <location filename="install.cpp" line="395"/>
         <source>Config deleted </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="log.cpp" line="17"/>
+        <location filename="log.cpp" line="21"/>
         <source>.txt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="40"/>
+        <location filename="main.cpp" line="36"/>
         <source>Work dir is </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="47"/>
+        <location filename="main.cpp" line="43"/>
         <source>Window exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="49"/>
+        <location filename="main.cpp" line="45"/>
         <source>Window closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="52"/>
+        <location filename="main.cpp" line="48"/>
         <source>Exiting... Returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="162"/>
+        <location filename="window.cpp" line="166"/>
         <source>Choose image for install: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="185"/>
+        <location filename="window.cpp" line="189"/>
         <source>Choose dir for install: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="292"/>
+        <location filename="window.cpp" line="300"/>
         <source>Choose </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="336"/>
+        <location filename="window.cpp" line="344"/>
         <source>Deleting </source>
         <translation type="unfinished"></translation>
     </message>

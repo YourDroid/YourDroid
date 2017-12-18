@@ -9,9 +9,13 @@
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
 void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &message/*, QString rusMess*/) {
+    bool window = false;
     QString mess = message;
     mess.remove('\"');
-    QString rusMess = "NULL";
+    if(mess[0] == '^') {
+        window = true;
+        mess.remove(0, 1);
+    }
     using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
     static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + qApp->translate("log", ".txt"));
@@ -26,6 +30,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     case 0: typeName = "DEBUG:"; break;
     case 1: typeName = "WARNING:"; break;
     case 2: typeName = "ERROR:"; break;
+    case QtFatalMsg: typeName = "FATAL ERROR:"; break;
     }
 #if OS == 0
     QString color;
@@ -51,22 +56,26 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     case 0: _color = Qt::white; break;
     case 1: _color = Qt::yellow; break;
     case 2: _color = Qt::red; break;
+    case QtFatalMsg: _color = Qt::red; break;
     }
     con->output(typeName + QString(' ') + mess, _color);
 #if OS == 1
 //    system("color 00");
 #endif
-    if(rusMess != "NULL") {
+    if(window) {
         switch(level) {
-        case 0: QMessageBox::information(0, "Информация",
-                                         rusMess,
+        case QtDebugMsg: QMessageBox::information(0, QObject::tr("Information"),
+                                         mess,
                                          QMessageBox::Ok); break;
-        case 1: QMessageBox::warning(0, "Внимание!",
-                                     rusMess,
+        case QtWarningMsg: QMessageBox::warning(0, QObject::tr("Warning!"),
+                                     mess,
                                      QMessageBox::Ok); break;
-        case 2: QMessageBox::critical(0, "Ошибка!",
-                                      rusMess,
+        case QtCriticalMsg: QMessageBox::critical(0, QObject::tr("Error!"),
+                                      mess,
                                       QMessageBox::Ok); break;
+        case QtFatalMsg: QMessageBox::critical(0, QObject::tr("Fatal error!"),
+                                               mess,
+                                               QMessageBox::Ok); qApp->exit(-1);
         }
     }
 }

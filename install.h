@@ -37,9 +37,8 @@ class install : public QObject {
     QProgressBar *progressBarDelete;
     QStatusBar *statusBar;
     QVector<int> deletedSys;
-    bool abort = 0;
     QString abortMes;
-public signals:
+signals:
     void abort(QString);
 public:
     install(options *d) : dat(d) {}
@@ -47,8 +46,6 @@ public:
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
-    bool getAbort() { return abort; }
-    void eraseAbort() { abort = 0; }
     void addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n);
     void read();
     void write();
