@@ -38,8 +38,11 @@ class install : public QObject {
     QStatusBar *statusBar;
     QVector<int> deletedSys;
     QString abortMes;
+    QString mountPoint;
 signals:
     void abort(QString);
+    void progressChange(qint64);
+    void progressRange(int);
 public:
     install(options *d) : dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
@@ -51,7 +54,8 @@ public:
     void write();
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
-    void mountImage(QString);
+    QString mountImage(QString);
+    void unmountImage();
     void unpackSystem();
     void registerBootloader();
     void registerGrub2();

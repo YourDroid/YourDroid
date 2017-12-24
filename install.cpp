@@ -256,7 +256,10 @@ void install::grubConfigure(QString way) {
     place = place.left(1);
 #endif
     QFile _config(way);
-    if(!_config.open(QIODevice::WriteOnly)) emit abort(QObject::tr("Could not open the config-file"));
+    if(!_config.open(QIODevice::WriteOnly)) {
+        emit abort(QObject::tr("Could not open the config-file"));
+        return;
+    }
     QTextStream config(&_config);
     config << (QString("menuentry '") + place + QString("' --class android-x86 {\n") +
            QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
@@ -266,18 +269,55 @@ void install::grubConfigure(QString way) {
     _config.close();
 }
 
-void install::mountImage(QString image) {
+QString install::mountImage(QString image) {
+    mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
+            QTime::currentTime().toString("hhmmss");
+//    while(!QDir().exists(path)) {
+//        path += QString::number(rand());
+//    }
+    if(!QDir().mkdir(mountPoint)) {
+        emit abort(QObject::tr("Cannot make dir for image's mount point!"));
+        return "";
+    }
+#if LINUX
+    QString command = QString("mount -o loop %1 %2").arg(image, mountPoint);
+#elif WIN
+    QString command = qApp->applicationDirPath() + "/data/dt.cmd";
+#endif
+    auto expr = cmd::exec(command);
+    if(expr.first) {
+        emit abort(QObject::tr("Cannot mount image: %1").arg(expr.second));
+        return "";
+    }
+    return mountPoint;
+}
 
+void install::unmountImage() {
+#if LINUX
+    QString command = QString("unmount %1").arg(mountPoint);
+#elif WIN
+    QString command = qApp->applicationDirPath() + "/data/dt_unmount.cmd";
+#endif
+    auto expr = cmd::exec(command);
+    if(expr.first) {
+        qWarning() << QObject::tr("Cannot unmount image: %1").arg(expr.second);
+        return;
+    }
+    if(!QDir().rmdir(mountPoint)) qWarning() << QObject::tr("Cannot delete image's mount point");
 }
 
 void install::unpackSystem() {
+    QString systemFile;
+    if(QFile(mountPoint + "/system.img").exists()) systemFile = "system.sfs";
+    else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "system.img";
+    emit progressRange();
     int rc = 0;
     auto checkRc = [](int rc) -> void {
         QString error;
         if(rc <= 0 && rc != -1026) {
-#if OS == 0
+#if LINUX
             error = bk_get_error_string(rc);
-#elif OS == 1
+#elif WIN
 #endif
             LOG(2, error, qApp->translate("log", "Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
         }

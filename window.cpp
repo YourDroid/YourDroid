@@ -198,54 +198,85 @@ void Window::on_buttonInstallInstall_clicked()
     ui->statusbar->showMessage(tr("Checking"));
     qDebug() << tr("Checking data for install...");
     QString image, dir, name;
-    bool exit = false;
-    if((image = ui->editImageFromDisk->text()).length() == 0) {
-        LOG(2, "Did not choose image", "Выберите образ для установки!");
-        exit = true;
-    }
-    else if(!QFile::exists(image)) {
-        LOG(2, "Choosen image does not exist", "Выбранный образ не существует!");
-        exit = true;
-    }
-    else if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        LOG(2, "Did not choose folder", "Выберите папку для установки!");
-        exit = true;
-    }
-    else if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-        LOG(2, "Choosen folder is root", "Нельзя устанавливать в корень!");
-        exit = true;
-    }
-    else if(!ui->editDirForInstall->hasAcceptableInput()) {
-        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу и пробелы!");
-        exit = true;
-    }
-    else if(!(new QDir())->exists(dir)) {
-        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
-        exit = true;
-    }
-    else if((name = ui->editName->text()).length() == 0) {
-        LOG(2, "Did not fill in the name", "Напишите имя!");
-        exit = true;
-    }
-    else if((name = ui->editSizeDataInstall->text()).length() == 0) {
-        LOG(2, "Did not fill in the size of data.img", "Напишите размер data.img!");
-        exit = true;
-    }
-    else for(int i = 0; i < insDat->systemsVector().length(); i++) {
-        if(ui->editName->text() == (insDat->systemsVector())[i].name) {
-            LOG(2, "The system with written name already exists", "Уже существует система с таким именем!");
-            exit = true;
-        }
-    }
-    if(exit) {
+    auto end = [=](){
         ui->statusbar->showMessage("Готово");
         ui->returnInstallButton->setEnabled(true);
         ui->buttonInstallInstall->setEnabled(true);
+    };
+    if((image = ui->editImageFromDisk->text()).length() == 0) {
+        LOG(2, "Did not choose image", "Выберите образ для установки!");
+        end();
+        return;
+    }
+    if(!QFile::exists(image)) {
+        LOG(2, "Choosen image does not exist", "Выбранный образ не существует!");
+        end();
+        return;
+    }
+    if((dir = ui->editDirForInstall->text()).length() == 0 ) {
+        LOG(2, "Did not choose folder", "Выберите папку для установки!");
+        end();
+        return;
+    }
+    if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
+        LOG(2, "Choosen folder is root", "Нельзя устанавливать в корень!");
+        end();
+        return;
+    }
+    if(!ui->editDirForInstall->hasAcceptableInput()) {
+        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу и пробелы!");
+        end();
+        return;
+    }
+    if(!(new QDir())->exists(dir)) {
+        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
+        end();
+        return;
+    }
+    if((name = ui->editName->text()).length() == 0) {
+        LOG(2, "Did not fill in the name", "Напишите имя!");
+        end();
+        return;
+    }
+    if((name = ui->editSizeDataInstall->text()).length() == 0) {
+        LOG(2, "Did not fill in the size of data.img", "Напишите размер data.img!");
+        end();
+        return;
+    }
+    for(int i = 0; i < insDat->systemsVector().length(); i++) {
+        if(ui->editName->text() == (insDat->systemsVector())[i].name) {
+            qCritical() << QObject::tr("^The system with written name already exists");
+            end();
+            return;
+        }
+    }
+    bool abort = false;
+    connect(insDat, &install::abort, [&](QString mes){
+        abort = true;
+        qCritical() << QObject::tr("^Could not mount image: %1").arg(mes);
+    });
+    QString mountPoint = insDat->mountImage(ui->editImageFromDisk->text());
+    if(abort) {
+        if(!QDir().rmdir(mountPoint)) qWarning() << QObject::tr("Cannot delete image's mount point");
+        end();
+        return;
+    }
+    disconnect(insDat, &install::abort, [&](QString mes){
+        abort = true;
+        qCritical() << QObject::tr("^Could not mount image: %1").arg(mes);
+    });
+
+    if(!(QFile(mountPoint + "/system.img").exists() && QFile(mountPoint + "/system.sfs").exists()) ||
+            !QFile(mountPoint + "/kernel").exists() || QFile(mountPoint + "/initrd.img").exists() ||
+            !QFile(mountPoint + "/ramdisk.img").exists()) {
+        qCritical() << QObject::tr("^Image has not needed files");
+        end();
         return;
     }
 
-    qDebug() << "Data for install valid";
-    ui->statusbar->showMessage("Указаные длZ установки сведения правильны");
+    qDebug() << QObject::tr("Data for install valid");
+    ui->statusbar->showMessage(QObject::tr("Data for install valid"));
+    return;
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
@@ -257,16 +288,33 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
 #define CHECK_ABORT() if(abort) return;
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
-    connect(resMonitor, &QFutureWatcher<void>::finished, [=](){
-        ui->returnInstallButton->setEnabled(true);
-        ui->buttonInstallInstall->setEnabled(true);
-        ui->statusbar->showMessage("Готово");
+    connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
+        connect(insDat, &install::abort, [&](QString mes){
+            abort = true;
+            qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+        });
+        end();
+        ui->progressInstall->setValue(ui->progressInstall->maximum());
     });
-    bool abort = false;
+    abort = false;
+
     connect(insDat, &install::abort, [&](QString mes){
         abort = true;
-        //qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+        qCritical() << tr("^Fatal error while installing: %1").arg(mes);
     });
+
+    int stepProgress = 0;
+    connect(insDat, &install::progressRange, [&](int range){
+        ui->progressInstall->setRange(0, range + (range / 3));
+        stepProgress = (range / 6);
+    });
+
+    connect(this, &Window::progressAddStep, [&](){
+        ui->progressInstall->setValue(ui->progressInstall->value() + stepProgress);
+    });
+
+    connect(insDat, &install::progressChange, [&](int progress){ ui->progressInstall->setValue(progress); });
+
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         qDebug() << "Start install";
         insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
@@ -275,15 +323,20 @@ void Window::on_buttonInstallInstall_clicked()
         CHECK_ABORT();
         insDat->unpackSystem();
         CHECK_ABORT();
-        qDebug() << "Creating data.img...";
-        emit sendMesToStausbar("Создание data.img");
+        qDebug() << tr("Creating data.img...");
+        emit sendMesToStausbar(tr("Creating data.img..."));
+        emit progressAddStep();
         insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
-        qDebug() << "Installing bootloader...";
-        emit sendMesToStausbar("Установка загрузчика");
+        qDebug() << tr("Installing bootloader...");
+        emit sendMesToStausbar(tr("Installing bootloader..."));
+        emit progressAddStep();
         insDat->registerBootloader();
         CHECK_ABORT();
-		qDebug() << "Finish install";
+        emit sendMesToStausbar(tr("Unmounting image..."));
+        emit progressAddStep();
+        insDat->unmountImage();
+        qDebug() << tr("Finish install");
     });
     resMonitor->setFuture(res);
 #undef CHECK_ABORT

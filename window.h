@@ -37,6 +37,8 @@ signals:
 
     void sendMesToStausbar(QString);
 
+    void progressAddStep();
+
 public slots:
     void consoleHided();
 

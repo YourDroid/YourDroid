@@ -81,7 +81,6 @@ DEFINES += "LINUX=\"defined(Q_OS_LINUX)\"" "WIN=\"defined(Q_OS_WIN)\""
 #QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
 #QMAKE_TARGET_COMPANY = YourDroid-Group
 unix:DEFINES += "OS=0"
-#"linux=Q_OS_UNIX" "windows=Q_OS_WIN"
 
 win32 {
 DEFINES += "OS=1"
