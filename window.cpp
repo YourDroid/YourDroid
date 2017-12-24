@@ -251,9 +251,10 @@ void Window::on_buttonInstallInstall_clicked()
         }
     }
     bool abort = false;
+    QString errorMes = QObject::tr("^Could not mount image: %1");
     connect(insDat, &install::abort, [&](QString mes){
         abort = true;
-        qCritical() << QObject::tr("^Could not mount image: %1").arg(mes);
+        qCritical() << errorMes.arg(mes);
     });
     QString mountPoint = insDat->mountImage(ui->editImageFromDisk->text());
     if(abort) {
@@ -261,10 +262,6 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    disconnect(insDat, &install::abort, [&](QString mes){
-        abort = true;
-        qCritical() << QObject::tr("^Could not mount image: %1").arg(mes);
-    });
 
     if(!(QFile(mountPoint + "/system.img").exists() && QFile(mountPoint + "/system.sfs").exists()) ||
             !QFile(mountPoint + "/kernel").exists() || QFile(mountPoint + "/initrd.img").exists() ||
@@ -289,19 +286,12 @@ void Window::on_buttonInstallInstall_clicked()
 #define CHECK_ABORT() if(abort) return;
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
-        connect(insDat, &install::abort, [&](QString mes){
-            abort = true;
-            qCritical() << tr("^Fatal error while installing: %1").arg(mes);
-        });
         end();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
     });
     abort = false;
 
-    connect(insDat, &install::abort, [&](QString mes){
-        abort = true;
-        qCritical() << tr("^Fatal error while installing: %1").arg(mes);
-    });
+    errorMes = tr("^Fatal error while installing: %1");
 
     int stepProgress = 0;
     connect(insDat, &install::progressRange, [&](int range){
