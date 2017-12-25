@@ -255,6 +255,7 @@ void Window::on_buttonInstallInstall_clicked()
     connect(insDat, &install::abort, [&](QString mes){
         abort = true;
         qCritical() << errorMes.arg(mes);
+        insDat->unmountImage();
     });
     QString mountPoint = insDat->mountImage(ui->editImageFromDisk->text());
     if(abort) {
