@@ -38,11 +38,13 @@ extern const QString &WORK_DIR;
 class log {
     static console *con;
 public:
-    static console *init(QWidget *widget = 0) { con = new console(widget); con->setWindowTitle("YourDroid"); return con; }
+    static console *init();
     static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
     static void messagenew(QtMsgType, const QMessageLogContext&, const QString&/*, QString = "NULL"*/);
     static void message(int level, QString file, int line, QString mes, QString = "NULL") {  }
 };
+
+static console *con;
 
 #endif // LOG_H
 

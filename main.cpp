@@ -18,6 +18,7 @@ console *log::con;
 
 int main(int argc, char *argv[])
 {
+    std::freopen("./log/stderr.txt", "a+", stderr);
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
     if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
         system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
-    console *widget = log::init(0);
+    console *widget = log::init();
     options set;
     bool readSet = set.read_set(false);
     QTranslator translator;

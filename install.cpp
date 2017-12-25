@@ -294,7 +294,7 @@ QString install::mountImage(QString image) {
 
 void install::unmountImage() {
 #if LINUX
-    QString command = QString("unmount %1").arg(mountPoint);
+    QString command = QString("umount %1").arg(mountPoint);
 #elif WIN
     QString command = qApp->applicationDirPath() + "/data/dt_unmount.cmd";
 #endif
@@ -304,6 +304,19 @@ void install::unmountImage() {
         return;
     }
     if(!QDir().rmdir(mountPoint)) qWarning() << QObject::tr("Cannot delete image's mount point");
+}
+
+QString install::obsolutePath(QString path) {
+    auto expr = cmd::exec("grep UUID /etc/fstab | tr -s \" \" \" \"| cut -d \" \" -f 2 | sed -n '/\/\w/p'");
+    QString fstab = expr.second, temp;
+    while(fstab.count('\n') != 0) {
+        temp = fstab.left(fstab.indexOf('\n') + 1);
+        fstab.remove(0, fstab.indexOf('\n') + 1);
+        temp = temp.remove('\n');
+        qDebug() << temp;
+        if(path.contains(temp)) path.remove(temp);
+    }
+    return path;
 }
 
 void install::unpackSystem() {

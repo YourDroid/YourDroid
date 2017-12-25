@@ -57,6 +57,7 @@ public:
     QString mountImage(QString);
     void unmountImage();
     void unpackSystem();
+    QString obsolutePath(QString);
     void registerBootloader();
     void registerGrub2();
     void grubConfigure(QString);

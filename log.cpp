@@ -8,6 +8,12 @@
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
+console *log::init() {
+    con = new console;
+    con->setWindowTitle("YourDroid");
+    return con;
+}
+
 void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &message/*, QString rusMess*/) {
     bool window = false;
     QString mess = message;
@@ -18,11 +24,13 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     }
     using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
-    static QFile preLog(WORK_DIR + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + qApp->translate("log", ".txt"));
+    static QString logName = qApp->applicationDirPath() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
+    static QFile preLog(logName);
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
         logFile << "### Created by YourDroid " << VERSION << " ###" << endl << endl;
+        std::freopen(logName.toStdString().c_str(), "a+", stderr);
     }
     //static ofstream logFile("log.txt");
     QString typeName;

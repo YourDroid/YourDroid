@@ -262,6 +262,9 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
+    insDat->obsolutePath(ui->editDirForInstall->text());
+    qDebug() << "end";
+    return;
 
     if(!(QFile(mountPoint + "/system.img").exists() && QFile(mountPoint + "/system.sfs").exists()) ||
             !QFile(mountPoint + "/kernel").exists() || QFile(mountPoint + "/initrd.img").exists() ||
