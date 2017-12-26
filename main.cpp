@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
     app.installTranslator(&translator);
     if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
-    cmd::exec("start cmd.exe");
+    cmd::exec("help");
     qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
     install ins(&set);
     ins.read();

@@ -13,7 +13,6 @@
 QPair<int, QString> cmd::exec(QString command) {
     qDebug() << qApp->translate("log", "Executing ") + command;
     QString _output = "";
-    int _res = 0;
 #define ret() if(_res) { \
     qCritical() << _output; \
     qCritical() << QObject::tr("Error while executing!") << QObject::tr(" Returned value is ") << _res; \
@@ -39,14 +38,16 @@ return QPair<int, QString>(_res, _output);
 //        tempCmd.close();
 //    }
 #if LINUX
-//    FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
-//    char buffer[128];
-//    while(!feof(trm)) {
-//         if(fgets(buffer, 128, trm) != NULL)
-//             _output += buffer;
-//    }
-//    _res = pclose(trm);
+    int _res = 22;
+    FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
+    char buffer[128];
+    while(!feof(trm)) {
+         if(fgets(buffer, 128, trm) != NULL)
+             _output += buffer;
+    }
+    _res = pclose(trm);
 #elif WIN
+    DWORD _res = 22;
     QString strResult;
        HANDLE hPipeRead, hPipeWrite;
 
@@ -56,9 +57,10 @@ return QPair<int, QString>(_res, _output);
 
        // Create a pipe to get results from child's stdout.
        if ( !CreatePipe(&hPipeRead, &hPipeWrite, &saAttr, 0) ) {
-           qCritical() << QObject::tr("Cannot create stream");
+           qCritical() << QObject::tr("Cannot create thread");
            ret();
        }
+       qDebug() << QObject::tr("Thread successfully created");
 
        STARTUPINFO si = { sizeof(STARTUPINFO) };
        si.dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
@@ -67,18 +69,18 @@ return QPair<int, QString>(_res, _output);
        si.wShowWindow = SW_HIDE;       // Prevents cmd window from flashing. Requires STARTF_USESHOWWINDOW in dwFlags.
 
        PROCESS_INFORMATION pi  = { 0 };
-       qDebug() << 1;
 
        BOOL fSuccess = CreateProcessW( NULL, (LPWSTR)command.toStdWString().c_str(), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi);
-       qDebug() << (bool)fSuccess;
        if (! fSuccess)
        {
            CloseHandle( hPipeWrite );
            CloseHandle( hPipeRead );
+           qCritical() << QObject::tr("Cannot create procces");
            ret();
        }
-       qDebug() << 2;
+       qDebug() << QObject::tr("Proccess successfully created");
 
+       int i = 0;
        bool bProcessEnded = false;
        for (; !bProcessEnded ;)
        {
@@ -88,6 +90,7 @@ return QPair<int, QString>(_res, _output);
            // Even if process exited - we continue reading, if there is some data available over pipe.
            for (;;)
            {
+               i++;
                char buf[1024];
                DWORD dwRead = 0;
                DWORD dwAvail = 0;
@@ -98,7 +101,8 @@ return QPair<int, QString>(_res, _output);
                if (!dwAvail) // no data available, return
                    break;
 
-               if (!::ReadFile(hPipeRead, buf, (!(dwAvail < sizeof(buf) - 1) ? sizeof(buf) - 1 : dwAvail), &dwRead, NULL) || !dwRead)
+               DWORD temp = sizeof(buf) - 1;
+               if (!::ReadFile(hPipeRead, buf, qMin(temp, dwAvail), &dwRead, NULL) || !dwRead)
                    // error, the child process might ended
                    break;
 
@@ -106,15 +110,17 @@ return QPair<int, QString>(_res, _output);
                strResult += buf;
            }
        } //for
-       qDebug() << 3;
+       qDebug() << QObject::tr("Reading finished by %1 steps").arg(i);
 
+    if(GetExitCodeProcess(pi.hProcess, &_res) == 0) _res = GetLastError();
        CloseHandle( hPipeWrite );
        CloseHandle( hPipeRead );
        CloseHandle( pi.hProcess );
        CloseHandle( pi.hThread );
+    _output = strResult;
 
-
-    //GetExitCodeProcess (pi.hProcess, &pret);
+    //DWORD result;
+//    _res = *result;
 
 //    int lsOutPipe[2];
 //    pipe(lsOutPipe);
@@ -150,7 +156,7 @@ return QPair<int, QString>(_res, _output);
 //      if (bytesRead > 0) _output += buffer;
 //    } while (bytesRead > 0);
 #endif
-       qDebug() << 4;
+    qDebug() << QObject::tr("Executing ended");
     ret();
 }
 
