@@ -1,0 +1,14 @@
+INPUT(
+./debug\data.o
+./debug\log.o
+./debug\main.o
+./debug\window.o
+./debug\install.o
+./debug\cmd.o
+./debug\console.o
+./debug\qrc_resource.o
+./debug\moc_data.o
+./debug\moc_window.o
+./debug\moc_install.o
+./debug\moc_console.o
+);

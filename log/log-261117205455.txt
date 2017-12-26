@@ -1,0 +1,26 @@
+### Created by YourDroid 0.0.5 alpha ###
+
+TIME: 20:54:55 FILE: main.cpp LINE: 19 DEBUG: Work dir is C:/Users/Profi/Documents/YourDroid
+TIME: 20:54:55 FILE: install.cpp LINE: 64 DEBUG: Reading install settings...
+TIME: 20:54:55 FILE: install.cpp LINE: 119 DEBUG: Systems read succesfull
+TIME: 20:54:55 FILE: data.cpp LINE: 35 DEBUG: Reading settings...
+TIME: 20:54:55 FILE: data.cpp LINE: 58 DEBUG: Settings does not exist or settings restoring default
+TIME: 20:54:55 FILE: data.cpp LINE: 71 DEBUG: Defining type bios...
+TIME: 20:54:55 FILE: data.cpp LINE: 81 DEBUG: a:\efi exists
+TIME: 20:54:55 FILE: data.cpp LINE: 83 DEBUG: a:\program files does not exist
+TIME: 20:54:55 FILE: data.cpp LINE: 91 DEBUG: Defining architecture...
+TIME: 20:54:55 FILE: data.cpp LINE: 105 DEBUG: Processor type is 
+TIME: 20:54:55 FILE: data.cpp LINE: 112 DEBUG: Defining windows version
+TIME: 20:54:55 FILE: data.cpp LINE: 113 DEBUG: c:\users does exists
+TIME: 20:54:55 FILE: window.cpp LINE: 16 ERROR: This PC does not supported
+TIME: 20:54:56 FILE: window.cpp LINE: 21 DEBUG: Start window
+TIME: 20:54:56 FILE: install.cpp LINE: 368 DEBUG: Exec progress and status bars
+TIME: 20:54:56 FILE: main.cpp LINE: 24 DEBUG: Window exec
+TIME: 20:54:58 FILE: data.cpp LINE: 11 DEBUG: Writing settings...
+TIME: 20:54:58 FILE: data.cpp LINE: 31 DEBUG: Settings wrote succesfull
+TIME: 20:54:59 FILE: window.cpp LINE: 253 DEBUG: Choose Gummiboot
+TIME: 20:55:03 FILE: window.cpp LINE: 128 DEBUG: Choose image for install: C:/Users/Profi/Downloads/Новый текстовый документ.iso
+TIME: 20:55:05 FILE: window.cpp LINE: 151 DEBUG: Choose dir for install: C:/Users/Profi/Downloads
+TIME: 20:55:10 FILE: window.cpp LINE: 161 DEBUG: Checking data for install...
+TIME: 20:55:10 FILE: window.cpp LINE: 209 DEBUG: Data for install valid
+TIME: 20:55:10 FILE: window.cpp LINE: 225 DEBUG: Creating data.img...

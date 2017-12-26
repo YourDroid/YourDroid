@@ -2,11 +2,27 @@
 #include "log.h"
 #include <QFile>
 #include <stdlib.h>
+#include <QtGlobal>
+#if WIN
+#include <Processthreadsapi.h>
+#include <winbase.h>
+#include <TCHAR.H>
+#include <w32api.h>
+#endif
 
 QPair<int, QString> cmd::exec(QString command) {
     qDebug() << qApp->translate("log", "Executing ") + command;
     QString _output = "";
-    int _res;
+    int _res = 0;
+#define ret() if(_res) { \
+    qCritical() << _output; \
+    qCritical() << QObject::tr("Error while executing!") << QObject::tr(" Returned value is ") << _res; \
+} \
+else { \
+    qDebug() << _output; \
+    qDebug() << QObject::tr("Command executed succesful") << QObject::tr(" Returned value is ") << _res; \
+} \
+return QPair<int, QString>(_res, _output);
 //#if OS == 1
 //    QString home = getenv("USERPROFILE");
 //    QString strcmd = command + qApp->translate("log", ">") + home + qApp->translate("log", "\\temp_cmd 2>&1");
@@ -23,42 +39,119 @@ QPair<int, QString> cmd::exec(QString command) {
 //        tempCmd.close();
 //    }
 #if LINUX
-    FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
-    char buffer[128];
-    while(!feof(trm)) {
-         if(fgets(buffer, 128, trm) != NULL)
-             _output += buffer;
-    }
-    _res = pclose(trm);
+//    FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
+//    char buffer[128];
+//    while(!feof(trm)) {
+//         if(fgets(buffer, 128, trm) != NULL)
+//             _output += buffer;
+//    }
+//    _res = pclose(trm);
 #elif WIN
-    PROCESS_INFORMATION p_info;
-    STARTUPINFO s_info;
-    LPSTR cmdline, programpath;
+    QString strResult;
+       HANDLE hPipeRead, hPipeWrite;
 
-    memset(&s_info, 0, sizeof(s_info));
-    memset(&p_info, 0, sizeof(p_info));
-    s_info.cb = sizeof(s_info);
+       SECURITY_ATTRIBUTES saAttr = { sizeof(SECURITY_ATTRIBUTES) };
+       saAttr.bInheritHandle = TRUE;   //Pipe handles are inherited by child process.
+       saAttr.lpSecurityDescriptor = NULL;
 
-    cmdline     = _tcsdup(TEXT(cmd));
-    programpath = _tcsdup(TEXT(cmd));
+       // Create a pipe to get results from child's stdout.
+       if ( !CreatePipe(&hPipeRead, &hPipeWrite, &saAttr, 0) ) {
+           qCritical() << QObject::tr("Cannot create stream");
+           ret();
+       }
 
-    _res = CreateProcess(programpath, cmdline, NULL, NULL, 0, 0, NULL, NULL, &s_info, &p_info);
-    if(_res)
-    {
-      WaitForSingleObject(p_info.hProcess, INFINITE);
-      CloseHandle(p_info.hProcess);
-      CloseHandle(p_info.hThread);
-    }
+       STARTUPINFO si = { sizeof(STARTUPINFO) };
+       si.dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+       si.hStdOutput  = hPipeWrite;
+       si.hStdError   = hPipeWrite;
+       si.wShowWindow = SW_HIDE;       // Prevents cmd window from flashing. Requires STARTF_USESHOWWINDOW in dwFlags.
+
+       PROCESS_INFORMATION pi  = { 0 };
+       qDebug() << 1;
+
+       BOOL fSuccess = CreateProcessW( NULL, (LPWSTR)command.toStdWString().c_str(), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi);
+       qDebug() << (bool)fSuccess;
+       if (! fSuccess)
+       {
+           CloseHandle( hPipeWrite );
+           CloseHandle( hPipeRead );
+           ret();
+       }
+       qDebug() << 2;
+
+       bool bProcessEnded = false;
+       for (; !bProcessEnded ;)
+       {
+           // Give some timeslice (50ms), so we won't waste 100% cpu.
+           bProcessEnded = WaitForSingleObject( pi.hProcess, 50) == WAIT_OBJECT_0;
+
+           // Even if process exited - we continue reading, if there is some data available over pipe.
+           for (;;)
+           {
+               char buf[1024];
+               DWORD dwRead = 0;
+               DWORD dwAvail = 0;
+
+               if (!::PeekNamedPipe(hPipeRead, NULL, 0, NULL, &dwAvail, NULL))
+                   break;
+
+               if (!dwAvail) // no data available, return
+                   break;
+
+               if (!::ReadFile(hPipeRead, buf, (!(dwAvail < sizeof(buf) - 1) ? sizeof(buf) - 1 : dwAvail), &dwRead, NULL) || !dwRead)
+                   // error, the child process might ended
+                   break;
+
+               buf[dwRead] = 0;
+               strResult += buf;
+           }
+       } //for
+       qDebug() << 3;
+
+       CloseHandle( hPipeWrite );
+       CloseHandle( hPipeRead );
+       CloseHandle( pi.hProcess );
+       CloseHandle( pi.hThread );
+
+
+    //GetExitCodeProcess (pi.hProcess, &pret);
+
+//    int lsOutPipe[2];
+//    pipe(lsOutPipe);
+
+//    //Fork to two processes.
+//    pid_t lsPid=fork();
+
+//    //Check if I'm the child or parent.
+//    if ( 0 == lsPid )
+//    {//I'm the child.
+//      //Close the read end of the pipe.
+//      close(lsOutPipe[0]);
+
+//      //Make the pipe be my stdout.
+//      dup2(lsOutPipe[1],STDOUT_FILENO);
+
+//      //Replace my self with ls (using one of the exec() functions):
+//      exec((command + QString(" 2>&1")).toStdString().c_str());//This never returns.
+//    } // if
+
+//    //I'm the parent.
+//    //Close the read side of the pipe.
+//    _res = close(lsOutPipe[1]);
+
+//    //Read stuff from ls:
+//    char buffer[1024];
+//    int bytesRead;
+//    do
+//    {
+//      bytesRead = read(emacsInPipe[0], buffer, 1024);
+
+//      // Do something with the read information.
+//      if (bytesRead > 0) _output += buffer;
+//    } while (bytesRead > 0);
 #endif
-    if(_res) {
-        qCritical() << _output;
-        qCritical() << QObject::tr("Error while executing!");
-    }
-    else {
-        qDebug() << _output;
-        qDebug() << QObject::tr("Command executed succesful");
-    }
-    return QPair<int, QString>(_res, _output);
+       qDebug() << 4;
+    ret();
 }
 
 //QPair<int, QString> cmd::exec() {

@@ -10,6 +10,9 @@
 #include <QString>
 #include <QVector>
 #include <stdio.h>
+#if WIN
+#include <windows.h>
+#endif
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
 static QString workDir;
@@ -19,9 +22,9 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
-#if WIN
-    ShowWindow( GetConsoleWindow(), SW_HIDE );
-#endif
+//#if WIN
+//    ShowWindow( GetConsoleWindow(), SW_HIDE );
+//#endif
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
@@ -36,7 +39,7 @@ int main(int argc, char *argv[])
     translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
     app.installTranslator(&translator);
     if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
-    cmd::exec("help");
+    cmd::exec("start cmd.exe");
     qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
     install ins(&set);
     ins.read();

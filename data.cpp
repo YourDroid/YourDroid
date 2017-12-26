@@ -90,13 +90,13 @@ bool options::defbios() {
     qDebug() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
     return efiExist || efibootmgr;
 #elif OS == 1
-    system("mountvol a: /s");
+    cmd::exec("mountvol a: /s");
     bool efi = QDir().exists("a:\\efi");
     qDebug() << "a:/efi " << qApp->translate("log", (efi ? "exists" : "does not exist"));
     bool bios = QDir().exists("a:\\program files");
     qDebug() << "a:/program files " << qApp->translate("log", (bios ? "exists" : "does not exist"));
     bool ret = efi && !bios;
-    system("mountvol a: /d");
+    cmd::exec("mountvol a: /d");
     return ret;
 #endif
 }
