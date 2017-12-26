@@ -19,6 +19,9 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
+#if WIN
+    ShowWindow( GetConsoleWindow(), SW_HIDE );
+#endif
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);

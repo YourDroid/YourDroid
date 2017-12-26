@@ -22,22 +22,42 @@ QPair<int, QString> cmd::exec(QString command) {
 //        _output = tempCmd.readAll();
 //        tempCmd.close();
 //    }
+#if LINUX
     FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
-    char tmp;
-    //_output.clear();
     char buffer[128];
     while(!feof(trm)) {
          if(fgets(buffer, 128, trm) != NULL)
              _output += buffer;
     }
-    while(!feof(trm)) while(fgets(&tmp, 1, trm)) {
-        _output += tmp;
-        if(tmp == '\n') break;
-    }
     _res = pclose(trm);
-    qDebug() << _output;
-    if(_res) qCritical() << "Error while executing!";
-    else qDebug() << qApp->translate("log", "Command executed succesful");
+#elif WIN
+    PROCESS_INFORMATION p_info;
+    STARTUPINFO s_info;
+    LPSTR cmdline, programpath;
+
+    memset(&s_info, 0, sizeof(s_info));
+    memset(&p_info, 0, sizeof(p_info));
+    s_info.cb = sizeof(s_info);
+
+    cmdline     = _tcsdup(TEXT(cmd));
+    programpath = _tcsdup(TEXT(cmd));
+
+    _res = CreateProcess(programpath, cmdline, NULL, NULL, 0, 0, NULL, NULL, &s_info, &p_info);
+    if(_res)
+    {
+      WaitForSingleObject(p_info.hProcess, INFINITE);
+      CloseHandle(p_info.hProcess);
+      CloseHandle(p_info.hThread);
+    }
+#endif
+    if(_res) {
+        qCritical() << _output;
+        qCritical() << QObject::tr("Error while executing!");
+    }
+    else {
+        qDebug() << _output;
+        qDebug() << QObject::tr("Command executed succesful");
+    }
     return QPair<int, QString>(_res, _output);
 }
 
