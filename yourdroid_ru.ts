@@ -4,8 +4,29 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="install.cpp" line="259"/>
+        <location filename="install.cpp" line="260"/>
         <source>Could not open the config-file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="279"/>
+        <source>Cannot make dir for image&apos;s mount point!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="289"/>
+        <source>Cannot mount image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="303"/>
+        <source>Cannot unmount image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="306"/>
+        <location filename="window.cpp" line="261"/>
+        <source>Cannot delete image&apos;s mount point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26,6 +47,27 @@
     <message>
         <location filename="log.cpp" line="76"/>
         <source>Fatal error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="248"/>
+        <source>^The system with written name already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="254"/>
+        <source>^Could not mount image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="269"/>
+        <source>^Image has not needed files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="274"/>
+        <location filename="window.cpp" line="275"/>
+        <source>Data for install valid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -234,6 +276,33 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="199"/>
         <source>Checking data for install...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="294"/>
+        <source>^Fatal error while installing: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="316"/>
+        <location filename="window.cpp" line="317"/>
+        <source>Creating data.img...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="321"/>
+        <location filename="window.cpp" line="322"/>
+        <source>Installing bootloader...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="326"/>
+        <source>Unmounting image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="329"/>
+        <source>Finish install</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -491,54 +560,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="299"/>
+        <location filename="install.cpp" line="340"/>
         <source>Unpacking </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="383"/>
+        <location filename="install.cpp" line="424"/>
         <source>/etc/grub.d/android/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="263"/>
-        <source>	linux </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="263"/>
-        <source>/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="264"/>
-        <source>	initrd </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="264"/>
-        <source>/initrd.img
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="281"/>
+        <location filename="install.cpp" line="322"/>
         <source>Ошибка при разархивировании: #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="360"/>
+        <location filename="install.cpp" line="401"/>
         <source>Delete </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="361"/>
+        <location filename="install.cpp" line="402"/>
         <source>Удаление </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="395"/>
+        <location filename="install.cpp" line="436"/>
         <source>Config deleted </source>
         <translation type="unfinished"></translation>
     </message>
@@ -558,12 +605,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="300"/>
+        <location filename="window.cpp" line="343"/>
         <source>Choose </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="344"/>
+        <location filename="window.cpp" line="387"/>
         <source>Deleting </source>
         <translation type="unfinished"></translation>
     </message>
