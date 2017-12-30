@@ -117,10 +117,10 @@ void install::read() {
 }
 
 void install::registerBootloader() {
-    qDebug() << "Registering to bootloader...";
+    qDebug() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: LOG(0, "Registering to grub2"); registerGrub2(); break;
-    case _bootloader::gummiboot: LOG(0, "Registering to gummiboot"); registerGummi(); break;
+    case _bootloader::grub2: qDebug() << tr("Registering to grub2"); registerGrub2(); break;
+    case _bootloader::gummiboot: qDebug() << tr("Registering to gummiboot"); registerGummi(); break;
     }
 }
 
@@ -251,9 +251,9 @@ void install::registerGrub2() {
 }
 
 void install::grubConfigure(QString way) {
-    QString place = systems.back().name;
+    QString place = obsolutePath(systems.back().name);
 #if WIN
-    place = place.left(1);
+    place = place.left(2);
 #endif
     QFile _config(way);
     if(!_config.open(QIODevice::WriteOnly)) {
