@@ -42,7 +42,7 @@ class install : public QObject {
 signals:
     void abort(QString);
     void progressChange(qint64);
-    void progressRange(int);
+    void fileEnded();
 public:
     install(options *d) : dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
@@ -55,6 +55,7 @@ public:
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
     int sizeOfFiles();
+    bool isInvalidImage();
     QString mountImage(QString);
     void unmountImage();
     void unpackSystem();

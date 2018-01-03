@@ -49,7 +49,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     QString color;
     switch(level) {
     case QtDebugMsg: color = "\x1b[0m"; break;
-    case QtWarningMsg: color = "\x1b[34m"; break;
+    case QtWarningMsg: color = "\x1b[33m"; break;
     case QtCriticalMsg: color = "\x1b[31m"; break;
     case QtFatalMsg: color = "\x1b[31m"; break;
     }

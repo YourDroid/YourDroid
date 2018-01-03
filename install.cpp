@@ -289,6 +289,12 @@ int install::sizeOfFiles() {
     return res;
 }
 
+bool install::isInvalidImage() {
+    return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
+            QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
+            QFile(mountPoint + "/ramdisk.img").exists();
+}
+
 QString install::mountImage(QString image) {
     mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
@@ -323,7 +329,13 @@ void install::unmountImage() {
         qWarning() << QObject::tr("Cannot unmount image: %1").arg(expr.second);
         return;
     }
-    if(!QDir().rmdir(mountPoint)) qWarning() << QObject::tr("Cannot delete image's mount point");
+#if LINUX
+    if((expr = cmd::exec(QString("rm -f %1").arg(mountPoint))).first)
+        qWarning() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
+#elif WIN
+    if(!QDir::rmdir(mountPoint))
+        qWarning() << QObject::tr("Cannot delete image's mount point");
+#endif
 }
 
 QString install::obsolutePath(QString path) {
@@ -344,44 +356,43 @@ void install::unpackSystem() {
     if(QFile(mountPoint + "/system.img").exists()) systemFile = "system.sfs";
     else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "system.img";
     //emit progressRange();
-    int rc = 0;
-    auto checkRc = [](int rc) -> void {
-        QString error;
-        if(rc <= 0 && rc != -1026) {
-#if LINUX
-            error = bk_get_error_string(rc);
-#elif WIN
-#endif
-            LOG(2, error, qApp->translate("log", "Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
-        }
-    };
-#if OS == 0
-    VolInfo volInfo;
-    checkRc(bk_init_vol_info(&volInfo, false));
-    checkRc(bk_open_image(&volInfo, systems.back().image.toStdString().c_str()));
-    checkRc(bk_read_vol_info(&volInfo));
-    if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
-            rc = bk_read_dir_tree(&volInfo, FNTYPE_ROCKRIDGE, true, 0);
-    else if(volInfo.filenameTypes & FNTYPE_JOLIET)
-            rc = bk_read_dir_tree(&volInfo, FNTYPE_JOLIET, false, 0);
-    else
-            rc = bk_read_dir_tree(&volInfo, FNTYPE_9660, false, 0);
-    checkRc(rc);
-    char *files[5] = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs"};
-        for(int i = 0; i < 5; i++) {
-            progressBarInstall->setValue(progressBarInstall->value() + 25);
-            statusBar->showMessage(qApp->translate("log", "Unpacking ") + files[i]);
-            rc = bk_extract(&volInfo, files[i],
-                            systems.back().place.toStdString().c_str(),
-                            false,
-                    0);
-        checkRc(rc);
-        }
+//    int rc = 0;
+//    auto checkRc = [](int rc) -> void {
+//        QString error;
+//        if(rc <= 0 && rc != -1026) {
+//#if LINUX
+//            error = bk_get_error_string(rc);
+//#elif WIN
+//#endif
+//            LOG(2, error, qApp->translate("log", "Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
+//        }
+//    };
+//#if OS == 0
+//    VolInfo volInfo;
+//    checkRc(bk_init_vol_info(&volInfo, false));
+//    checkRc(bk_open_image(&volInfo, systems.back().image.toStdString().c_str()));
+//    checkRc(bk_read_vol_info(&volInfo));
+//    if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
+//            rc = bk_read_dir_tree(&volInfo, FNTYPE_ROCKRIDGE, true, 0);
+//    else if(volInfo.filenameTypes & FNTYPE_JOLIET)
+//            rc = bk_read_dir_tree(&volInfo, FNTYPE_JOLIET, false, 0);
+//    else
+//            rc = bk_read_dir_tree(&volInfo, FNTYPE_9660, false, 0);
+//    checkRc(rc);
+    QFile copier;
+    connect(&copier, &QFile::bytesWritten, [&](qint64 progress){
+        emit progressChange(progress);
+    });
+    QVector<QString> files { "/kernel", "/ramdisk.img", "/initrd.img", systemFile };
+    for(QString file : files) {
+        copier.copy(mountPoint + file, systems.back().place + file);
+        emit fileEnded();
+    }
 
         /* we're finished with this ISO, so clean up */
-        bk_destroy_vol_info(&volInfo);
-#elif OS == 1
-#endif
+//        bk_destroy_vol_info(&volInfo);
+//#elif OS == 1
+//#endif
 }
 
 void install::createDataImg(int size) {

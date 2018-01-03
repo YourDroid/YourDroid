@@ -9,9 +9,12 @@
 #include <QMessageBox>
 #include <QString>
 #include <QVector>
+#include <QFile>
+#include <QTextStream>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <stdlib.h>
 #if WIN
 #include <windows.h>
 #endif
@@ -24,6 +27,7 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
+    fprintf(stderr, "\n\n###NEW###");
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
@@ -36,8 +40,9 @@ int main(int argc, char *argv[])
     int uid = geteuid();
     qDebug() << QObject::tr("getuid() returned %1").arg(uid);
     if(uid != 0) {
-        qCritical() << QObject::tr("^Program must be run with root");
-        return -1;
+        qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
+                       .arg(qApp->applicationFilePath());
+        return 1;
     }
 #endif
     options set;

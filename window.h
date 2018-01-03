@@ -33,6 +33,8 @@ public:
     ~Window();
 
 signals:
+    void proccessFinished();
+
     void closed();
 
     void sendMesToStausbar(QString);
