@@ -10,6 +10,8 @@
 #include <QString>
 #include <QVector>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 #if WIN
 #include <windows.h>
 #endif
@@ -22,9 +24,6 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
-//#if WIN
-//    ShowWindow( GetConsoleWindow(), SW_HIDE );
-//#endif
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
@@ -33,6 +32,14 @@ int main(int argc, char *argv[])
         system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
     console *widget = log::init();
+#if LINUX
+    int uid = geteuid();
+    qDebug() << QObject::tr("getuid() returned %1").arg(uid);
+    if(uid != 0) {
+        qCritical() << QObject::tr("^Program must be run with root");
+        return -1;
+    }
+#endif
     options set;
     bool readSet = set.read_set(false);
     QTranslator translator;

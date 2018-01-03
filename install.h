@@ -54,6 +54,7 @@ public:
     void write();
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
+    int sizeOfFiles();
     QString mountImage(QString);
     void unmountImage();
     void unpackSystem();

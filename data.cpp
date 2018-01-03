@@ -1,7 +1,6 @@
 #include "data.h"
 #include "log.h"
 #include "cmd.h"
-//#include <fstream>
 
 void options::autowrite_set() {
     write_set(false, arch, tbios, winv, conEnable, lang);
@@ -42,7 +41,7 @@ bool options::read_set(bool dflt) {
     qDebug() << qApp->translate("log", "Reading settings...");
 
     bool existConf;
-    if (!dflt) existConf = QFile::exists("config.ini");
+    if (!dflt) existConf = QFile::exists(qApp->applicationDirPath() + "/config.ini");
     else existConf = false;
     if(existConf) {
         qDebug() << qApp->translate("log", "Settings does exist");

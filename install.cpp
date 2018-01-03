@@ -1,8 +1,4 @@
 #include "install.h"
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include "log.h"
 #include "window.h"
 #include "cmd.h"
@@ -227,27 +223,41 @@ void install::installGummi() {
 }
 
 void install::registerGrub2() {
-    qDebug() << "Registering to grub2...";
-    using namespace std;
-    ostringstream tempGrub;
-    fstream grub("/etc/grub.d/40_custom", ios::in | ios::out);
-    QVector<string> grubStr;
-    while(grub) {
-        string temp;
-        getline(grub, temp);
-        grubStr.push_back(temp);
+    qDebug() << QObject::tr("Registering to grub2...");
+    QFile _grub("/etc/grub.d/40_custom");
+    if(!_grub.open(QIODevice::ReadOnly)) {
+        emit abort(QObject::tr("Could not open the grub config-file to read"));
+        return;
     }
-    for(int i = 0; i < grubStr.length(); i++) qDebug() << QString::fromStdString(grubStr[i]);
+    QTextStream grub(&_grub);
+    QVector<QString> grubStr;
+    while(!grub.atEnd()) {
+        grubStr.push_back(grub.readLine());
+    }
+    _grub.close();
+    if(!_grub.open(QIODevice::WriteOnly)) {
+        emit abort(QObject::tr("Could not open the grub config-file to write"));
+        return;
+    }
+    qDebug() << QObject::tr("Grub-config:");
+    for(QString str : grubStr) qDebug() << str;
+    QPair<int, QString> expr;
     if(grubStr[1] != "cat /etc/grub.d/android/*.cfg | more") {
-        tempGrub << grubStr[0] << "\ncat /etc/grub.d/android/*.cfg | more\n";
-        for(int i = 1; i < grubStr.length(); i++) tempGrub << grubStr[i] << '\n';
-        ofstream("/etc/grub.d/40_custom") << tempGrub.str();
-        QDir().mkdir("/etc/grub.d/android");
-        //system("mkdir /etc/grub.d/android");
+        grub << grubStr[0] << "\ncat /etc/grub.d/android/*.cfg | more\n";
+        for(int i = 1; i < grubStr.length(); i++) grub << grubStr[i] << '\n';
+        if(!QDir().mkdir("/etc/grub.d/android"))
+            if((expr = cmd::exec("mkdir /etc/grub.d/android")).first) {
+                emit abort(QObject::tr("Could not make dir for configs: %1")
+                           .arg(expr.second));
+                return;
+            }
     }
     grubConfigure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
-    qDebug() << "Updating grub...";
-    CMD_ASSERT(cmd::exec("update-grub"));
+    qDebug() << QObject::tr("Updating grub...");
+    if((expr = cmd::exec("update-grub")).first) {
+        emit abort(QObject::tr("Could not update grub: %1").arg(expr.second));
+        return;
+    }
 }
 
 void install::grubConfigure(QString way) {
@@ -264,9 +274,19 @@ void install::grubConfigure(QString way) {
     config << (QString("menuentry '") + place + QString("' --class android-x86 {\n") +
            QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
            QString("\tlinux ") + place +
-               QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
+           QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
            QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
     _config.close();
+}
+
+int install::sizeOfFiles() {
+    int res = QFile(mountPoint + "/initrd.img").size() +
+            QFile(mountPoint + "/ramdisk.img").size() +
+            QFile(mountPoint + "/kernel").size() +
+            QFile(mountPoint + "/system.sfs").size() +
+            QFile(mountPoint + "/system.img").size();
+    qDebug() << QObject::tr("Size of files is %1").arg(res);
+    return res;
 }
 
 QString install::mountImage(QString image) {
@@ -307,7 +327,7 @@ void install::unmountImage() {
 }
 
 QString install::obsolutePath(QString path) {
-    auto expr = cmd::exec("grep UUID /etc/fstab | tr -s \" \" \" \"| cut -d \" \" -f 2 | sed -n '/\/\w/p'");
+    auto expr = cmd::exec("grep UUID /etc/fstab | tr -s \" \" \" \"| cut -d \" \" -f 2 | sed -n '/\\/\\w/p'");
     QString fstab = expr.second, temp;
     while(fstab.count('\n') != 0) {
         temp = fstab.left(fstab.indexOf('\n') + 1);

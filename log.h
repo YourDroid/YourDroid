@@ -26,10 +26,6 @@
 //#define LOG(level, mess) log::message(level, QString(__FILE__), __LINE__, QString(mess));
 
 #include <QString>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
 #include "console.h"
 
 extern const QString VERSION;
@@ -44,7 +40,7 @@ public:
     static void message(int level, QString file, int line, QString mes, QString = "NULL") {  }
 };
 
-static console *con;
+//static console *con;
 
 #endif // LOG_H
 

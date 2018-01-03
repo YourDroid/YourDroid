@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QDialog>
 #include <QMessageBox>
+#include <iostream>
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 
@@ -17,12 +18,16 @@ console *log::init() {
 void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &message/*, QString rusMess*/) {
     bool window = false;
     QString mess = message;
+//    while(mess.contains("\\n")) {
+//        int i = mess.indexOf("\\n");
+//        mess.remove(i, 2);
+//        mess.insert(i, '\n');
+//    }
     mess.remove('\"');
     if(mess[0] == '^') {
         window = true;
         mess.remove(0, 1);
     }
-    using namespace std;
     if(!QDir("log").exists()) QDir().mkdir("log");
     static QString logName = qApp->applicationDirPath() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
     static QFile preLog(logName);
@@ -35,41 +40,33 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     //static ofstream logFile("log.txt");
     QString typeName;
     switch(level) {
-    case 0: typeName = "DEBUG:"; break;
-    case 1: typeName = "WARNING:"; break;
-    case 2: typeName = "ERROR:"; break;
+    case QtDebugMsg: typeName = "DEBUG:"; break;
+    case QtWarningMsg: typeName = "WARNING:"; break;
+    case QtCriticalMsg: typeName = "ERROR:"; break;
     case QtFatalMsg: typeName = "FATAL ERROR:"; break;
     }
-#if OS == 0
+#if LINUX
     QString color;
     switch(level) {
-    case 0: color = "\x1b[0m"; break;
-    case 1: color = "\x1b[34m"; break;
-    case 2: color = "\x1b[31m"; break;
+    case QtDebugMsg: color = "\x1b[0m"; break;
+    case QtWarningMsg: color = "\x1b[34m"; break;
+    case QtCriticalMsg: color = "\x1b[31m"; break;
+    case QtFatalMsg: color = "\x1b[31m"; break;
     }
     QString messFull = color + typeName + QString(' ') + mess + "\x1b[0m";
-#elif OS == 1
-//    switch(level) {
-//    case 1: system("color 09"); break;
-//    case 2: system("color 0c"); break;
-//    }
-    QString messFull = typeName + QString(' ') + mess;
 #endif
     logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << endl;
-    cout << messFull.toStdString() << endl;
+    std::cout << (messFull.toStdString() + '\n') << std::flush;
     logFile.flush();
 
     Qt::GlobalColor _color;
     switch(level) {
-    case 0: _color = Qt::white; break;
-    case 1: _color = Qt::yellow; break;
-    case 2: _color = Qt::red; break;
+    case QtDebugMsg: _color = Qt::white; break;
+    case QtWarningMsg: _color = Qt::yellow; break;
+    case QtCriticalMsg: _color = Qt::red; break;
     case QtFatalMsg: _color = Qt::red; break;
     }
     con->output(typeName + QString(' ') + mess, _color);
-#if OS == 1
-//    system("color 00");
-#endif
     if(window) {
         switch(level) {
         case QtDebugMsg: QMessageBox::information(0, QObject::tr("Information"),

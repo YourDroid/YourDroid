@@ -91,17 +91,16 @@ void Window::returnMainWindow() {
 
 void Window::Settings_clicked()
 {
-    if(ui->windows->currentIndex() == 1) return;
-    //dat->read_set(false);
+    dat->read_set(false);
     ui->typeBios->setCurrentIndex((int)dat->tbios);
     ui->arch->setCurrentIndex((int)dat->arch);
     ui->winVer->setCurrentIndex((int)dat->winv);
-#if OS == 0
+#if WIN
     ui->winVer->setEnabled(false);
 #endif
     ui->checkEnableConSettings->setChecked(dat->getConEnable());
     ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
-    //ui->qApplaySettings->setEnabled(false);
+    //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
     setWindowTitle("YourDroid | Настройки");
 }
@@ -272,8 +271,9 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    qDebug() << QObject::tr("Data for install valid");
-    ui->statusbar->showMessage(QObject::tr("Data for install valid"));
+    qDebug() << QObject::tr("Data for install is valid");
+    ui->statusbar->showMessage(QObject::tr("Data for install is valid"));
+    insDat->sizeOfFiles();
     return;
 
     ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
