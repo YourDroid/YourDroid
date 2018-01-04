@@ -123,7 +123,14 @@ bool options::defarch() {
 #if OS == 1
 bool options::defwinv() {
     qDebug() << "Defining windows version";
-    qDebug() << "c:/users " << qApp->translate("log", (QDir().exists("c:\\users") ? "exists" : "does not exists"));
-    return QDir().exists("c:\\users");
+    OSVERSIONINFO osvi;
+        BOOL bIsWindowsXPorLater;
+
+        ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+        osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+        GetVersionEx(&osvi);
+    qDebug() << QObject::tr("GetVersionEx() returns %1").arg(osvi.dwMajorVersion);
+    return osvi.dwMajorVersion > 5;
 }
 #endif

@@ -54,29 +54,73 @@
         <translation>Cannot make dir for image&apos;s mount point!</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="315"/>
+        <location filename="install.cpp" line="314"/>
         <source>Cannot mount image: %1</source>
         <translation>Cannot mount image: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="329"/>
+        <location filename="install.cpp" line="327"/>
         <source>Cannot unmount image: %1</source>
         <translation>Cannot unmount image: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="334"/>
+        <location filename="install.cpp" line="332"/>
         <source>Cannot delete image&apos;s mount point: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="337"/>
-        <location filename="window.cpp" line="261"/>
+        <location filename="install.cpp" line="335"/>
         <source>Cannot delete image&apos;s mount point</source>
         <translation>Cannot delete image&apos;s mount point</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="361"/>
+        <location filename="install.cpp" line="356"/>
+        <source>System file is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="360"/>
+        <source>Making dir for install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="363"/>
         <source>Could not make dir for install: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="371"/>
+        <source>Start copying</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="374"/>
+        <source>Copying %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="376"/>
+        <source>%1 exists. So it is deleting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="379"/>
+        <source>^Could not overwrite %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="382"/>
+        <source>%1 does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="385"/>
+        <source>Could not copy system files: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="389"/>
+        <source>%1 coped succesful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -105,18 +149,18 @@
         <translation>^The system with written name already exists</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="253"/>
+        <location filename="window.cpp" line="254"/>
         <source>^Could not mount image: %1</source>
         <translation>^Could not mount image: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="267"/>
+        <location filename="window.cpp" line="261"/>
         <source>^Image has not needed files</source>
         <translation>^Image has not needed files</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="272"/>
-        <location filename="window.cpp" line="273"/>
+        <location filename="window.cpp" line="266"/>
+        <location filename="window.cpp" line="267"/>
         <source>Data for install is valid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -171,13 +215,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="41"/>
+        <location filename="main.cpp" line="29"/>
+        <source>^Segmitation Fault</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="50"/>
         <source>getuid() returned %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="43"/>
+        <location filename="main.cpp" line="52"/>
         <source>^Program must be run with root. Run &apos;sudo %1&apos; in the terminal to fix it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="data.cpp" line="133"/>
+        <source>GetVersionEx() returns %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -369,24 +423,35 @@ p, li { white-space: pre-wrap; }
         <translation>Checking data for install...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="294"/>
+        <location filename="window.cpp" line="307"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Fatal error while installing: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="319"/>
-        <location filename="window.cpp" line="320"/>
+        <location filename="window.cpp" line="310"/>
+        <source>Start install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="311"/>
+        <location filename="window.cpp" line="312"/>
+        <source>Unpacking iso...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="315"/>
+        <location filename="window.cpp" line="316"/>
         <source>Creating data.img...</source>
         <translation>Creating data.img...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="324"/>
-        <location filename="window.cpp" line="325"/>
+        <location filename="window.cpp" line="320"/>
+        <location filename="window.cpp" line="321"/>
         <source>Installing bootloader...</source>
         <translation>Installing bootloader...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="329"/>
+        <location filename="window.cpp" line="325"/>
         <source>Unmounting image...</source>
         <translation>Unmounting image...</translation>
     </message>
@@ -655,22 +720,22 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Unpacking </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="451"/>
+        <location filename="install.cpp" line="458"/>
         <source>Delete </source>
         <translation>Delete </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="452"/>
+        <location filename="install.cpp" line="459"/>
         <source>Удаление </source>
         <translation>Удаление </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="474"/>
+        <location filename="install.cpp" line="481"/>
         <source>/etc/grub.d/android/</source>
         <translation>/etc/grub.d/android/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="486"/>
+        <location filename="install.cpp" line="493"/>
         <source>Config deleted </source>
         <translation>Config deleted </translation>
     </message>
@@ -679,22 +744,22 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">.txt</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="55"/>
+        <location filename="main.cpp" line="64"/>
         <source>Work dir is </source>
         <translation>Work dir is </translation>
     </message>
     <message>
-        <location filename="main.cpp" line="62"/>
+        <location filename="main.cpp" line="71"/>
         <source>Window exec</source>
         <translation>Window exec</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="64"/>
+        <location filename="main.cpp" line="73"/>
         <source>Window closed</source>
         <translation>Window closed</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="67"/>
+        <location filename="main.cpp" line="76"/>
         <source>Exiting... Returned </source>
         <translation>Exiting... Returned </translation>
     </message>

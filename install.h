@@ -42,7 +42,7 @@ class install : public QObject {
 signals:
     void abort(QString);
     void progressChange(qint64);
-    void fileEnded();
+    void fileEnded(int);
 public:
     install(options *d) : dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
@@ -56,7 +56,7 @@ public:
 
     int sizeOfFiles();
     bool isInvalidImage();
-    QString mountImage(QString);
+    QPair<bool, QString> mountImage(QString);
     void unmountImage();
     void unpackSystem();
     QString obsolutePath(QString);

@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <signal.h>
 #if WIN
 #include <windows.h>
 #endif
@@ -24,10 +25,17 @@ static QString workDir;
 const QString &WORK_DIR = workDir;
 console *log::con;
 
+void segFault(int res) {
+    qCritical() << QObject::tr("^Segmitation Fault");
+    signal(res, SIG_DFL);
+    exit(3);
+}
+
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
+
     QApplication app(argc,argv);
     workDir = app.applicationDirPath();
     qInstallMessageHandler(log::messagenew);
@@ -36,6 +44,7 @@ int main(int argc, char *argv[])
         system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
     console *widget = log::init();
+    signal(SIGSEGV, segFault);
 #if LINUX
     int uid = geteuid();
     qDebug() << QObject::tr("getuid() returned %1").arg(uid);

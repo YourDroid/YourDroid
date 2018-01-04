@@ -67,7 +67,7 @@ void install::read() {
         QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         QString sys = name + ".ini";
         qDebug() << name;
-        if(!QFile::exists(sys)) {
+        if(!QFile::exists(qApp->applicationDirPath() + QString("/") + sys)) {
             qCritical() << qApp->translate("log", "Config of system %1 does not exist").arg(name);
             _oldSysEdit = true;
             cntSystems = cntSystems - 1;
@@ -295,15 +295,14 @@ bool install::isInvalidImage() {
             QFile(mountPoint + "/ramdisk.img").exists();
 }
 
-QString install::mountImage(QString image) {
+QPair<bool, QString> install::mountImage(QString image) {
     mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
 //    while(!QDir().exists(path)) {
 //        path += QString::number(rand());
 //    }
     if(!QDir().mkdir(mountPoint)) {
-        emit abort(QObject::tr("Cannot make dir for image's mount point!"));
-        return "";
+        return QPair<bool, QString>(false, QObject::tr("Cannot make dir for image's mount point!"));
     }
 #if LINUX
     QString command = QString("mount -o loop %1 %2").arg(image, mountPoint);
@@ -312,10 +311,9 @@ QString install::mountImage(QString image) {
 #endif
     auto expr = cmd::exec(command);
     if(expr.first) {
-        emit abort(QObject::tr("Cannot mount image: %1").arg(expr.second));
-        return "";
+        return QPair<bool, QString>(false, QObject::tr("Cannot mount image: %1").arg(expr.second));
     }
-    return mountPoint;
+    return QPair<bool, QString>(true, mountPoint);
 }
 
 void install::unmountImage() {
@@ -330,7 +328,7 @@ void install::unmountImage() {
         return;
     }
 #if LINUX
-    if((expr = cmd::exec(QString("rm -f %1").arg(mountPoint))).first)
+    if((expr = cmd::exec(QString("rm -rf %1").arg(mountPoint))).first)
         qWarning() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
 #elif WIN
     if(!QDir::rmdir(mountPoint))
@@ -353,52 +351,61 @@ QString install::obsolutePath(QString path) {
 
 void install::unpackSystem() {
     QString systemFile;
-    if(QFile(mountPoint + "/system.img").exists()) systemFile = "system.sfs";
-    else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "system.img";
-    auto expr = cmd::exec(QString("mkdir ") + systems.back().place);
-    if(!QFile::exists(systems.back().place))
+    if(QFile(mountPoint + "/system.img").exists()) systemFile = "/system.img";
+    else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "/system.sfs";
+    qDebug() << QObject::tr("System file is %1").arg(systemFile);
+
+    QPair<int, QString> expr;
+    if(!QFile::exists(systems.back().place)) {
+        qDebug() << QObject::tr("Making dir for install");
+        expr = cmd::exec(QString("mkdir ") + systems.back().place);
         if(expr.first) {
             emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
             return;
         }
-    //emit progressRange();
-//    int rc = 0;
-//    auto checkRc = [](int rc) -> void {
-//        QString error;
-//        if(rc <= 0 && rc != -1026) {
-//#if LINUX
-//            error = bk_get_error_string(rc);
-//#elif WIN
-//#endif
-//            LOG(2, error, qApp->translate("log", "Ошибка при разархивировании: #") + QString::number(rc) + QString(' ') + error);
-//        }
-//    };
-//#if OS == 0
-//    VolInfo volInfo;
-//    checkRc(bk_init_vol_info(&volInfo, false));
-//    checkRc(bk_open_image(&volInfo, systems.back().image.toStdString().c_str()));
-//    checkRc(bk_read_vol_info(&volInfo));
-//    if(volInfo.filenameTypes & FNTYPE_ROCKRIDGE)
-//            rc = bk_read_dir_tree(&volInfo, FNTYPE_ROCKRIDGE, true, 0);
-//    else if(volInfo.filenameTypes & FNTYPE_JOLIET)
-//            rc = bk_read_dir_tree(&volInfo, FNTYPE_JOLIET, false, 0);
-//    else
-//            rc = bk_read_dir_tree(&volInfo, FNTYPE_9660, false, 0);
-//    checkRc(rc);
-    QFile copier;
-    connect(&copier, &QFile::bytesWritten, [&](qint64 progress){
-        emit progressChange(progress);
-    });
-    QVector<QString> files { "/kernel", "/ramdisk.img", "/initrd.img", systemFile };
-    for(QString file : files) {
-        copier.copy(mountPoint + file, systems.back().place + file);
-        emit fileEnded();
     }
 
-        /* we're finished with this ISO, so clean up */
-//        bk_destroy_vol_info(&volInfo);
-//#elif OS == 1
-//#endif
+    QFile copier;
+    QString place = systems.back().place;
+    QVector<QString> files { "/kernel", "/ramdisk.img", "/initrd.img", systemFile.toStdString().c_str() };
+    qDebug() << QObject::tr("Start copying");
+    for(QString file : files) {
+
+        qDebug() << QObject::tr("Copying %1").arg(file);
+        if(QFile::exists(place + file)) {
+            qDebug() << QObject::tr("%1 exists. So it is deleting").arg(place + file);
+            auto expr = cmd::exec(QString("rm -f %1").arg(place + file));
+            if(expr.first) {
+                qWarning() << QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second);
+            }
+        }
+        else qDebug() << QObject::tr("%1 does not exist").arg(place + file);
+
+        if(!copier.copy(mountPoint + file, place + file)) {
+            emit abort(QObject::tr("Could not copy system files: %1").arg(file));
+            return;
+        }
+
+        qDebug() << QObject::tr("%1 coped succesful").arg(file);
+        emit fileEnded(QFile(mountPoint + file).size());
+    }
+
+//    int complete = 0;
+//    QFile src(mountPoint + systemFile);
+//    QFile dst(place + systemFile);
+//    if(!src.open(QIODevice::ReadOnly)) {
+//        emit abort(QObject::tr("Could not open %1 to read").arg(mountPoint + systemFile));
+//        return;
+//    }
+//    if(!dst.open(QIODevice::WriteOnly)) {
+//        emit abort(QObject::tr("Could not open %1 to write").arg(place + systemFile));
+//        return;
+//    }
+//    char buffer[200];
+//    while(src.read(buffer, 200) != 0) {
+//         dst.write(buffer, 200);
+//         emit progressChange(200 * ++complete);
+//    }
 }
 
 void install::createDataImg(int size) {

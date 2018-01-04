@@ -249,16 +249,10 @@ void Window::on_buttonInstallInstall_clicked()
             return;
         }
     }
-    bool abort = false;
-    QString errorMes = QObject::tr("^Could not mount image: %1");
-    connect(insDat, &install::abort, [&](QString mes){
-        abort = true;
-        qCritical() << errorMes.arg(mes);
+    QPair<bool, QString> result = insDat->mountImage(ui->editImageFromDisk->text());
+    if(!result.first) {
+        qCritical() << QObject::tr("^Could not mount image: %1").arg(result.second);
         insDat->unmountImage();
-    });
-    QString mountPoint = insDat->mountImage(ui->editImageFromDisk->text());
-    if(abort) {
-        if(!QDir().rmdir(mountPoint)) qWarning() << QObject::tr("Cannot delete image's mount point");
         end();
         return;
     }
@@ -281,7 +275,7 @@ void Window::on_buttonInstallInstall_clicked()
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
-#define CHECK_ABORT() if(abort) { return; }
+#define CHECK_ABORT() if(abort) return;
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
         ui->statusbar->showMessage("Готово");
@@ -289,9 +283,6 @@ void Window::on_buttonInstallInstall_clicked()
         ui->buttonInstallInstall->setEnabled(true);
         ui->progressInstall->setValue(ui->progressInstall->maximum());
     });
-    abort = false;
-
-    errorMes = tr("^Fatal error while installing: %1");
 
     int step = insDat->sizeOfFiles() / 4;
     ui->progressInstall->setRange(0, step * 7);
@@ -301,19 +292,24 @@ void Window::on_buttonInstallInstall_clicked()
     connect(insDat, &install::progressChange, [&](int progress){
         ui->progressInstall->setValue(progress + progressComplete);
     });
-    connect(insDat, &install::fileEnded, [&](){
-        progressComplete = ui->progressInstall->value();
+    connect(insDat, &install::fileEnded, [&](int value){
+        progressComplete += value;
+        ui->progressInstall->setValue(progressComplete);
     });
     connect(this, &Window::progressAddStep, [&](){
-        ui->progressInstall->setValue(ui->progressInstall->value() + step);
+        ui->progressInstall->setValue(ui->progressInstall->maximum() / 7);
     });
 
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-        qDebug() << "Start install";
-        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-        CHECK_ABORT();
-        insDat->write();
-        CHECK_ABORT();
+        bool abort = false;
+        connect(insDat, &install::abort, [&](QString mes){
+            abort = true;
+            qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+            insDat->unmountImage();
+        });
+        qDebug() << tr("Start install");
+        qDebug() << tr("Unpacking iso...");
+        emit sendMesToStausbar(tr("Unpacking iso..."));
         insDat->unpackSystem();
         CHECK_ABORT();
         qDebug() << tr("Creating data.img...");
@@ -324,11 +320,15 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
         emit progressAddStep();
-        //insDat->registerBootloader();
+        insDat->registerBootloader();
         CHECK_ABORT();
         emit sendMesToStausbar(tr("Unmounting image..."));
         emit progressAddStep();
         insDat->unmountImage();
+        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+        CHECK_ABORT();
+        insDat->write();
+        CHECK_ABORT();
         qDebug() << tr("Finish install");
     });
     resMonitor->setFuture(res);
