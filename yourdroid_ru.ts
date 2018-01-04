@@ -75,6 +75,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="install.cpp" line="361"/>
+        <source>Could not make dir for install: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="log.cpp" line="72"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
@@ -380,8 +385,30 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="292"/>
+        <location filename="window.cpp" line="294"/>
         <source>^Fatal error while installing: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="319"/>
+        <location filename="window.cpp" line="320"/>
+        <source>Creating data.img...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="324"/>
+        <location filename="window.cpp" line="325"/>
+        <source>Installing bootloader...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="329"/>
+        <source>Unmounting image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="332"/>
+        <source>Finish install</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -652,22 +679,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="468"/>
+        <location filename="install.cpp" line="474"/>
         <source>/etc/grub.d/android/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="445"/>
+        <location filename="install.cpp" line="451"/>
         <source>Delete </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="446"/>
+        <location filename="install.cpp" line="452"/>
         <source>Удаление </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="480"/>
+        <location filename="install.cpp" line="486"/>
         <source>Config deleted </source>
         <translation type="unfinished"></translation>
     </message>
@@ -682,12 +709,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="345"/>
+        <location filename="window.cpp" line="346"/>
         <source>Choose </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="389"/>
+        <location filename="window.cpp" line="390"/>
         <source>Deleting </source>
         <translation type="unfinished"></translation>
     </message>

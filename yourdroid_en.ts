@@ -75,6 +75,11 @@
         <translation>Cannot delete image&apos;s mount point</translation>
     </message>
     <message>
+        <location filename="install.cpp" line="361"/>
+        <source>Could not make dir for install: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="log.cpp" line="72"/>
         <source>Information</source>
         <translation>Information</translation>
@@ -364,25 +369,31 @@ p, li { white-space: pre-wrap; }
         <translation>Checking data for install...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="292"/>
+        <location filename="window.cpp" line="294"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Fatal error while installing: %1</translation>
     </message>
     <message>
+        <location filename="window.cpp" line="319"/>
+        <location filename="window.cpp" line="320"/>
         <source>Creating data.img...</source>
-        <translation type="vanished">Creating data.img...</translation>
+        <translation>Creating data.img...</translation>
     </message>
     <message>
+        <location filename="window.cpp" line="324"/>
+        <location filename="window.cpp" line="325"/>
         <source>Installing bootloader...</source>
-        <translation type="vanished">Installing bootloader...</translation>
+        <translation>Installing bootloader...</translation>
     </message>
     <message>
+        <location filename="window.cpp" line="329"/>
         <source>Unmounting image...</source>
-        <translation type="vanished">Unmounting image...</translation>
+        <translation>Unmounting image...</translation>
     </message>
     <message>
+        <location filename="window.cpp" line="332"/>
         <source>Finish install</source>
-        <translation type="vanished">Finish install</translation>
+        <translation>Finish install</translation>
     </message>
 </context>
 <context>
@@ -644,22 +655,22 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Unpacking </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="445"/>
+        <location filename="install.cpp" line="451"/>
         <source>Delete </source>
         <translation>Delete </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="446"/>
+        <location filename="install.cpp" line="452"/>
         <source>Удаление </source>
         <translation>Удаление </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="468"/>
+        <location filename="install.cpp" line="474"/>
         <source>/etc/grub.d/android/</source>
         <translation>/etc/grub.d/android/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="480"/>
+        <location filename="install.cpp" line="486"/>
         <source>Config deleted </source>
         <translation>Config deleted </translation>
     </message>
@@ -698,12 +709,12 @@ p, li { white-space: pre-wrap; }
         <translation>Choose dir for install: </translation>
     </message>
     <message>
-        <location filename="window.cpp" line="345"/>
+        <location filename="window.cpp" line="346"/>
         <source>Choose </source>
         <translation>Choose </translation>
     </message>
     <message>
-        <location filename="window.cpp" line="389"/>
+        <location filename="window.cpp" line="390"/>
         <source>Deleting </source>
         <translation>Deleting </translation>
     </message>

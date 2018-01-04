@@ -227,11 +227,11 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    if(!(new QDir())->exists(dir)) {
-        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
-        end();
-        return;
-    }
+//    if(!(new QDir())->exists(dir)) {
+//        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
+//        end();
+//        return;
+//    }
     if((name = ui->editName->text()).length() == 0) {
         LOG(2, "Did not fill in the name", "Напишите имя!");
         end();
@@ -281,10 +281,12 @@ void Window::on_buttonInstallInstall_clicked()
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
-#define CHECK_ABORT() if(abort) { return; emit proccessFinished(); }
+#define CHECK_ABORT() if(abort) { return; }
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
-    connect(this, &Window::proccessFinished, [&](){
-        end();
+    connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
+        ui->statusbar->showMessage("Готово");
+        ui->returnInstallButton->setEnabled(true);
+        ui->buttonInstallInstall->setEnabled(true);
         ui->progressInstall->setValue(ui->progressInstall->maximum());
     });
     abort = false;
@@ -307,28 +309,27 @@ void Window::on_buttonInstallInstall_clicked()
     });
 
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-//        qDebug() << "Start install";
-//        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-//        CHECK_ABORT();
-//        insDat->write();
-//        CHECK_ABORT();
-//        insDat->unpackSystem();
-//        CHECK_ABORT();
-//        qDebug() << tr("Creating data.img...");
-//        emit sendMesToStausbar(tr("Creating data.img..."));
-//        emit progressAddStep();
-//        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
-//        CHECK_ABORT();
-//        qDebug() << tr("Installing bootloader...");
-//        emit sendMesToStausbar(tr("Installing bootloader..."));
-//        emit progressAddStep();
-//        //insDat->registerBootloader();
-//        CHECK_ABORT();
-//        emit sendMesToStausbar(tr("Unmounting image..."));
-//        emit progressAddStep();
-//        insDat->unmountImage();
-//        qDebug() << tr("Finish install");
-        emit proccessFinished();
+        qDebug() << "Start install";
+        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
+        CHECK_ABORT();
+        insDat->write();
+        CHECK_ABORT();
+        insDat->unpackSystem();
+        CHECK_ABORT();
+        qDebug() << tr("Creating data.img...");
+        emit sendMesToStausbar(tr("Creating data.img..."));
+        emit progressAddStep();
+        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+        CHECK_ABORT();
+        qDebug() << tr("Installing bootloader...");
+        emit sendMesToStausbar(tr("Installing bootloader..."));
+        emit progressAddStep();
+        //insDat->registerBootloader();
+        CHECK_ABORT();
+        emit sendMesToStausbar(tr("Unmounting image..."));
+        emit progressAddStep();
+        insDat->unmountImage();
+        qDebug() << tr("Finish install");
     });
     resMonitor->setFuture(res);
 #undef CHECK_ABORT

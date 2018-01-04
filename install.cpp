@@ -355,6 +355,12 @@ void install::unpackSystem() {
     QString systemFile;
     if(QFile(mountPoint + "/system.img").exists()) systemFile = "system.sfs";
     else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "system.img";
+    auto expr = cmd::exec(QString("mkdir ") + systems.back().place);
+    if(!QFile::exists(systems.back().place))
+        if(expr.first) {
+            emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
+            return;
+        }
     //emit progressRange();
 //    int rc = 0;
 //    auto checkRc = [](int rc) -> void {
