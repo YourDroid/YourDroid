@@ -102,7 +102,7 @@ bool options::defbios() {
 
 bool options::defarch() {
     qDebug() << qApp->translate("log", "Defining architecture...");
-#if OS == 0
+#if LINUX
     FILE *fp = popen("uname -m", "r");
 
     char buf[8];
@@ -112,7 +112,7 @@ bool options::defarch() {
     QString tarch = buf;
     qDebug() << (qApp->translate("log", "Uname returned ") + tarch);
     return (tarch=="x86\n") ? 0 : 1;
-#elif OS == 1
+#elif WIN
     SYSTEM_INFO inf;
     GetNativeSystemInfo(&inf);
     qDebug() << qApp->translate("log", "Processor type is ") + char(inf.dwProcessorType + 48);
@@ -120,11 +120,10 @@ bool options::defarch() {
 #endif
 }
 
-#if OS == 1
+#if WIN
 bool options::defwinv() {
     qDebug() << "Defining windows version";
     OSVERSIONINFO osvi;
-        BOOL bIsWindowsXPorLater;
 
         ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
         osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);

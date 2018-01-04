@@ -3,10 +3,12 @@
 #include <QFile>
 #include <stdlib.h>
 #include <QtGlobal>
+#include <QProcess>
 #if WIN
-#include <Processthreadsapi.h>
+#include <windows.h>
+//#include <Processthreadsapi.h>
 #include <winbase.h>
-#include <TCHAR.H>
+//#include <TCHAR.H>
 #include <w32api.h>
 #endif
 
@@ -22,21 +24,6 @@ else { \
     qDebug() << QObject::tr("Command executed succesful") << QObject::tr(" Returned value is ") << _res; \
 } \
 return QPair<int, QString>(_res, _output);
-//#if OS == 1
-//    QString home = getenv("USERPROFILE");
-//    QString strcmd = command + qApp->translate("log", ">") + home + qApp->translate("log", "\\temp_cmd 2>&1");
-//    QFile tempCmd(home + qApp->translate("log", "\\temp_cmd"));
-//#elif OS == 0
-//    QString home = getenv("home");
-//    QString strcmd = command + qApp->translate("log", " &> ") + home + qApp->translate("log", "/temp_cmd");
-//    QFile tempCmd(home + qApp->translate("log", "/temp_cmd"));
-//#endif
-//    _res = system(strcmd.toStdString().c_str());
-//    if (tempCmd.open(QIODevice::ReadOnly))
-//    {
-//        _output = tempCmd.readAll();
-//        tempCmd.close();
-//    }
 #if LINUX
     int _res = 22;
     FILE *trm = popen((command + QString(" 2>&1")).toStdString().c_str(), "r");
@@ -118,43 +105,6 @@ return QPair<int, QString>(_res, _output);
        CloseHandle( pi.hProcess );
        CloseHandle( pi.hThread );
     _output = strResult;
-
-    //DWORD result;
-//    _res = *result;
-
-//    int lsOutPipe[2];
-//    pipe(lsOutPipe);
-
-//    //Fork to two processes.
-//    pid_t lsPid=fork();
-
-//    //Check if I'm the child or parent.
-//    if ( 0 == lsPid )
-//    {//I'm the child.
-//      //Close the read end of the pipe.
-//      close(lsOutPipe[0]);
-
-//      //Make the pipe be my stdout.
-//      dup2(lsOutPipe[1],STDOUT_FILENO);
-
-//      //Replace my self with ls (using one of the exec() functions):
-//      exec((command + QString(" 2>&1")).toStdString().c_str());//This never returns.
-//    } // if
-
-//    //I'm the parent.
-//    //Close the read side of the pipe.
-//    _res = close(lsOutPipe[1]);
-
-//    //Read stuff from ls:
-//    char buffer[1024];
-//    int bytesRead;
-//    do
-//    {
-//      bytesRead = read(emacsInPipe[0], buffer, 1024);
-
-//      // Do something with the read information.
-//      if (bytesRead > 0) _output += buffer;
-//    } while (bytesRead > 0);
 #endif
     qDebug() << QObject::tr("Executing ended");
     ret();

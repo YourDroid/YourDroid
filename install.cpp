@@ -6,7 +6,6 @@
 #include <QFile>
 #include <QDir>
 #include <QVector>
-#include <bkisofs/bk.h>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -192,7 +191,7 @@ void install::installGummi() {
     for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
     QString s = i;
 
-    execAbort(qApp->translate("log", "mountvol") + s + qApp->translate("log", ": /s"));
+    execAbort(qApp->translate("log", "mountvol ") + s + QString(": /s"));
 
     execAbort(qApp->translate("log", "mkdir ") + s + ":/EFI/yourdroid_gummiboot");
 
@@ -331,7 +330,7 @@ void install::unmountImage() {
     if((expr = cmd::exec(QString("rm -rf %1").arg(mountPoint))).first)
         qWarning() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
 #elif WIN
-    if(!QDir::rmdir(mountPoint))
+    if(!QDir().rmdir(mountPoint))
         qWarning() << QObject::tr("Cannot delete image's mount point");
 #endif
 }

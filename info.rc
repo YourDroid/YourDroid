@@ -4,7 +4,7 @@ IDI_ICON1 ICON "yourdroid.ico"
 #include <windows.h>
 #include "version.h"
 
-#define VER_FILEDESCRIPTION_STR     "YourDroid - the program installs android x86 on pc"
+#define VER_FILEDESCRIPTION_STR     "YourDroid"
 #define VER_INTERNALNAME_STR        "Profi_GMan"
 #define VER_LEGALCOPYRIGHT_STR      "GNU General Public License v3"
 #define VER_ORIGINALFILENAME_STR    "yourdroid.exe"

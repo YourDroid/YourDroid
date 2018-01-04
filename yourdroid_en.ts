@@ -4,142 +4,142 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="install.cpp" line="226"/>
+        <location filename="install.cpp" line="225"/>
         <source>Registering to grub2...</source>
-        <translation type="unfinished"></translation>
+        <translation>Registering to grub2...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="229"/>
+        <location filename="install.cpp" line="228"/>
         <source>Could not open the grub config-file to read</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not open the grub config-file to read</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="239"/>
+        <location filename="install.cpp" line="238"/>
         <source>Could not open the grub config-file to write</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not open the grub config-file to write</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="242"/>
+        <location filename="install.cpp" line="241"/>
         <source>Grub-config:</source>
-        <translation type="unfinished"></translation>
+        <translation>Grub-config:</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="250"/>
+        <location filename="install.cpp" line="249"/>
         <source>Could not make dir for configs: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not make dir for configs: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="256"/>
+        <location filename="install.cpp" line="255"/>
         <source>Updating grub...</source>
-        <translation type="unfinished"></translation>
+        <translation>Updating grub...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="258"/>
+        <location filename="install.cpp" line="257"/>
         <source>Could not update grub: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not update grub: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="270"/>
+        <location filename="install.cpp" line="269"/>
         <source>Could not open the config-file</source>
         <translation>Could not open the config-file</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="288"/>
+        <location filename="install.cpp" line="287"/>
         <source>Size of files is %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Size of files is %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="305"/>
+        <location filename="install.cpp" line="304"/>
         <source>Cannot make dir for image&apos;s mount point!</source>
         <translation>Cannot make dir for image&apos;s mount point!</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="314"/>
+        <location filename="install.cpp" line="313"/>
         <source>Cannot mount image: %1</source>
         <translation>Cannot mount image: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="327"/>
+        <location filename="install.cpp" line="326"/>
         <source>Cannot unmount image: %1</source>
         <translation>Cannot unmount image: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="332"/>
+        <location filename="install.cpp" line="331"/>
         <source>Cannot delete image&apos;s mount point: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot delete image&apos;s mount point: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="335"/>
+        <location filename="install.cpp" line="334"/>
         <source>Cannot delete image&apos;s mount point</source>
         <translation>Cannot delete image&apos;s mount point</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="356"/>
+        <location filename="install.cpp" line="355"/>
         <source>System file is %1</source>
-        <translation type="unfinished"></translation>
+        <translation>System file is %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="360"/>
+        <location filename="install.cpp" line="359"/>
         <source>Making dir for install</source>
-        <translation type="unfinished"></translation>
+        <translation>Making dir for install</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="363"/>
+        <location filename="install.cpp" line="362"/>
         <source>Could not make dir for install: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not make dir for install: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="371"/>
+        <location filename="install.cpp" line="370"/>
         <source>Start copying</source>
-        <translation type="unfinished"></translation>
+        <translation>Start copying</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="374"/>
+        <location filename="install.cpp" line="373"/>
         <source>Copying %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Copying %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="376"/>
+        <location filename="install.cpp" line="375"/>
         <source>%1 exists. So it is deleting</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 exists. So it is deleting</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="379"/>
+        <location filename="install.cpp" line="378"/>
         <source>^Could not overwrite %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>^Could not overwrite %1: %2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="382"/>
+        <location filename="install.cpp" line="381"/>
         <source>%1 does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 does not exist</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="385"/>
+        <location filename="install.cpp" line="384"/>
         <source>Could not copy system files: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not copy system files: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="389"/>
+        <location filename="install.cpp" line="388"/>
         <source>%1 coped succesful</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 coped succesful</translation>
     </message>
     <message>
-        <location filename="log.cpp" line="72"/>
+        <location filename="log.cpp" line="74"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="log.cpp" line="75"/>
+        <location filename="log.cpp" line="77"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="log.cpp" line="78"/>
+        <location filename="log.cpp" line="80"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="log.cpp" line="81"/>
+        <location filename="log.cpp" line="83"/>
         <source>Fatal error!</source>
         <translation>Fatal error!</translation>
     </message>
@@ -162,77 +162,77 @@
         <location filename="window.cpp" line="266"/>
         <location filename="window.cpp" line="267"/>
         <source>Data for install is valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Data for install is valid</translation>
     </message>
     <message>
         <source>Data for install valid</source>
-        <translation type="vanished">Data for install valid</translation>
+        <translation>Data for install validData for install valid</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="18"/>
+        <location filename="cmd.cpp" line="20"/>
         <source>Error while executing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Error while executing!</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="18"/>
-        <location filename="cmd.cpp" line="22"/>
+        <location filename="cmd.cpp" line="20"/>
+        <location filename="cmd.cpp" line="24"/>
         <source> Returned value is </source>
-        <translation type="unfinished"></translation>
+        <translation> Returned value is </translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="22"/>
+        <location filename="cmd.cpp" line="24"/>
         <source>Command executed succesful</source>
-        <translation type="unfinished">Command executed succesful</translation>
+        <translation>Command executed succesfulCommand executed succesful</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="60"/>
+        <location filename="cmd.cpp" line="47"/>
         <source>Cannot create thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot create thread</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="63"/>
+        <location filename="cmd.cpp" line="50"/>
         <source>Thread successfully created</source>
-        <translation type="unfinished"></translation>
+        <translation>Thread successfully created</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="78"/>
+        <location filename="cmd.cpp" line="65"/>
         <source>Cannot create procces</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot create procces</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="81"/>
+        <location filename="cmd.cpp" line="68"/>
         <source>Proccess successfully created</source>
-        <translation type="unfinished"></translation>
+        <translation>Proccess successfully created</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="113"/>
+        <location filename="cmd.cpp" line="100"/>
         <source>Reading finished by %1 steps</source>
-        <translation type="unfinished"></translation>
+        <translation>Reading finished by %1 steps</translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="159"/>
+        <location filename="cmd.cpp" line="109"/>
         <source>Executing ended</source>
-        <translation type="unfinished"></translation>
+        <translation>Executing ended</translation>
     </message>
     <message>
         <location filename="main.cpp" line="29"/>
         <source>^Segmitation Fault</source>
-        <translation type="unfinished"></translation>
+        <translation>^Segmitation Fault</translation>
     </message>
     <message>
         <location filename="main.cpp" line="50"/>
         <source>getuid() returned %1</source>
-        <translation type="unfinished"></translation>
+        <translation>getuid() returned %1</translation>
     </message>
     <message>
         <location filename="main.cpp" line="52"/>
         <source>^Program must be run with root. Run &apos;sudo %1&apos; in the terminal to fix it</source>
-        <translation type="unfinished"></translation>
+        <translation>^Program must be run with root. Run &apos;sudo %1&apos; in the terminal to fix it</translation>
     </message>
     <message>
-        <location filename="data.cpp" line="133"/>
+        <location filename="data.cpp" line="132"/>
         <source>GetVersionEx() returns %1</source>
-        <translation type="unfinished"></translation>
+        <translation>GetVersionEx() returns %1</translation>
     </message>
 </context>
 <context>
@@ -430,13 +430,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="310"/>
         <source>Start install</source>
-        <translation type="unfinished"></translation>
+        <translation>Start install</translation>
     </message>
     <message>
         <location filename="window.cpp" line="311"/>
         <location filename="window.cpp" line="312"/>
         <source>Unpacking iso...</source>
-        <translation type="unfinished"></translation>
+        <translation>Unpacking iso...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="315"/>
@@ -464,31 +464,31 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>install</name>
     <message>
-        <location filename="install.cpp" line="116"/>
+        <location filename="install.cpp" line="115"/>
         <source>Registering to bootloader...</source>
-        <translation type="unfinished"></translation>
+        <translation>Registering to bootloader...</translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="117"/>
+        <source>Registering to grub2</source>
+        <translation>Registering to grub2</translation>
     </message>
     <message>
         <location filename="install.cpp" line="118"/>
-        <source>Registering to grub2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="119"/>
         <source>Registering to gummiboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Registering to gummiboot</translation>
     </message>
 </context>
 <context>
     <name>log</name>
     <message>
-        <location filename="cmd.cpp" line="14"/>
+        <location filename="cmd.cpp" line="16"/>
         <source>Executing </source>
         <translation>Executing </translation>
     </message>
     <message>
         <source>Command executed succesful</source>
-        <translation type="vanished">Command executed succesful</translation>
+        <translation>Command executed succesfulCommand executed succesful</translation>
     </message>
     <message>
         <location filename="data.cpp" line="10"/>
@@ -523,7 +523,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="data.cpp" line="84"/>
         <source>Defining type of bios...</source>
-        <translation>Defining type of bios...</translation>
+        <translation>Defining>Defining type of bios...
     </message>
     <message>
         <location filename="data.cpp" line="104"/>
@@ -538,210 +538,209 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="data.cpp" line="118"/>
         <source>Processor type is </source>
-        <translation>Processor type is </translation>
+        <translation>Processor>Processor type is 
     </message>
     <message>
-        <location filename="install.cpp" line="28"/>
+        <location filename="install.cpp" line="27"/>
         <source>Writing install settings...</source>
         <translation>Writing install settings...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="34"/>
+        <location filename="install.cpp" line="33"/>
         <source>System %1 config registered...</source>
         <translation>System %1 config registered...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="36"/>
+        <location filename="install.cpp" line="35"/>
         <source>System %1 config registered succesfull</source>
         <translation>System %1 config registered succesfull</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="40"/>
+        <location filename="install.cpp" line="39"/>
         <source>System configs registered succesfull</source>
         <translation>System configs registered succesfull</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="43"/>
+        <location filename="install.cpp" line="42"/>
         <source>System %1 writing...</source>
         <translation>System %1 writing...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="53"/>
+        <location filename="install.cpp" line="52"/>
         <source>System %1 wrote succesfull</source>
         <translation>System %1 wrote succesfull</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="55"/>
+        <location filename="install.cpp" line="54"/>
         <source>Systems wrote succesfull</source>
         <translation>Systems wrote succesfull</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="59"/>
+        <location filename="install.cpp" line="58"/>
         <source>Reading install settings...</source>
         <translation>Reading install settings...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="71"/>
+        <location filename="install.cpp" line="70"/>
         <source>Config of system %1 does not exist</source>
         <translation>Config of system %1 does not exist</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="79"/>
+        <location filename="install.cpp" line="78"/>
         <source>Config of system %1 have not section bootloader</source>
         <translation>Config of system %1 have not section bootloader</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="82"/>
+        <location filename="install.cpp" line="81"/>
         <source>Config of system %1 does not have section type_place</source>
-        <translation>Config of system %1 does not have section type_place</translation>
+        <translation>Config of system %1 does not have section>Config of system %1 does not have section type_place
     </message>
     <message>
-        <location filename="install.cpp" line="85"/>
+        <location filename="install.cpp" line="84"/>
         <source>Config of system %1 does not have section place</source>
         <translation>Config of system %1 does not have section place</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="91"/>
-        <location filename="install.cpp" line="94"/>
+        <location filename="install.cpp" line="90"/>
+        <location filename="install.cpp" line="93"/>
         <source>Config of system </source>
         <translation>Config of system </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="91"/>
-        <location filename="install.cpp" line="94"/>
+        <location filename="install.cpp" line="90"/>
+        <location filename="install.cpp" line="93"/>
         <source>В настройках системы </source>
         <translation>В настройках системы </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="104"/>
-        <location filename="install.cpp" line="106"/>
+        <location filename="install.cpp" line="103"/>
+        <location filename="install.cpp" line="105"/>
         <source>System </source>
         <translation>System </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="131"/>
+        <location filename="install.cpp" line="130"/>
+        <location filename="install.cpp" line="194"/>
         <source>mountvol </source>
         <translation>mountvol </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="131"/>
-        <location filename="install.cpp" line="195"/>
+        <location filename="install.cpp" line="130"/>
         <source>: /s</source>
         <translation>: /s</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="132"/>
-        <location filename="install.cpp" line="197"/>
-        <location filename="install.cpp" line="205"/>
-        <location filename="install.cpp" line="216"/>
-        <location filename="install.cpp" line="219"/>
+        <location filename="install.cpp" line="131"/>
+        <location filename="install.cpp" line="196"/>
+        <location filename="install.cpp" line="204"/>
+        <location filename="install.cpp" line="215"/>
+        <location filename="install.cpp" line="218"/>
         <source>mkdir </source>
         <translation>mkdir </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="133"/>
-        <location filename="install.cpp" line="139"/>
-        <location filename="install.cpp" line="143"/>
-        <location filename="install.cpp" line="146"/>
-        <location filename="install.cpp" line="199"/>
-        <location filename="install.cpp" line="208"/>
-        <location filename="install.cpp" line="212"/>
+        <location filename="install.cpp" line="132"/>
+        <location filename="install.cpp" line="138"/>
+        <location filename="install.cpp" line="142"/>
+        <location filename="install.cpp" line="145"/>
+        <location filename="install.cpp" line="198"/>
+        <location filename="install.cpp" line="207"/>
+        <location filename="install.cpp" line="211"/>
         <source>cp </source>
         <translation>cp </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="136"/>
-        <location filename="install.cpp" line="202"/>
+        <location filename="install.cpp" line="135"/>
+        <location filename="install.cpp" line="201"/>
         <source> </source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="137"/>
-        <location filename="install.cpp" line="203"/>
+        <location filename="install.cpp" line="136"/>
+        <location filename="install.cpp" line="202"/>
         <source>:/EFI/yourdroid_gummiboot/</source>
         <translation>:/EFI/yourdroid_gummiboot/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="138"/>
+        <location filename="install.cpp" line="137"/>
         <source>mk </source>
         <translation>mk </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="147"/>
+        <location filename="install.cpp" line="146"/>
         <source>/tempGrubConf </source>
         <translation>/tempGrubConf </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="148"/>
+        <location filename="install.cpp" line="147"/>
         <source>A:/loader/entries/</source>
         <translation>A:/loader/entries/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="188"/>
+        <location filename="install.cpp" line="187"/>
         <source>/set </source>
         <translation>/set </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="188"/>
+        <location filename="install.cpp" line="187"/>
         <source> path /EFI/yourdroid_gummiboot/</source>
         <translation> path /EFI/yourdroid_gummiboot/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="195"/>
         <source>mountvol</source>
-        <translation>mountvol</translation>
+        <translation>mountvolmountvol</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="209"/>
+        <location filename="install.cpp" line="208"/>
         <source>/data/bootloaders/gummi/loader/loader.conf </source>
         <translation>/data/bootloaders/gummi/loader/loader.conf </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="213"/>
+        <location filename="install.cpp" line="212"/>
         <source>/data/bootloaders/gummi/loader/entries/0windows.conf </source>
         <translation>/data/bootloaders/gummi/loader/entries/0windows.conf </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="217"/>
+        <location filename="install.cpp" line="216"/>
         <source>:/efi/grub</source>
         <translation>:/efi/grub</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="220"/>
+        <location filename="install.cpp" line="219"/>
         <source>:/efi/grub/</source>
         <translation>:/efi/grub/</translation>
     </message>
     <message>
         <source>Ошибка при разархивировании: #</source>
-        <translation type="vanished">Ошибка при разархивировании: #</translation>
+        <translation>Ошибка при разархивировании: #Ошибка при разархивировании: #</translation>
     </message>
     <message>
         <source>Unpacking </source>
-        <translation type="vanished">Unpacking </translation>
+        <translation>Unpacking Unpacking </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="458"/>
+        <location filename="install.cpp" line="457"/>
         <source>Delete </source>
         <translation>Delete </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="459"/>
+        <location filename="install.cpp" line="458"/>
         <source>Удаление </source>
         <translation>Удаление </translation>
     </message>
     <message>
-        <location filename="install.cpp" line="481"/>
+        <location filename="install.cpp" line="480"/>
         <source>/etc/grub.d/android/</source>
         <translation>/etc/grub.d/android/</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="493"/>
+        <location filename="install.cpp" line="492"/>
         <source>Config deleted </source>
         <translation>Config deleted </translation>
     </message>
     <message>
         <source>.txt</source>
-        <translation type="vanished">.txt</translation>
+        <translation>.txt.txt</translation>
     </message>
     <message>
         <location filename="main.cpp" line="64"/>

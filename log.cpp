@@ -54,6 +54,8 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     case QtFatalMsg: color = "\x1b[31m"; break;
     }
     QString messFull = color + typeName + QString(' ') + mess + "\x1b[0m";
+#elif WIN
+    QString messFull = typeName + QString(' ') + mess;
 #endif
     logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << endl;
     std::cout << (messFull.toStdString() + '\n') << std::flush;
