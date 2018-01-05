@@ -140,7 +140,7 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="labelArch">
                  <property name="text">
-                  <string>Architecture </string>
+                  <string>Architecture of cpu</string>
                  </property>
                 </widget>
                </item>

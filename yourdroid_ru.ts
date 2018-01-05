@@ -297,27 +297,27 @@
     <message>
         <location filename="window.ui" line="493"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Куда установить?</translation>
     </message>
     <message>
         <location filename="window.ui" line="499"/>
         <source>Install to separate &amp;partition</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить на отдельный раздел</translation>
     </message>
     <message>
         <location filename="window.ui" line="506"/>
         <source>Install to directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить в папку</translation>
     </message>
     <message>
         <location filename="window.ui" line="527"/>
         <source>Coming soon</source>
-        <translation type="unfinished"></translation>
+        <translation>Скоро</translation>
     </message>
     <message>
         <location filename="window.ui" line="587"/>
         <source>System:</source>
-        <translation type="unfinished"></translation>
+        <translation>Система:</translation>
     </message>
     <message>
         <location filename="window.ui" line="707"/>
@@ -345,12 +345,23 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Описание:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Программа с открытым исходным кодом для установки порта андроида на пк(android x86)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Авторы:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Profi_GMan&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="window.ui" line="725"/>
         <source>Return to main menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Вернуться в меню</translation>
     </message>
     <message>
         <location filename="window.ui" line="59"/>
@@ -361,23 +372,24 @@ p, li { white-space: pre-wrap; }
         <location filename="window.ui" line="95"/>
         <location filename="window.ui" line="694"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="window.ui" line="102"/>
         <location filename="window.ui" line="561"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить</translation>
     </message>
     <message>
         <location filename="window.ui" line="122"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="window.ui" line="143"/>
-        <source>Architecture </source>
-        <translation>Архитектура </translation>
+        <source>Architecture of cpu</source>
+        <oldsource>Architecture </oldsource>
+        <translation>Архитектура процессора</translation>
     </message>
     <message>
         <location filename="window.ui" line="167"/>
@@ -397,7 +409,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.ui" line="309"/>
         <source>Return</source>
-        <translation type="unfinished"></translation>
+        <translation>Вернуться</translation>
     </message>
     <message>
         <location filename="window.ui" line="541"/>
@@ -409,77 +421,77 @@ p, li { white-space: pre-wrap; }
         <location filename="window.ui" line="331"/>
         <source>Restore defaults</source>
         <oldsource>Restore default</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="window.ui" line="355"/>
         <source>Space for data</source>
-        <translation type="unfinished"></translation>
+        <translation>Сколько выделить места под данные?</translation>
     </message>
     <message>
         <location filename="window.ui" line="363"/>
         <source>Size of data.img(mb):</source>
         <oldsource>Размер data.img(мб):</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Размер data.img(мб):</translation>
     </message>
     <message>
         <location filename="window.ui" line="601"/>
         <source>Path:</source>
         <oldsource>Путь:</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Путь:</translation>
     </message>
     <message>
         <location filename="window.cpp" line="79"/>
         <source>Version: </source>
-        <translation type="unfinished"></translation>
+        <translation>Версия:</translation>
     </message>
     <message>
         <location filename="window.cpp" line="197"/>
         <source>Checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка</translation>
     </message>
     <message>
         <location filename="window.cpp" line="198"/>
         <source>Checking data for install...</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка данных для установки...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="307"/>
         <source>^Fatal error while installing: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>^Критическая ошибка во время установки: %1</translation>
     </message>
     <message>
         <location filename="window.cpp" line="310"/>
         <source>Start install</source>
-        <translation type="unfinished"></translation>
+        <translation>Начало установки</translation>
     </message>
     <message>
         <location filename="window.cpp" line="311"/>
         <location filename="window.cpp" line="312"/>
         <source>Unpacking iso...</source>
-        <translation type="unfinished"></translation>
+        <translation>Расспаковка iso-образа...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="315"/>
         <location filename="window.cpp" line="316"/>
         <source>Creating data.img...</source>
-        <translation type="unfinished"></translation>
+        <translation>Создание data.img...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="320"/>
         <location filename="window.cpp" line="321"/>
         <source>Installing bootloader...</source>
-        <translation type="unfinished"></translation>
+        <translation>Установка загрузчика...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="325"/>
         <source>Unmounting image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмонтирование образа...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="332"/>
         <source>Finish install</source>
-        <translation type="unfinished"></translation>
+        <translation>Установка закончена</translation>
     </message>
 </context>
 <context>
@@ -487,17 +499,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="install.cpp" line="115"/>
         <source>Registering to bootloader...</source>
-        <translation type="unfinished"></translation>
+        <translation>Запись в загрузчик...</translation>
     </message>
     <message>
         <location filename="install.cpp" line="117"/>
         <source>Registering to grub2</source>
-        <translation type="unfinished"></translation>
+        <translation>Запись в grub2</translation>
     </message>
     <message>
         <location filename="install.cpp" line="118"/>
         <source>Registering to gummiboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Запись в gummiboot</translation>
     </message>
 </context>
 <context>
