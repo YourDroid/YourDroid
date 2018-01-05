@@ -184,41 +184,41 @@ void install::installGummi() {
     int begin = output.indexOf('{'), end = output.indexOf('}');
     QString id = output.mid(begin, end);
 
-    execAbort(qApp->translate("log", "/set ") + id + qApp->translate("log", " path /EFI/yourdroid_gummiboot/") +
+    execAbort(QString("/set ") + id + QString(" path /EFI/yourdroid_gummiboot/") +
                        (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"));
 
     char i[2] = {'a', '\0'};
     for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
     QString s = i;
 
-    execAbort(qApp->translate("log", "mountvol ") + s + QString(": /s"));
+    execAbort(QString("mountvol ") + s + QString(": /s"));
 
-    execAbort(qApp->translate("log", "mkdir ") + s + ":/EFI/yourdroid_gummiboot");
+    execAbort(QString("mkdir ") + s + ":/EFI/yourdroid_gummiboot");
 
-    execAbort(qApp->translate("log", "cp ") +
+    execAbort(QString("cp ") +
                        (WORK_DIR + "/data/bootloaders/gummi/") +
                        (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
-                       qApp->translate("log", " ") + s +
-                       qApp->translate("log", ":/EFI/yourdroid_gummiboot/"));
+                       QString(" ") + s +
+                       QString(":/EFI/yourdroid_gummiboot/"));
 
-    execAbort(qApp->translate("log", "mkdir ") + s + ":/loader");
+    execAbort(QString("mkdir ") + s + ":/loader");
 
 
-    execAbort(qApp->translate("log", "cp ") + WORK_DIR +
-              qApp->translate("log", "/data/bootloaders/gummi/loader/loader.conf ") + s +
+    execAbort(QString("cp ") + WORK_DIR +
+              QString("/data/bootloaders/gummi/loader/loader.conf ") + s +
               ":/loader/loader.conf");
 
-    execAbort(qApp->translate("log", "cp ") + WORK_DIR +
-              qApp->translate("log", "/data/bootloaders/gummi/loader/entries/0windows.conf ") + s +
+    execAbort(QString("cp ") + WORK_DIR +
+              QString("/data/bootloaders/gummi/loader/entries/0windows.conf ") + s +
               ":/loader/entries/0windows.conf");
 
-    execAbort(qApp->translate("log", "mkdir ") + s +
-              qApp->translate("log", ":/efi/grub"));
+    execAbort(QString("mkdir ") + s +
+              QString(":/efi/grub"));
 
-    execAbort(qApp->translate("log", "mkdir ") + s +
-              qApp->translate("log", ":/efi/grub/"));
+    execAbort(QString("mkdir ") + s +
+              QString(":/efi/grub/"));
 
-    qDebug() << "Gummiboot installed succes";
+    qDebug() << QObject::tr("Gummiboot installed succesful");
 }
 
 void install::registerGrub2() {
@@ -310,7 +310,7 @@ QPair<bool, QString> install::mountImage(QString image) {
 #endif
     auto expr = cmd::exec(command);
     if(expr.first) {
-        return QPair<bool, QString>(false, QObject::tr("Cannot mount image: %1").arg(expr.second));
+        return QPair<bool, QString>(false, QObject::tr("%1").arg(expr.second));
     }
     return QPair<bool, QString>(true, mountPoint);
 }

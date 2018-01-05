@@ -26,6 +26,7 @@
 //#define LOG(level, mess) log::message(level, QString(__FILE__), __LINE__, QString(mess));
 
 #include <QString>
+#include <QMessageLogContext>
 #include "console.h"
 
 extern const QString VERSION;

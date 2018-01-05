@@ -54,8 +54,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="install.cpp" line="221"/>
+        <source>Gummiboot installed succesful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="install.cpp" line="313"/>
-        <source>Cannot mount image: %1</source>
+        <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -652,7 +657,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="install.cpp" line="130"/>
-        <location filename="install.cpp" line="194"/>
         <source>mountvol </source>
         <translation type="unfinished"></translation>
     </message>
@@ -663,10 +667,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="install.cpp" line="131"/>
-        <location filename="install.cpp" line="196"/>
-        <location filename="install.cpp" line="204"/>
-        <location filename="install.cpp" line="215"/>
-        <location filename="install.cpp" line="218"/>
         <source>mkdir </source>
         <translation type="unfinished"></translation>
     </message>
@@ -675,21 +675,16 @@ p, li { white-space: pre-wrap; }
         <location filename="install.cpp" line="138"/>
         <location filename="install.cpp" line="142"/>
         <location filename="install.cpp" line="145"/>
-        <location filename="install.cpp" line="198"/>
-        <location filename="install.cpp" line="207"/>
-        <location filename="install.cpp" line="211"/>
         <source>cp </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="install.cpp" line="135"/>
-        <location filename="install.cpp" line="201"/>
         <source> </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="install.cpp" line="136"/>
-        <location filename="install.cpp" line="202"/>
         <source>:/EFI/yourdroid_gummiboot/</source>
         <translation type="unfinished"></translation>
     </message>
@@ -706,36 +701,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="install.cpp" line="147"/>
         <source>A:/loader/entries/</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="187"/>
-        <source>/set </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="187"/>
-        <source> path /EFI/yourdroid_gummiboot/</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="208"/>
-        <source>/data/bootloaders/gummi/loader/loader.conf </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="212"/>
-        <source>/data/bootloaders/gummi/loader/entries/0windows.conf </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="216"/>
-        <source>:/efi/grub</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="219"/>
-        <source>:/efi/grub/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
