@@ -64,7 +64,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 
 void Window::setLabelSetInfo() {
     QString info = QString(dat->tbios ? "Uefi " : "Bios ") + QString(dat->arch ? "x64" : "x86");
-#if OS == 1
+#if WIN
     info = QString((dat->winv ? "win. vista+ | " : "win. xp | ")) + info;
 #endif
     info = QString("<b>") + info + "<\b>";
@@ -95,7 +95,7 @@ void Window::Settings_clicked()
     ui->typeBios->setCurrentIndex((int)dat->tbios);
     ui->arch->setCurrentIndex((int)dat->arch);
     ui->winVer->setCurrentIndex((int)dat->winv);
-#if WIN
+#if LINUX
     ui->winVer->setEnabled(false);
 #endif
     ui->checkEnableConSettings->setChecked(dat->getConEnable());

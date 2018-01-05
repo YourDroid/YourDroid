@@ -408,11 +408,11 @@ void install::unpackSystem() {
 }
 
 void install::createDataImg(int size) {
-#if OS == 0
+#if LINUX
     system((QString("chmod 777 ") + WORK_DIR + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
     QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
-#elif OS == 1
+#elif WIN
     QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif

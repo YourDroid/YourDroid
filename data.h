@@ -37,7 +37,7 @@ public:
     bool read_set(bool);
     bool defbios();
     bool defarch();
-#if OS == 1
+#if WIN
     bool defwinv();
 #endif
 };

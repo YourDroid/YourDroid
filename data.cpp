@@ -12,7 +12,7 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
     if(needSet) {
         arch = a;
         tbios = tb;
-#if OS == 1
+#if WIN
         winv = wv;
 #endif
         conEnable = con;
@@ -29,7 +29,7 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
     settings.beginGroup("feutures_of_pc");
     settings.setValue("archeticture", QString((a) ? "x64" : "x86"));
     settings.setValue("type_of_bios", QString((tb) ? "uefi" : "bios"));
-#if OS == 1
+#if WIN
     settings.setValue("windows_version", QString((wv) ? "vista+" : "winxp"));
 #endif
     settings.endGroup();
@@ -56,7 +56,7 @@ bool options::read_set(bool dflt) {
         settings.beginGroup("feutures_of_pc");
         arch = (settings.value("archeticture", "x86").toString() == "x86") ? 0 : 1;
         tbios = (settings.value("type_of_bios", "uefi").toString() == "uefi") ? 1 : 0;
-    #if OS == 1
+    #if WIN
         if(settings.contains("windows_version")) {
              winv = defwinv();
              //write_set(false,arch,tbios,winv);
@@ -69,7 +69,7 @@ bool options::read_set(bool dflt) {
         qDebug() << qApp->translate("log", "Settings does not exist or settings restoring default");
         tbios = defbios();
         arch = defarch();
-#if OS == 1
+#if WIN
         winv = defwinv();
 #endif
         conEnable = false;
@@ -82,13 +82,13 @@ bool options::read_set(bool dflt) {
 
 bool options::defbios() {
     qDebug() << qApp->translate("log", "Defining type of bios...");
-#if OS == 0
+#if LINUX
     bool efiExist = QDir().exists("/boot/efi");
     bool efibootmgr = !cmd().exec("efibootmgr").first;
     qDebug() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
     qDebug() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
     return efiExist || efibootmgr;
-#elif OS == 1
+#elif WIN
     cmd::exec("mountvol a: /s");
     bool efi = QDir().exists("a:\\efi");
     qDebug() << "a:/efi " << qApp->translate("log", (efi ? "exists" : "does not exist"));
