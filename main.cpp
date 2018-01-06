@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
     if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
     cmd::exec("help");
+    //qWarning() << QObject::tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
     qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
     install ins(&set);
     ins.read();

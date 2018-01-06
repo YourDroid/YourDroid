@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 TARGET = yourdroid
 INCLUDEPATH += .
-CONFIG += c++17
+CONFIG += c++14
 
 # Input
 HEADERS += data.h log.h window.h \
@@ -26,7 +26,8 @@ SOURCES += data.cpp \
     install.cpp \
     cmd.cpp \
     console.cpp
-LIBS += -lz -std=gnu++17
+LIBS += -lz 
+#-std=gnu++14
 
 RESOURCES += \
     resource.qrc

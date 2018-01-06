@@ -16,7 +16,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui(new Ui::Window)
 {
     if(dat->tbios == false || OS) {
-        LOG(2, "This PC does not supported", "Ваш компьютер пока не поддерживается");
+        qCritical() << tr("^This PC does not supported");
     }
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
@@ -85,7 +85,7 @@ Window::~Window()
 }
 
 void Window::returnMainWindow() {
-    setWindowTitle("YourDroid | Главное меню");
+    setWindowTitle(tr("YourDroid | Main menu"));
     ui->windows->setCurrentWidget(ui->mainWindowPage);
 }
 
@@ -102,15 +102,16 @@ void Window::Settings_clicked()
     ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
     //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
-    setWindowTitle("YourDroid | Настройки");
+    setWindowTitle(tr("YourDroid | Settings"));
 }
 
 void Window::on_applaySettings_clicked()
 {
     if(langChanged) {
         langChanged = false;
-        retranslateUi(QString::fromStdString(_langHelper::to_string(
-                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
+        qInfo() << tr("^For applying language application should restart");
+//        retranslateUi(QString::fromStdString(_langHelper::to_string(
+//                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
     dat->write_set(true, ui->arch->currentIndex(),
                    ui->typeBios->currentIndex(),
@@ -142,7 +143,7 @@ void Window::on_installButtonMain_clicked()
     //ui->progressInstall->setRange(0, 100);
     ui->progressInstall->setValue(0);
 
-    setWindowTitle("YourDroid | Установка");
+    setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
     if(!dat->tbios) {
@@ -159,7 +160,7 @@ void Window::on_installButtonMain_clicked()
 
 void Window::on_buttonChooseImage_clicked()
 {
-    QString image = QFileDialog::getOpenFileName(0, "Выберите образ для установки", "", "*.iso");
+    QString image = QFileDialog::getOpenFileName(0, tr("Choose image for install"), "", "*.iso");
     if(image.length() > 0) {
         ui->editImageFromDisk->setText(image);
         qDebug() << qApp->translate("log", "Choose image for install: ") + image;
@@ -182,7 +183,7 @@ void Window::on_back_settings_clicked()
 
 void Window::on_buttonChooseDirForInstall_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(0, "Выберите директории для установки", "");
+    QString dir = QFileDialog::getExistingDirectory(0, tr("Choose directory for install"), "");
     if(dir.length() > 0) {
         ui->editDirForInstall->setText(dir);
         qDebug() << qApp->translate("log", "Choose dir for install: ") + dir;
@@ -203,42 +204,42 @@ void Window::on_buttonInstallInstall_clicked()
         ui->buttonInstallInstall->setEnabled(true);
     };
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        LOG(2, "Did not choose image", "Выберите образ для установки!");
+        qCritical() << tr("^Did not choose image");
         end();
         return;
     }
     if(!QFile::exists(image)) {
-        LOG(2, "Choosen image does not exist", "Выбранный образ не существует!");
+        qCritical() << tr("^Choosen image does not exist");
         end();
         return;
     }
     if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        LOG(2, "Did not choose folder", "Выберите папку для установки!");
+        qCritical() << tr("^Did not choose folder");
         end();
         return;
     }
     if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-        LOG(2, "Choosen folder is root", "Нельзя устанавливать в корень!");
+        qCritical() << tr("^Choosen folder is root");
         end();
         return;
     }
     if(!ui->editDirForInstall->hasAcceptableInput()) {
-        LOG(2, "Invalid path", "Неправильный путь! В пути для установки нельзя использовать кирилицу и пробелы!");
+        qCritical() << tr("^Invalid path");
         end();
         return;
     }
 //    if(!(new QDir())->exists(dir)) {
-//        LOG(2, "Selected folder does not exist", "Выбранная папка не существует!");
+//        qCritical() << tr("^Selected folder does not exist");
 //        end();
 //        return;
 //    }
     if((name = ui->editName->text()).length() == 0) {
-        LOG(2, "Did not fill in the name", "Напишите имя!");
+        qCritical() << tr("^Did not fill in the name");
         end();
         return;
     }
     if((name = ui->editSizeDataInstall->text()).length() == 0) {
-        LOG(2, "Did not fill in the size of data.img", "Напишите размер data.img!");
+        qCritical() << tr("^Did not fill in the size of data.img");
         end();
         return;
     }
@@ -249,6 +250,14 @@ void Window::on_buttonInstallInstall_clicked()
             return;
         }
     }
+    if(!QDir(ui->editDirForInstall->text()).entryList().isEmpty()) { //if dir is not empty
+        qWarning() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
+        if(log::getLastPressedButton() == QMessageBox::Cancel) {
+            end();
+            return;
+        }
+    }
+
     QPair<bool, QString> result = insDat->mountImage(ui->editImageFromDisk->text());
     if(!result.first) {
         qCritical() << QObject::tr("^Could not mount image: %1").arg(result.second);
@@ -337,7 +346,7 @@ void Window::on_buttonInstallInstall_clicked()
 
 void Window::on_buttonAboutMain_clicked()
 {
-    setWindowTitle("YourDroid | О программе");
+    setWindowTitle(tr("YourDroid | About"));
     ui->windows->setCurrentWidget(ui->aboutPage);
 }
 
@@ -362,15 +371,15 @@ void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
 
-    qDebug() << "Clearing systems list...";
+    qDebug() << tr("Clearing systems list...");
     ui->comboSystemDelete->blockSignals(true);
     ui->comboSystemDelete->clear();
     ui->comboSystemDelete->blockSignals(false);
 
-    qDebug() << "Filling systems list...";
+    qDebug() << tr("Filling systems list...");
     for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
-    setWindowTitle("YourDroid | Удаление");
+    setWindowTitle(tr("YourDroid | Delete"));
     ui->windows->setCurrentWidget(ui->daletePage);
 }
 
@@ -393,7 +402,7 @@ void Window::on_buttonDeleteDelete_clicked()
     insDat->oldSysEdit() = true;
     insDat->deleteEntry(num);
     on_deleteButtonMain_clicked();
-    ui->statusbar->showMessage("Готово");
+    ui->statusbar->showMessage(tr("Ready"));
     ui->buttonDeleteDelete->setEnabled(true);
     ui->buttonReturnMainDelete->setEnabled(true);
     ui->settingsMini->setEnabled(true);

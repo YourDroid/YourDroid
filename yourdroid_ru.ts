@@ -129,22 +129,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="log.cpp" line="74"/>
+        <location filename="log.cpp" line="86"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="log.cpp" line="77"/>
+        <location filename="log.cpp" line="89"/>
         <source>Warning!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="log.cpp" line="80"/>
+        <location filename="log.cpp" line="92"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="log.cpp" line="83"/>
+        <location filename="log.cpp" line="95"/>
         <source>Fatal error!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,18 +154,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="254"/>
+        <location filename="window.cpp" line="262"/>
         <source>^Could not mount image: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="261"/>
+        <location filename="window.cpp" line="269"/>
         <source>^Image has not needed files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="266"/>
-        <location filename="window.cpp" line="267"/>
+        <location filename="window.cpp" line="274"/>
+        <location filename="window.cpp" line="275"/>
         <source>Data for install is valid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,9 +441,39 @@ p, li { white-space: pre-wrap; }
         <translation>Путь:</translation>
     </message>
     <message>
+        <location filename="window.cpp" line="19"/>
+        <source>^This PC does not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="window.cpp" line="79"/>
         <source>Version: </source>
         <translation>Версия:</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="88"/>
+        <source>YourDroid | Main menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="105"/>
+        <source>YourDroid | Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="145"/>
+        <source>YourDroid | Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="162"/>
+        <source>Choose image for install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="185"/>
+        <source>Choose directory for install</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="window.cpp" line="197"/>
@@ -456,42 +486,107 @@ p, li { white-space: pre-wrap; }
         <translation>Проверка данных для установки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="307"/>
+        <location filename="window.cpp" line="206"/>
+        <source>^Did not choose image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="211"/>
+        <source>^Choosen image does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="216"/>
+        <source>^Did not choose folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="221"/>
+        <source>^Choosen folder is root</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="226"/>
+        <source>^Invalid path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="236"/>
+        <source>^Did not fill in the name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="241"/>
+        <source>^Did not fill in the size of data.img</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="253"/>
+        <source>^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="315"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Критическая ошибка во время установки: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="310"/>
+        <location filename="window.cpp" line="318"/>
         <source>Start install</source>
         <translation>Начало установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="311"/>
-        <location filename="window.cpp" line="312"/>
+        <location filename="window.cpp" line="319"/>
+        <location filename="window.cpp" line="320"/>
         <source>Unpacking iso...</source>
         <translation>Расспаковка iso-образа...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="315"/>
-        <location filename="window.cpp" line="316"/>
+        <location filename="window.cpp" line="323"/>
+        <location filename="window.cpp" line="324"/>
         <source>Creating data.img...</source>
         <translation>Создание data.img...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="320"/>
-        <location filename="window.cpp" line="321"/>
+        <location filename="window.cpp" line="328"/>
+        <location filename="window.cpp" line="329"/>
         <source>Installing bootloader...</source>
         <translation>Установка загрузчика...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="325"/>
+        <location filename="window.cpp" line="333"/>
         <source>Unmounting image...</source>
         <translation>Отмонтирование образа...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="332"/>
+        <location filename="window.cpp" line="340"/>
         <source>Finish install</source>
         <translation>Установка закончена</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="348"/>
+        <source>YourDroid | About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="373"/>
+        <source>Clearing systems list...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="378"/>
+        <source>Filling systems list...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="381"/>
+        <source>YourDroid | Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="404"/>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -515,22 +610,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>log</name>
     <message>
-        <location filename="main.cpp" line="64"/>
+        <location filename="main.cpp" line="65"/>
         <source>Work dir is </source>
         <translation>Рабочая папка - </translation>
     </message>
     <message>
-        <location filename="main.cpp" line="71"/>
+        <location filename="main.cpp" line="72"/>
         <source>Window exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="73"/>
+        <location filename="main.cpp" line="74"/>
         <source>Window closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="76"/>
+        <location filename="main.cpp" line="77"/>
         <source>Exiting... Returned </source>
         <translation type="unfinished"></translation>
     </message>
@@ -746,12 +841,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="346"/>
+        <location filename="window.cpp" line="354"/>
         <source>Choose </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="390"/>
+        <location filename="window.cpp" line="398"/>
         <source>Deleting </source>
         <translation type="unfinished"></translation>
     </message>

@@ -8,6 +8,7 @@
 #include <iostream>
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
+QMessageBox::StandardButtons log::lastPressedButton;
 
 console *log::init() {
     con = new console;
@@ -28,6 +29,17 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
         window = true;
         mess.remove(0, 1);
     }
+    QMessageBox::StandardButtons buttons;
+    if(mess[mess.length() - 1] == '|') {
+        mess.chop(1);
+        int pos = mess.lastIndexOf('|');
+        QString buttonsString = mess.mid(pos + 1, (mess.length() - pos - 1));
+        mess.chop(mess.length() - pos);
+        if(buttonsString.contains('+')) buttons = QMessageBox::Ok;
+        if(buttonsString.contains('-')) buttons = buttons | QMessageBox::Cancel;
+    }
+    else buttons = QMessageBox::Ok;
+
     if(!QDir("log").exists()) QDir().mkdir("log");
     static QString logName = qApp->applicationDirPath() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
     static QFile preLog(logName);
@@ -40,6 +52,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     //static ofstream logFile("log.txt");
     QString typeName;
     switch(level) {
+    case QtInfoMsg: typeName = "INFO:"; break;
     case QtDebugMsg: typeName = "DEBUG:"; break;
     case QtWarningMsg: typeName = "WARNING:"; break;
     case QtCriticalMsg: typeName = "ERROR:"; break;
@@ -48,10 +61,10 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
 #if LINUX
     QString color;
     switch(level) {
-    case QtDebugMsg: color = "\x1b[0m"; break;
     case QtWarningMsg: color = "\x1b[33m"; break;
     case QtCriticalMsg: color = "\x1b[31m"; break;
     case QtFatalMsg: color = "\x1b[31m"; break;
+    default: color = "\x1b[0m"; break;
     }
     QString messFull = color + typeName + QString(' ') + mess + "\x1b[0m";
 #elif WIN
@@ -63,26 +76,26 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
 
     Qt::GlobalColor _color;
     switch(level) {
-    case QtDebugMsg: _color = Qt::white; break;
     case QtWarningMsg: _color = Qt::yellow; break;
     case QtCriticalMsg: _color = Qt::red; break;
     case QtFatalMsg: _color = Qt::red; break;
+    default: _color = Qt::white; break;
     }
     con->output(typeName + QString(' ') + mess, _color);
     if(window) {
         switch(level) {
-        case QtDebugMsg: QMessageBox::information(0, QObject::tr("Information"),
-                                         mess,
-                                         QMessageBox::Ok); break;
-        case QtWarningMsg: QMessageBox::warning(0, QObject::tr("Warning!"),
+        case QtWarningMsg: lastPressedButton = QMessageBox::warning(0, QObject::tr("Warning!"),
                                      mess,
-                                     QMessageBox::Ok); break;
-        case QtCriticalMsg: QMessageBox::critical(0, QObject::tr("Error!"),
+                                     buttons); break;
+        case QtCriticalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Error!"),
                                       mess,
-                                      QMessageBox::Ok); break;
-        case QtFatalMsg: QMessageBox::critical(0, QObject::tr("Fatal error!"),
+                                      buttons); break;
+        case QtFatalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Fatal error!"),
                                                mess,
-                                               QMessageBox::Ok); qApp->exit(-1);
+                                               buttons); qApp->exit(-1);
+        default: lastPressedButton = QMessageBox::information(0, QObject::tr("Information"),
+                                                              mess,
+                                                              buttons); break;
         }
     }
 }

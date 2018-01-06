@@ -1,4 +1,5 @@
 IDI_ICON1 ICON "yourdroid.ico"
+1 24 "manifest.xml"
 
 
 #include <windows.h>

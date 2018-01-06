@@ -27,17 +27,20 @@
 
 #include <QString>
 #include <QMessageLogContext>
+#include <QMessageBox>
 #include "console.h"
 
 extern const QString VERSION;
 extern const QString &WORK_DIR;
 
 class log {
+    static QMessageBox::StandardButtons lastPressedButton;
     static console *con;
 public:
+    static QMessageBox::StandardButtons getLastPressedButton() { return lastPressedButton; }
     static console *init();
     static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
-    static void messagenew(QtMsgType, const QMessageLogContext&, const QString&/*, QString = "NULL"*/);
+    static void messagenew(QtMsgType, const QMessageLogContext&, const QString&);
     static void message(int level, QString file, int line, QString mes, QString = "NULL") {  }
 };
 
