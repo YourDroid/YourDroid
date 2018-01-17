@@ -82,15 +82,16 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     default: _color = Qt::white; break;
     }
     con->output(typeName + QString(' ') + mess, _color);
+
     if(window) {
         switch(level) {
-        case QtWarningMsg: lastPressedButton = QMessageBox::warning(0, QObject::tr("Warning!"),
+        case QtWarningMsg: /*lastPressedButton =*/ QMessageBox::warning(0, QObject::tr("Warning!"),
                                      mess,
                                      buttons); break;
-        case QtCriticalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Error!"),
+        case QtCriticalMsg: /*lastPressedButton =*/ QMessageBox::critical(0, QObject::tr("Error!"),
                                       mess,
                                       buttons); break;
-        case QtFatalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Fatal error!"),
+        case QtFatalMsg: /*lastPressedButton =*/ QMessageBox::critical(0, QObject::tr("Fatal error!"),
                                                mess,
                                                buttons); qApp->exit(-1);
         default: lastPressedButton = QMessageBox::information(0, QObject::tr("Information"),

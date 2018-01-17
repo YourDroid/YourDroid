@@ -12,10 +12,8 @@
 #include <QUrl>
 #include <QTextCodec>
 
-#define ABORT(what) emit abort(what);
-
-void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n) {
-    systems.push_back(install::_installSet(b, t, p, i, n));
+void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
+    systems.push_back(install::_installSet(b, t, p, i, n, e));
     cntSystems++;
 }
 
@@ -30,6 +28,10 @@ void install::write() {
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     for(int i = 0; i < sysCnt; i++) {
+        if(systems[i].ended == false) {
+            qDebug() << tr("System %1 skipped").arg(systems[i].name);
+            continue;
+        }
         qDebug() << qApp->translate("log", "System %1 config registered...").arg(QString::number(i + 1));
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
         qDebug() << qApp->translate("log", "System %1 config registered succesfull").arg(QString::number(i + 1));
@@ -39,6 +41,10 @@ void install::write() {
     qDebug() << qApp->translate("log", "System configs registered succesfull");
 
     for(int i = 0; i < sysCnt; i++) {
+        if(systems[i].ended == false) {
+            qDebug() << tr("System %1 skipped").arg(systems[i].name);
+            continue;
+        }
         qDebug() << qApp->translate("log", "System %1 writing...").arg(QString::number(i + 1));
         QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
@@ -279,19 +285,63 @@ void install::grubConfigure(QString way) {
 }
 
 int install::sizeOfFiles() {
+#if LINUX
     int res = QFile(mountPoint + "/initrd.img").size() +
             QFile(mountPoint + "/ramdisk.img").size() +
             QFile(mountPoint + "/kernel").size() +
             QFile(mountPoint + "/system.sfs").size() +
             QFile(mountPoint + "/system.img").size();
+#elif WIN
+    QString command = QString("%1/data/iso-editor.exe size %2 %3").arg(qApp->applicationDirPath(), systems.back().image);
+    auto sizeOfFile = [&](QString file) -> int {
+        auto expr = cmd::exec(command.arg(file));
+        if(expr.first) {
+            qWarning() << tr("Could not get size of %1").arg(file);
+            return 200 * 1024;
+        }
+        else return expr.second.toInt();
+    };
+    int res = 0;
+    QVector<QString> files { "system.img", "system.sfs", "ramdisk.img", "kernel", "initrd.img" };
+    for(auto file : files) {
+        res += sizeOfFile(file);
+    }
+#endif
     qDebug() << QObject::tr("Size of files is %1").arg(res);
     return res;
 }
 
-bool install::isInvalidImage() {
+int install::isInvalidImage(
+        #if WIN
+            QString iso
+        #endif
+            ) {
+#if LINUX
     return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
+#elif WIN
+    QPair<int, QString> expr;
+    QString command = QString("%1/data/iso-editor.exe exist %2 %3").arg(qApp->applicationDirPath(), iso);
+#define checkError() \
+        if(expr.first < 0 || expr.first > 2) { \
+            QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
+            if (re.indexIn(expr.second) != -1) { \
+                qCritical() << re.cap(1).prepend("^"); \
+            } \
+            else qCritical() << expr.second.prepend("^"); \
+            return 2; \
+        }
+#define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
+    bool systemImg = checkFile("system.img");
+    bool systemSfs = checkFile("system.sfs");
+    bool kernel = checkFile("kernel");
+    bool initrdImg = checkFile("initrd.img");
+    bool ramdiskImg = checkFile("ramdisk.img");
+    return (systemImg || systemSfs) &&
+            kernel && initrdImg &&
+            ramdiskImg;
+#endif
 }
 
 QPair<bool, QString> install::mountImage(QString image) {
@@ -303,11 +353,7 @@ QPair<bool, QString> install::mountImage(QString image) {
     if(!QDir().mkdir(mountPoint)) {
         return QPair<bool, QString>(false, QObject::tr("Cannot make dir for image's mount point!"));
     }
-#if LINUX
     QString command = QString("mount -o loop %1 %2").arg(image, mountPoint);
-#elif WIN
-    QString command = qApp->applicationDirPath() + "/data/dt.cmd";
-#endif
     auto expr = cmd::exec(command);
     if(expr.first) {
         return QPair<bool, QString>(false, QObject::tr("%1").arg(expr.second));
@@ -316,23 +362,14 @@ QPair<bool, QString> install::mountImage(QString image) {
 }
 
 void install::unmountImage() {
-#if LINUX
     QString command = QString("umount %1").arg(mountPoint);
-#elif WIN
-    QString command = qApp->applicationDirPath() + "/data/dt_unmount.cmd";
-#endif
     auto expr = cmd::exec(command);
     if(expr.first) {
         qWarning() << QObject::tr("Cannot unmount image: %1").arg(expr.second);
         return;
     }
-#if LINUX
     if((expr = cmd::exec(QString("rm -rf %1").arg(mountPoint))).first)
         qWarning() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
-#elif WIN
-    if(!QDir().rmdir(mountPoint))
-        qWarning() << QObject::tr("Cannot delete image's mount point");
-#endif
 }
 
 QString install::obsolutePath(QString path) {
@@ -349,11 +386,6 @@ QString install::obsolutePath(QString path) {
 }
 
 void install::unpackSystem() {
-    QString systemFile;
-    if(QFile(mountPoint + "/system.img").exists()) systemFile = "/system.img";
-    else if(QFile(mountPoint + "/system.sfs").exists()) systemFile = "/system.sfs";
-    qDebug() << QObject::tr("System file is %1").arg(systemFile);
-
     QPair<int, QString> expr;
     if(!QFile::exists(systems.back().place)) {
         qDebug() << QObject::tr("Making dir for install");
@@ -366,26 +398,60 @@ void install::unpackSystem() {
 
     QFile copier;
     QString place = systems.back().place;
-    QVector<QString> files { "/kernel", "/ramdisk.img", "/initrd.img", systemFile.toStdString().c_str() };
+    QVector<QString> filesCopy = { "/kernel", "/ramdisk.img", "/initrd.img" };
+    QString systemFile;
+#if LINUX
+    if(QFile(mountPoint + "/system.img").exists())
+#elif WIN
+    if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
+                 .arg(qApp->applicationDirPath(), systems.back().image, "system.img")).first)
+#endif
+        filesCopy.push_back(systemFile = "/system.img");
+#if LINUX
+    else if(QFile(mountPoint + "/system.sfs").exists())
+#elif WIN
+    if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
+                 .arg(qApp->applicationDirPath(), systems.back().image, "system.sfs")).first)
+#endif
+    filesCopy.push_back(systemFile = "/system.sfs");
+    qDebug() << QObject::tr("System file is %1").arg(systemFile);
     qDebug() << QObject::tr("Start copying");
-    for(QString file : files) {
+    for(QString file : filesCopy) {
 
+        if(file.isEmpty()) {
+            emit abort(tr("File for copy is empty"));
+            return;
+        }
         qDebug() << QObject::tr("Copying %1").arg(file);
         if(QFile::exists(place + file)) {
             qDebug() << QObject::tr("%1 exists. So it is deleting").arg(place + file);
-            auto expr = cmd::exec(QString("rm -f %1").arg(place + file));
+#if LINUX
+            QString command = "rm -f %1";
+#elif WIN
+            QString command = "del /f /q %1";
+#endif
+            auto expr = cmd::exec(command.arg(place + file));
             if(expr.first) {
                 qWarning() << QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second);
             }
         }
         else qDebug() << QObject::tr("%1 does not exist").arg(place + file);
-
-        if(!copier.copy(mountPoint + file, place + file)) {
-            emit abort(QObject::tr("Could not copy system files: %1").arg(file));
+        bool res = 0;
+#if LINUX
+        res = copier.copy(mountPoint + file, place + file);
+        QString advancedInfo = "";
+#elif WIN
+        QPair<int, QString> expr;
+        res = !(expr = cmd::exec(QString("%1/data/iso-editor.exe extract %2 %3 %4/%3")
+                         .arg(qApp->applicationDirPath(), systems.back().image, file.remove(0, 1), place))).first;
+        QString advancedInfo = QString(": %1").arg(expr.second);
+#endif
+        if(!res) {
+            emit abort(QObject::tr("Could not copy %1-system file%2").arg(file, advancedInfo));
             return;
         }
 
-        qDebug() << QObject::tr("%1 coped succesful").arg(file);
+        qDebug() << QObject::tr("%1 copied succesful").arg(file);
         emit fileEnded(QFile(mountPoint + file).size());
     }
 

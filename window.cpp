@@ -15,7 +15,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     insDat(ins),
     ui(new Ui::Window)
 {
-    if(dat->tbios == false || OS) {
+    if(dat->tbios == false) {
         qCritical() << tr("^This PC does not supported");
     }
 
@@ -250,7 +250,7 @@ void Window::on_buttonInstallInstall_clicked()
             return;
         }
     }
-    if(!QDir(ui->editDirForInstall->text()).entryList().isEmpty()) { //if dir is not empty
+    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
         qWarning() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
         if(log::getLastPressedButton() == QMessageBox::Cancel) {
             end();
@@ -258,6 +258,7 @@ void Window::on_buttonInstallInstall_clicked()
         }
     }
 
+#if LINUX
     QPair<bool, QString> result = insDat->mountImage(ui->editImageFromDisk->text());
     if(!result.first) {
         qCritical() << QObject::tr("^Could not mount image: %1").arg(result.second);
@@ -265,18 +266,23 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
+#endif
 
-    if(!insDat->isInvalidImage()) {
-        qCritical() << QObject::tr("^Image has not needed files");
+    int ret = 0;
+    if(!(ret = insDat->isInvalidImage(
+            #if WIN
+                ui->editImageFromDisk->text()
+            #endif
+                ))) {
+        if(ret != 2) qCritical() << QObject::tr("^Image has not needed files");
         end();
         return;
     }
 
-    qDebug() << QObject::tr("Data for install is valid");
-    ui->statusbar->showMessage(QObject::tr("Data for install is valid"));
-    insDat->sizeOfFiles();
+    qDebug() << QObject::tr("Data of install is valid");
+    ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
-    ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
+    //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
     if(boot == "Grub legasy") boot = "grub_legasy";
     else if(boot == "Windows NTLDR") boot = "ntldr";
@@ -285,6 +291,7 @@ void Window::on_buttonInstallInstall_clicked()
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
 #define CHECK_ABORT() if(abort) return;
+    insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
         ui->statusbar->showMessage("Готово");
@@ -294,7 +301,7 @@ void Window::on_buttonInstallInstall_clicked()
     });
 
     int step = insDat->sizeOfFiles() / 4;
-    ui->progressInstall->setRange(0, step * 7);
+    ui->progressInstall->setRange(0, step * ((OS) ? 6 : 7));
 
     int progressComplete = 0;
 
@@ -314,7 +321,9 @@ void Window::on_buttonInstallInstall_clicked()
         connect(insDat, &install::abort, [&](QString mes){
             abort = true;
             qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+#if LINUX
             insDat->unmountImage();
+#endif
         });
         qDebug() << tr("Start install");
         qDebug() << tr("Unpacking iso...");
@@ -331,11 +340,12 @@ void Window::on_buttonInstallInstall_clicked()
         emit progressAddStep();
         insDat->registerBootloader();
         CHECK_ABORT();
+#if LINUX
         emit sendMesToStausbar(tr("Unmounting image..."));
         emit progressAddStep();
         insDat->unmountImage();
-        insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text());
-        CHECK_ABORT();
+#endif
+        insDat->systemEnd();
         insDat->write();
         CHECK_ABORT();
         qDebug() << tr("Finish install");

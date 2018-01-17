@@ -24,7 +24,7 @@ class install : public QObject {
         QString name;
         bool ended = false;
         bool os = OS;
-        _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n) : bootloader(b), typePlace(t), place(p), image(i), name(n) {}
+        _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e) {}
         _installSet() {}
         _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e, bool o) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e), os(o) {}
     };
@@ -48,13 +48,18 @@ public:
     int cntSys() { return cntSystems; }
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
-    void addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n);
+    void addSystem(_bootloader, _typePlace, QString, QString, QString, bool);
+    void systemEnd() { systems.back().ended = true; }
     void read();
     void write();
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
     int sizeOfFiles();
-    bool isInvalidImage();
+    int isInvalidImage(
+        #if WIN
+            QString
+        #endif
+            );
     QPair<bool, QString> mountImage(QString);
     void unmountImage();
     void unpackSystem();

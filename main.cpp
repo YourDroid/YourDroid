@@ -11,12 +11,16 @@
 #include <QVector>
 #include <QFile>
 #include <QTextStream>
+#include <QProcess>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #include <signal.h>
+
 #if WIN
+#include <exception>
+#include <VirtDisk.h>
 #include <windows.h>
 #endif
 
@@ -26,7 +30,7 @@ const QString &WORK_DIR = workDir;
 console *log::con;
 
 void segFault(int res) {
-    qCritical() << QObject::tr("^Segmitation Fault");
+    qCritical() << QObject::tr("^Segmentation Fault");
     signal(res, SIG_DFL);
     exit(3);
 }
@@ -49,31 +53,39 @@ int main(int argc, char *argv[])
     int uid = geteuid();
     qDebug() << QObject::tr("getuid() returned %1").arg(uid);
     if(uid != 0) {
-        qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
-                       .arg(qApp->applicationFilePath());
-        return 1;
+        if(!QProcess::startDetached(QString("gksudo %1").arg(qApp->arguments()[0]))) {
+            qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
+                           .arg(qApp->applicationFilePath());
+            return 1;
+        }
+        return 0;
     }
 #endif
     options set;
     bool readSet = set.read_set(false);
+
     QTranslator translator;
     translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
     app.installTranslator(&translator);
     if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
+
     cmd::exec("help");
-    //qWarning() << QObject::tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
+
+
     qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
     install ins(&set);
     ins.read();
+
     Window *window = new Window(&ins, readSet, &set);
     window->show();
     QObject::connect(window, &Window::closed, [=](){ widget->close(); });
     QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
+
     qDebug() << app.translate("log", "Window exec");
     int res = app.exec();
     qDebug() << app.translate("log", "Window closed");
     set.autowrite_set();
     ins.write();
-    qDebug() << app.translate("log", "Exiting... Returned ") << QString::number(res);
+    qDebug() << QObject::tr("Exiting... Returned ") << QString::number(res);
     return res;
 }
