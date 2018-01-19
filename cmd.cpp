@@ -98,36 +98,40 @@ QPair<int, QString> cmd::exec(QString command) {
     qDebug() << QObject::tr("Executing %1").arg(command);
     QString _output = "";
     QProcess proc;
-    bool succes = true;
+    bool succes = true, started = true;
     proc.start(command);
     int _res = 22;
     if(!proc.waitForStarted()) {
         qCritical() << QObject::tr("Could not start");
         succes = false;
+        started = false;
     }
     else if(!proc.waitForFinished()) {
         qCritical() << QObject::tr("Could not finish");
         succes = false;
+        started = false;
     }
     else if(proc.exitStatus() == QProcess::CrashExit) {
         succes = false;
         qCritical() << QObject::tr("Application has crashed");
     }
-    if(succes) {
-        _output = proc.readAllStandardOutput().data();
-        _res = proc.exitCode();
-    }
-
     if(succes) qDebug() << QObject::tr("Executing ended succesfull");
     else qCritical() << QObject::tr("Executing ended unsuccesfull");
-    if(_res) {
-        qWarning() << _output;
-        qWarning() << QObject::tr("Returned value is ") << _res;
+
+    if(started) {
+        proc.waitForReadyRead();
+        _output = proc.readAllStandardOutput().data();
+        _res = proc.exitCode();
+        if(_res) {
+            qWarning() << _output;
+            qWarning() << QObject::tr("Returned value is ") << _res;
+        }
+        else {
+            qDebug() << _output;
+            qDebug() << QObject::tr("Returned value is ") << _res;
+        }
     }
-    else {
-        qDebug() << _output;
-        qDebug() << QObject::tr("Returned value is ") << _res;
-    }
+
     return QPair<int, QString>(_res, _output);
 }
 

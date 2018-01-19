@@ -179,7 +179,7 @@ bool install::isInstalledGummi() {
 void install::installGummi() {
     qDebug() << "Installing gummiboot...";
 #define CHECK_ABORT() if(addNew.first)  { \
-    emit abort(addNew.second); }
+    emit abort(addNew.second); return; }
 
 #define execAbort(command) addNew = cmd::exec(command); CHECK_ABORT();
 
@@ -452,7 +452,9 @@ void install::unpackSystem() {
         }
 
         qDebug() << QObject::tr("%1 copied succesful").arg(file);
-        emit fileEnded(QFile(mountPoint + file).size());
+        emit fileEnded(OS ? QString(cmd::exec(QString("%1/data/iso-editor.exe size %2 %3")
+                                               .arg(qApp->applicationDirPath(),
+                                                    systems.back().image, file)).second).toInt() : QFile(mountPoint + file).size());
     }
 
 //    int complete = 0;

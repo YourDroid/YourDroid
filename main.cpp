@@ -40,52 +40,57 @@ int main(int argc, char *argv[])
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
 
-    QApplication app(argc,argv);
-    workDir = app.applicationDirPath();
-    qInstallMessageHandler(log::messagenew);
+    try {
+        QApplication app(argc,argv);
+        workDir = app.applicationDirPath();
+        qInstallMessageHandler(log::messagenew);
 #if LINUX
-    if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
-        system("touch ~/.config/QtProject/qtlogging.ini");
+        if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
+            system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
-    console *widget = log::init();
-    signal(SIGSEGV, segFault);
+        console *widget = log::init();
+        signal(SIGSEGV, segFault);
 #if LINUX
-    int uid = geteuid();
-    qDebug() << QObject::tr("getuid() returned %1").arg(uid);
-    if(uid != 0) {
-        if(!QProcess::startDetached(QString("gksudo %1").arg(qApp->arguments()[0]))) {
-            qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
-                           .arg(qApp->applicationFilePath());
-            return 1;
+        int uid = geteuid();
+        qDebug() << QObject::tr("getuid() returned %1").arg(uid);
+        if(uid != 0) {
+            if(!QProcess::startDetached(QString("gksudo %1").arg(qApp->arguments()[0]))) {
+                qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
+                               .arg(qApp->applicationFilePath());
+                return 1;
+            }
+            return 0;
         }
-        return 0;
-    }
 #endif
-    options set;
-    bool readSet = set.read_set(false);
+        options set;
+        bool readSet = set.read_set(false);
 
-    QTranslator translator;
-    translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
-    app.installTranslator(&translator);
-    if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
+        QTranslator translator;
+        translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
+        app.installTranslator(&translator);
+        if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
-    cmd::exec("help");
+        cmd::exec("help");
 
+        qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
+        install ins(&set);
+        ins.read();
 
-    qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
-    install ins(&set);
-    ins.read();
+        Window *window = new Window(&ins, readSet, &set);
+        window->show();
+        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
+        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
-    Window *window = new Window(&ins, readSet, &set);
-    window->show();
-    QObject::connect(window, &Window::closed, [=](){ widget->close(); });
-    QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
-
-    qDebug() << app.translate("log", "Window exec");
-    int res = app.exec();
-    qDebug() << app.translate("log", "Window closed");
-    set.autowrite_set();
-    ins.write();
-    qDebug() << QObject::tr("Exiting... Returned ") << QString::number(res);
-    return res;
+        qDebug() << app.translate("log", "Window exec");
+        int res = app.exec();
+        qDebug() << app.translate("log", "Window closed");
+        set.autowrite_set();
+        ins.write();
+        qDebug() << QObject::tr("Exiting... Returned ") << QString::number(res);
+        return res;
+    }
+    catch(...) {
+        qDebug() << "jkfghgkdfj";
+            return -1;
+    }
 }

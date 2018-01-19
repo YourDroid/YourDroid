@@ -40,6 +40,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     auto enableApply = [=](int i = 0) {
         ui->applaySettings->setEnabled(true);
     };
+    connect(this, &Window::logFromMainThread, &Window::logFromMainThreadSlot);
 
 //    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
 //        ui->qApplaySettings->setEnabled(true);
@@ -316,7 +317,18 @@ void Window::on_buttonInstallInstall_clicked()
         ui->progressInstall->setValue(ui->progressInstall->maximum() / 7);
     });
 
+//            bool abort = false;
+//    connect(insDat, &install::abort, this, [&](QString mes){
+//        abort = true;
+//        qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+//#if LINUX
+//        insDat->unmountImage();
+//#endif
+//    });
     auto res = QtConcurrent::run([=](){ // auto - QFuture
+        //emit logFromMainThread(QtDebugMsg, "^gfgjhfgjfhg");
+        QMessageBox::information(0, "jhgjhg", "lll");
+        return;
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             abort = true;
@@ -445,4 +457,13 @@ void Window::consoleHided() {
 void Window::on_comboLanguageSettings_currentIndexChanged(int index)
 {
     langChanged = true;
+}
+
+void Window::logFromMainThreadSlot(QtMsgType type, QString mess) {
+    switch(type) {
+    case QtWarningMsg: qWarning() << mess; break;
+    case QtCriticalMsg: qCritical() << mess; break;
+    case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
+    default: qDebug() << mess;
+    }
 }

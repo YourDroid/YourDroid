@@ -33,6 +33,8 @@ public:
     ~Window();
 
 signals:
+    void logFromMainThread(QtMsgType, QString);
+
     void proccessFinished();
 
     void closed();
@@ -42,6 +44,8 @@ signals:
     void progressAddStep();
 
 public slots:
+    void logFromMainThreadSlot(QtMsgType, QString);
+
     void consoleHided();
 
     void returnMainWindow();
