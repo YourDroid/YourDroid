@@ -36,11 +36,19 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     connect(ui->windows, &QStackedWidget::currentChanged, [=](){
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
-    connect(this, &Window::sendMesToStausbar, &Window::receiveMesToStatusbar);
+    connect(this, &Window::sendMesToStausbar, this, &Window::receiveMesToStatusbar);
     auto enableApply = [=](int i = 0) {
         ui->applaySettings->setEnabled(true);
     };
-    connect(this, &Window::logFromMainThread, &Window::logFromMainThreadSlot);
+//    connect(this, &Window::logFromMainThread, [=](QtMsgType type, QString mess){
+//        switch(type) {
+//        case QtWarningMsg: qWarning() << mess; break;
+//        case QtCriticalMsg: qCritical() << mess; break;
+//        case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
+//        default: qDebug() << mess;
+//        }
+//    });
+    connect(this, &Window::logFromMainThread, this, &Window::logFromMainThreadSlot);
 
 //    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
 //        ui->qApplaySettings->setEnabled(true);
@@ -306,33 +314,25 @@ void Window::on_buttonInstallInstall_clicked()
 
     int progressComplete = 0;
 
-    connect(insDat, &install::progressChange, [&](int progress){
+    connect(insDat, &install::progressChange, this, [&](int progress){
         ui->progressInstall->setValue(progress + progressComplete);
     });
-    connect(insDat, &install::fileEnded, [&](int value){
+    connect(insDat, &install::fileEnded, this, [&](int value){
         progressComplete += value;
         ui->progressInstall->setValue(progressComplete);
     });
-    connect(this, &Window::progressAddStep, [&](){
+    connect(this, &Window::progressAddStep, this, [&](){
         ui->progressInstall->setValue(ui->progressInstall->maximum() / 7);
     });
+    connect(insDat, &install::logWindow, this, &Window::logFromMainThreadSlot);
 
-//            bool abort = false;
-//    connect(insDat, &install::abort, this, [&](QString mes){
-//        abort = true;
-//        qCritical() << tr("^Fatal error while installing: %1").arg(mes);
-//#if LINUX
-//        insDat->unmountImage();
-//#endif
-//    });
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-        //emit logFromMainThread(QtDebugMsg, "^gfgjhfgjfhg");
-        QMessageBox::information(0, "jhgjhg", "lll");
-        return;
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             abort = true;
-            qCritical() << tr("^Fatal error while installing: %1").arg(mes);
+            emit logFromMainThread(QtCriticalMsg,
+                                   tr("^Fatal error while installing: %1")
+                                   .arg(mes.isEmpty() ? "Message of error is empty" : mes));
 #if LINUX
             insDat->unmountImage();
 #endif

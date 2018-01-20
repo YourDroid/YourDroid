@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QDialog>
 #include <QMessageBox>
+#include <QApplication>
 #include <iostream>
 
 //log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
@@ -85,6 +86,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
 
     if(mess.isEmpty()) return;
     if(window) {
+        QApplication::alert(con, 0);
         switch(level) {
         case QtWarningMsg: lastPressedButton = QMessageBox::warning(0, QObject::tr("Warning!"),
                                      mess,

@@ -171,7 +171,7 @@ void install::registerGummi() {
 bool install::isInstalledGummi() {
     qDebug() << "Checking gummiboot";
     cmd::exec(QString("bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
-    bool res = !cmd::exec(QString("find \"YourDroid Gummiboot\" <") + WORK_DIR + "/tempEnum").first;
+    bool res = !cmd::exec(QString("find \x22YourDroid Gummiboot\x22 <") + WORK_DIR + "/tempEnum").first;
     qDebug() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
     return res;
 }
@@ -432,7 +432,7 @@ void install::unpackSystem() {
 #endif
             auto expr = cmd::exec(command.arg(place + file));
             if(expr.first) {
-                qWarning() << QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second);
+                emit logWindow(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
             }
         }
         else qDebug() << QObject::tr("%1 does not exist").arg(place + file);
@@ -452,9 +452,14 @@ void install::unpackSystem() {
         }
 
         qDebug() << QObject::tr("%1 copied succesful").arg(file);
-        emit fileEnded(OS ? QString(cmd::exec(QString("%1/data/iso-editor.exe size %2 %3")
-                                               .arg(qApp->applicationDirPath(),
-                                                    systems.back().image, file)).second).toInt() : QFile(mountPoint + file).size());
+#if LINUX
+        int size = QFile(mountPoint + file).size();
+#elif WIN
+        QString command = QString("%1/data/iso-editor.exe size %2 %3").arg(qApp->applicationDirPath(), systems.back().image);
+        expr = cmd::exec(command.arg(file));
+        int size = (!expr.first) ? expr.second.toInt() : 50;
+#endif
+        emit fileEnded(size);
     }
 
 //    int complete = 0;

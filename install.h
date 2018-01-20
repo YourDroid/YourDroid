@@ -39,6 +39,7 @@ class install : public QObject {
     QString abortMes;
     QString mountPoint;
 signals:
+    void logWindow(QtMsgType, QString);
     void abort(QString);
     void progressChange(qint64);
     void fileEnded(int);

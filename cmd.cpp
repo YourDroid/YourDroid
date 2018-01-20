@@ -119,15 +119,14 @@ QPair<int, QString> cmd::exec(QString command) {
     else qCritical() << QObject::tr("Executing ended unsuccesfull");
 
     if(started) {
-        proc.waitForReadyRead();
-        _output = proc.readAllStandardOutput().data();
-        _res = proc.exitCode();
+        QByteArray out;
+        _output = (out = proc.readAllStandardOutput()).isEmpty() ? "" : out.data();
+        _res = (proc.exitStatus() == QProcess::CrashExit) ? 1 : proc.exitCode();
+        qDebug() << _output;
         if(_res) {
-            qWarning() << _output;
             qWarning() << QObject::tr("Returned value is ") << _res;
         }
         else {
-            qDebug() << _output;
             qDebug() << QObject::tr("Returned value is ") << _res;
         }
     }

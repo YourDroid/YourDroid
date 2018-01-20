@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 
     try {
         QApplication app(argc,argv);
+        qRegisterMetaType<QtMsgType>("QtMsgType");
         workDir = app.applicationDirPath();
         qInstallMessageHandler(log::messagenew);
 #if LINUX
