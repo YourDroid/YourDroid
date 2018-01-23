@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
         signal(SIGSEGV, segFault);
 #if LINUX
         int uid = geteuid();
-        qDebug() << QObject::tr("getuid() returned %1").arg(uid);
+        qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
         if(uid != 0) {
             if(!QProcess::startDetached(QString("gksudo %1").arg(qApp->arguments()[0]))) {
                 qCritical() << QObject::tr("^Program must be run with root. Run \'sudo %1\' in the terminal to fix it")
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
         cmd::exec("help");
 
-        qDebug() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
+        qDebug().noquote() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
         install ins(&set);
         ins.read();
 
@@ -82,16 +82,16 @@ int main(int argc, char *argv[])
         QObject::connect(window, &Window::closed, [=](){ widget->close(); });
         QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
-        qDebug() << app.translate("log", "Window exec");
+        qDebug().noquote() << app.translate("log", "Window exec");
         int res = app.exec();
-        qDebug() << app.translate("log", "Window closed");
+        qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();
         ins.write();
-        qDebug() << QObject::tr("Exiting... Returned ") << QString::number(res);
+        qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
         return res;
     }
     catch(...) {
-        qDebug() << "jkfghgkdfj";
+        qDebug().noquote() << "jkfghgkdfj";
             return -1;
     }
 }

@@ -22,30 +22,30 @@ void install::write() {
     int sysCnt = _oldSysEdit ? (cntSystems) : 0;
     //cntSystems -= deletedSys.length();
 
-    qDebug() << qApp->translate("log", "Writing install settings...");
+    qDebug().noquote() << qApp->translate("log", "Writing install settings...");
 
     QSettings install("install.ini", QSettings::IniFormat);
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     for(int i = 0; i < sysCnt; i++) {
         if(systems[i].ended == false) {
-            qDebug() << tr("System %1 skipped").arg(systems[i].name);
+            qDebug().noquote() << tr("System %1 skipped").arg(systems[i].name);
             continue;
         }
-        qDebug() << qApp->translate("log", "System %1 config registered...").arg(QString::number(i + 1));
+        qDebug().noquote() << qApp->translate("log", "System %1 config registered...").arg(QString::number(i + 1));
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
-        qDebug() << qApp->translate("log", "System %1 config registered succesfull").arg(QString::number(i + 1));
+        qDebug().noquote() << qApp->translate("log", "System %1 config registered succesfull").arg(QString::number(i + 1));
     }
     install.endGroup();
 
-    qDebug() << qApp->translate("log", "System configs registered succesfull");
+    qDebug().noquote() << qApp->translate("log", "System configs registered succesfull");
 
     for(int i = 0; i < sysCnt; i++) {
         if(systems[i].ended == false) {
-            qDebug() << tr("System %1 skipped").arg(systems[i].name);
+            qDebug().noquote() << tr("System %1 skipped").arg(systems[i].name);
             continue;
         }
-        qDebug() << qApp->translate("log", "System %1 writing...").arg(QString::number(i + 1));
+        qDebug().noquote() << qApp->translate("log", "System %1 writing...").arg(QString::number(i + 1));
         QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
         system.setValue("bootloader", _bootloaderHelper::to_string(systems[i].bootloader).c_str());
@@ -55,13 +55,13 @@ void install::write() {
         system.setValue("os", systems[i].os);
         system.setValue("ended", systems[i].ended);
         system.endGroup();
-        qDebug() << qApp->translate("log", "System %1 wrote succesfull").arg(QString::number(i + 1));
+        qDebug().noquote() << qApp->translate("log", "System %1 wrote succesfull").arg(QString::number(i + 1));
     }
-    qDebug() << qApp->translate("log", "Systems wrote succesfull");
+    qDebug().noquote() << qApp->translate("log", "Systems wrote succesfull");
 }
 
 void install::read() {
-    qDebug() << qApp->translate("log", "Reading install settings...");
+    qDebug().noquote() << qApp->translate("log", "Reading install settings...");
 
     QSettings install("install.ini", QSettings::IniFormat);
 
@@ -71,7 +71,7 @@ void install::read() {
     for(int i = 0; i < cntSystems; i++) {
         QString name = install.value(QString("system_") + QString::number(i), 0).toString();
         QString sys = name + ".ini";
-        qDebug() << name;
+        qDebug().noquote() << name;
         if(!QFile::exists(qApp->applicationDirPath() + QString("/") + sys)) {
             qCritical() << qApp->translate("log", "Config of system %1 does not exist").arg(name);
             _oldSysEdit = true;
@@ -106,22 +106,22 @@ void install::read() {
         QString image = system.value("image", "Error of read!").toString();
         bool os = system.value("os", false).toBool();
         bool ended = system.value("ended", false).toBool();
-        qDebug() << qApp->translate("log", "System ") + QString::number(i + 1) + " read succesfull";
+        qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " read succesfull";
         systems.push_back(_installSet(boot, typePlace, place, image, name, ended, os));
-        qDebug() << qApp->translate("log", "System ") + QString::number(i + 1) + " push succesfull";
+        qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " push succesfull";
         system.endGroup();
     }
 
     install.endGroup();
 
-    qDebug() << "Systems read succesfull";
+    qDebug().noquote() << "Systems read succesfull";
 }
 
 void install::registerBootloader() {
-    qDebug() << tr("Registering to bootloader...");
+    qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: qDebug() << tr("Registering to grub2"); registerGrub2(); break;
-    case _bootloader::gummiboot: qDebug() << tr("Registering to gummiboot"); registerGummi(); break;
+    case _bootloader::grub2: qDebug().noquote() << tr("Registering to grub2"); registerGrub2(); break;
+    case _bootloader::gummiboot: qDebug().noquote() << tr("Registering to gummiboot"); registerGummi(); break;
     }
 }
 
@@ -169,15 +169,15 @@ void install::registerGummi() {
 }
 
 bool install::isInstalledGummi() {
-    qDebug() << "Checking gummiboot";
+    qDebug().noquote() << "Checking gummiboot";
     cmd::exec(QString("bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
     bool res = !cmd::exec(QString("find \x22YourDroid Gummiboot\x22 <") + WORK_DIR + "/tempEnum").first;
-    qDebug() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
+    qDebug().noquote() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
     return res;
 }
 
 void install::installGummi() {
-    qDebug() << "Installing gummiboot...";
+    qDebug().noquote() << "Installing gummiboot...";
 #define CHECK_ABORT() if(addNew.first)  { \
     emit abort(addNew.second); return; }
 
@@ -224,11 +224,11 @@ void install::installGummi() {
     execAbort(QString("mkdir ") + s +
               QString(":/efi/grub/"));
 
-    qDebug() << QObject::tr("Gummiboot installed succesful");
+    qDebug().noquote() << QObject::tr("Gummiboot installed succesful");
 }
 
 void install::registerGrub2() {
-    qDebug() << QObject::tr("Registering to grub2...");
+    qDebug().noquote() << QObject::tr("Registering to grub2...");
     QFile _grub("/etc/grub.d/40_custom");
     if(!_grub.open(QIODevice::ReadOnly)) {
         emit abort(QObject::tr("Could not open the grub config-file to read"));
@@ -244,8 +244,8 @@ void install::registerGrub2() {
         emit abort(QObject::tr("Could not open the grub config-file to write"));
         return;
     }
-    qDebug() << QObject::tr("Grub-config:");
-    for(QString str : grubStr) qDebug() << str;
+    qDebug().noquote() << QObject::tr("Grub-config:");
+    for(QString str : grubStr) qDebug().noquote() << str;
     QPair<int, QString> expr;
     if(grubStr[1] != "cat /etc/grub.d/android/*.cfg | more") {
         grub << grubStr[0] << "\ncat /etc/grub.d/android/*.cfg | more\n";
@@ -258,7 +258,7 @@ void install::registerGrub2() {
             }
     }
     grubConfigure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
-    qDebug() << QObject::tr("Updating grub...");
+    qDebug().noquote() << QObject::tr("Updating grub...");
     if((expr = cmd::exec("update-grub")).first) {
         emit abort(QObject::tr("Could not update grub: %1").arg(expr.second));
         return;
@@ -307,7 +307,7 @@ int install::sizeOfFiles() {
         res += sizeOfFile(file);
     }
 #endif
-    qDebug() << QObject::tr("Size of files is %1").arg(res);
+    qDebug().noquote() << QObject::tr("Size of files is %1").arg(res);
     return res;
 }
 
@@ -379,7 +379,7 @@ QString install::obsolutePath(QString path) {
         temp = fstab.left(fstab.indexOf('\n') + 1);
         fstab.remove(0, fstab.indexOf('\n') + 1);
         temp = temp.remove('\n');
-        qDebug() << temp;
+        qDebug().noquote() << temp;
         if(path.contains(temp)) path.remove(temp);
     }
     return path;
@@ -388,7 +388,7 @@ QString install::obsolutePath(QString path) {
 void install::unpackSystem() {
     QPair<int, QString> expr;
     if(!QFile::exists(systems.back().place)) {
-        qDebug() << QObject::tr("Making dir for install");
+        qDebug().noquote() << QObject::tr("Making dir for install");
         expr = cmd::exec(QString("mkdir ") + systems.back().place);
         if(expr.first) {
             emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
@@ -414,17 +414,17 @@ void install::unpackSystem() {
                  .arg(qApp->applicationDirPath(), systems.back().image, "system.sfs")).first)
 #endif
     filesCopy.push_back(systemFile = "/system.sfs");
-    qDebug() << QObject::tr("System file is %1").arg(systemFile);
-    qDebug() << QObject::tr("Start copying");
+    qDebug().noquote() << QObject::tr("System file is %1").arg(systemFile);
+    qDebug().noquote() << QObject::tr("Start copying");
     for(QString file : filesCopy) {
 
         if(file.isEmpty()) {
             emit abort(tr("File for copy is empty"));
             return;
         }
-        qDebug() << QObject::tr("Copying %1").arg(file);
+        qDebug().noquote() << QObject::tr("Copying %1").arg(file);
         if(QFile::exists(place + file)) {
-            qDebug() << QObject::tr("%1 exists. So it is deleting").arg(place + file);
+            qDebug().noquote() << QObject::tr("%1 exists. So it is deleting").arg(place + file);
 #if LINUX
             QString command = "rm -f %1";
 #elif WIN
@@ -435,7 +435,7 @@ void install::unpackSystem() {
                 emit logWindow(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
             }
         }
-        else qDebug() << QObject::tr("%1 does not exist").arg(place + file);
+        else qDebug().noquote() << QObject::tr("%1 does not exist").arg(place + file);
         bool res = 0;
 #if LINUX
         res = copier.copy(mountPoint + file, place + file);
@@ -451,7 +451,7 @@ void install::unpackSystem() {
             return;
         }
 
-        qDebug() << QObject::tr("%1 copied succesful").arg(file);
+        qDebug().noquote() << QObject::tr("%1 copied succesful").arg(file);
 #if LINUX
         int size = QFile(mountPoint + file).size();
 #elif WIN
@@ -523,32 +523,32 @@ void install::downloadFile(QString url, QString dest) {
 
 void install::delSystemFiles(int numSys) {
     progressBarDelete->setValue(0);
-    qDebug() << "Deleting system files...";
+    qDebug().noquote() << "Deleting system files...";
     QVector<QString> files = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img", "/system.sfs", "/data.img"};
     for(auto file : files) {
         progressBarDelete->setValue(progressBarDelete->value() + 1);
-        qDebug() << qApp->translate("log", "Delete ") + systems[numSys].place + file;
+        qDebug().noquote() << qApp->translate("log", "Delete ") + systems[numSys].place + file;
         statusBar->showMessage(qApp->translate("log", "Удаление ") + file);
         QFile(systems[numSys].place + file).remove();
     }
 }
 
 void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QStatusBar *status) {
-    qDebug() << "Exec progress and status bars";
+    qDebug().noquote() << "Exec progress and status bars";
     progressBarInstall = progressins;
     progressBarDelete = progressdel;
     statusBar = status;
 }
 
 void install::deleteBootloader(int numSys) {
-    qDebug() << "Deleting bootloader...";
+    qDebug().noquote() << "Deleting bootloader...";
     switch(systems[numSys].bootloader) {
     case _bootloader::grub2: deleteGrub2(numSys); break;
     }
 }
 
 void install::deleteGrub2(int numSys) {
-    qDebug() << "Deleting android from grub2...";
+    qDebug().noquote() << "Deleting android from grub2...";
     statusBar->showMessage("Удаление android из grub2");
     QFile(qApp->translate("log", "/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove();
     system("update-grub");
@@ -556,11 +556,11 @@ void install::deleteGrub2(int numSys) {
 }
 
 void install::deleteEntry(int num) {
-    qDebug() << "Deleting system's entry...";
+    qDebug().noquote() << "Deleting system's entry...";
     systems.remove(num);
     cntSystems--;
-    qDebug() << "System's entry deleted succesfull";
-    qDebug() << "Deleting system's config...";
+    qDebug().noquote() << "System's entry deleted succesfull";
+    qDebug().noquote() << "Deleting system's config...";
     bool goodDel = QFile(WORK_DIR + QString('/') + systems[num].name + ".ini").remove();
     LOG(!goodDel * 2, qApp->translate("log", "Config deleted ") + (goodDel ? "succesfully" : "unsuccesfully!"));
 }

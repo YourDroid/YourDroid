@@ -13,7 +13,7 @@ QMessageBox::StandardButtons log::lastPressedButton;
 
 console *log::init() {
     con = new console;
-    con->setWindowTitle("YourDroid");
+    con->setWindowTitle(QString("YourDroid | %1").arg(QObject::tr("Debug console")));
     return con;
 }
 
@@ -25,7 +25,14 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
 //        mess.remove(i, 2);
 //        mess.insert(i, '\n');
 //    }
-    mess.remove('\"');
+//    if(mess[0] == '\"' && mess[mess.size() - 1] == "\"") {
+//        mess.remove(0, 1);
+//        mess.remove(mess.size() - 1, 1);
+//    }
+//    int index = 0;
+//    if((index = mess.indexOf("@|")) < 2 && index != -1) mess.remove(index, 2);
+//    else mess.remove('\"');
+
     if(mess[0] == '^') {
         window = true;
         mess.remove(0, 1);
@@ -84,7 +91,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     }
     con->output(typeName + QString(' ') + mess, _color);
 
-    if(mess.isEmpty()) return;
+    //if(mess.isEmpty()) return;
     if(window) {
         QApplication::alert(con, 0);
         switch(level) {

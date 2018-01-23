@@ -7,7 +7,7 @@ void options::autowrite_set() {
 }
 
 void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang l) {
-    qDebug() << qApp->translate("log", "Writing settings...");
+    qDebug().noquote() << qApp->translate("log", "Writing settings...");
 
     if(needSet) {
         arch = a;
@@ -34,17 +34,17 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
 #endif
     settings.endGroup();
 
-    qDebug() << qApp->translate("log", "Settings wrote succesfull");
+    qDebug().noquote() << qApp->translate("log", "Settings wrote succesfull");
 }
 
 bool options::read_set(bool dflt) {
-    qDebug() << qApp->translate("log", "Reading settings...");
+    qDebug().noquote() << qApp->translate("log", "Reading settings...");
 
     bool existConf;
     if (!dflt) existConf = QFile::exists(qApp->applicationDirPath() + "/config.ini");
     else existConf = false;
     if(existConf) {
-        qDebug() << qApp->translate("log", "Settings does exist");
+        qDebug().noquote() << qApp->translate("log", "Settings does exist");
 
         QSettings settings("config.ini", QSettings::IniFormat);
 
@@ -66,7 +66,7 @@ bool options::read_set(bool dflt) {
         settings.endGroup();
     }
     else {
-        qDebug() << qApp->translate("log", "Settings does not exist or settings restoring default");
+        qDebug().noquote() << qApp->translate("log", "Settings does not exist or settings restoring default");
         tbios = defbios();
         arch = defarch();
 #if WIN
@@ -77,23 +77,23 @@ bool options::read_set(bool dflt) {
     }
     return existConf;
 
-    qDebug() << qApp->translate("log", "Settings read succesfull");
+    qDebug().noquote() << qApp->translate("log", "Settings read succesfull");
 }
 
 bool options::defbios() {
-    qDebug() << qApp->translate("log", "Defining type of bios...");
+    qDebug().noquote() << qApp->translate("log", "Defining type of bios...");
 #if LINUX
     bool efiExist = QDir().exists("/boot/efi");
     bool efibootmgr = !cmd().exec("efibootmgr").first;
-    qDebug() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
-    qDebug() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
+    qDebug().noquote() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
+    qDebug().noquote() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
     return efiExist || efibootmgr;
 #elif WIN
     cmd::exec("mountvol a: /s");
     bool efi = QDir().exists("a:\\efi");
-    qDebug() << "a:/efi " << qApp->translate("log", (efi ? "exists" : "does not exist"));
+    qDebug().noquote() << "a:/efi " << qApp->translate("log", (efi ? "exists" : "does not exist"));
     bool bios = QDir().exists("a:\\program files");
-    qDebug() << "a:/program files " << qApp->translate("log", (bios ? "exists" : "does not exist"));
+    qDebug().noquote() << "a:/program files " << qApp->translate("log", (bios ? "exists" : "does not exist"));
     bool ret = efi && !bios;
     cmd::exec("mountvol a: /d");
     return ret;
@@ -101,7 +101,7 @@ bool options::defbios() {
 }
 
 bool options::defarch() {
-    qDebug() << qApp->translate("log", "Defining architecture...");
+    qDebug().noquote() << qApp->translate("log", "Defining architecture...");
 #if LINUX
     FILE *fp = popen("uname -m", "r");
 
@@ -110,26 +110,26 @@ bool options::defarch() {
     pclose(fp);
 
     QString tarch = buf;
-    qDebug() << (qApp->translate("log", "Uname returned ") + tarch);
+    qDebug().noquote() << (qApp->translate("log", "Uname returned ") + tarch);
     return (tarch=="x86\n") ? 0 : 1;
 #elif WIN
     SYSTEM_INFO inf;
     GetNativeSystemInfo(&inf);
-    qDebug() << qApp->translate("log", "Processor type is ") + char(inf.dwProcessorType + 48);
+    qDebug().noquote() << qApp->translate("log", "Processor type is ") + char(inf.dwProcessorType + 48);
     return inf.dwProcessorType;
 #endif
 }
 
 #if WIN
 bool options::defwinv() {
-    qDebug() << "Defining windows version";
+    qDebug().noquote() << "Defining windows version";
     OSVERSIONINFO osvi;
 
         ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
         osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
         GetVersionEx(&osvi);
-    qDebug() << QObject::tr("GetVersionEx() returns %1").arg(osvi.dwMajorVersion);
+    qDebug().noquote() << QObject::tr("GetVersionEx() returns %1").arg(osvi.dwMajorVersion);
     return osvi.dwMajorVersion > 5;
 }
 #endif

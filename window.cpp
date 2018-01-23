@@ -21,7 +21,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    qDebug("Start window");
+    qDebug().noquote() << tr("Start window");
 
     ui->setupUi(this);
     setLabelSetInfo();
@@ -45,7 +45,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 //        case QtWarningMsg: qWarning() << mess; break;
 //        case QtCriticalMsg: qCritical() << mess; break;
 //        case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
-//        default: qDebug() << mess;
+//        default: qDebug().noquote() << mess;
 //        }
 //    });
     connect(this, &Window::logFromMainThread, this, &Window::logFromMainThreadSlot);
@@ -172,7 +172,7 @@ void Window::on_buttonChooseImage_clicked()
     QString image = QFileDialog::getOpenFileName(0, tr("Choose image for install"), "", "*.iso");
     if(image.length() > 0) {
         ui->editImageFromDisk->setText(image);
-        qDebug() << qApp->translate("log", "Choose image for install: ") + image;
+        qDebug().noquote() << qApp->translate("log", "Choose image for install: ") + image;
     }
 }
 
@@ -195,7 +195,7 @@ void Window::on_buttonChooseDirForInstall_clicked()
     QString dir = QFileDialog::getExistingDirectory(0, tr("Choose directory for install"), "");
     if(dir.length() > 0) {
         ui->editDirForInstall->setText(dir);
-        qDebug() << qApp->translate("log", "Choose dir for install: ") + dir;
+        qDebug().noquote() << qApp->translate("log", "Choose dir for install: ") + dir;
     }
 }
 
@@ -205,7 +205,7 @@ void Window::on_buttonInstallInstall_clicked()
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage(tr("Checking"));
-    qDebug() << tr("Checking data for install...");
+    qDebug().noquote() << tr("Checking data for install...");
     QString image, dir, name;
     auto end = [=](){
         ui->statusbar->showMessage("Готово");
@@ -288,7 +288,7 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    qDebug() << QObject::tr("Data of install is valid");
+    qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
     //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
@@ -337,17 +337,17 @@ void Window::on_buttonInstallInstall_clicked()
             insDat->unmountImage();
 #endif
         });
-        qDebug() << tr("Start install");
-        qDebug() << tr("Unpacking iso...");
+        qDebug().noquote() << tr("Start install");
+        qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
         insDat->unpackSystem();
         CHECK_ABORT();
-        qDebug() << tr("Creating data.img...");
+        qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
         emit progressAddStep();
         insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
-        qDebug() << tr("Installing bootloader...");
+        qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
         emit progressAddStep();
         insDat->registerBootloader();
@@ -360,7 +360,7 @@ void Window::on_buttonInstallInstall_clicked()
         insDat->systemEnd();
         insDat->write();
         CHECK_ABORT();
-        qDebug() << tr("Finish install");
+        qDebug().noquote() << tr("Finish install");
     });
     resMonitor->setFuture(res);
 #undef CHECK_ABORT
@@ -374,7 +374,7 @@ void Window::on_buttonAboutMain_clicked()
 
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
-    qDebug() << qApp->translate("log", "Choose ") + arg1;
+    qDebug().noquote() << qApp->translate("log", "Choose ") + arg1;
     if(arg1 == "Grub2") {
         ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
         ui->labelAboutBootloader_2->setText("Текстовый.");
@@ -393,12 +393,12 @@ void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
 
-    qDebug() << tr("Clearing systems list...");
+    qDebug().noquote() << tr("Clearing systems list...");
     ui->comboSystemDelete->blockSignals(true);
     ui->comboSystemDelete->clear();
     ui->comboSystemDelete->blockSignals(false);
 
-    qDebug() << tr("Filling systems list...");
+    qDebug().noquote() << tr("Filling systems list...");
     for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
     setWindowTitle(tr("YourDroid | Delete"));
@@ -418,7 +418,7 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->settingsMini->setEnabled(false);
     ui->comboSystemDelete->setEnabled(false);
     int num = ui->comboSystemDelete->currentIndex();
-    qDebug() << qApp->translate("log", "Deleting ") + (insDat->systemsVector().begin() + num)->name;
+    qDebug().noquote() << qApp->translate("log", "Deleting ") + (insDat->systemsVector().begin() + num)->name;
     insDat->delSystemFiles(num);
     insDat->deleteBootloader(num);
     insDat->oldSysEdit() = true;
@@ -464,6 +464,6 @@ void Window::logFromMainThreadSlot(QtMsgType type, QString mess) {
     case QtWarningMsg: qWarning() << mess; break;
     case QtCriticalMsg: qCritical() << mess; break;
     case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
-    default: qDebug() << mess;
+    default: qDebug().noquote() << mess;
     }
 }
