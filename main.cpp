@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <execinfo.h>
 #include <signal.h>
 
 #if WIN
@@ -31,6 +32,9 @@ console *log::con;
 
 void segFault(int res) {
     qCritical() << QObject::tr("^Segmentation Fault");
+    char buffer[1024];
+    backtrace_symbols(buffer, 1024);
+    qDebug() << buffer;
     signal(res, SIG_DFL);
     exit(3);
 }
@@ -39,6 +43,9 @@ int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
+    int *h;
+    h = 0;
+    *h = 9;
 
     try {
         QApplication app(argc,argv);
