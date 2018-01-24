@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#include <execinfo.h>
 #include <signal.h>
 
 #if WIN
@@ -29,12 +28,26 @@ const QString VERSION = VER_PRODUCTVERSION_STR;
 static QString workDir;
 const QString &WORK_DIR = workDir;
 console *log::con;
+#include <windows.h>
+#include <stdio.h>
+LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
+{
+  qCritical().noquote() <<
+                           QObject::tr("Fatal error! Here is some info about it: exception code: %1")
+                           .arg((int)ExceptionInfo->ExceptionRecord->ExceptionCode);
+  return EXCEPTION_EXECUTE_HANDLER;
+}
+
+void set_signal_handler()
+{
+  SetUnhandledExceptionFilter(windows_exception_handler);
+}
 
 void segFault(int res) {
     qCritical() << QObject::tr("^Segmentation Fault");
-    char buffer[1024];
-    backtrace_symbols(buffer, 1024);
-    qDebug() << buffer;
+//    char buffer[1024];
+//    backtrace_symbols(buffer, 1024);
+//    qDebug() << buffer;
     signal(res, SIG_DFL);
     exit(3);
 }
@@ -43,9 +56,6 @@ int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
-    int *h;
-    h = 0;
-    *h = 9;
 
     try {
         QApplication app(argc,argv);
@@ -97,8 +107,12 @@ int main(int argc, char *argv[])
         qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
         return res;
     }
+    catch(std::exception ex) {
+        qCritical().noquote() << QObject::tr("Fatal error: %1").arg(QString::fromStdString(ex.what()));
+        return 1;
+    }
     catch(...) {
-        qDebug().noquote() << "jkfghgkdfj";
-            return -1;
+        qCritical().noquote() << QObject::tr("Unknown fatal error!");
+        return 1;
     }
 }
