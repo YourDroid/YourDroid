@@ -38,6 +38,12 @@ LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
   return EXCEPTION_EXECUTE_HANDLER;
 }
 
+void posix_signal_handler(int sig, siginfo_t *siginfo, void *context)
+{
+
+}
+
+
 void set_signal_handler()
 {
   SetUnhandledExceptionFilter(windows_exception_handler);
