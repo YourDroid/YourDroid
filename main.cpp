@@ -53,22 +53,37 @@ void posix_signal_handler(int sig, siginfo_t *siginfo, void *context)
 
 void set_signal_handler()
 {
-  SetUnhandledExceptionFilter(windows_exception_handler);
-}
-
-void segFault(int res) {
-    qCritical() << QObject::tr("^Segmentation Fault");
-//    char buffer[1024];
-//    backtrace_symbols(buffer, 1024);
-//    qDebug() << buffer;
-    signal(res, SIG_DFL);
-    exit(3);
+#if WIN
+SetUnhandledExceptionFilter(windows_exception_handler);
+#elif LINUX
+  {
+    struct sigaction sig_action = {};
+    sig_action.sa_sigaction = posix_signal_handler;
+    sigemptyset(&sig_action.sa_mask);
+ 
+    #ifdef __APPLE__
+        /* for some reason we backtrace() doesn't work on osx
+           when we use an alternate stack */
+        sig_action.sa_flags = SA_SIGINFO;
+    #else
+        sig_action.sa_flags = SA_SIGINFO | SA_ONSTACK;
+    #endif
+ 
+    if (sigaction(SIGSEGV, &sig_action, NULL) != 0) { err(1, "sigaction"); }
+    if (sigaction(SIGFPE,  &sig_action, NULL) != 0) { err(1, "sigaction"); }
+    if (sigaction(SIGINT,  &sig_action, NULL) != 0) { err(1, "sigaction"); }
+    if (sigaction(SIGILL,  &sig_action, NULL) != 0) { err(1, "sigaction"); }
+    if (sigaction(SIGTERM, &sig_action, NULL) != 0) { err(1, "sigaction"); }
+    if (sigaction(SIGABRT, &sig_action, NULL) != 0) { err(1, "sigaction"); }
+  }
+  #endif
 }
 
 int main(int argc, char *argv[])
 {
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
+    set_signal_handler();
 
     try {
         QApplication app(argc,argv);
@@ -80,7 +95,6 @@ int main(int argc, char *argv[])
             system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
         console *widget = log::init();
-        signal(SIGSEGV, segFault);
 #if LINUX
         int uid = geteuid();
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
