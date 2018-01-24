@@ -22,26 +22,33 @@
 #include <exception>
 #include <VirtDisk.h>
 #include <windows.h>
+#elif LINUX
+#include <err.h>
 #endif
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
 static QString workDir;
 const QString &WORK_DIR = workDir;
 console *log::con;
-#include <windows.h>
-#include <stdio.h>
+
+#if WIN
 LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
 {
   qCritical().noquote() <<
                            QObject::tr("Fatal error! Here is some info about it: exception code: %1")
                            .arg((int)ExceptionInfo->ExceptionRecord->ExceptionCode);
+  exit(3);
   return EXCEPTION_EXECUTE_HANDLER;
 }
-
+#elif LINUX
 void posix_signal_handler(int sig, siginfo_t *siginfo, void *context)
 {
-
+    qCritical().noquote() <<
+                             QObject::tr("Fatal error! Here is some info about it: exception code: %1; exception info code %2")
+                             .arg(sig, siginfo->si_code);
+    exit(3);
 }
+#endif
 
 
 void set_signal_handler()
