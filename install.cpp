@@ -73,7 +73,7 @@ void install::read() {
         QString sys = name + ".ini";
         qDebug().noquote() << name;
         if(!QFile::exists(qApp->applicationDirPath() + QString("/") + sys)) {
-            qCritical() << qApp->translate("log", "Config of system %1 does not exist").arg(name);
+            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not exist").arg(name);
             _oldSysEdit = true;
             cntSystems = cntSystems - 1;
             continue;
@@ -81,13 +81,13 @@ void install::read() {
         QSettings system(sys, QSettings::IniFormat);
         system.beginGroup("about");
         if(!system.contains("bootloader")) {
-            qCritical() << qApp->translate("log", "Config of system %1 have not section bootloader").arg(QString::number(i + 1));
+            qCritical().noquote() << qApp->translate("log", "Config of system %1 have not section bootloader").arg(QString::number(i + 1));
         }
         else if(!system.contains("type_place")) {
-            qCritical() << qApp->translate("log", "Config of system %1 does not have section type_place").arg(QString::number(i + 1));
+            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not have section type_place").arg(QString::number(i + 1));
         }
         else if(!system.contains("place")) {
-            qCritical() << qApp->translate("log", "Config of system %1 does not have section place").arg(QString::number(i + 1));
+            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not have section place").arg(QString::number(i + 1));
         }
 //        else if(!system.contains("name")) {
 //            LOG(2, qApp->translate("log", "Config of system ") + QString::number(i + 1) + " does not have section name", qApp->translate("log", "В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
@@ -296,7 +296,7 @@ int install::sizeOfFiles() {
     auto sizeOfFile = [&](QString file) -> int {
         auto expr = cmd::exec(command.arg(file));
         if(expr.first) {
-            qWarning() << tr("Could not get size of %1").arg(file);
+            qWarning().noquote() << tr("Could not get size of %1").arg(file);
             return 200 * 1024;
         }
         else return expr.second.toInt();
@@ -327,9 +327,9 @@ int install::isInvalidImage(
         if(expr.first < 0 || expr.first > 2) { \
             QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
             if (re.indexIn(expr.second) != -1) { \
-                qCritical() << re.cap(1).prepend("^"); \
+                qCritical().noquote() << re.cap(1).prepend("^"); \
             } \
-            else qCritical() << expr.second.prepend("^"); \
+            else qCritical().noquote() << expr.second.prepend("^"); \
             return 2; \
         }
 #define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
@@ -365,11 +365,11 @@ void install::unmountImage() {
     QString command = QString("umount %1").arg(mountPoint);
     auto expr = cmd::exec(command);
     if(expr.first) {
-        qWarning() << QObject::tr("Cannot unmount image: %1").arg(expr.second);
+        qWarning().noquote() << QObject::tr("Cannot unmount image: %1").arg(expr.second);
         return;
     }
     if((expr = cmd::exec(QString("rm -rf %1").arg(mountPoint))).first)
-        qWarning() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
+        qWarning().noquote() << QObject::tr("Cannot delete image's mount point: %1").arg(expr.second);
 }
 
 QString install::obsolutePath(QString path) {

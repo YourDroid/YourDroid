@@ -17,7 +17,8 @@ HEADERS += data.h log.h window.h \
     install.h \
     version.h \
     cmd.h \
-    console.h
+    console.h \
+    exception.h
 FORMS += window.ui
 SOURCES += data.cpp \
            log.cpp \
@@ -25,7 +26,8 @@ SOURCES += data.cpp \
            window.cpp \
     install.cpp \
     cmd.cpp \
-    console.cpp
+    console.cpp \
+    exception.cpp
 LIBS += -lz 
 #-std=gnu++14
 

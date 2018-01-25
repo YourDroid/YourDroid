@@ -16,7 +16,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui(new Ui::Window)
 {
     if(dat->tbios == false) {
-        qCritical() << tr("^This PC does not supported");
+        qCritical().noquote() << tr("^This PC does not supported");
     }
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
@@ -42,9 +42,9 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     };
 //    connect(this, &Window::logFromMainThread, [=](QtMsgType type, QString mess){
 //        switch(type) {
-//        case QtWarningMsg: qWarning() << mess; break;
-//        case QtCriticalMsg: qCritical() << mess; break;
-//        case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
+//        case QtWarningMsg: qWarning().noquote() << mess; break;
+//        case QtCriticalMsg: qCritical().noquote() << mess; break;
+//        case QtFatalMsg: qCritical().noquote() << mess; qApp->exit(-1); break;
 //        default: qDebug().noquote() << mess;
 //        }
 //    });
@@ -118,7 +118,7 @@ void Window::on_applaySettings_clicked()
 {
     if(langChanged) {
         langChanged = false;
-        qInfo() << tr("^For applying language application should restart");
+        qInfo().noquote() << tr("^For applying language application should restart");
 //        retranslateUi(QString::fromStdString(_langHelper::to_string(
 //                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
@@ -213,54 +213,54 @@ void Window::on_buttonInstallInstall_clicked()
         ui->buttonInstallInstall->setEnabled(true);
     };
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        qCritical() << tr("^Did not choose image");
+        qCritical().noquote() << tr("^Did not choose image");
         end();
         return;
     }
     if(!QFile::exists(image)) {
-        qCritical() << tr("^Choosen image does not exist");
+        qCritical().noquote() << tr("^Choosen image does not exist");
         end();
         return;
     }
     if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        qCritical() << tr("^Did not choose folder");
+        qCritical().noquote() << tr("^Did not choose folder");
         end();
         return;
     }
     if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-        qCritical() << tr("^Choosen folder is root");
+        qCritical().noquote() << tr("^Choosen folder is root");
         end();
         return;
     }
     if(!ui->editDirForInstall->hasAcceptableInput()) {
-        qCritical() << tr("^Invalid path");
+        qCritical().noquote() << tr("^Invalid path");
         end();
         return;
     }
 //    if(!(new QDir())->exists(dir)) {
-//        qCritical() << tr("^Selected folder does not exist");
+//        qCritical().noquote() << tr("^Selected folder does not exist");
 //        end();
 //        return;
 //    }
     if((name = ui->editName->text()).length() == 0) {
-        qCritical() << tr("^Did not fill in the name");
+        qCritical().noquote() << tr("^Did not fill in the name");
         end();
         return;
     }
     if((name = ui->editSizeDataInstall->text()).length() == 0) {
-        qCritical() << tr("^Did not fill in the size of data.img");
+        qCritical().noquote() << tr("^Did not fill in the size of data.img");
         end();
         return;
     }
     for(int i = 0; i < insDat->systemsVector().length(); i++) {
         if(ui->editName->text() == (insDat->systemsVector())[i].name) {
-            qCritical() << QObject::tr("^The system with written name already exists");
+            qCritical().noquote() << QObject::tr("^The system with written name already exists");
             end();
             return;
         }
     }
     if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
-        qWarning() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
+        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
         if(log::getLastPressedButton() == QMessageBox::Cancel) {
             end();
             return;
@@ -270,7 +270,7 @@ void Window::on_buttonInstallInstall_clicked()
 #if LINUX
     QPair<bool, QString> result = insDat->mountImage(ui->editImageFromDisk->text());
     if(!result.first) {
-        qCritical() << QObject::tr("^Could not mount image: %1").arg(result.second);
+        qCritical().noquote() << QObject::tr("^Could not mount image: %1").arg(result.second);
         insDat->unmountImage();
         end();
         return;
@@ -283,7 +283,7 @@ void Window::on_buttonInstallInstall_clicked()
                 ui->editImageFromDisk->text()
             #endif
                 ))) {
-        if(ret != 2) qCritical() << QObject::tr("^Image has not needed files");
+        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
         end();
         return;
     }
@@ -461,9 +461,9 @@ void Window::on_comboLanguageSettings_currentIndexChanged(int index)
 
 void Window::logFromMainThreadSlot(QtMsgType type, QString mess) {
     switch(type) {
-    case QtWarningMsg: qWarning() << mess; break;
-    case QtCriticalMsg: qCritical() << mess; break;
-    case QtFatalMsg: qCritical() << mess; qApp->exit(-1); break;
+    case QtWarningMsg: qWarning().noquote() << mess; break;
+    case QtCriticalMsg: qCritical().noquote() << mess; break;
+    case QtFatalMsg: qCritical().noquote() << mess; qApp->exit(-1); break;
     default: qDebug().noquote() << mess;
     }
 }
