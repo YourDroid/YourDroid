@@ -24,7 +24,7 @@ void install::write() {
 
     qDebug().noquote() << qApp->translate("log", "Writing install settings...");
 
-    QSettings install("install.ini", QSettings::IniFormat);
+    QSettings install(qApp->applicationDirPath() + "/install.ini", QSettings::IniFormat);
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     for(int i = 0; i < sysCnt; i++) {
@@ -46,14 +46,13 @@ void install::write() {
             continue;
         }
         qDebug().noquote() << qApp->translate("log", "System %1 writing...").arg(QString::number(i + 1));
-        QSettings system(systems[i].name + ".ini", QSettings::IniFormat);
+        QSettings system(qApp->applicationDirPath() + QString("/") +  systems[i].name + ".ini", QSettings::IniFormat);
         system.beginGroup("about");
         system.setValue("bootloader", _bootloaderHelper::to_string(systems[i].bootloader).c_str());
         system.setValue("type_place", _typePlaceHelper::to_string(systems[i].typePlace).c_str());
         system.setValue("place", systems[i].place);
         system.setValue("image", systems[i].image);
         system.setValue("os", systems[i].os);
-        system.setValue("ended", systems[i].ended);
         system.endGroup();
         qDebug().noquote() << qApp->translate("log", "System %1 wrote succesfull").arg(QString::number(i + 1));
     }
@@ -63,7 +62,7 @@ void install::write() {
 void install::read() {
     qDebug().noquote() << qApp->translate("log", "Reading install settings...");
 
-    QSettings install("install.ini", QSettings::IniFormat);
+    QSettings install(qApp->applicationDirPath() + "/install.ini", QSettings::IniFormat);
 
     install.beginGroup("about_installing_systems");
     cntSystems = install.value("count_systems", 0).toInt();
@@ -89,14 +88,8 @@ void install::read() {
         else if(!system.contains("place")) {
             qCritical().noquote() << qApp->translate("log", "Config of system %1 does not have section place").arg(QString::number(i + 1));
         }
-//        else if(!system.contains("name")) {
-//            LOG(2, qApp->translate("log", "Config of system ") + QString::number(i + 1) + " does not have section name", qApp->translate("log", "В настройках системы ") + QString::number(i + 1) + " отсутствует секция о имени системы");
-//        }
         if(!system.contains("os")) {
-            LOG(2, qApp->translate("log", "Config of system ") + QString::number(i + 1) + " does not have section os", qApp->translate("log", "В настройках системы ") + QString::number(i + 1) + " отсутствует секция о системе, на которой устанавливался андроид");
-        }
-        if(!system.contains("ended")) {
-            LOG(2, qApp->translate("log", "Config of system ") + QString::number(i + 1) + " does not have section ended", qApp->translate("log", "В настройках системы ") + QString::number(i + 1) + " отсутствует секция о успешной установке");
+            qCritical().noquote() << QObject::tr("Config of system %1 does not have section os").arg(name);
         }
         _bootloader boot;
         boot = _bootloaderHelper::from_string(system.value("bootloader", "Gummiboot").toString().toStdString());
@@ -105,9 +98,8 @@ void install::read() {
         QString place = system.value("place", "Error of read!").toString();
         QString image = system.value("image", "Error of read!").toString();
         bool os = system.value("os", false).toBool();
-        bool ended = system.value("ended", false).toBool();
         qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " read succesfull";
-        systems.push_back(_installSet(boot, typePlace, place, image, name, ended, os));
+        systems.push_back(_installSet(boot, typePlace, place, image, name, false, os));
         qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " push succesfull";
         system.endGroup();
     }
@@ -132,7 +124,7 @@ void install::registerGummi() {
     char i[2] = {'a', '\0'};
     for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
     QString symbol = i;
-    grubConfigure(WORK_DIR + "/tempGrubConf");
+/*    grubConfigure(WORK_DIR + "/tempGrubConf");
     QVector<QString> commands = { qApp->translate("log", "mountvol ") + symbol + qApp->translate("log", ": /s"),        //1
                                 qApp->translate("log", "mkdir ") + symbol + ":/EFI/yourdroid_gummiboot", //2
                                 qApp->translate("log", "cp ") +
@@ -158,7 +150,7 @@ void install::registerGummi() {
                                   (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"),    //10
                                 "bcdedit /set {bootmgr} description "
                                   "\"YourDroid Gummiboot\""                               //11
-                                };                                                        //***
+                                };    */                                                    //***
     for(int i = 0; i < 9; i++) {
 
 //        if(_cmd.exec(commands[i]).first) {
@@ -170,8 +162,9 @@ void install::registerGummi() {
 
 bool install::isInstalledGummi() {
     qDebug().noquote() << "Checking gummiboot";
-    cmd::exec(QString("bcdedit /enum firmware > ") + WORK_DIR + "/tempEnum");
-    bool res = !cmd::exec(QString("find \x22YourDroid Gummiboot\x22 <") + WORK_DIR + "/tempEnum").first;
+    cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()));
+    bool res = !cmd::exec(
+                QString("find \x22YourDroid Gummiboot\x22 <%1/tempEnum").arg(qApp->applicationDirPath())).first;
     qDebug().noquote() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
     return res;
 }
@@ -202,7 +195,7 @@ void install::installGummi() {
     execAbort(QString("mkdir ") + s + ":/EFI/yourdroid_gummiboot");
 
     execAbort(QString("cp ") +
-                       (WORK_DIR + "/data/bootloaders/gummi/") +
+                       (qApp->applicationDirPath() + "/data/bootloaders/gummi/") +
                        (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
                        QString(" ") + s +
                        QString(":/EFI/yourdroid_gummiboot/"));
@@ -210,11 +203,11 @@ void install::installGummi() {
     execAbort(QString("mkdir ") + s + ":/loader");
 
 
-    execAbort(QString("cp ") + WORK_DIR +
+    execAbort(QString("cp ") + qApp->applicationDirPath() +
               QString("/data/bootloaders/gummi/loader/loader.conf ") + s +
               ":/loader/loader.conf");
 
-    execAbort(QString("cp ") + WORK_DIR +
+    execAbort(QString("cp ") + qApp->applicationDirPath() +
               QString("/data/bootloaders/gummi/loader/entries/0windows.conf ") + s +
               ":/loader/entries/0windows.conf");
 
@@ -482,11 +475,11 @@ void install::unpackSystem() {
 
 void install::createDataImg(int size) {
 #if LINUX
-    system((QString("chmod 777 ") + WORK_DIR + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+    system((QString("chmod 777 ") + qApp->applicationDirPath() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+    QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif WIN
-    QString command = WORK_DIR + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
+    QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
                        QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
     cmd::exec(command);
@@ -561,6 +554,7 @@ void install::deleteEntry(int num) {
     cntSystems--;
     qDebug().noquote() << "System's entry deleted succesfull";
     qDebug().noquote() << "Deleting system's config...";
-    bool goodDel = QFile(WORK_DIR + QString('/') + systems[num].name + ".ini").remove();
-    LOG(!goodDel * 2, qApp->translate("log", "Config deleted ") + (goodDel ? "succesfully" : "unsuccesfully!"));
+    bool goodDel = QFile(qApp->applicationDirPath() + QString('/') + systems[num].name + ".ini").remove();
+    ((goodDel) ? qDebug().noquote() : qCritical().noquote())
+            << (goodDel ? QObject::tr("Entry was deleted succesfully") : QObject::tr("Entry was deleted unsuccesfully"));
 }

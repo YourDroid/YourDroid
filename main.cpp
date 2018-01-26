@@ -24,8 +24,6 @@
 #endif
 
 const QString VERSION = VER_PRODUCTVERSION_STR;
-static QString workDir;
-const QString &WORK_DIR = workDir;
 console *log::con;
 
 int main(int argc, char *argv[])
@@ -41,8 +39,7 @@ int main(int argc, char *argv[])
     try {
         QApplication app(argc,argv);
         qRegisterMetaType<QtMsgType>("QtMsgType");
-        workDir = app.applicationDirPath();
-        qInstallMessageHandler(log::messagenew);
+        qInstallMessageHandler(log::message);
 #if LINUX
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
             system("touch ~/.config/QtProject/qtlogging.ini");
@@ -76,9 +73,8 @@ int main(int argc, char *argv[])
         app.installTranslator(&translator);
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
-        cmd::exec("help");
+        //system("bcdedit");
 
-        qDebug().noquote() << QString(app.translate("log", "Work dir is ")) + WORK_DIR;
         install ins(&set);
         ins.read();
 
@@ -88,6 +84,7 @@ int main(int argc, char *argv[])
         QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
         qDebug().noquote() << app.translate("log", "Window exec");
+        int *i = 0; *i = 0;
         int res = app.exec();
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();

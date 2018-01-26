@@ -8,7 +8,6 @@
 #include <QApplication>
 #include <iostream>
 
-//log::log(QString t) : typeName(t) { logFile.open("log.txt"); }
 QMessageBox::StandardButtons log::lastPressedButton;
 
 console *log::init() {
@@ -17,21 +16,9 @@ console *log::init() {
     return con;
 }
 
-void log::messagenew(QtMsgType level, const QMessageLogContext &context, const QString &message/*, QString rusMess*/) {
+void log::message(QtMsgType level, const QMessageLogContext &context, const QString &message) {
     bool window = false;
     QString mess = message;
-//    while(mess.contains("\\n")) {
-//        int i = mess.indexOf("\\n");
-//        mess.remove(i, 2);
-//        mess.insert(i, '\n');
-//    }
-//    if(mess[0] == '\"' && mess[mess.size() - 1] == "\"") {
-//        mess.remove(0, 1);
-//        mess.remove(mess.size() - 1, 1);
-//    }
-//    int index = 0;
-//    if((index = mess.indexOf("@|")) < 2 && index != -1) mess.remove(index, 2);
-//    else mess.remove('\"');
 
     if(mess[0] == '^') {
         window = true;
@@ -54,7 +41,7 @@ void log::messagenew(QtMsgType level, const QMessageLogContext &context, const Q
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
-        logFile << "### Created by YourDroid " << VERSION << " ###" << endl << endl;
+        logFile << QString("# Created by YourDroid %1\n# Work dir: %2").arg(VERSION, qApp->applicationDirPath());
         std::freopen(logName.toStdString().c_str(), "a+", stderr);
     }
     //static ofstream logFile("log.txt");

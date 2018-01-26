@@ -12,8 +12,6 @@
 STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)
 STRING_ENUM(_typePlace, dir, partition)
 
-extern const QString &WORK_DIR;
-
 class install : public QObject {
     Q_OBJECT
     struct _installSet {

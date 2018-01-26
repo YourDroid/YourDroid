@@ -37,25 +37,6 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
     connect(this, &Window::sendMesToStausbar, this, &Window::receiveMesToStatusbar);
-    auto enableApply = [=](int i = 0) {
-        ui->applaySettings->setEnabled(true);
-    };
-//    connect(this, &Window::logFromMainThread, [=](QtMsgType type, QString mess){
-//        switch(type) {
-//        case QtWarningMsg: qWarning().noquote() << mess; break;
-//        case QtCriticalMsg: qCritical().noquote() << mess; break;
-//        case QtFatalMsg: qCritical().noquote() << mess; qApp->exit(-1); break;
-//        default: qDebug().noquote() << mess;
-//        }
-//    });
-    connect(this, &Window::logFromMainThread, this, &Window::logFromMainThreadSlot);
-
-//    connect(ui->winVer, &QComboBox::currentIndexChanged, [=](){
-//        ui->qApplaySettings->setEnabled(true);
-//    });
-//    connect(ui->typeBios, &QComboBox::currentIndexChanged, [=]() {
-//        ui->qApplaySettings->setEnabled(true);
-//    });
 
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
@@ -324,7 +305,11 @@ void Window::on_buttonInstallInstall_clicked()
     connect(this, &Window::progressAddStep, this, [&](){
         ui->progressInstall->setValue(ui->progressInstall->maximum() / 7);
     });
-    connect(insDat, &install::logWindow, this, &Window::logFromMainThreadSlot);
+    auto logMain = [=](QtMsgType type, QString mess){
+        QDebug(type).noquote() << mess;
+    };
+    connect(insDat, &install::logWindow, this, logMain);
+    connect(this, &Window::logFromMainThread, this, logMain);
 
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
@@ -340,12 +325,12 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug().noquote() << tr("Start install");
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
-        insDat->unpackSystem();
+        //insDat->unpackSystem();
         CHECK_ABORT();
         qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
         emit progressAddStep();
-        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+        //insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
@@ -457,13 +442,4 @@ void Window::consoleHided() {
 void Window::on_comboLanguageSettings_currentIndexChanged(int index)
 {
     langChanged = true;
-}
-
-void Window::logFromMainThreadSlot(QtMsgType type, QString mess) {
-    switch(type) {
-    case QtWarningMsg: qWarning().noquote() << mess; break;
-    case QtCriticalMsg: qCritical().noquote() << mess; break;
-    case QtFatalMsg: qCritical().noquote() << mess; qApp->exit(-1); break;
-    default: qDebug().noquote() << mess;
-    }
 }

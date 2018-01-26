@@ -44,8 +44,6 @@ signals:
     void progressAddStep();
 
 public slots:
-    void logFromMainThreadSlot(QtMsgType, QString);
-
     void consoleHided();
 
     void returnMainWindow();

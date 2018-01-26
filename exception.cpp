@@ -3,10 +3,19 @@
 
 #if LINUX
 #include <err.h>
+#include <execinfo.h>
 #endif
 
 
 void errorAbort(int ret) {
+#if LINUX
+    void * array[25];
+    int nSize = backtrace(array, 25);
+    char **_back = backtrace_symbols(array, nSize);
+    QString back;
+    for(int i = 0; i < nSize; i++) back += QString(_back[i]) + '\n';
+    qDebug().noquote() << QString("Backtrace is: %1").arg(back);
+#endif
     exit(ret);
 }
 

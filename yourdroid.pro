@@ -28,7 +28,7 @@ SOURCES += data.cpp \
     cmd.cpp \
     console.cpp \
     exception.cpp
-LIBS += -lz 
+LIBS += -lz
 #-std=gnu++14
 
 RESOURCES += \
