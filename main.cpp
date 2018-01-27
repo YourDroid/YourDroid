@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
     try {
         QApplication app(argc,argv);
         qRegisterMetaType<QtMsgType>("QtMsgType");
+        qRegisterMetaType<QTextCursor>("QTextCursor");
+        qRegisterMetaType<QTextBlock>("QTextBlock");
         qInstallMessageHandler(log::message);
 #if LINUX
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
         app.installTranslator(&translator);
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
-        //system("bcdedit");
+        cmd::exec("bcdedit", true);
 
         install ins(&set);
         ins.read();
@@ -84,7 +86,6 @@ int main(int argc, char *argv[])
         QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
         qDebug().noquote() << app.translate("log", "Window exec");
-        int *i = 0; *i = 0;
         int res = app.exec();
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();

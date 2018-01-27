@@ -38,6 +38,9 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     });
     connect(this, &Window::sendMesToStausbar, this, &Window::receiveMesToStatusbar);
 
+    ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
+    ui->progressInstall->setAlignment(Qt::AlignCenter);
+    ui->progressInstall->setValue(0);
     ui->progressDelete->setRange(0, 7);
     ui->progressDelete->setValue(0);
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
@@ -131,7 +134,6 @@ void Window::on_installButtonMain_clicked()
     ui->radioChooseFromDisk->setChecked(true);
 
     //ui->progressInstall->setRange(0, 100);
-    ui->progressInstall->setValue(0);
 
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
@@ -182,17 +184,22 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
+    ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
     ui->progressInstall->setValue(0);
     ui->returnInstallButton->setEnabled(false);
     ui->buttonInstallInstall->setEnabled(false);
     ui->statusbar->showMessage(tr("Checking"));
     qDebug().noquote() << tr("Checking data for install...");
     QString image, dir, name;
-    auto end = [=](){
-        ui->statusbar->showMessage("Готово");
+    auto end = [=](QString mess = QObject::tr("Ready")){
+        ui->statusbar->showMessage(mess);
         ui->returnInstallButton->setEnabled(true);
         ui->buttonInstallInstall->setEnabled(true);
     };
+    connect(this, &Window::ending, this, [=](QString mess) {
+        end(mess);
+    });
+
     if((image = ui->editImageFromDisk->text()).length() == 0) {
         qCritical().noquote() << tr("^Did not choose image");
         end();
@@ -283,10 +290,13 @@ void Window::on_buttonInstallInstall_clicked()
 #define CHECK_ABORT() if(abort) return;
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
-    connect(resMonitor, &QFutureWatcher<void>::finished, [&](){
-        ui->statusbar->showMessage("Готово");
-        ui->returnInstallButton->setEnabled(true);
-        ui->buttonInstallInstall->setEnabled(true);
+    connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
+        if(aborted) {
+            emit ending(QObject::tr("Aborted"));
+            ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: red;}");
+            return;
+        }
+        emit ending();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
     });
 
@@ -310,14 +320,18 @@ void Window::on_buttonInstallInstall_clicked()
     };
     connect(insDat, &install::logWindow, this, logMain);
     connect(this, &Window::logFromMainThread, this, logMain);
+    connect(this, &Window::setAborted, this, [=](bool a) {
+        aborted = a;
+    });
 
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
+            emit setAborted(true);
             abort = true;
             emit logFromMainThread(QtCriticalMsg,
                                    tr("^Fatal error while installing: %1")
-                                   .arg(mes.isEmpty() ? "Message of error is empty" : mes));
+                                   .arg(mes.isEmpty() ? "Message about error is empty" : mes));
 #if LINUX
             insDat->unmountImage();
 #endif
@@ -325,18 +339,21 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug().noquote() << tr("Start install");
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
-        //insDat->unpackSystem();
+        insDat->unpackSystem();
         CHECK_ABORT();
+
         qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
         emit progressAddStep();
-        //insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
+
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
         emit progressAddStep();
-        insDat->registerBootloader();
+        //insDat->registerBootloader();
         CHECK_ABORT();
+
 #if LINUX
         emit sendMesToStausbar(tr("Unmounting image..."));
         emit progressAddStep();

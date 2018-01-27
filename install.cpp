@@ -162,7 +162,7 @@ void install::registerGummi() {
 
 bool install::isInstalledGummi() {
     qDebug().noquote() << "Checking gummiboot";
-    cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()));
+    //cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()), true);
     bool res = !cmd::exec(
                 QString("find \x22YourDroid Gummiboot\x22 <%1/tempEnum").arg(qApp->applicationDirPath())).first;
     qDebug().noquote() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
@@ -174,16 +174,17 @@ void install::installGummi() {
 #define CHECK_ABORT() if(addNew.first)  { \
     emit abort(addNew.second); return; }
 
-#define execAbort(command) addNew = cmd::exec(command); CHECK_ABORT();
+#define execAbort(command) addNew = cmd::exec(command, true); CHECK_ABORT();
 
     QPair<int, QString> addNew;
     execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Gummiboot\"");
 
     QString output = addNew.second;
     int begin = output.indexOf('{'), end = output.indexOf('}');
-    QString id = output.mid(begin, end);
+    QString id = output.mid(begin, end - begin + 1);
+    qDebug() << QObject::tr("Id is %1").arg(id);
 
-    execAbort(QString("/set ") + id + QString(" path /EFI/yourdroid_gummiboot/") +
+    execAbort(QString("bcdedit /set ") + id + QString(" path /EFI/yourdroid_gummiboot/") +
                        (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"));
 
     char i[2] = {'a', '\0'};
@@ -399,14 +400,14 @@ void install::unpackSystem() {
     if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
                  .arg(qApp->applicationDirPath(), systems.back().image, "system.img")).first)
 #endif
-        filesCopy.push_back(systemFile = "/system.img");
+        filesCopy.push_back((systemFile = "/system.img"));
 #if LINUX
     else if(QFile(mountPoint + "/system.sfs").exists())
 #elif WIN
     if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
                  .arg(qApp->applicationDirPath(), systems.back().image, "system.sfs")).first)
 #endif
-    filesCopy.push_back(systemFile = "/system.sfs");
+    filesCopy.push_back((systemFile = "/system.sfs"));
     qDebug().noquote() << QObject::tr("System file is %1").arg(systemFile);
     qDebug().noquote() << QObject::tr("Start copying");
     for(QString file : filesCopy) {

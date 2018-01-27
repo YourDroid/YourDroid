@@ -33,6 +33,10 @@ public:
     ~Window();
 
 signals:
+    void ending(QString = QObject::tr("Ready"));
+
+    void setAborted(int);
+
     void logFromMainThread(QtMsgType, QString);
 
     void proccessFinished();
@@ -85,6 +89,7 @@ private slots:
     void on_comboLanguageSettings_currentIndexChanged(int index);
 
 private:
+    bool aborted = false;
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
     bool fierst;

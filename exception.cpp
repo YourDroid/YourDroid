@@ -225,36 +225,36 @@ void posix_signal_handler(int sig, siginfo_t *siginfo, void *context)
 }
 #endif
 
-//void all_handler(int sig)
-//{
-//    QString type, description;
-//    switch(sig)
-//    {
-//    case SIGABRT:
-//        type = "SIGABRT"; description = "usually caused by an abort() or assert()";
-//        break;
-//    case SIGFPE:
-//        type = "SIGFPE"; description = "arithmetic exception, such as divide by zero";
-//        break;
-//    case SIGILL:
-//        type = "SIGILL"; description = "illegal instruction";
-//        break;
-//    case SIGINT:
-//        type = "SIGINT"; description = "interactive attention signal, probably a ctrl+c";
-//        break;
-//    case SIGSEGV:
-//        type = "SIGSEGV"; description = "segmentation fault";
-//        break;
-//    case SIGTERM:
-//    default:
-//        type = "SIGTERM"; description = "a termination request was sent to the program";
-//        break;
-//    }
-//    qCritical().noquote().noquote() << QObject::tr("^Fatal error: description: %1; type: %2; code: %3")
-//                   .arg(description, type, QString::number(sig));
-//    signal(sig, SIG_DFL);
-//    errorAbort(1);
-//}
+void all_handler(int sig)
+{
+    QString type, description;
+    switch(sig)
+    {
+    case SIGABRT:
+        type = "SIGABRT"; description = "usually caused by an abort() or assert()";
+        break;
+    case SIGFPE:
+        type = "SIGFPE"; description = "arithmetic exception, such as divide by zero";
+        break;
+    case SIGILL:
+        type = "SIGILL"; description = "illegal instruction";
+        break;
+    case SIGINT:
+        type = "SIGINT"; description = "interactive attention signal, probably a ctrl+c";
+        break;
+    case SIGSEGV:
+        type = "SIGSEGV"; description = "segmentation fault";
+        break;
+    case SIGTERM:
+    default:
+        type = "SIGTERM"; description = "a termination request was sent to the program";
+        break;
+    }
+    qCritical().noquote().noquote() << QObject::tr("^Fatal error: description: %1; type: %2; code: %3")
+                   .arg(description, type, QString::number(sig));
+    signal(sig, SIG_DFL);
+    errorAbort(1);
+}
 
 
 void set_signal_handler()
@@ -277,10 +277,10 @@ void set_signal_handler()
         if (sigaction(SIGABRT, &sig_action, NULL) != 0) { err(1, "sigaction"); }
     }
 #endif
-    //    signal(SIGABRT, all_handler);
-    //    signal(SIGFPE,  all_handler);
-    //    signal(SIGILL,  all_handler);
-    //    signal(SIGINT,  all_handler);
-    //    signal(SIGSEGV, all_handler);
-    //    signal(SIGTERM, all_handler);
+        signal(SIGABRT, all_handler);
+        signal(SIGFPE,  all_handler);
+        signal(SIGILL,  all_handler);
+        signal(SIGINT,  all_handler);
+        signal(SIGSEGV, all_handler);
+        signal(SIGTERM, all_handler);
 }

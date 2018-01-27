@@ -13,7 +13,7 @@ class cmd {
 public:
 //    cmd(QString command) : _command(command) {}
 //    cmd() {}
-    static QPair<int, QString> exec(QString);
+    static QPair<int, QString> exec(QString, bool = false);
 //    QPair<int, QString> exec();
 //    void setCommand(QString command) {_command = command;}
 //    QString output() {return _output;}
