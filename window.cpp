@@ -84,7 +84,7 @@ void Window::returnMainWindow() {
 
 void Window::Settings_clicked()
 {
-    dat->read_set(false);
+    if(!fierst) dat->read_set(false);
     ui->typeBios->setCurrentIndex((int)dat->tbios);
     ui->arch->setCurrentIndex((int)dat->arch);
     ui->winVer->setCurrentIndex((int)dat->winv);

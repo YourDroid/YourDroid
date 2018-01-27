@@ -23,6 +23,10 @@
 #include <windows.h>
 #endif
 
+#if !WIN && !LINUX
+#error This system does not support
+#endif
+
 const QString VERSION = VER_PRODUCTVERSION_STR;
 console *log::con;
 
