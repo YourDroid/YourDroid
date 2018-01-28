@@ -3,21 +3,15 @@
 
 #include <QString>
 #include <QPair>
+#include <QThread>
 
 #define CMD_ASSERT(expr) ABORT(expr.second);
 
 class cmd {
-//    QString _command;
-//    QString _output;
-//    int _res;
+    static QThread *mainThread;
 public:
-//    cmd(QString command) : _command(command) {}
-//    cmd() {}
+    static void init() { mainThread = QThread::currentThread(); }
     static QPair<int, QString> exec(QString, bool = false);
-//    QPair<int, QString> exec();
-//    void setCommand(QString command) {_command = command;}
-//    QString output() {return _output;}
-//    int returnedValue() {return _res;}
 };
 
 #endif // CMD_H

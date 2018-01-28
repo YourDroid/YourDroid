@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
         app.installTranslator(&translator);
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
-        cmd::exec("bcdedit", true);
+        cmd::exec("help");
+        *(int*)0 = 0;
 
         install ins(&set);
         ins.read();
@@ -94,6 +95,7 @@ int main(int argc, char *argv[])
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();
         ins.write();
+        return 8;
         qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
         return res;
     }

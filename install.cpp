@@ -14,7 +14,7 @@
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
     systems.push_back(install::_installSet(b, t, p, i, n, e));
-    cntSystems++;
+    cntSystems = systems.length();
 }
 
 void install::write() {
@@ -27,15 +27,18 @@ void install::write() {
     QSettings install(qApp->applicationDirPath() + "/install.ini", QSettings::IniFormat);
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
+    int finallyCnt = 0;
     for(int i = 0; i < sysCnt; i++) {
         if(systems[i].ended == false) {
             qDebug().noquote() << tr("System %1 skipped").arg(systems[i].name);
             continue;
         }
-        qDebug().noquote() << qApp->translate("log", "System %1 config registered...").arg(QString::number(i + 1));
+        finallyCnt = i;
+        qDebug().noquote() << qApp->translate("log", "System %1 config registering...").arg(systems[i].name);
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
-        qDebug().noquote() << qApp->translate("log", "System %1 config registered succesfull").arg(QString::number(i + 1));
+        qDebug().noquote() << qApp->translate("log", "System %1 config registered succesfull").arg(systems[i].name);
     }
+    install.setValue("count_systems", finallyCnt);
     install.endGroup();
 
     qDebug().noquote() << qApp->translate("log", "System configs registered succesfull");
@@ -66,9 +69,10 @@ void install::read() {
 
     install.beginGroup("about_installing_systems");
     cntSystems = install.value("count_systems", 0).toInt();
+    qDebug().noquote() << QObject::tr("Count of systems is %1").arg(cntSystems);
 
     for(int i = 0; i < cntSystems; i++) {
-        QString name = install.value(QString("system_") + QString::number(i), 0).toString();
+        QString name = install.value(QString("system_") + QString::number(i), i).toString();
         QString sys = name + ".ini";
         qDebug().noquote() << name;
         if(!QFile::exists(qApp->applicationDirPath() + QString("/") + sys)) {

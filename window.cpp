@@ -3,6 +3,7 @@
 #include "enum.h"
 #include <string>
 #include "install.h"
+#include "cmd.h"
 #include <QValidator>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
@@ -325,6 +326,8 @@ void Window::on_buttonInstallInstall_clicked()
     });
 
     auto res = QtConcurrent::run([=](){ // auto - QFuture
+        cmd::exec("help");
+        return;
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             emit setAborted(true);
@@ -360,6 +363,7 @@ void Window::on_buttonInstallInstall_clicked()
         insDat->unmountImage();
 #endif
         insDat->systemEnd();
+        insDat->oldSysEdit() = true;
         insDat->write();
         CHECK_ABORT();
         qDebug().noquote() << tr("Finish install");

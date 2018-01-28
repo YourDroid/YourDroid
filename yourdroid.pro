@@ -45,6 +45,7 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 unix:DEFINES += "OS=0"
 
 win32 {
+LIBS += -lDbgHelp
 DEFINES += "OS=1"
 RC_FILE = info.rc
 #CONFIG += embed_manifest_exe

@@ -16,6 +16,8 @@
 #include <err.h>
 #endif
 
+void printStack();
+
 void errorAbort(int);
 
 #if WIN

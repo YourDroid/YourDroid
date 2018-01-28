@@ -4,8 +4,83 @@
 #if LINUX
 #include <err.h>
 #include <execinfo.h>
+#elif WIN
+#include <DbgHelp.h>
 #endif
 
+void printStack()
+{
+#if WIN
+    HANDLE process = GetCurrentProcess();
+    HANDLE thread = GetCurrentThread();
+
+    CONTEXT context;
+    memset(&context, 0, sizeof(CONTEXT));
+    context.ContextFlags = CONTEXT_FULL;
+    RtlCaptureContext(&context);
+
+    SymInitialize(process, NULL, TRUE);
+
+    DWORD image;
+    STACKFRAME64 stackframe;
+    ZeroMemory(&stackframe, sizeof(STACKFRAME64));
+
+  #ifdef _M_IX86
+    image = IMAGE_FILE_MACHINE_I386;
+    stackframe.AddrPC.Offset = context.Eip;
+    stackframe.AddrPC.Mode = AddrModeFlat;
+    stackframe.AddrFrame.Offset = context.Ebp;
+    stackframe.AddrFrame.Mode = AddrModeFlat;
+    stackframe.AddrStack.Offset = context.Esp;
+    stackframe.AddrStack.Mode = AddrModeFlat;
+  #elif _M_X64
+    image = IMAGE_FILE_MACHINE_AMD64;
+    stackframe.AddrPC.Offset = context.Rip;
+    stackframe.AddrPC.Mode = AddrModeFlat;
+    stackframe.AddrFrame.Offset = context.Rsp;
+    stackframe.AddrFrame.Mode = AddrModeFlat;
+    stackframe.AddrStack.Offset = context.Rsp;
+    stackframe.AddrStack.Mode = AddrModeFlat;
+  #elif _M_IA64
+    image = IMAGE_FILE_MACHINE_IA64;
+    stackframe.AddrPC.Offset = context.StIIP;
+    stackframe.AddrPC.Mode = AddrModeFlat;
+    stackframe.AddrFrame.Offset = context.IntSp;
+    stackframe.AddrFrame.Mode = AddrModeFlat;
+    stackframe.AddrBStore.Offset = context.RsBSP;
+    stackframe.AddrBStore.Mode = AddrModeFlat;
+    stackframe.AddrStack.Offset = context.IntSp;
+    stackframe.AddrStack.Mode = AddrModeFlat;
+  #endif
+
+    QString trace;
+    for (size_t i = 0; i < 25; i++) {
+
+      BOOL result = StackWalk64(
+        image, process, thread,
+        &stackframe, &context, NULL,
+        SymFunctionTableAccess64, SymGetModuleBase64, NULL);
+
+      if (!result) { break; }
+
+      char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)];
+      PSYMBOL_INFO symbol = (PSYMBOL_INFO)buffer;
+      symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+      symbol->MaxNameLen = MAX_SYM_NAME;
+
+      DWORD64 displacement = 0;
+      if (SymFromAddr(process, stackframe.AddrPC.Offset, &displacement, symbol)) {
+        trace += QString("[%1] %2\n").arg(i).arg(symbol->Name);
+      } else {
+        trace += QString("[%1] ???\n").arg(i);
+      }
+
+    }
+    qDebug().noquote() << QObject::tr("Backtrace is:\n%1").arg(trace);
+
+    SymCleanup(process);
+#endif
+}
 
 void errorAbort(int ret) {
 #if LINUX
@@ -14,7 +89,9 @@ void errorAbort(int ret) {
     char **_back = backtrace_symbols(array, nSize);
     QString back;
     for(int i = 0; i < nSize; i++) back += QString(_back[i]) + '\n';
-    qDebug().noquote() << QString("Backtrace is: %1").arg(back);
+    qDebug().noquote() << QString("Backtrace is:\n%1").arg(back);
+#elif WIN
+    printStack();
 #endif
     exit(ret);
 }
@@ -283,4 +360,8 @@ void set_signal_handler()
         signal(SIGINT,  all_handler);
         signal(SIGSEGV, all_handler);
         signal(SIGTERM, all_handler);
+        std::set_terminate([=]() {
+            qCritical().noquote() << QObject::tr("Unknown fatal error!");
+            exit(3);
+        });
 }
