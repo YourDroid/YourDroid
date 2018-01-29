@@ -42,9 +42,13 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 #QMAKE_TARGET_PRODUCT = YourDroid
 #QMAKE_TARGET_COPYRIGHT = GNU General Public License v3.0
 #QMAKE_TARGET_COMPANY = YourDroid-Group
-unix:DEFINES += "OS=0"
+unix {
+DEFINES += "OS=0"
+LIBS += -rdynamic
+}
 
 win32 {
+QT += winextras
 LIBS += -lDbgHelp
 DEFINES += "OS=1"
 RC_FILE = info.rc

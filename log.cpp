@@ -76,7 +76,7 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     case QtFatalMsg: _color = Qt::red; break;
     default: _color = Qt::white; break;
     }
-    con->output(typeName + QString(' ') + mess, _color);
+    //con->output(typeName + QString(' ') + mess, _color);
 
     //if(mess.isEmpty()) return;
     if(window) {

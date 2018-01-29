@@ -12,6 +12,10 @@
 #include "install.h"
 #include <QCoreApplication>
 #include <QComboBox>
+#include <QtWinExtras>
+
+QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
+QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
 
 extern const QString VERSION;
 
@@ -89,6 +93,8 @@ private slots:
     void on_comboLanguageSettings_currentIndexChanged(int index);
 
 private:
+    QWinTaskbarButton *taskBarButton;
+    QWinTaskbarProgress *taskBarProgress;
     bool aborted = false;
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);

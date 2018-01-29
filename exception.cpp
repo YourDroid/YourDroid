@@ -1,11 +1,44 @@
 #include "exception.h"
 #include "window.h"
+#include <cmd.h>
 
 #if LINUX
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <err.h>
 #include <execinfo.h>
 #elif WIN
 #include <DbgHelp.h>
+#endif
+
+#if LINUX
+#define SYS_ERROR(msg) \
+    qWarning().noquote() << QObject::tr("*** stack print error *** at %1 %2: %3 (%4)") \
+    .arg(__FILE__, __LINE__).arg(msg).arg(strerror (errno));
+
+#define SYS_ASSERT(cond, err_msg) \
+    do \
+{ \
+    if (cond) \
+    ; \
+    else \
+{ \
+    SYS_ERROR (err_msg); \
+    return; \
+    } \
+    } while (0)
+
+static char *gdb_ProgramName;
+
+void gdb_SetProgName (char *prog_name)
+{
+    gdb_ProgramName = prog_name;
+}
 #endif
 
 void printStack()
@@ -25,7 +58,7 @@ void printStack()
     STACKFRAME64 stackframe;
     ZeroMemory(&stackframe, sizeof(STACKFRAME64));
 
-  #ifdef _M_IX86
+#ifdef _M_IX86
     image = IMAGE_FILE_MACHINE_I386;
     stackframe.AddrPC.Offset = context.Eip;
     stackframe.AddrPC.Mode = AddrModeFlat;
@@ -33,7 +66,7 @@ void printStack()
     stackframe.AddrFrame.Mode = AddrModeFlat;
     stackframe.AddrStack.Offset = context.Esp;
     stackframe.AddrStack.Mode = AddrModeFlat;
-  #elif _M_X64
+#elif _M_X64
     image = IMAGE_FILE_MACHINE_AMD64;
     stackframe.AddrPC.Offset = context.Rip;
     stackframe.AddrPC.Mode = AddrModeFlat;
@@ -41,7 +74,7 @@ void printStack()
     stackframe.AddrFrame.Mode = AddrModeFlat;
     stackframe.AddrStack.Offset = context.Rsp;
     stackframe.AddrStack.Mode = AddrModeFlat;
-  #elif _M_IA64
+#elif _M_IA64
     image = IMAGE_FILE_MACHINE_IA64;
     stackframe.AddrPC.Offset = context.StIIP;
     stackframe.AddrPC.Mode = AddrModeFlat;
@@ -51,53 +84,127 @@ void printStack()
     stackframe.AddrBStore.Mode = AddrModeFlat;
     stackframe.AddrStack.Offset = context.IntSp;
     stackframe.AddrStack.Mode = AddrModeFlat;
-  #endif
+#endif
 
     QString trace;
     for (size_t i = 0; i < 25; i++) {
 
-      BOOL result = StackWalk64(
-        image, process, thread,
-        &stackframe, &context, NULL,
-        SymFunctionTableAccess64, SymGetModuleBase64, NULL);
+        BOOL result = StackWalk64(
+                    image, process, thread,
+                    &stackframe, &context, NULL,
+                    SymFunctionTableAccess64, SymGetModuleBase64, NULL);
 
-      if (!result) { break; }
+        if (!result) { break; }
 
-      char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)];
-      PSYMBOL_INFO symbol = (PSYMBOL_INFO)buffer;
-      symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-      symbol->MaxNameLen = MAX_SYM_NAME;
+        char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)];
+        PSYMBOL_INFO symbol = (PSYMBOL_INFO)buffer;
+        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+        symbol->MaxNameLen = MAX_SYM_NAME;
 
-      DWORD64 displacement = 0;
-      if (SymFromAddr(process, stackframe.AddrPC.Offset, &displacement, symbol)) {
-        trace += QString("[%1] %2\n").arg(i).arg(symbol->Name);
-      } else {
-        trace += QString("[%1] ???\n").arg(i);
-      }
+        DWORD64 displacement = 0;
+        if (SymFromAddr(process, stackframe.AddrPC.Offset, &displacement, symbol)) {
+            trace += QString("[%1] %2\n").arg(i).arg(symbol->Name);
+        } else {
+            trace += QString("[%1] ???\n").arg(i);
+        }
 
     }
     qDebug().noquote() << QObject::tr("Backtrace is:\n%1").arg(trace);
 
     SymCleanup(process);
+#elif LINUX
+    //cmd::exec()
+    char buff[L_tmpnam];
+    const char *scr_file_name;
+    FILE *scr_file;
+    pid_t child_pid;
+
+    /* Создаем имя временного файла. Использовать "правильные" интерфейсы
+   * типа tempnam или tmpfile не получится, потому как имя файла нам надо
+   * передать в gdb, а с этими интерфейсами имя файла не доступно.
+   * При линковке программы под linux'ом мы увидим предупреждение что-то типа
+   * "warning: the use of `tmpnam' is dangerous, better use `mkstemp'" */
+    scr_file_name = tmpnam (buff);
+    SYS_ASSERT (scr_file_name != NULL, "failed to gen tmp file name");
+
+    /* В файле формируем приказы для gdb. Этот файл будет передан по опции
+   * в отладчик. В нешем случае нам нужно напечатать стек (bt) и выйти (q) */
+    scr_file = fopen (scr_file_name, "w");
+    SYS_ASSERT (scr_file, "child: failed access gdb script");
+    fprintf (scr_file, "bt\nq\n");
+    fclose (scr_file);
+
+    /* Форкаемся для запуска отладчика в дочернем процессе и ожижания
+   * в родительском. Перед fork'ом можно сделать создать pipe, в дочернем
+   * процессе через dup2 замкнуть не него stdout и stderr, а в родительском
+   * процессе прочитать оттуда текст (выдачу отладчика) с тем, чтобы
+   * отфильтровать ненужные строки. Я этого делать не стану, дабы не усложнять
+   * программу. Тем более, что в разных версиях отладчика печать может выглядеть
+   * по разному */
+    child_pid = fork();
+    SYS_ASSERT (child_pid >= 0, "fork failed");
+
+    if (child_pid == 0)
+    {
+        char pid_str[32];
+
+        /* Дочерний процесс: запускаем gdb
+       * Отладчику передаём pid процесса, к которому он должен прицепиться.
+       * Поскольку мы после fork'а находимся в дочернем процессе, то для нас
+       * это означает pid родительского процесса */
+        sprintf (pid_str, "%d", (int)getppid());
+
+        /* Исходим из предположения, что gdb находится в путях, прописанных
+       * в PATH. Если у кого-то это не так, то вместо "gdb" надо будет прописать
+       * полный путь до отладчика */
+        execlp ("gdb", "gdb", gdb_ProgramName, pid_str, "-q", "--batch", "-x", scr_file_name, NULL);
+
+        /* В случае успешного запска сюда не попадём */
+        SYS_ASSERT (0, "child: failed to exec gdb");
+    }
+    else
+    {
+        pid_t exited_pid;
+        int child_status;
+
+        /* Родительский процесс: ожидаем завершение работы дочернего процесса
+       * (из-под которого запускается gdb) */
+        exited_pid = wait (&child_status);
+        SYS_ASSERT (exited_pid == child_pid, "parent: error waiting child to die");
+        SYS_ASSERT (WIFEXITED (child_status) && WEXITSTATUS (child_status) == 0,
+                    "parent: abnormal child termination");
+    }
+
+    /* Временный файл надо удалятьручками */
+    unlink (scr_file_name);
 #endif
 }
 
 void errorAbort(int ret) {
 #if LINUX
-    void * array[25];
-    int nSize = backtrace(array, 25);
-    char **_back = backtrace_symbols(array, nSize);
-    QString back;
-    for(int i = 0; i < nSize; i++) back += QString(_back[i]) + '\n';
-    qDebug().noquote() << QString("Backtrace is:\n%1").arg(back);
-#elif WIN
-    printStack();
+    cmd::exec(QString("gcore %1 -o %2").arg(getpid()).arg(qApp->applicationDirPath() + QString("/log/dump-") +
+                                                          QDate::currentDate().toString("dMyy") +
+                                                          QTime::currentTime().toString("hhmmss")));
+    return;
+    if(cmd::exec("dpkg -s gdb").first) {
+        void * array[25];
+        int nSize = backtrace(array, 25);
+        char **_back = backtrace_symbols(array, nSize);
+        QString back;
+        for(int i = 0; i < nSize; i++) back += QString(_back[i]) + '\n';
+        qDebug().noquote() << QString("Backtrace is:\n%1").arg(back);
+    }
+    else
+#endif
+        printStack();
+#if WIN
+    QProcess::startDetached(QString("taskkill /pid %1").arg(getpid()));
 #endif
     exit(ret);
 }
 
 #if WIN
-LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
+LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS *ExceptionInfo)
 {
     QString type, description;
     switch(ExceptionInfo->ExceptionRecord->ExceptionCode)
@@ -203,6 +310,25 @@ LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
         description = QObject::tr("No description");
         break;
     }
+    HANDLE hFile;
+
+    hFile = CreateFile(
+                (qApp->applicationDirPath() + QString("/log/dump-") +
+                 QDate::currentDate().toString("dMyy") +
+                 QTime::currentTime().toString("hhmmss") + ".dmp").toStdWString().c_str(),
+                GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+
+    if( NULL == hFile || INVALID_HANDLE_VALUE == hFile )
+        return EXCEPTION_EXECUTE_HANDLER;
+
+    MINIDUMP_EXCEPTION_INFORMATION eInfo;
+    eInfo.ThreadId = GetCurrentThreadId();
+    eInfo.ExceptionPointers = ExceptionInfo;
+    eInfo.ClientPointers = FALSE;
+
+    MiniDumpWriteDump( GetCurrentProcess(), GetCurrentProcessId(), hFile,
+                       MiniDumpNormal, &eInfo, NULL, NULL);
+    CloseHandle( hFile );
     unsigned long code = ExceptionInfo->ExceptionRecord->ExceptionCode;
     qCritical().noquote().noquote() <<
                                        QObject::tr("^Fatal error! Here is some info about it: description: %1; type: %2; code: %3")
@@ -220,8 +346,7 @@ void posix_signal_handler(int sig, siginfo_t *siginfo, void *context)
         type = "SIGSEGV"; description = "Segmentation Fault";
         break;
     case SIGINT:
-        type = "SIGINT"; description = "Interactive attention signal, (usually ctrl+c)";
-        break;
+        return;
     case SIGFPE:
         switch(siginfo->si_code)
         {
@@ -317,8 +442,7 @@ void all_handler(int sig)
         type = "SIGILL"; description = "illegal instruction";
         break;
     case SIGINT:
-        type = "SIGINT"; description = "interactive attention signal, probably a ctrl+c";
-        break;
+        return;
     case SIGSEGV:
         type = "SIGSEGV"; description = "segmentation fault";
         break;
@@ -328,7 +452,7 @@ void all_handler(int sig)
         break;
     }
     qCritical().noquote().noquote() << QObject::tr("^Fatal error: description: %1; type: %2; code: %3")
-                   .arg(description, type, QString::number(sig));
+                                       .arg(description, type, QString::number(sig));
     signal(sig, SIG_DFL);
     errorAbort(1);
 }
@@ -354,14 +478,14 @@ void set_signal_handler()
         if (sigaction(SIGABRT, &sig_action, NULL) != 0) { err(1, "sigaction"); }
     }
 #endif
-        signal(SIGABRT, all_handler);
-        signal(SIGFPE,  all_handler);
-        signal(SIGILL,  all_handler);
-        signal(SIGINT,  all_handler);
-        signal(SIGSEGV, all_handler);
-        signal(SIGTERM, all_handler);
-        std::set_terminate([=]() {
-            qCritical().noquote() << QObject::tr("Unknown fatal error!");
-            exit(3);
-        });
+    signal(SIGABRT, all_handler);
+    signal(SIGFPE,  all_handler);
+    signal(SIGILL,  all_handler);
+    signal(SIGINT,  all_handler);
+    signal(SIGSEGV, all_handler);
+    signal(SIGTERM, all_handler);
+    std::set_terminate([=]() {
+        qCritical().noquote() << QObject::tr("Unknown fatal error!");
+        exit(3);
+    });
 }

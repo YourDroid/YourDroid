@@ -16,6 +16,10 @@
 #include <err.h>
 #endif
 
+#if LINUX
+void gdb_SetProgName (char *prog_name);
+#endif
+
 void printStack();
 
 void errorAbort(int);
@@ -26,7 +30,7 @@ LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS*);
 void posix_signal_handler(int, siginfo_t*, void*);
 #endif
 
-//void all_handler(int);
+void all_handler(int);
 
 void set_signal_handler();
 

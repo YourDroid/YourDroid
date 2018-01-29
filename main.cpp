@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "exception.h"
+#include <QtConcurrent/QtConcurrentRun>
 
 #if WIN
 #include <windows.h>
@@ -32,8 +33,12 @@ console *log::con;
 
 int main(int argc, char *argv[])
 {
+    qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
+#if LINUX
+    gdb_SetProgName(argv[0]);
+#endif
     set_signal_handler();
     std::set_terminate([=](){
         qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
@@ -50,7 +55,7 @@ int main(int argc, char *argv[])
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
             system("touch ~/.config/QtProject/qtlogging.ini");
 #endif
-        console *widget = log::init();
+        //console *widget = log::init();
 #if LINUX
         int uid = geteuid();
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
@@ -74,21 +79,24 @@ int main(int argc, char *argv[])
         options set;
         bool readSet = set.read_set(false);
 
+        qDebug().noquote() << QObject::tr("Translating...");
         QTranslator translator;
         translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
         app.installTranslator(&translator);
-        if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
+
+        qDebug().noquote() << QObject::tr("Setting debug console...");
+        //if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-        *(int*)0 = 0;
+        //QtConcurrent::run([=](){*(int*)0 = 0;});
 
         install ins(&set);
         ins.read();
 
         Window *window = new Window(&ins, readSet, &set);
         window->show();
-        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
-        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
+//        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
+//        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
         qDebug().noquote() << app.translate("log", "Window exec");
         int res = app.exec();

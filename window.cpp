@@ -11,6 +11,7 @@
 
 Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
+    taskBarButton(new QWinTaskbarButton(this)),
     fierst(!f),
     dat(d),
     insDat(ins),
@@ -22,10 +23,18 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    qDebug().noquote() << tr("Start window");
+    qDebug().noquote() << tr("Setting window");
 
     ui->setupUi(this);
     setLabelSetInfo();
+
+    if (QtWin::isCompositionEnabled())
+        QtWin::extendFrameIntoClientArea(this, 0, 0, 0, 0);
+    else
+        QtWin::resetExtendedFrame(this);
+
+    taskBarButton->setWindow(windowHandle());
+    taskBarProgress = taskBarButton->progress();
 
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->settingsMini,&QPushButton::clicked,[=](){
@@ -38,6 +47,10 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
     connect(this, &Window::sendMesToStausbar, this, &Window::receiveMesToStatusbar);
+    connect(ui->progressInstall, &QProgressBar::valueChanged, [&](int val) {
+        taskBarProgress->setValue(val);
+    });
+    //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
 
     ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
     ui->progressInstall->setAlignment(Qt::AlignCenter);
@@ -292,17 +305,22 @@ void Window::on_buttonInstallInstall_clicked()
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
+        qApp->alert(this, 2000);
         if(aborted) {
             emit ending(QObject::tr("Aborted"));
             ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: red;}");
+            taskBarProgress->stop();
             return;
         }
         emit ending();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
+        taskBarProgress->hide();
+        qDebug().noquote() << QObject::tr("^Succes");
     });
 
-    int step = insDat->sizeOfFiles() / 4;
-    ui->progressInstall->setRange(0, step * ((OS) ? 6 : 7));
+    int size = insDat->sizeOfFiles(), step = size / 2 / ((OS) ? 2 : 3);
+    ui->progressInstall->setRange(0, size * 2);
+    taskBarProgress->setRange(0, size * 2);
 
     int progressComplete = 0;
 
@@ -314,20 +332,22 @@ void Window::on_buttonInstallInstall_clicked()
         ui->progressInstall->setValue(progressComplete);
     });
     connect(this, &Window::progressAddStep, this, [&](){
-        ui->progressInstall->setValue(ui->progressInstall->maximum() / 7);
+        ui->progressInstall->setValue(ui->progressInstall->value() + step);
     });
     auto logMain = [=](QtMsgType type, QString mess){
         QDebug(type).noquote() << mess;
     };
-    connect(insDat, &install::logWindow, this, logMain);
+    connect(insDat, &install::logWindow, this, [=](QtMsgType type, QString mess) {
+        emit logFromMainThread(type, mess);
+    });
     connect(this, &Window::logFromMainThread, this, logMain);
     connect(this, &Window::setAborted, this, [=](bool a) {
         aborted = a;
     });
 
+    taskBarProgress->setValue(0);
+    taskBarProgress->show();
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-        cmd::exec("help");
-        return;
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             emit setAborted(true);
