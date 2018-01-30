@@ -49,6 +49,8 @@ LIBS += -rdynamic
 
 win32 {
 QT += winextras
+QMAKE_CXXFLAGS += -g
+QMAKE_CFLAGS_RELEASE -= -O2
 LIBS += -lDbgHelp
 DEFINES += "OS=1"
 RC_FILE = info.rc

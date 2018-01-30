@@ -12,10 +12,12 @@
 #include "install.h"
 #include <QCoreApplication>
 #include <QComboBox>
-#include <QtWinExtras>
 
+#if WIN
+#include <QtWinExtras>
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarButton)
 QT_FORWARD_DECLARE_CLASS(QWinTaskbarProgress)
+#endif
 
 extern const QString VERSION;
 
@@ -29,10 +31,6 @@ class Window : public QMainWindow
 
 public:
     explicit Window(install*, bool, options*, QWidget *parent = 0);
-
-    void setLabelSetInfo();
-
-    void retranslateUi(QString);
 
     ~Window();
 
@@ -93,18 +91,27 @@ private slots:
     void on_comboLanguageSettings_currentIndexChanged(int index);
 
 private:
-    QWinTaskbarButton *taskBarButton;
-    QWinTaskbarProgress *taskBarProgress;
+    void setLabelSetInfo();
+
+    void retranslateUi(QString);
+
+#if WIN
+    void setTaskProgress();
+
+    QWinTaskbarButton *taskBarButton = nullptr;
+    QWinTaskbarProgress *taskBarProgress = nullptr;
+#endif
     bool aborted = false;
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
+    void showEvent(QShowEvent *);
     bool fierst;
     bool exiting = false;
     bool langChanged = false;
-    options *dat;
-    install *insDat;
-    Ui::Window *ui;
-    QWidget *lastPage;
+    options *dat = nullptr;
+    install *insDat = nullptr;
+    Ui::Window *ui = nullptr;
+    QWidget *lastPage = nullptr;
 };
 
 #endif // WINDOW_H

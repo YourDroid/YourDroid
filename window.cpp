@@ -11,7 +11,6 @@
 
 Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     QMainWindow(parent),
-    taskBarButton(new QWinTaskbarButton(this)),
     fierst(!f),
     dat(d),
     insDat(ins),
@@ -33,9 +32,6 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     else
         QtWin::resetExtendedFrame(this);
 
-    taskBarButton->setWindow(windowHandle());
-    taskBarProgress = taskBarButton->progress();
-
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->settingsMini,&QPushButton::clicked,[=](){
         if(ui->windows->currentWidget() == ui->settingsPage) on_back_settings_clicked();
@@ -47,9 +43,9 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
     connect(this, &Window::sendMesToStausbar, this, &Window::receiveMesToStatusbar);
-    connect(ui->progressInstall, &QProgressBar::valueChanged, [&](int val) {
-        taskBarProgress->setValue(val);
-    });
+    //    connect(ui->progressInstall, &QProgressBar::valueChanged, [&](int val) {
+    //        taskBarProgress->setValue(val);
+    //    });
     //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
 
     ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
@@ -117,8 +113,8 @@ void Window::on_applaySettings_clicked()
     if(langChanged) {
         langChanged = false;
         qInfo().noquote() << tr("^For applying language application should restart");
-//        retranslateUi(QString::fromStdString(_langHelper::to_string(
-//                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
+        //        retranslateUi(QString::fromStdString(_langHelper::to_string(
+        //                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
     dat->write_set(true, ui->arch->currentIndex(),
                    ui->typeBios->currentIndex(),
@@ -239,11 +235,11 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-//    if(!(new QDir())->exists(dir)) {
-//        qCritical().noquote() << tr("^Selected folder does not exist");
-//        end();
-//        return;
-//    }
+    //    if(!(new QDir())->exists(dir)) {
+    //        qCritical().noquote() << tr("^Selected folder does not exist");
+    //        end();
+    //        return;
+    //    }
     if((name = ui->editName->text()).length() == 0) {
         qCritical().noquote() << tr("^Did not fill in the name");
         end();
@@ -281,10 +277,10 @@ void Window::on_buttonInstallInstall_clicked()
 
     int ret = 0;
     if(!(ret = insDat->isInvalidImage(
-            #if WIN
-                ui->editImageFromDisk->text()
-            #endif
-                ))) {
+         #if WIN
+             ui->editImageFromDisk->text()
+         #endif
+             ))) {
         if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
         end();
         return;
@@ -302,6 +298,13 @@ void Window::on_buttonInstallInstall_clicked()
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
 #define CHECK_ABORT() if(abort) return;
+
+//    QWinTaskbarButton *taskBarButton = new QWinTaskbarButton(this);
+//    taskBarButton->setWindow(windowHandle());
+
+//    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
+//    taskBarProgress->setVisible(true);
+
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
@@ -309,30 +312,49 @@ void Window::on_buttonInstallInstall_clicked()
         if(aborted) {
             emit ending(QObject::tr("Aborted"));
             ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: red;}");
+#if WIN
             taskBarProgress->stop();
+#endif
             return;
         }
         emit ending();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
+#if WIN
         taskBarProgress->hide();
+#endif
         qDebug().noquote() << QObject::tr("^Succes");
     });
 
     int size = insDat->sizeOfFiles(), step = size / 2 / ((OS) ? 2 : 3);
     ui->progressInstall->setRange(0, size * 2);
+#if WIN
     taskBarProgress->setRange(0, size * 2);
+    taskBarProgress->setValue(size);
+    return;
+#endif
+    qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
     int progressComplete = 0;
 
     connect(insDat, &install::progressChange, this, [&](int progress){
         ui->progressInstall->setValue(progress + progressComplete);
+#if WIN
+        taskBarProgress->setValue(progress + progressComplete);
+#endif
     });
     connect(insDat, &install::fileEnded, this, [&](int value){
         progressComplete += value;
         ui->progressInstall->setValue(progressComplete);
+#if WIN
+        taskBarProgress->setValue(progressComplete);
+#endif
     });
     connect(this, &Window::progressAddStep, this, [&](){
-        ui->progressInstall->setValue(ui->progressInstall->value() + step);
+        int val = ui->progressInstall->value() + step;
+        ui->progressInstall->setValue(val);
+#if WIN
+        taskBarProgress->setValue(val);
+#endif
     });
     auto logMain = [=](QtMsgType type, QString mess){
         QDebug(type).noquote() << mess;
@@ -345,9 +367,20 @@ void Window::on_buttonInstallInstall_clicked()
         aborted = a;
     });
 
-    taskBarProgress->setValue(0);
+    if(aborted) {
+        aborted = false;
+#if WIN
+        setTaskProgress();
+#endif
+    }
+#if WIN
+    taskBarProgress->setVisible(true);
     taskBarProgress->show();
+#endif
+    taskBarProgress->setValue(step);
     auto res = QtConcurrent::run([=](){ // auto - QFuture
+        emit progressAddStep();
+        while(1);
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             emit setAborted(true);
@@ -468,8 +501,8 @@ void Window::closeEvent(QCloseEvent *event) {
 }
 
 void Window::changeEvent(QEvent *event) {
-//    if(event->type() == QEvent::WindowStateChange) emit deactived();
-//    else if(event->type() == QEvent::WindowActivate) emit actived();
+    //    if(event->type() == QEvent::WindowStateChange) emit deactived();
+    //    else if(event->type() == QEvent::WindowActivate) emit actived();
     event->accept();
 }
 
@@ -483,4 +516,24 @@ void Window::consoleHided() {
 void Window::on_comboLanguageSettings_currentIndexChanged(int index)
 {
     langChanged = true;
+}
+
+#if WIN
+void Window::setTaskProgress() {
+    if(taskBarButton != nullptr) delete taskBarButton;
+    taskBarButton = new QWinTaskbarButton(this);
+    taskBarButton->setWindow(windowHandle());
+    taskBarProgress = taskBarButton->progress();
+    taskBarProgress->setVisible(true);
+}
+#endif
+
+void Window::showEvent(QShowEvent *e) {
+#if WIN
+    setTaskProgress();
+    taskBarProgress->show();
+    taskBarProgress->setRange(0, 100);
+    taskBarProgress->setValue(50);
+#endif
+    e->accept();
 }
