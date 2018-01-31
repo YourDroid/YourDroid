@@ -379,8 +379,6 @@ void Window::on_buttonInstallInstall_clicked()
 #endif
     taskBarProgress->setValue(step);
     auto res = QtConcurrent::run([=](){ // auto - QFuture
-        emit progressAddStep();
-        while(1);
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             emit setAborted(true);
@@ -419,7 +417,6 @@ void Window::on_buttonInstallInstall_clicked()
         insDat->oldSysEdit() = true;
         insDat->write();
         CHECK_ABORT();
-        qDebug().noquote() << tr("Finish install");
     });
     resMonitor->setFuture(res);
 #undef CHECK_ABORT

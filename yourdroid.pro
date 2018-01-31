@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 TARGET = yourdroid
 INCLUDEPATH += .
-CONFIG += c++14
+CONFIG += c++14 console
 
 # Input
 HEADERS += data.h log.h window.h \
