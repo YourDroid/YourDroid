@@ -34,7 +34,7 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
 #endif
     settings.endGroup();
 
-    qDebug().noquote() << qApp->translate("log", "Settings wrote succesfull");
+    //qDebug().noquote() << qApp->translate("log", "Settings wrote succesfull");
 }
 
 bool options::read_set(bool dflt) {

@@ -1,6 +1,6 @@
 #include "window.h"
 #include "ui_window.h"
-#include "enum.h"
+#include "3rdparty/enum.h"
 #include <string>
 #include "install.h"
 #include "cmd.h"

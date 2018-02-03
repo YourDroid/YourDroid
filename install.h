@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QProgressBar>
 #include <QStatusBar>
-#include "enum.h"
+#include "3rdparty/enum.h"
 #include "data.h"
 
 STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)

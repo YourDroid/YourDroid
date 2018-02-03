@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QString>
 #include <QSettings>
-#include "enum.h"
+#include "3rdparty/enum.h"
 #ifdef Q_OS_WIN
 #include <windows.h>
 #endif

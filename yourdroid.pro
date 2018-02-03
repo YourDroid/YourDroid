@@ -18,7 +18,8 @@ HEADERS += data.h log.h window.h \
     version.h \
     cmd.h \
     console.h \
-    exception.h
+    exception.h \
+    3rdparty/enum.h
 FORMS += window.ui
 SOURCES += data.cpp \
            log.cpp \
@@ -47,13 +48,13 @@ DEFINES += "OS=0"
 LIBS += -rdynamic
 }
 
+include(3rdparty/breakpad/breakpad.pri)
+#INCLUDEPATH += 3rdparty/breakpad
+
 win32 {
 QT += winextras
-QMAKE_CXXFLAGS += -g
-QMAKE_CFLAGS_RELEASE -= -O2
+QMAKE_CFLAGS_RELEASE += -g
 LIBS += -lDbgHelp
 DEFINES += "OS=1"
 RC_FILE = info.rc
-#CONFIG += embed_manifest_exe
-#QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:level=requireAdministrator
 }

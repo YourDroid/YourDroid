@@ -39,7 +39,9 @@ int main(int argc, char *argv[])
 #if LINUX
     gdb_SetProgName(argv[0]);
 #endif
-    set_signal_handler();
+    Breakpad::CrashHandler::instance()->Init("./log");
+    *(int*)0 = 0;
+    //set_signal_handler();
     std::set_terminate([=](){
         qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
         errorAbort(1);
@@ -88,7 +90,9 @@ int main(int argc, char *argv[])
         //if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-        //QtConcurrent::run([=](){*(int*)0 = 0;});
+        /*QtConcurrent::run([=](){*/
+        //*(int*)0 = 0;
+    //});
 
         install ins(&set);
         ins.read();
