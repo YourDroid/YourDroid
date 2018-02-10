@@ -74,15 +74,6 @@ int main(int argc, char *argv[])
 //    gdb_SetProgName(argv[0]);
 //#endif
     Breakpad::CrashHandler::instance()->Init("./log");
-//    google_breakpad::MinidumpDescriptor md("./log");
-//    auto pHandler = new google_breakpad::ExceptionHandler(
-//        md,
-//        /*FilterCallback*/ 0,
-//        0,
-//        /*context*/ 0,
-//        true,
-//        -1
-//        );
     *(int*)0 = 0;
     //set_signal_handler();
 //    std::set_terminate([=]() -> void {
