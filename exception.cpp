@@ -4,9 +4,9 @@
 #include <cmd.h>
 
 #if defined(Q_OS_LINUX)
-#include "3rdparty/breakpad/client/linux/handler/exception_handler.h"
+#include "client/linux/handler/exception_handler.h"
 #elif WIN
-#include "3rdparty/breakpad/client/windows/handler/exception_handler.h"
+#include "client/windows/handler/exception_handler.h"
 #endif
 
 #if LINUX
@@ -617,8 +617,8 @@ void set_signal_handler()
     signal(SIGINT,  all_handler);
     signal(SIGSEGV, all_handler);
     signal(SIGTERM, all_handler);
-    std::set_terminate([=]() {
-        qCritical().noquote() << QObject::tr("Unknown fatal error!");
-        exit(3);
-    });
+//    std::set_terminate([=]() {
+//        qCritical().noquote() << QObject::tr("Unknown fatal error!");
+//        exit(3);
+//    });
 }

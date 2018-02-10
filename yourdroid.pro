@@ -12,23 +12,22 @@ INCLUDEPATH += .
 CONFIG += c++14 console
 
 # Input
-#HEADERS += data.h log.h window.h \
-#    install.h \
-#    version.h \
-#    cmd.h \
-#    console.h \
-#    exception.h \
-#    3rdparty/enum.h
-#FORMS += window.ui
-SOURCES += main.cpp
-#data.cpp \
-#           log.cpp \
-#           main.cpp \
-#           window.cpp \
-#    install.cpp \
-#    cmd.cpp \
-#    console.cpp \
-#    exception.cpp
+HEADERS += data.h log.h window.h \
+    install.h \
+    version.h \
+    cmd.h \
+    console.h \
+    exception.h \
+    3rdparty/enum.h
+FORMS += window.ui
+SOURCES += data.cpp \
+           log.cpp \
+           main.cpp \
+           window.cpp \
+    install.cpp \
+    cmd.cpp \
+    console.cpp \
+    exception.cpp
 LIBS += -lz
 #-std=gnu++14
 
@@ -45,10 +44,10 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 #QMAKE_TARGET_COMPANY = YourDroid-Group
 unix {
 DEFINES += "OS=0"
-LIBS += $$PWD/3rdparty/breakpad/build/libbreakpad_lin.a
+LIBS += $$PWD/3rdparty/breakpad/src/client/linux/libbreakpad_client.a
 }
 
-include(3rdparty/breakpad/breakpad.pri)
+include(3rdparty/breakpad/src/breakpad.pri)
 #INCLUDEPATH += 3rdparty/breakpad
 
 CONFIG(release) {
@@ -59,7 +58,7 @@ QMAKE_LFLAGS_RELEASE =
 
 win32 {
 QT += winextras
-LIBS += -lDbgHelp $$PWD/3rdparty/breakpad/build/libbreakpad_win.a
+LIBS += -lDbgHelp $$PWD/3rdparty/breakpad/src/client/windows/libbreakpad_client.a
 DEFINES += "OS=1"
 RC_FILE = info.rc
 }

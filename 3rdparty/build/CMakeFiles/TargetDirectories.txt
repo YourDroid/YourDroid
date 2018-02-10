@@ -1,3 +1,0 @@
-/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/build/CMakeFiles/crashreporter-breakpad.dir
