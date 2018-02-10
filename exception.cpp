@@ -1,6 +1,13 @@
+#include <google_breakpad/common/breakpad_types.h>
 #include "exception.h"
 #include "window.h"
 #include <cmd.h>
+
+#if defined(Q_OS_LINUX)
+#include "3rdparty/breakpad/client/linux/handler/exception_handler.h"
+#elif WIN
+#include "3rdparty/breakpad/client/windows/handler/exception_handler.h"
+#endif
 
 #if LINUX
 #include <stdio.h>
@@ -20,12 +27,6 @@
 #include <QProcess>
 #include <QCoreApplication>
 #include <QString>
-
-#if defined(Q_OS_LINUX)
-#include "3rdparty/breakpad/client/linux/handler/exception_handler.h"
-#elif defined(Q_OS_WIN32)
-#include "3rdparty/breakpad/client/windows/handler/exception_handler.h"
-#endif
 
 namespace Breakpad {
     /************************************************************************/

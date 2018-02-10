@@ -18,6 +18,7 @@ public:
     static void message(QtMsgType, const QMessageLogContext&, const QString&);
 };
 
+//QMessageBox::StandardButtons log::lastPressedButton;
 //static console *con;
 
 #endif // LOG_H

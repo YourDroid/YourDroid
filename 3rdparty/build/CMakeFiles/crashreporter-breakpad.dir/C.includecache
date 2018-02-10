@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/breakpad/common/convert_UTF.c
+convert_UTF.h
+/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/breakpad/common/convert_UTF.h
+stdio.h
+-
+
+/mnt/c/Users/Profi/Documents/YourDroid/source/3rdparty/breakpad/common/convert_UTF.h
+

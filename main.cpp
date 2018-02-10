@@ -1,3 +1,36 @@
+//#include <stdlib.h>
+//#include "client/linux/handler/exception_handler.h"
+
+
+//static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,
+//                         void* context,
+//                         bool succeeded)
+//{
+//  printf("Dump path: %s\n", descriptor.path());
+//  return succeeded;
+//}
+
+//void crash()
+//{
+//  volatile int* a = (int*)(NULL);
+//  *a = 1;
+//}
+
+//int main(int argc, char* argv[])
+//{
+//  google_breakpad::MinidumpDescriptor descriptor(".");
+//  google_breakpad::ExceptionHandler *eh = new google_breakpad::ExceptionHandler(descriptor,
+//                                       NULL,
+//                                       dumpCallback,
+//                                       NULL,
+//                                       true,
+//                                       -1);
+//  crash();
+//  return 0;
+//}
+
+
+#include "google_breakpad/common/breakpad_types.h"
 #include "data.h"
 #include "window.h"
 #include "install.h"
@@ -19,6 +52,7 @@
 #include <signal.h>
 #include "exception.h"
 #include <QtConcurrent/QtConcurrentRun>
+#include "client/linux/handler/exception_handler.h"
 
 #if WIN
 #include <windows.h>
@@ -33,13 +67,22 @@ console *log::con;
 
 int main(int argc, char *argv[])
 {
-    qDebug() << QString::number(getpid()).prepend('^');
+    //qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
-#if LINUX
-    gdb_SetProgName(argv[0]);
-#endif
-    Breakpad::CrashHandler::instance()->Init("./log");
+//#if LINUX
+//    gdb_SetProgName(argv[0]);
+//#endif
+    //Breakpad::CrashHandler::instance()->Init(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    google_breakpad::MinidumpDescriptor md("./log");
+    auto pHandler = new google_breakpad::ExceptionHandler(
+        md,
+        /*FilterCallback*/ 0,
+        0,
+        /*context*/ 0,
+        true,
+        -1
+        );
     *(int*)0 = 0;
     //set_signal_handler();
     std::set_terminate([=](){

@@ -27,10 +27,12 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui->setupUi(this);
     setLabelSetInfo();
 
+#if WIN
     if (QtWin::isCompositionEnabled())
         QtWin::extendFrameIntoClientArea(this, 0, 0, 0, 0);
     else
         QtWin::resetExtendedFrame(this);
+#endif
 
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->settingsMini,&QPushButton::clicked,[=](){
@@ -377,7 +379,7 @@ void Window::on_buttonInstallInstall_clicked()
     taskBarProgress->setVisible(true);
     taskBarProgress->show();
 #endif
-    taskBarProgress->setValue(step);
+    //taskBarProgress->setValue(step);
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
