@@ -11,7 +11,7 @@
 #include <w32api.h>
 #endif
 
-QPair<int, QString> cmd::exec(QString command, QStringList list, bool disFsRedir) {
+QPair<int, QString> cmd::exec(QString command, bool disFsRedir, QStringList list) {
 #if WIN
     static BOOL archOs = false;
     if(disFsRedir) {
@@ -25,7 +25,11 @@ QPair<int, QString> cmd::exec(QString command, QStringList list, bool disFsRedir
     }
 #endif
 
-    qDebug().noquote() << QObject::tr("Executing \"%1\"").arg(command);
+    qDebug().noquote() << QObject::tr("Executing \"%1%2\"").arg(command,
+                                                                list.isEmpty() ?
+                                                                    "" :
+                                                                    QString(list.join(" ")).
+                                                                    prepend(" "));
     QString _output;
     QProcess proc;
     bool succes = true, started = true;

@@ -7,8 +7,56 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <iostream>
+//#include <windows.h>
+//#include <io.h>
+//#include <fcntl.h>
 
 QMessageBox::StandardButtons log::lastPressedButton;
+
+//BOOL CALLBACK EnumWndProc(HWND hwnd, LPARAM lParam)
+//{
+//   if(GetWindowThreadProcessId(hwnd, NULL) == GetCurrentThreadId())
+//   {
+//      *(HWND*)lParam = hwnd;
+//      return FALSE;
+//   }
+
+//   return TRUE;
+//}
+
+void log::setEnabledCon(bool c) {
+//    static bool open = false, succes = false;
+//    static HWND hWnd;
+//    if(c)
+//    {
+//        if(!open)
+//        {
+//            FreeConsole();        //на всякий случай
+//            if ((succes = AllocConsole()))
+//            {
+//                open = true;
+
+//                int hCrt = _open_osfhandle((long)
+//                                           GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+//                *stdout = *(::_fdopen(hCrt, "w"));
+//                ::setvbuf(stdout, NULL, _IONBF, 0);
+//                //        *stderr = *(::_fdopen(hCrt, "w"));
+//                //        ::setvbuf(stderr, NULL, _IONBF, 0);
+//                EnumWindows(EnumWndProc, (LPARAM)&hWnd);
+//            }
+//            else return;
+//        }
+//        else
+//        {
+//            ShowWindow(hWnd, SW_SHOW);
+//        }
+//    }
+//    else if(open)
+//    {
+//        ShowWindow(hWnd, SW_HIDE);
+//    }
+//    return;
+}
 
 console *log::init() {
     con = new console;
@@ -83,14 +131,14 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
         QApplication::alert(con, 0);
         switch(level) {
         case QtWarningMsg: lastPressedButton = QMessageBox::warning(0, QObject::tr("Warning!"),
-                                     mess,
-                                     buttons); break;
+                                                                    mess,
+                                                                    buttons); break;
         case QtCriticalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Error!"),
-                                      mess,
-                                      buttons); break;
+                                                                      mess,
+                                                                      buttons); break;
         case QtFatalMsg: lastPressedButton = QMessageBox::critical(0, QObject::tr("Fatal error!"),
-                                               mess,
-                                               buttons); qApp->exit(-1);
+                                                                   mess,
+                                                                   buttons); qApp->exit(-1);
         default: lastPressedButton = QMessageBox::information(0, QObject::tr("Information"),
                                                               mess,
                                                               buttons); break;

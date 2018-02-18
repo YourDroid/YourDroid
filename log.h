@@ -14,7 +14,7 @@ class log {
 public:
     static QMessageBox::StandardButtons getLastPressedButton() { return lastPressedButton; }
     static console *init();
-    static void setEnabledCon(bool c) { if(c) con->show(); else con->hide(); }
+    static void setEnabledCon(bool);
     static void message(QtMsgType, const QMessageLogContext&, const QString&);
 };
 

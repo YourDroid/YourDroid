@@ -30,7 +30,7 @@
 //}
 
 
-#include "google_breakpad/common/breakpad_types.h"
+//#include "google_breakpad/common/breakpad_types.h"
 #include "data.h"
 #include "window.h"
 #include "install.h"
@@ -52,7 +52,6 @@
 #include <signal.h>
 #include "exception.h"
 #include <QtConcurrent/QtConcurrentRun>
-#include "client/linux/handler/exception_handler.h"
 
 #if WIN
 #include <windows.h>
@@ -70,16 +69,16 @@ int main(int argc, char *argv[])
     //qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
-//#if LINUX
-//    gdb_SetProgName(argv[0]);
-//#endif
     Breakpad::CrashHandler::instance()->Init("./log");
-    *(int*)0 = 0;
     //set_signal_handler();
 //    std::set_terminate([=]() -> void {
 //        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
 //        errorAbort(1);
 //    });
+    auto exceptionAbort = [&](QString what) {
+        qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
+        errorAbort(1);
+    };
 
     try {
         QApplication app(argc,argv);
@@ -121,9 +120,10 @@ int main(int argc, char *argv[])
         app.installTranslator(&translator);
 
         qDebug().noquote() << QObject::tr("Setting debug console...");
-        //if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
+        if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
+        //*(int*)0 = 0;
         /*QtConcurrent::run([=](){*/
         //*(int*)0 = 0;
     //});
@@ -146,11 +146,12 @@ int main(int argc, char *argv[])
         return res;
     }
     catch(std::exception ex) {
-        qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(QString::fromStdString(ex.what()));
-        errorAbort(1);
+        exceptionAbort(QString::fromStdString(ex.what()));
+    }
+    catch(QException ex) {
+        exceptionAbort(QString::fromStdString(ex.what()));
     }
     catch(...) {
-        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error!");
-        errorAbort(1);
+        exceptionAbort(QObject::tr("Unknown error"));
     }
 }

@@ -58,6 +58,7 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
     insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
+    ui->buttonInstallInstall->setShortcut(Qt::Key_Return);
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(dat->getLang())));
 
@@ -332,7 +333,6 @@ void Window::on_buttonInstallInstall_clicked()
 #if WIN
     taskBarProgress->setRange(0, size * 2);
     taskBarProgress->setValue(size);
-    return;
 #endif
     qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
@@ -407,7 +407,7 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
         emit progressAddStep();
-        //insDat->registerBootloader();
+        insDat->registerBootloader();
         CHECK_ABORT();
 
 #if LINUX

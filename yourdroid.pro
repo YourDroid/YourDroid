@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 TARGET = yourdroid
 INCLUDEPATH += .
-CONFIG += c++14 console
+CONFIG += c++14
 
 # Input
 HEADERS += data.h log.h window.h \
@@ -46,6 +46,8 @@ unix {
 DEFINES += "OS=0"
 LIBS += $$PWD/3rdparty/breakpad/src/client/linux/libbreakpad_client.a
 }
+
+DEFINES += QT_MESSAGELOGCONTEXT
 
 include(3rdparty/breakpad/src/breakpad.pri)
 #INCLUDEPATH += 3rdparty/breakpad

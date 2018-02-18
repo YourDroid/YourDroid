@@ -2,6 +2,7 @@
 #define DATA_H
 
 #include <QObject>
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QString>
@@ -26,9 +27,17 @@ private:
     const bool os = OS;
     bool winv = true;
     bool conEnable = false;
+#if WIN
+    //QString efiGuid;
+    QString efiMountPoint;
+    bool efiAlreadyMounted = false;
+#endif
 public slots:
     void write_set(bool, bool, bool, bool, bool, _lang);
 public:
+    options() { if(!mountEfiPart().first) { qCritical().noquote()
+                << QObject::tr("^Could not mount efi partition. Aborting"); exit(-1); } }
+    ~options() { unmountEfiPart(); }
     bool getConEnable() { return conEnable; }
     void setConEnable(bool con) { conEnable = con; }
     _lang getLang() { return lang; }
@@ -38,6 +47,8 @@ public:
     bool defbios();
     bool defarch();
 #if WIN
+    QPair<bool, QString> mountEfiPart();
+    QPair<bool, QString> unmountEfiPart();
     bool defwinv();
 #endif
 };

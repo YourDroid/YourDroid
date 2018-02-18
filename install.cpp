@@ -128,7 +128,7 @@ void install::registerGummi() {
     char i[2] = {'a', '\0'};
     for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
     QString symbol = i;
-/*    grubConfigure(WORK_DIR + "/tempGrubConf");
+    /*    grubConfigure(WORK_DIR + "/tempGrubConf");
     QVector<QString> commands = { qApp->translate("log", "mountvol ") + symbol + qApp->translate("log", ": /s"),        //1
                                 qApp->translate("log", "mkdir ") + symbol + ":/EFI/yourdroid_gummiboot", //2
                                 qApp->translate("log", "cp ") +
@@ -157,16 +157,16 @@ void install::registerGummi() {
                                 };    */                                                    //***
     for(int i = 0; i < 9; i++) {
 
-//        if(_cmd.exec(commands[i]).first) {
-//            LOG(2, qApp->translate("log", "Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
-//            ABORT();
-//        }
+        //        if(_cmd.exec(commands[i]).first) {
+        //            LOG(2, qApp->translate("log", "Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
+        //            ABORT();
+        //        }
     }
 }
 
 bool install::isInstalledGummi() {
     qDebug().noquote() << "Checking gummiboot";
-    //cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()), true);
+    cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()),true);
     bool res = !cmd::exec(
                 QString("find \x22YourDroid Gummiboot\x22 <%1/tempEnum").arg(qApp->applicationDirPath())).first;
     qDebug().noquote() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
@@ -176,9 +176,9 @@ bool install::isInstalledGummi() {
 void install::installGummi() {
     qDebug().noquote() << "Installing gummiboot...";
 #define CHECK_ABORT() if(addNew.first)  { \
-    emit abort(addNew.second); return; }
+    cmd::exec("mountvol a: /d"); emit abort(addNew.second); return; }
 
-#define execAbort(command) addNew = cmd::exec(command, QStringList(), true); CHECK_ABORT();
+#define execAbort(command) addNew = cmd::exec(command, true); CHECK_ABORT();
 
     QPair<int, QString> addNew;
     execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Gummiboot\"");
@@ -188,7 +188,7 @@ void install::installGummi() {
     QString id = output.mid(begin, end - begin + 1);
     qDebug() << QObject::tr("Id is %1").arg(id);
 
-    execAbort(QString("bcdedit /set %1 path /EFI/yourdroid_gummiboot/%2")
+    execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot\\%2")
               .arg(id, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")));
 
     char i[2] = {'a', '\0'};
@@ -197,23 +197,27 @@ void install::installGummi() {
 
     execAbort(QString("mountvol %1: /s").arg(s));
 
-    execAbort(QString("mkdir %1:/EFI/yourdroid_gummiboot").arg(s));
+    QString command;
+    if(QDir((command = QString("mkdir %1:\\EFI\\yourdroid_gummiboot").arg(s))).exists())
+    {
+        execAbort(command);
+    }
 
-    execAbort(QString("cp %1%2 %3:/EFI/yourdroid_gummiboot/")
-              .arg(qApp->applicationDirPath() + "/data/bootloaders/gummi/",
+    execAbort(QString("cp %1%2 %3:\\EFI/yourdroid_gummiboot\\")
+              .arg(qApp->applicationDirPath() + "\\data\\bootloaders\\gummi\\",
                    (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"), s));
 
-    execAbort(QString("mkdir %1:/loader").arg(s));
+    execAbort(QString("mkdir %1:\\loader").arg(s));
 
-    execAbort(QString("cp %1/data/bootloaders/gummi/loader/loader.conf %2:/loader/loader.conf")
+    execAbort(QString("cp %1\\data\\bootloaders\\gummi\\loader\\loader.conf %2:\\loader\\loader.conf")
               .arg(qApp->applicationDirPath(), s));
 
-    execAbort(QString("cp %1/data/bootloaders/gummi/loader/entries/0windows.conf %2:/loader/entries/0windows.conf")
+    execAbort(QString("cp %1\\data\\bootloaders\\gummi\\loader\\entries\\0windows.conf %2:\\loader\\entries\\0windows.conf")
               .arg(qApp->applicationDirPath(), s));
 
-    execAbort(QString("mkdir %1:/efi/grub").arg(s));
+    execAbort(QString("mkdir %1:\\efi\\grub").arg(s));
 
-//    execAbort(QString("mkdir %1:/efi/grub/"));
+    //    execAbort(QString("mkdir %1:/efi/grub/"));
 
     qDebug().noquote() << QObject::tr("Gummiboot installed succesful");
 }
@@ -268,10 +272,10 @@ void install::grubConfigure(QString way) {
     }
     QTextStream config(&_config);
     config << (QString("menuentry '") + place + QString("' --class android-x86 {\n") +
-           QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
-           QString("\tlinux ") + place +
-           QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
-           QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
+               QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
+               QString("\tlinux ") + place +
+               QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 androidboot.selinux=permissive\n") +
+               QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
     _config.close();
 }
 
@@ -304,9 +308,9 @@ int install::sizeOfFiles() {
 
 int install::isInvalidImage(
         #if WIN
-            QString iso
+        QString iso
         #endif
-            ) {
+        ) {
 #if LINUX
     return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
@@ -315,14 +319,14 @@ int install::isInvalidImage(
     QPair<int, QString> expr;
     QString command = QString("%1/data/iso-editor.exe exist %2 %3").arg(qApp->applicationDirPath(), iso);
 #define checkError() \
-        if(expr.first < 0 || expr.first > 2) { \
-            QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
-            if (re.indexIn(expr.second) != -1) { \
-                qCritical().noquote() << re.cap(1).prepend("^"); \
-            } \
-            else qCritical().noquote() << expr.second.prepend("^"); \
-            return 2; \
-        }
+    if(expr.first < 0 || expr.first > 2) { \
+    QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
+    if (re.indexIn(expr.second) != -1) { \
+    qCritical().noquote() << re.cap(1).prepend("^"); \
+} \
+    else qCritical().noquote() << expr.second.prepend("^"); \
+    return 2; \
+}
 #define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
     bool systemImg = checkFile("system.img");
     bool systemSfs = checkFile("system.sfs");
@@ -338,9 +342,9 @@ int install::isInvalidImage(
 QPair<bool, QString> install::mountImage(QString image) {
     mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
-//    while(!QDir().exists(path)) {
-//        path += QString::number(rand());
-//    }
+    //    while(!QDir().exists(path)) {
+    //        path += QString::number(rand());
+    //    }
     if(!QDir().mkdir(mountPoint)) {
         return QPair<bool, QString>(false, QObject::tr("Cannot make dir for image's mount point!"));
     }
@@ -395,16 +399,16 @@ void install::unpackSystem() {
     if(QFile(mountPoint + "/system.img").exists())
 #elif WIN
     if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
-                 .arg(qApp->applicationDirPath(), systems.back().image, "system.img")).first)
+                  .arg(qApp->applicationDirPath(), systems.back().image, "system.img")).first)
 #endif
         filesCopy.push_back((systemFile = "/system.img"));
 #if LINUX
     else if(QFile(mountPoint + "/system.sfs").exists())
 #elif WIN
     if(!cmd::exec(QString("%1/data/iso-editor.exe exist %2 %3")
-                 .arg(qApp->applicationDirPath(), systems.back().image, "system.sfs")).first)
+                  .arg(qApp->applicationDirPath(), systems.back().image, "system.sfs")).first)
 #endif
-    filesCopy.push_back((systemFile = "/system.sfs"));
+        filesCopy.push_back((systemFile = "/system.sfs"));
     qDebug().noquote() << QObject::tr("System file is %1").arg(systemFile);
     qDebug().noquote() << QObject::tr("Start copying");
     for(QString file : filesCopy) {
@@ -434,7 +438,7 @@ void install::unpackSystem() {
 #elif WIN
         QPair<int, QString> expr;
         res = !(expr = cmd::exec(QString("%1/data/iso-editor.exe extract %2 %3 %4/%3")
-                         .arg(qApp->applicationDirPath(), systems.back().image, file.remove(0, 1), place))).first;
+                                 .arg(qApp->applicationDirPath(), systems.back().image, file.remove(0, 1), place))).first;
         QString advancedInfo = QString(": %1").arg(expr.second);
 #endif
         if(!res) {
@@ -453,39 +457,39 @@ void install::unpackSystem() {
         emit fileEnded(size);
     }
 
-//    int complete = 0;
-//    QFile src(mountPoint + systemFile);
-//    QFile dst(place + systemFile);
-//    if(!src.open(QIODevice::ReadOnly)) {
-//        emit abort(QObject::tr("Could not open %1 to read").arg(mountPoint + systemFile));
-//        return;
-//    }
-//    if(!dst.open(QIODevice::WriteOnly)) {
-//        emit abort(QObject::tr("Could not open %1 to write").arg(place + systemFile));
-//        return;
-//    }
-//    char buffer[200];
-//    while(src.read(buffer, 200) != 0) {
-//         dst.write(buffer, 200);
-//         emit progressChange(200 * ++complete);
-//    }
+    //    int complete = 0;
+    //    QFile src(mountPoint + systemFile);
+    //    QFile dst(place + systemFile);
+    //    if(!src.open(QIODevice::ReadOnly)) {
+    //        emit abort(QObject::tr("Could not open %1 to read").arg(mountPoint + systemFile));
+    //        return;
+    //    }
+    //    if(!dst.open(QIODevice::WriteOnly)) {
+    //        emit abort(QObject::tr("Could not open %1 to write").arg(place + systemFile));
+    //        return;
+    //    }
+    //    char buffer[200];
+    //    while(src.read(buffer, 200) != 0) {
+    //         dst.write(buffer, 200);
+    //         emit progressChange(200 * ++complete);
+    //    }
 }
 
 void install::createDataImg(int size) {
 #if LINUX
     system((QString("chmod 777 ") + qApp->applicationDirPath() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
     QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
-                       QString("M -a data ") + systems.back().place + QString("/data.img ");
+            QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif WIN
     QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
-                       QString("M -a data ") + systems.back().place + QString("/data.img ");
+            QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
     cmd::exec(command);
 }
 
 void install::downloadFile(QString url, QString dest) {
 
-       /* создаем объект для запрос
+    /* создаем объект для запрос
 
        // Выполняем запрос, получаем указатель на объект
        // ответственный за ответ
