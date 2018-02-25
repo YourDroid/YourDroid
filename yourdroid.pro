@@ -18,7 +18,9 @@ HEADERS += data.h log.h window.h \
     cmd.h \
     console.h \
     exception.h \
-    3rdparty/enum.h
+    3rdparty/enum.h \
+    3rdparty/tagged_bool.h \
+    global.h
 FORMS += window.ui
 SOURCES += data.cpp \
            log.cpp \
@@ -33,7 +35,7 @@ LIBS += -lz
 
 RESOURCES += \
     resource.qrc
-TRANSLATIONS = yourdroid_ru.ts yourdroid_en.ts
+TRANSLATIONS = yourdroid_ru.ts
 DEFINES += "LINUX=\"defined(Q_OS_LINUX)\"" "WIN=\"defined(Q_OS_WIN)\""
 DEFINES -= QT_NO_DEBUG_OUTPUT
 #VERSION = 0.0.4

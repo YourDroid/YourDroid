@@ -1,36 +1,3 @@
-//#include <stdlib.h>
-//#include "client/linux/handler/exception_handler.h"
-
-
-//static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,
-//                         void* context,
-//                         bool succeeded)
-//{
-//  printf("Dump path: %s\n", descriptor.path());
-//  return succeeded;
-//}
-
-//void crash()
-//{
-//  volatile int* a = (int*)(NULL);
-//  *a = 1;
-//}
-
-//int main(int argc, char* argv[])
-//{
-//  google_breakpad::MinidumpDescriptor descriptor(".");
-//  google_breakpad::ExceptionHandler *eh = new google_breakpad::ExceptionHandler(descriptor,
-//                                       NULL,
-//                                       dumpCallback,
-//                                       NULL,
-//                                       true,
-//                                       -1);
-//  crash();
-//  return 0;
-//}
-
-
-//#include "google_breakpad/common/breakpad_types.h"
 #include "data.h"
 #include "window.h"
 #include "install.h"
@@ -52,6 +19,7 @@
 #include <signal.h>
 #include "exception.h"
 #include <QtConcurrent/QtConcurrentRun>
+#include "global.h"
 
 #if WIN
 #include <windows.h>
@@ -61,20 +29,22 @@
 #error This system does not support
 #endif
 
-const QString VERSION = VER_PRODUCTVERSION_STR;
+const _global *global;
 console *log::con;
 
 int main(int argc, char *argv[])
 {
+//    QString dumpPath = "./log";
+//    QtBreakpad::init(dumpPath);
     //qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
     Breakpad::CrashHandler::instance()->Init("./log");
     //set_signal_handler();
-//    std::set_terminate([=]() -> void {
-//        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
-//        errorAbort(1);
-//    });
+    //    std::set_terminate([=]() -> void {
+    //        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
+    //        errorAbort(1);
+    //    });
     auto exceptionAbort = [&](QString what) {
         qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
         errorAbort(1);
@@ -123,25 +93,24 @@ int main(int argc, char *argv[])
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-        //*(int*)0 = 0;
-        /*QtConcurrent::run([=](){*/
-        //*(int*)0 = 0;
-    //});
+       // *(int*)0 = 0;
 
         install ins(&set);
         ins.read();
+        //qDebug().noquote() << ins.obsolutePath("/home/profi/andoid");
+
+        global = new _global(&set, &ins);
 
         Window *window = new Window(&ins, readSet, &set);
         window->show();
-//        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
-//        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
+        //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
+        //        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
         qDebug().noquote() << app.translate("log", "Window exec");
         int res = app.exec();
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();
         ins.write();
-        return 8;
         qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
         return res;
     }

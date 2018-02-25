@@ -28,17 +28,14 @@ private:
     bool winv = true;
     bool conEnable = false;
 #if WIN
-    //QString efiGuid;
+    QString efiGuid;
     QString efiMountPoint;
     bool efiAlreadyMounted = false;
 #endif
 public slots:
     void write_set(bool, bool, bool, bool, bool, _lang);
 public:
-    options() { if(!mountEfiPart().first) { qCritical().noquote()
-                << QObject::tr("^Could not mount efi partition. Aborting"); exit(-1); } }
-    ~options() { unmountEfiPart(); }
-    bool getConEnable() { return conEnable; }
+    bool getConEnable() const { return conEnable; }
     void setConEnable(bool con) { conEnable = con; }
     _lang getLang() { return lang; }
     void setLang(_lang l) { lang = l; }
@@ -47,6 +44,7 @@ public:
     bool defbios();
     bool defarch();
 #if WIN
+    const QString getEfiMountPoint() const { return efiMountPoint; }
     QPair<bool, QString> mountEfiPart();
     QPair<bool, QString> unmountEfiPart();
     bool defwinv();

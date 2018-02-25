@@ -4,6 +4,7 @@
 #include <string>
 #include "install.h"
 #include "cmd.h"
+#include "global.h"
 #include <QValidator>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
@@ -82,7 +83,7 @@ void Window::retranslateUi(QString lang) {
     translator.load(QString("yourdroid_") + lang);
     qApp->installTranslator(&translator);
     ui->retranslateUi(this);
-    ui->labelVersion->setText(QString("<b>") + tr("Version: ") + VERSION + "<\b>");
+    ui->labelVersion->setText(QString("<b>") + tr("Version:") + QString(" ") + global->VERSION + "<\b>");
 }
 
 Window::~Window()
@@ -292,6 +293,16 @@ void Window::on_buttonInstallInstall_clicked()
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
+#if WIN
+    ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
+    if(!dat->mountEfiPart().first)
+    {
+        qCritical().noquote()
+                << QObject::tr("^Could not mount efi partition. Aborting");
+        return;
+    }
+#endif
+
     //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
     if(boot == "Grub legasy") boot = "grub_legasy";
@@ -302,15 +313,18 @@ void Window::on_buttonInstallInstall_clicked()
     _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
 #define CHECK_ABORT() if(abort) return;
 
-//    QWinTaskbarButton *taskBarButton = new QWinTaskbarButton(this);
-//    taskBarButton->setWindow(windowHandle());
+    //    QWinTaskbarButton *taskBarButton = new QWinTaskbarButton(this);
+    //    taskBarButton->setWindow(windowHandle());
 
-//    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
-//    taskBarProgress->setVisible(true);
+    //    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
+    //    taskBarProgress->setVisible(true);
 
     insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
+#if WIN
+        dat->unmountEfiPart();
+#endif
         qApp->alert(this, 2000);
         if(aborted) {
             emit ending(QObject::tr("Aborted"));
@@ -384,6 +398,7 @@ void Window::on_buttonInstallInstall_clicked()
         bool abort = false;
         connect(insDat, &install::abort, [&](QString mes){
             emit setAborted(true);
+            insDat->delBackSystem();
             abort = true;
             emit logFromMainThread(QtCriticalMsg,
                                    tr("^Fatal error while installing: %1")

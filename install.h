@@ -48,6 +48,7 @@ public:
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
     void addSystem(_bootloader, _typePlace, QString, QString, QString, bool);
+    void delBackSystem() { systems.removeLast(); }
     void systemEnd() { systems.back().ended = true; }
     void read();
     void write();

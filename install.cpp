@@ -2,6 +2,7 @@
 #include "log.h"
 #include "window.h"
 #include "cmd.h"
+#include "global.h"
 #include <QErrorMessage>
 #include <QFile>
 #include <QDir>
@@ -122,61 +123,75 @@ void install::registerBootloader() {
 }
 
 void install::registerGummi() {
+    qDebug().noquote() << QObject::tr("Setting up gummiboot");
+#if WIN
     if(!isInstalledGummi()) installGummi();
-    return;
-    cmd _cmd;
-    char i[2] = {'a', '\0'};
-    for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
-    QString symbol = i;
-    /*    grubConfigure(WORK_DIR + "/tempGrubConf");
-    QVector<QString> commands = { qApp->translate("log", "mountvol ") + symbol + qApp->translate("log", ": /s"),        //1
-                                qApp->translate("log", "mkdir ") + symbol + ":/EFI/yourdroid_gummiboot", //2
-                                qApp->translate("log", "cp ") +
-                                (WORK_DIR + "/data/bootloaders/gummi/") +
-                                  (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi") +
-                                  qApp->translate("log", " ") + symbol +
-                                  qApp->translate("log", ":/EFI/yourdroid_gummiboot/"),                  //3
-                                qApp->translate("log", "mk ") + symbol + ":/loader",                     //4
-                                qApp->translate("log", "cp ") + WORK_DIR +
-                                  "/data/bootloaders/gummi/loader/loader.conf "
-                                  "A:/loader/loader.conf",                                //5
-                                "mk A:/loader/entries",                                   //6
-                                qApp->translate("log", "cp ") + WORK_DIR +
-                                  "/data/bootloaders/gummi/loader/entries/0windows.conf "
-                                  "A:/loader/entries/0windows.conf",                      //7
-                                qApp->translate("log", "cp ") + WORK_DIR +
-                                  qApp->translate("log", "/tempGrubConf ") +
-                                  qApp->translate("log", "A:/loader/entries/") +
-                                  systems.back().name + ".conf",                          //8
-                                QString("mountvol a: /d"                                          //9
-                                "bcdedit /set {bootmgr} path "
-                                  "/EFI/yourdroid_gummiboot/") +
-                                  (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"),    //10
-                                "bcdedit /set {bootmgr} description "
-                                  "\"YourDroid Gummiboot\""                               //11
-                                };    */                                                    //***
-    for(int i = 0; i < 9; i++) {
+#define CHECK_ABORT() if(addNew.first)  { emit abort(addNew.second); return; }
 
-        //        if(_cmd.exec(commands[i]).first) {
-        //            LOG(2, qApp->translate("log", "Fatal Error: ") + _cmd.output(), "Критическая ошибка: " + _cmd.output());
-        //            ABORT();
-        //        }
+#define execAbort(command) addNew = cmd::exec(command, true); CHECK_ABORT();
+
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
+
+    QPair<int, QString> addNew;
+
+    grubConfigure(qApp->applicationDirPath() + "/tempGrubConf");
+
+    QString mountPoint = global->set->getEfiMountPoint();
+
+    QString path;
+    bool res = false;
+    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(mountPoint))).exists()))
+    {
+        execAbort(QString("cp %1/data/bootloaders/gummi/loader/entries/0windows.conf %2")
+                  .arg(qApp->applicationDirPath(), path));
     }
+    logDirExist();
+
+    res = QFile((path = QString("%1/loader/entries/%2.conf").arg(mountPoint, systems.back().name)))
+            .exists();
+    logDirExist();
+    if(res)
+    {
+        qDebug().noquote()
+                << QObject::tr("^Do you want to overwrite system's config "
+                               "(if no, installation will abort)?|+-");
+        if(log::getLastPressedButton() == QMessageBox::Ok)
+        {
+            execAbort(QString("del %1").arg(path));
+        }
+        else emit abort(QObject::tr("canceled by user"));
+    }
+    execAbort(QString("cp %1/tempGrubConf %2")
+              .arg(qApp->applicationDirPath(), path));
+#endif
+
+    qDebug().noquote() << QObject::tr("Gummiboot setted up sucessfully");
 }
 
 bool install::isInstalledGummi() {
     qDebug().noquote() << "Checking gummiboot";
-    cmd::exec(QString("bcdedit /enum firmware > %1/tempEnum").arg(qApp->applicationDirPath()),true);
+#if WIN
+    auto expr = cmd::exec(QString("bcdedit /enum firmware"), true);
+    QFile _enum(QString("%1/tempEnum").arg(qApp->applicationDirPath()));
+    if(!_enum.open(QIODevice::WriteOnly)) {
+        qWarning().noquote() << QObject::tr("Could not open tempEnum");
+        return false;
+    }
+    QTextStream(&_enum) << expr.second;
+    _enum.close();
     bool res = !cmd::exec(
-                QString("find \x22YourDroid Gummiboot\x22 <%1/tempEnum").arg(qApp->applicationDirPath())).first;
+                QString("find \"YourDroid Gummiboot\" %1/tempEnum").arg(qApp->applicationDirPath())).first;
     qDebug().noquote() << (res ? "Gummiboot installed" : "Gummiboot did not installed");
     return res;
+#endif
 }
 
 void install::installGummi() {
     qDebug().noquote() << "Installing gummiboot...";
+#if WIN
 #define CHECK_ABORT() if(addNew.first)  { \
-    cmd::exec("mountvol a: /d"); emit abort(addNew.second); return; }
+    emit abort(addNew.second); return; }
 
 #define execAbort(command) addNew = cmd::exec(command, true); CHECK_ABORT();
 
@@ -188,36 +203,61 @@ void install::installGummi() {
     QString id = output.mid(begin, end - begin + 1);
     qDebug() << QObject::tr("Id is %1").arg(id);
 
-    execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot\\%2")
+    execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot/%2")
               .arg(id, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")));
 
-    char i[2] = {'a', '\0'};
-    for(; i[0] < 123 && QDir(QString(i) + ":/").exists(); i[0]++);
-    QString s = i;
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
 
-    execAbort(QString("mountvol %1: /s").arg(s));
+    QString s = global->set->getEfiMountPoint();
 
-    QString command;
-    if(QDir((command = QString("mkdir %1:\\EFI\\yourdroid_gummiboot").arg(s))).exists())
+    QString path;
+    bool res = false;
+    if(!(res = QDir((path = QString("%1/EFI/yourdroid_gummiboot").arg(s))).exists()))
     {
-        execAbort(command);
+        execAbort(QString("mkdir %1").arg(path));
     }
+    logDirExist();
 
-    execAbort(QString("cp %1%2 %3:\\EFI/yourdroid_gummiboot\\")
-              .arg(qApp->applicationDirPath() + "\\data\\bootloaders\\gummi\\",
-                   (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"), s));
+    if(!(res = QFile((path = QString("%1/EFI/yourdroid_gummiboot/%2")
+              .arg(s, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")))).exists()))
+    {
+        execAbort(QString("cp %1%2 %3")
+                  .arg(qApp->applicationDirPath() + "/data/bootloaders/gummi/",
+                       (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi"), path));
+    }
+    logDirExist();
 
-    execAbort(QString("mkdir %1:\\loader").arg(s));
+    if(!(res = QDir((path = QString("%1/loader").arg(s))).exists()))
+    {
+        execAbort(QString("mkdir %1").arg(path));
+    }
+    logDirExist();
 
-    execAbort(QString("cp %1\\data\\bootloaders\\gummi\\loader\\loader.conf %2:\\loader\\loader.conf")
-              .arg(qApp->applicationDirPath(), s));
+    if(!(res = QFile((path = QString("%1/loader/loader.conf").arg(s))).exists()))
+    {
+        execAbort(QString("cp %1/data/bootloaders/gummi/loader/loader.conf %2")
+                  .arg(qApp->applicationDirPath(), path));
+    }
+    logDirExist();
 
-    execAbort(QString("cp %1\\data\\bootloaders\\gummi\\loader\\entries\\0windows.conf %2:\\loader\\entries\\0windows.conf")
-              .arg(qApp->applicationDirPath(), s));
+    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
+    {
+        execAbort(QString("cp %1/data/bootloaders/gummi/loader/entries/0windows.conf %2")
+                  .arg(qApp->applicationDirPath(), path));
+    }
+    logDirExist();
 
-    execAbort(QString("mkdir %1:\\efi\\grub").arg(s));
+    if(!(res = QDir((path = QString("%1/efi/grub").arg(s))).exists()))
+    {
+        execAbort(QString("mkdir %1").arg(path));
+    }
+    logDirExist();
+
+    execAbort(QString("bcdedit /set {bootmgr} displayorder %1 /addfirst").arg(id));
 
     //    execAbort(QString("mkdir %1:/efi/grub/"));
+#endif
 
     qDebug().noquote() << QObject::tr("Gummiboot installed succesful");
 }
@@ -261,10 +301,7 @@ void install::registerGrub2() {
 }
 
 void install::grubConfigure(QString way) {
-    QString place = obsolutePath(systems.back().name);
-#if WIN
-    place = place.left(2);
-#endif
+    QString place = obsolutePath(systems.back().place);
     QFile _config(way);
     if(!_config.open(QIODevice::WriteOnly)) {
         emit abort(QObject::tr("Could not open the config-file"));
@@ -368,6 +405,7 @@ void install::unmountImage() {
 }
 
 QString install::obsolutePath(QString path) {
+#if LINUX
     auto expr = cmd::exec("grep UUID /etc/fstab | tr -s \" \" \" \"| cut -d \" \" -f 2 | sed -n '/\\/\\w/p'");
     QString fstab = expr.second, temp;
     while(fstab.count('\n') != 0) {
@@ -377,6 +415,9 @@ QString install::obsolutePath(QString path) {
         qDebug().noquote() << temp;
         if(path.contains(temp)) path.remove(temp);
     }
+#elif WIN
+    path.remove(0, 2);
+#endif
     return path;
 }
 
