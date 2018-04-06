@@ -30,11 +30,14 @@ private:
 #if WIN
     QString efiGuid;
     QString efiMountPoint;
-    bool efiAlreadyMounted = false;
+    bool efiWasMounted = false;
+    bool efiMounted = false;
 #endif
 public slots:
     void write_set(bool, bool, bool, bool, bool, _lang);
 public:
+    bool getBios() const { return tbios; }
+    bool getArch() const { return arch; }
     bool getConEnable() const { return conEnable; }
     void setConEnable(bool con) { conEnable = con; }
     _lang getLang() { return lang; }
@@ -44,9 +47,10 @@ public:
     bool defbios();
     bool defarch();
 #if WIN
-    const QString getEfiMountPoint() const { return efiMountPoint; }
+    QString getEfiMountPoint() const { return efiMountPoint; }
     QPair<bool, QString> mountEfiPart();
     QPair<bool, QString> unmountEfiPart();
+    QString freeMountPoint();
     bool defwinv();
 #endif
 };

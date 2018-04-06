@@ -1,6 +1,7 @@
 #include "window.h"
 #include "ui_window.h"
 #include "3rdparty/enum.h"
+#include "3rdparty/tagged_bool.h"
 #include <string>
 #include "install.h"
 #include "cmd.h"
@@ -10,14 +11,12 @@
 #include <QFuture>
 #include <QFutureWatcher>
 
-Window::Window(install *ins, bool f, options *d, QWidget *parent) :
+Window::Window(bool f, QWidget *parent) :
     QMainWindow(parent),
     fierst(!f),
-    dat(d),
-    insDat(ins),
     ui(new Ui::Window)
 {
-    if(dat->tbios == false) {
+    if(global->set->tbios == false) {
         qCritical().noquote() << tr("^This PC does not supported");
     }
 
@@ -58,10 +57,10 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
     ui->progressDelete->setValue(0);
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
-    insDat->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
+    global->insSet->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
     ui->buttonInstallInstall->setShortcut(Qt::Key_Return);
 
-    retranslateUi(QString::fromStdString(_langHelper::to_string(dat->getLang())));
+    retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
 
     if(fierst) Settings_clicked();
     else returnMainWindow();
@@ -70,9 +69,9 @@ Window::Window(install *ins, bool f, options *d, QWidget *parent) :
 }
 
 void Window::setLabelSetInfo() {
-    QString info = QString(dat->tbios ? "Uefi " : "Bios ") + QString(dat->arch ? "x64" : "x86");
+    QString info = QString(global->set->tbios ? "Uefi " : "Bios ") + QString(global->set->arch ? "x64" : "x86");
 #if WIN
-    info = QString((dat->winv ? "win. vista+ | " : "win. xp | ")) + info;
+    info = QString((global->set->winv ? "win. vista+ | " : "win. xp | ")) + info;
 #endif
     info = QString("<b>") + info + "<\b>";
     ui->labelSetInfo->setText(info);
@@ -98,15 +97,15 @@ void Window::returnMainWindow() {
 
 void Window::Settings_clicked()
 {
-    if(!fierst) dat->read_set(false);
-    ui->typeBios->setCurrentIndex((int)dat->tbios);
-    ui->arch->setCurrentIndex((int)dat->arch);
-    ui->winVer->setCurrentIndex((int)dat->winv);
+    if(!fierst) global->set->read_set(false);
+    ui->typeBios->setCurrentIndex((int)global->set->tbios);
+    ui->arch->setCurrentIndex((int)global->set->arch);
+    ui->winVer->setCurrentIndex((int)global->set->winv);
 #if LINUX
     ui->winVer->setEnabled(false);
 #endif
-    ui->checkEnableConSettings->setChecked(dat->getConEnable());
-    ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
+    ui->checkEnableConSettings->setChecked(global->set->getConEnable());
+    ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
     //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
     setWindowTitle(tr("YourDroid | Settings"));
@@ -120,27 +119,28 @@ void Window::on_applaySettings_clicked()
         //        retranslateUi(QString::fromStdString(_langHelper::to_string(
         //                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
-    dat->write_set(true, ui->arch->currentIndex(),
-                   ui->typeBios->currentIndex(),
-                   ui->winVer->currentIndex(),
-                   ui->checkEnableConSettings->checkState() == Qt::Checked,
-                   (_lang)ui->comboLanguageSettings->currentIndex());
+    global->set->write_set(true, ui->arch->currentIndex(),
+                           ui->typeBios->currentIndex(),
+                           ui->winVer->currentIndex(),
+                           ui->checkEnableConSettings->checkState() == Qt::Checked,
+                           (_lang)ui->comboLanguageSettings->currentIndex());
     log::setEnabledCon(ui->checkEnableConSettings->checkState() == Qt::Checked);
     setLabelSetInfo();
 }
 
 void Window::on_restoreSettings_clicked()
 {
-    dat->read_set(true);
-    ui->typeBios->setCurrentIndex((int)dat->tbios);
-    ui->arch->setCurrentIndex((int)dat->arch);
-    ui->winVer->setCurrentIndex((int)dat->winv);
-    ui->checkEnableConSettings->setChecked(dat->getConEnable());
-    ui->comboLanguageSettings->setCurrentIndex((int)dat->getLang());
+    global->set->read_set(true);
+    ui->typeBios->setCurrentIndex((int)global->set->tbios);
+    ui->arch->setCurrentIndex((int)global->set->arch);
+    ui->winVer->setCurrentIndex((int)global->set->winv);
+    ui->checkEnableConSettings->setChecked(global->set->getConEnable());
+    ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
 }
 
 void Window::on_installButtonMain_clicked()
 {
+    ui->comboFlashDrivesInstall->setEnabled(false);
     ui->radioInstallOnPart->setEnabled(false);
     ui->radioInstallOnDir->setChecked(true);
 
@@ -152,14 +152,14 @@ void Window::on_installButtonMain_clicked()
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
-    if(!dat->tbios) {
+    if(!global->set->tbios) {
         ui->comboBoot->addItem("Grub legasy");
-        //if(dat->winv && dat->os) ui->comboBoot->addItem("Windows BOOTMGR");
+        //if(global->set->winv && global->set->os) ui->comboBoot->addItem("Windows BOOTMGR");
     }
-    //if(!dat->winv && dat->os) ui->comboBoot->addItem("Windows NTLDR");
-    if(dat->tbios) {
+    //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
+    if(global->set->tbios) {
         //ui->comboBoot->addItem("rEFInd");
-        if(dat->os) ui->comboBoot->addItem("Gummiboot");
+        if(global->set->os) ui->comboBoot->addItem("Gummiboot");
         else ui->comboBoot->addItem("Grub2");
     }
 }
@@ -200,15 +200,19 @@ void Window::on_buttonInstallInstall_clicked()
 {
     ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
     ui->progressInstall->setValue(0);
-    ui->returnInstallButton->setEnabled(false);
-    ui->buttonInstallInstall->setEnabled(false);
+    auto setBlocked = [=](bool _blocked)
+    {
+        _blocked = !_blocked;
+        ui->returnInstallButton->setEnabled(_blocked);
+        ui->buttonInstallInstall->setEnabled(_blocked);
+    };
+    setBlocked(true);
     ui->statusbar->showMessage(tr("Checking"));
     qDebug().noquote() << tr("Checking data for install...");
     QString image, dir, name;
     auto end = [=](QString mess = QObject::tr("Ready")){
         ui->statusbar->showMessage(mess);
-        ui->returnInstallButton->setEnabled(true);
-        ui->buttonInstallInstall->setEnabled(true);
+        setBlocked(false);
     };
     connect(this, &Window::ending, this, [=](QString mess) {
         end(mess);
@@ -254,8 +258,8 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    for(int i = 0; i < insDat->systemsVector().length(); i++) {
-        if(ui->editName->text() == (insDat->systemsVector())[i].name) {
+    for(int i = 0; i < global->insSet->systemsVector().length(); i++) {
+        if(ui->editName->text() == (global->insSet->systemsVector())[i].name) {
             qCritical().noquote() << QObject::tr("^The system with written name already exists");
             end();
             return;
@@ -270,17 +274,17 @@ void Window::on_buttonInstallInstall_clicked()
     }
 
 #if LINUX
-    QPair<bool, QString> result = insDat->mountImage(ui->editImageFromDisk->text());
+    QPair<bool, QString> result = global->insSet->mountImage(ui->editImageFromDisk->text());
     if(!result.first) {
         qCritical().noquote() << QObject::tr("^Could not mount image: %1").arg(result.second);
-        insDat->unmountImage();
+        global->insSet->unmountImage();
         end();
         return;
     }
 #endif
 
     int ret = 0;
-    if(!(ret = insDat->isInvalidImage(
+    if(!(ret = global->insSet->isInvalidImage(
          #if WIN
              ui->editImageFromDisk->text()
          #endif
@@ -294,12 +298,14 @@ void Window::on_buttonInstallInstall_clicked()
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
 #if WIN
-    ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
-    if(!dat->mountEfiPart().first)
-    {
-        qCritical().noquote()
-                << QObject::tr("^Could not mount efi partition. Aborting");
-        return;
+    if(global->set->getBios()) {
+        ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
+        if(!global->set->mountEfiPart().first)
+        {
+            qCritical().noquote()
+                    << QObject::tr("^Could not mount efi partition. Aborting");
+            return;
+        }
     }
 #endif
 
@@ -308,9 +314,15 @@ void Window::on_buttonInstallInstall_clicked()
     if(boot == "Grub legasy") boot = "grub_legasy";
     else if(boot == "Windows NTLDR") boot = "ntldr";
     else if(boot == "Windows BOOTMGR") boot = "bootmgr";
+    else if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
-    _typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
+
+    _typePlace typePlace;
+    if(ui->radioInstallOnDir->isChecked()) typePlace = _typePlace::dir;
+    else if (ui->radioInstallOnPart->isChecked()) typePlace = _typePlace::partition;
+    else if (ui->radioInstallFlashDriveIns->isChecked()) typePlace = _typePlace::flash_drive;
+    //_typePlace typePlace = ui->radioInstallOnDir->isChecked() ? _typePlace::dir : _typePlace::partition;
 #define CHECK_ABORT() if(abort) return;
 
     //    QWinTaskbarButton *taskBarButton = new QWinTaskbarButton(this);
@@ -319,11 +331,11 @@ void Window::on_buttonInstallInstall_clicked()
     //    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
     //    taskBarProgress->setVisible(true);
 
-    insDat->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
+    global->insSet->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
 #if WIN
-        dat->unmountEfiPart();
+        if(global->set->getBios()) global->set->unmountEfiPart();
 #endif
         qApp->alert(this, 2000);
         if(aborted) {
@@ -342,7 +354,7 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug().noquote() << QObject::tr("^Succes");
     });
 
-    int size = insDat->sizeOfFiles(), step = size / 2 / ((OS) ? 2 : 3);
+    int size = global->insSet->sizeOfFiles(), step = size / 2 / ((OS) ? 2 : 3);
     ui->progressInstall->setRange(0, size * 2);
 #if WIN
     taskBarProgress->setRange(0, size * 2);
@@ -352,13 +364,13 @@ void Window::on_buttonInstallInstall_clicked()
 
     int progressComplete = 0;
 
-    connect(insDat, &install::progressChange, this, [&](int progress){
+    connect(global->insSet, &install::progressChange, this, [&](int progress){
         ui->progressInstall->setValue(progress + progressComplete);
 #if WIN
         taskBarProgress->setValue(progress + progressComplete);
 #endif
     });
-    connect(insDat, &install::fileEnded, this, [&](int value){
+    connect(global->insSet, &install::fileEnded, this, [&](int value){
         progressComplete += value;
         ui->progressInstall->setValue(progressComplete);
 #if WIN
@@ -375,7 +387,7 @@ void Window::on_buttonInstallInstall_clicked()
     auto logMain = [=](QtMsgType type, QString mess){
         QDebug(type).noquote() << mess;
     };
-    connect(insDat, &install::logWindow, this, [=](QtMsgType type, QString mess) {
+    connect(global->insSet, &install::logWindow, this, [=](QtMsgType type, QString mess) {
         emit logFromMainThread(type, mess);
     });
     connect(this, &Window::logFromMainThread, this, logMain);
@@ -396,43 +408,52 @@ void Window::on_buttonInstallInstall_clicked()
     //taskBarProgress->setValue(step);
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
-        connect(insDat, &install::abort, [&](QString mes){
+        connect(global->insSet, &install::abort, [&](QString mes){
             emit setAborted(true);
-            insDat->delBackSystem();
+            global->insSet->delBackSystem();
             abort = true;
             emit logFromMainThread(QtCriticalMsg,
                                    tr("^Fatal error while installing: %1")
                                    .arg(mes.isEmpty() ? "Message about error is empty" : mes));
 #if LINUX
-            insDat->unmountImage();
+            global->insSet->unmountImage();
 #endif
         });
         qDebug().noquote() << tr("Start install");
+
+        if(ui->radioInstallFlashDriveIns->isChecked())
+        {
+            qDebug().noquote() << tr("Formating flash drive...");
+            emit sendMesToStausbar(tr("Formating flash drive..."));
+            global->insSet->formatFlashDrive();
+            CHECK_ABORT();
+        }
+
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
-        insDat->unpackSystem();
+        global->insSet->unpackSystem();
         CHECK_ABORT();
 
         qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
         emit progressAddStep();
-        insDat->createDataImg(ui->editSizeDataInstall->text().toInt());
+        global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
 
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
         emit progressAddStep();
-        insDat->registerBootloader();
+        global->insSet->registerBootloader();
         CHECK_ABORT();
 
 #if LINUX
         emit sendMesToStausbar(tr("Unmounting image..."));
         emit progressAddStep();
-        insDat->unmountImage();
+        global->insSet->unmountImage();
 #endif
-        insDat->systemEnd();
-        insDat->oldSysEdit() = true;
-        insDat->write();
+        global->insSet->systemEnd();
+        global->insSet->oldSysEdit() = true;
+        global->insSet->write();
         CHECK_ABORT();
     });
     resMonitor->setFuture(res);
@@ -448,18 +469,18 @@ void Window::on_buttonAboutMain_clicked()
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
     qDebug().noquote() << qApp->translate("log", "Choose ") + arg1;
-    if(arg1 == "Grub2") {
-        ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
-        ui->labelAboutBootloader_2->setText("Текстовый.");
-    }
-    else if(arg1 == "Gummiboot") {
-        ui->labelAboutBootloader->setText("Рекомендуется для планшетов.");
-        ui->labelAboutBootloader_2->setText("Управление качалкой громкости.");
-    }
-    else if(arg1 == "rEFInd") ui->labelAboutBootloader->setText("Поддержка сенс. экрана, работает не везде");
-    else if(arg1 == "Windows BOOTMGR") ui->labelAboutBootloader->setText("Рекомендуется для планшетов, c win 8+. В win 8+ сенсорный");
-    else if(arg1 == "Windows NTDLR") ui->labelAboutBootloader->setText("Не рекомендуется. Текстовый");
-    else if(arg1 == "Grub legasy") ui->labelAboutBootloader->setText("Рекомендуется для старых компьютеров. Текстовый");
+    //    if(arg1 == "Grub2") {
+    //        ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
+    //        ui->labelAboutBootloader_2->setText("Текстовый.");
+    //    }
+    //    else if(arg1 == "Gummiboot") {
+    //        ui->labelAboutBootloader->setText("Рекомендуется для планшетов.");
+    //        ui->labelAboutBootloader_2->setText("Управление качалкой громкости.");
+    //    }
+    //    else if(arg1 == "rEFInd") ui->labelAboutBootloader->setText("Поддержка сенс. экрана, работает не везде");
+    //    else if(arg1 == "Windows BOOTMGR") ui->labelAboutBootloader->setText("Рекомендуется для планшетов, c win 8+. В win 8+ сенсорный");
+    //    else if(arg1 == "Windows NTDLR") ui->labelAboutBootloader->setText("Не рекомендуется. Текстовый");
+    //    else if(arg1 == "Grub legasy") ui->labelAboutBootloader->setText("Рекомендуется для старых компьютеров. Текстовый");
 }
 
 void Window::on_deleteButtonMain_clicked()
@@ -472,7 +493,7 @@ void Window::on_deleteButtonMain_clicked()
     ui->comboSystemDelete->blockSignals(false);
 
     qDebug().noquote() << tr("Filling systems list...");
-    for(auto sys : insDat->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
+    for(auto sys : global->insSet->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
     setWindowTitle(tr("YourDroid | Delete"));
     ui->windows->setCurrentWidget(ui->daletePage);
@@ -480,8 +501,8 @@ void Window::on_deleteButtonMain_clicked()
 
 void Window::on_comboSystemDelete_currentIndexChanged(int index)
 {
-    ui->labelPlaceDeleteText->setText(insDat->systemsVector()[index].place);
-    ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(insDat->systemsVector()[index].bootloader)));
+    ui->labelPlaceDeleteText->setText(global->insSet->systemsVector()[index].place);
+    ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(global->insSet->systemsVector()[index].bootloader)));
 }
 void Window::on_buttonDeleteDelete_clicked()
 {
@@ -491,11 +512,11 @@ void Window::on_buttonDeleteDelete_clicked()
     ui->settingsMini->setEnabled(false);
     ui->comboSystemDelete->setEnabled(false);
     int num = ui->comboSystemDelete->currentIndex();
-    qDebug().noquote() << qApp->translate("log", "Deleting ") + (insDat->systemsVector().begin() + num)->name;
-    insDat->delSystemFiles(num);
-    insDat->deleteBootloader(num);
-    insDat->oldSysEdit() = true;
-    insDat->deleteEntry(num);
+    qDebug().noquote() << qApp->translate("log", "Deleting ") + (global->insSet->systemsVector().begin() + num)->name;
+    global->insSet->delSystemFiles(num);
+    global->insSet->deleteBootloader(num);
+    global->insSet->oldSysEdit() = true;
+    global->insSet->deleteEntry(num);
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage(tr("Ready"));
     ui->buttonDeleteDelete->setEnabled(true);
@@ -522,8 +543,8 @@ void Window::changeEvent(QEvent *event) {
 
 void Window::consoleHided() {
     if(exiting) return;
-    dat->setConEnable(false);
-    dat->autowrite_set();
+    global->set->setConEnable(false);
+    global->set->autowrite_set();
     ui->checkEnableConSettings->setChecked(false);
 }
 
@@ -550,4 +571,18 @@ void Window::showEvent(QShowEvent *e) {
     taskBarProgress->setValue(50);
 #endif
     e->accept();
+}
+
+void Window::on_radioButton_clicked()
+{
+    ui->comboFlashDrivesInstall->setEnabled(true);
+    ui->editDirForInstall->setEnabled(false);
+    ui->buttonChooseDirForInstall->setEnabled(false);
+}
+
+void Window::on_radioInstallOnDir_clicked()
+{
+    ui->comboFlashDrivesInstall->setEnabled(false);
+    ui->editDirForInstall->setEnabled(true);
+    ui->buttonChooseDirForInstall->setEnabled(true);
 }

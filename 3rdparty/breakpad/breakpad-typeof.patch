@@ -1,0 +1,190 @@
+diff --git a/mendeley/test/CMakeLists.txt b/mendeley/test/CMakeLists.txt
+index d34fd87..b5f9575 100644
+--- a/mendeley/test/CMakeLists.txt
++++ b/mendeley/test/CMakeLists.txt
+@@ -10,13 +10,6 @@ endif()
+ add_executable(buggy_app buggy_app.cc)
+ target_link_libraries(buggy_app ${BREAKPAD_LIBS})
+ 
+-# the test app must be built with at least basic
+-# debug info in order to successfully extract function
+-# names from it
+-if (UNIX)
+-  set_target_properties(buggy_app PROPERTIES COMPILE_FLAGS -g)
+-endif()
+-
+ if (UNIX)
+   # the test currently relies on minidump_stackwalk which is currently only built
+   # under Linux/Mac
+diff --git a/src/client/linux/minidump_writer/linux_dumper.h b/src/client/linux/minidump_writer/linux_dumper.h
+index 42b2a99..371064e 100644
+--- a/src/client/linux/minidump_writer/linux_dumper.h
++++ b/src/client/linux/minidump_writer/linux_dumper.h
+@@ -47,12 +47,13 @@
+ #endif
+ 
+ #include "common/memory.h"
++#include "common/linux/typeof.h"
+ #include "google_breakpad/common/minidump_format.h"
+ 
+ namespace google_breakpad {
+ 
+ #if defined(__i386) || defined(__x86_64)
+-typedef typeof(((struct user*) 0)->u_debugreg[0]) debugreg_t;
++typedef TYPEOF(((struct user*) 0)->u_debugreg[0]) debugreg_t;
+ #endif
+ 
+ // Typedef for our parsing of the auxv variables in /proc/pid/auxv.
+diff --git a/src/client/linux/minidump_writer/minidump_writer.cc b/src/client/linux/minidump_writer/minidump_writer.cc
+index 35a291d..a1026e4 100644
+--- a/src/client/linux/minidump_writer/minidump_writer.cc
++++ b/src/client/linux/minidump_writer/minidump_writer.cc
+@@ -76,6 +76,7 @@
+ #include "client/linux/minidump_writer/minidump_extension_linux.h"
+ #include "client/minidump_file_writer.h"
+ #include "common/linux/linux_libc_support.h"
++#include "common/linux/typeof.h"
+ #include "google_breakpad/common/minidump_format.h"
+ #include "third_party/lss/linux_syscall_support.h"
+ 
+@@ -557,14 +558,14 @@ class MinidumpWriter {
+           uint64_t ret;
+           /* char redzone[128]; */
+         } seccomp_stackframe;
+-        if (top - offsetof(typeof(seccomp_stackframe), deadbeef) < old_top ||
+-            top - offsetof(typeof(seccomp_stackframe), deadbeef) +
++        if (top - offsetof(TYPEOF(seccomp_stackframe), deadbeef) < old_top ||
++            top - offsetof(TYPEOF(seccomp_stackframe), deadbeef) +
+             sizeof(seccomp_stackframe) >
+             thread.stack.start_of_memory_range+thread.stack.memory.data_size) {
+           break;
+         }
+         memcpy(&seccomp_stackframe,
+-               bp_addr - offsetof(typeof(seccomp_stackframe), deadbeef),
++               bp_addr - offsetof(TYPEOF(seccomp_stackframe), deadbeef),
+                sizeof(seccomp_stackframe));
+         cpu->rbx = seccomp_stackframe.rbx;
+         cpu->rcx = seccomp_stackframe.rcx;
+@@ -611,14 +612,14 @@ class MinidumpWriter {
+           uint32_t fakeret;
+           uint32_t ret;
+         } seccomp_stackframe;
+-        if (top - offsetof(typeof(seccomp_stackframe), deadbeef) < old_top ||
+-            top - offsetof(typeof(seccomp_stackframe), deadbeef) +
++        if (top - offsetof(TYPEOF(seccomp_stackframe), deadbeef) < old_top ||
++            top - offsetof(TYPEOF(seccomp_stackframe), deadbeef) +
+             sizeof(seccomp_stackframe) >
+             thread.stack.start_of_memory_range+thread.stack.memory.data_size) {
+           break;
+         }
+         memcpy(&seccomp_stackframe,
+-               bp_addr - offsetof(typeof(seccomp_stackframe), deadbeef),
++               bp_addr - offsetof(TYPEOF(seccomp_stackframe), deadbeef),
+                sizeof(seccomp_stackframe));
+         cpu->ebx = seccomp_stackframe.ebx;
+         cpu->ecx = seccomp_stackframe.ecx;
+diff --git a/src/common/linux/eintr_wrapper.h b/src/common/linux/eintr_wrapper.h
+index 225311e..48358d6 100644
+--- a/src/common/linux/eintr_wrapper.h
++++ b/src/common/linux/eintr_wrapper.h
+@@ -32,12 +32,14 @@
+ 
+ #include <errno.h>
+ 
++#include "common/linux/typeof.h"
++
+ // This provides a wrapper around system calls which may be interrupted by a
+ // signal and return EINTR. See man 7 signal.
+ //
+ 
+ #define HANDLE_EINTR(x) ({ \
+-  typeof(x) __eintr_result__; \
++  TYPEOF(x) __eintr_result__; \
+   do { \
+     __eintr_result__ = x; \
+   } while (__eintr_result__ == -1 && errno == EINTR); \
+diff --git a/src/common/linux/typeof.h b/src/common/linux/typeof.h
+new file mode 100644
+index 0000000..7592342
+--- /dev/null
++++ b/src/common/linux/typeof.h
+@@ -0,0 +1,11 @@
++#ifndef COMMON_LINUX_TYPEOF_H
++#define COMMON_LINUX_TYPEOF_H
++
++#if __cplusplus >= 201103L
++#include <type_traits>
++#define TYPEOF(x) std::remove_reference<decltype(x)>::type
++#else
++#define TYPEOF(x) typeof(x)
++#endif
++
++#endif
+diff --git a/src/third_party/lss/linux_syscall_support.h b/src/third_party/lss/linux_syscall_support.h
+index 604649e..4c851b4 100644
+--- a/src/third_party/lss/linux_syscall_support.h
++++ b/src/third_party/lss/linux_syscall_support.h
+@@ -1457,29 +1457,29 @@ struct kernel_statfs {
+       void (**entrypoint)(void);
+       asm volatile(".bss\n"
+                    ".align 8\n"
+-                   ".globl "SYS_SYSCALL_ENTRYPOINT"\n"
+-                   ".common "SYS_SYSCALL_ENTRYPOINT",8,8\n"
++                   ".globl " SYS_SYSCALL_ENTRYPOINT "\n"
++                   ".common " SYS_SYSCALL_ENTRYPOINT ",8,8\n"
+                    ".previous\n"
+                    /* This logically does 'lea "SYS_SYSCALL_ENTRYPOINT", %0' */
+                    "call 0f\n"
+                  "0:pop  %0\n"
+                    "add  $_GLOBAL_OFFSET_TABLE_+[.-0b], %0\n"
+-                   "mov  "SYS_SYSCALL_ENTRYPOINT"@GOT(%0), %0\n"
++                   "mov  " SYS_SYSCALL_ENTRYPOINT "@GOT(%0), %0\n"
+                    : "=r"(entrypoint));
+       return entrypoint;
+     }
+ 
+     #define LSS_ENTRYPOINT ".bss\n"                                           \
+                            ".align 8\n"                                       \
+-                           ".globl "SYS_SYSCALL_ENTRYPOINT"\n"                \
+-                           ".common "SYS_SYSCALL_ENTRYPOINT",8,8\n"           \
++                           ".globl " SYS_SYSCALL_ENTRYPOINT "\n"                \
++                           ".common " SYS_SYSCALL_ENTRYPOINT ",8,8\n"           \
+                            ".previous\n"                                      \
+                            /* Check the SYS_SYSCALL_ENTRYPOINT vector      */ \
+                            "push %%eax\n"                                     \
+                            "call 10000f\n"                                    \
+                      "10000:pop  %%eax\n"                                     \
+                            "add  $_GLOBAL_OFFSET_TABLE_+[.-10000b], %%eax\n"  \
+-                           "mov  "SYS_SYSCALL_ENTRYPOINT"@GOT(%%eax), %%eax\n"\
++                           "mov  " SYS_SYSCALL_ENTRYPOINT "@GOT(%%eax), %%eax\n"\
+                            "mov  0(%%eax), %%eax\n"                           \
+                            "test %%eax, %%eax\n"                              \
+                            "jz   10001f\n"                                    \
+@@ -1749,10 +1749,10 @@ struct kernel_statfs {
+       void (**entrypoint)(void);
+       asm volatile(".bss\n"
+                    ".align 8\n"
+-                   ".globl "SYS_SYSCALL_ENTRYPOINT"\n"
+-                   ".common "SYS_SYSCALL_ENTRYPOINT",8,8\n"
++                   ".globl " SYS_SYSCALL_ENTRYPOINT "\n"
++                   ".common " SYS_SYSCALL_ENTRYPOINT ",8,8\n"
+                    ".previous\n"
+-                   "mov "SYS_SYSCALL_ENTRYPOINT"@GOTPCREL(%%rip), %0\n"
++                   "mov " SYS_SYSCALL_ENTRYPOINT "@GOTPCREL(%%rip), %0\n"
+                    : "=r"(entrypoint));
+       return entrypoint;
+     }
+@@ -1760,10 +1760,10 @@ struct kernel_statfs {
+     #define LSS_ENTRYPOINT                                                    \
+               ".bss\n"                                                        \
+               ".align 8\n"                                                    \
+-              ".globl "SYS_SYSCALL_ENTRYPOINT"\n"                             \
+-              ".common "SYS_SYSCALL_ENTRYPOINT",8,8\n"                        \
++              ".globl " SYS_SYSCALL_ENTRYPOINT "\n"                             \
++              ".common " SYS_SYSCALL_ENTRYPOINT ",8,8\n"                        \
+               ".previous\n"                                                   \
+-              "mov "SYS_SYSCALL_ENTRYPOINT"@GOTPCREL(%%rip), %%rcx\n"         \
++              "mov " SYS_SYSCALL_ENTRYPOINT "@GOTPCREL(%%rip), %%rcx\n"         \
+               "mov  0(%%rcx), %%rcx\n"                                        \
+               "test %%rcx, %%rcx\n"                                           \
+               "jz   10001f\n"                                                 \

@@ -7,10 +7,13 @@
 #include <QProgressBar>
 #include <QStatusBar>
 #include "3rdparty/enum.h"
+#include "3rdparty/tagged_bool.h"
 #include "data.h"
 
-STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr)
-STRING_ENUM(_typePlace, dir, partition)
+using install2Flash = tagged_bool<class install2FlashTag>;
+
+STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr, grub2_flash)
+STRING_ENUM(_typePlace, dir, partition, flash_drive)
 
 class install : public QObject {
     Q_OBJECT
@@ -20,11 +23,14 @@ class install : public QObject {
         QString place;
         QString image;
         QString name;
+#if WIN
+        QString bcdId;
+#endif
         bool ended = false;
         bool os = OS;
-        _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e) {}
+        //_installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e) {}
         _installSet() {}
-        _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e, bool o) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e), os(o) {}
+        _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e, bool o = OS, QString bId = "") : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e), os(o), bcdId(bId) {}
     };
     QVector<install::_installSet> systems;
     int cntSystems = 0;
@@ -36,6 +42,8 @@ class install : public QObject {
     QVector<int> deletedSys;
     QString abortMes;
     QString mountPoint;
+    QPair<int, QString> resCmd;
+    bool resFile = false;
 signals:
     void logWindow(QtMsgType, QString);
     void abort(QString);
@@ -54,6 +62,7 @@ public:
     void write();
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
+    void formatFlashDrive();
     int sizeOfFiles();
     int isInvalidImage(
         #if WIN
@@ -65,11 +74,14 @@ public:
     void unpackSystem();
     QString obsolutePath(QString);
     void registerBootloader();
+    void registerBootmgr();
     void registerGrub2();
-    void grubConfigure(QString);
+    void installGrub2(install2Flash);
+    void grub2Configure(QString, bool = false);
+    void grubLConfigure(QString, bool = false);
     void registerGummi();
-    bool isInstalledGummi();
-    void installGummi();
+    bool isRegUefiGummi();
+    void installGummi(bool);
     void createDataImg(int);
     void downloadFile(QString, QString);
     void delSystemFiles(int);
@@ -78,5 +90,22 @@ public:
     void deleteEntry(int);
 
 };
+
+#if WIN
+#define checkAbortCmd() if(resCmd.first)  { emit abort(resCmd.second); return; }
+
+#define checkAbortFile() if(!resFile) { emit abort(QObject::tr("Couldn't copy needed files")); return; }
+
+#define COPY(src, dst) resFile = _copy(src, dst); checkAbortFile();
+
+#define MKDIR(name) resFile = _mkdir(name); checkAbortFile();
+
+#define RENAME(src, dst) resFile = _rename(src, dst); checkAbortFile();
+
+#define execAbort(command) resCmd = cmd::exec(command, true); checkAbortCmd();
+
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
+#endif
 
 #endif // INSTALLDATA_H

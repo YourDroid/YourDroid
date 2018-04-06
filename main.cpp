@@ -1,3 +1,4 @@
+//#include "client/linux/handler/exception_handler.h"
 #include "data.h"
 #include "window.h"
 #include "install.h"
@@ -12,6 +13,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QProcess>
+#include <QDir>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -34,17 +36,21 @@ console *log::con;
 
 int main(int argc, char *argv[])
 {
-//    QString dumpPath = "./log";
-//    QtBreakpad::init(dumpPath);
+//    google_breakpad::MinidumpDescriptor descriptor("./log");
+//    google_breakpad::ExceptionHandler eh(descriptor, NULL, 0, NULL, true, -1);
+//    *(int*)0 = 0;
+    //    QString dumpPath = "./log";
+    //    QtBreakpad::init(dumpPath);
     //qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
     Breakpad::CrashHandler::instance()->Init("./log");
+
     //set_signal_handler();
-    //    std::set_terminate([=]() -> void {
-    //        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
-    //        errorAbort(1);
-    //    });
+    std::set_terminate([=]() -> void {
+        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
+        errorAbort(1);
+    });
     auto exceptionAbort = [&](QString what) {
         qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
         errorAbort(1);
@@ -93,7 +99,10 @@ int main(int argc, char *argv[])
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-       // *(int*)0 = 0;
+        set.mountEfiPart();
+        qDebug().noquote() << QDir().mkdir(set.getEfiMountPoint() + "/test");
+
+//        *(int*)0 = 0;
 
         install ins(&set);
         ins.read();
@@ -101,7 +110,7 @@ int main(int argc, char *argv[])
 
         global = new _global(&set, &ins);
 
-        Window *window = new Window(&ins, readSet, &set);
+        Window *window = new Window(readSet);
         window->show();
         //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
         //        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
@@ -115,10 +124,10 @@ int main(int argc, char *argv[])
         return res;
     }
     catch(std::exception ex) {
-        exceptionAbort(QString::fromStdString(ex.what()));
+        exceptionAbort(ex.what());
     }
     catch(QException ex) {
-        exceptionAbort(QString::fromStdString(ex.what()));
+        exceptionAbort(ex.what());
     }
     catch(...) {
         exceptionAbort(QObject::tr("Unknown error"));

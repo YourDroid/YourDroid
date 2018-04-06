@@ -30,7 +30,7 @@ class Window : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Window(install*, bool, options*, QWidget *parent = 0);
+    explicit Window(bool, QWidget *parent = 0);
 
     ~Window();
 
@@ -90,6 +90,10 @@ private slots:
 
     void on_comboLanguageSettings_currentIndexChanged(int index);
 
+    void on_radioButton_clicked();
+
+    void on_radioInstallOnDir_clicked();
+
 private:
     void setLabelSetInfo();
 
@@ -108,8 +112,6 @@ private:
     bool fierst;
     bool exiting = false;
     bool langChanged = false;
-    options *dat = nullptr;
-    install *insDat = nullptr;
     Ui::Window *ui = nullptr;
     QWidget *lastPage = nullptr;
 };

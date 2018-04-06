@@ -4,82 +4,82 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="install.cpp" line="260"/>
+        <location filename="install.cpp" line="306"/>
         <source>Registering to grub2...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="263"/>
+        <location filename="install.cpp" line="309"/>
         <source>Could not open the grub config-file to read</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="273"/>
+        <location filename="install.cpp" line="319"/>
         <source>Could not open the grub config-file to write</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="276"/>
+        <location filename="install.cpp" line="322"/>
         <source>Grub-config:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="284"/>
+        <location filename="install.cpp" line="330"/>
         <source>Could not make dir for configs: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="290"/>
+        <location filename="install.cpp" line="336"/>
         <source>Updating grub...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="292"/>
+        <location filename="install.cpp" line="338"/>
         <source>Could not update grub: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="301"/>
+        <location filename="install.cpp" line="348"/>
         <source>Could not open the config-file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="336"/>
+        <location filename="install.cpp" line="385"/>
         <source>Size of files is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="380"/>
+        <location filename="install.cpp" line="429"/>
         <source>Cannot make dir for image&apos;s mount point!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="256"/>
+        <location filename="install.cpp" line="302"/>
         <source>Gummiboot installed succesful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="385"/>
+        <location filename="install.cpp" line="434"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="394"/>
+        <location filename="install.cpp" line="443"/>
         <source>Cannot unmount image: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="398"/>
+        <location filename="install.cpp" line="447"/>
         <source>Cannot delete image&apos;s mount point: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="447"/>
+        <location filename="install.cpp" line="496"/>
         <source>System file is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="421"/>
+        <location filename="install.cpp" line="470"/>
         <source>Making dir for install</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,94 +94,107 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="126"/>
+        <location filename="install.cpp" line="147"/>
         <source>Setting up gummiboot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="133"/>
-        <location filename="install.cpp" line="205"/>
+        <location filename="install.cpp" line="135"/>
+        <location filename="install.cpp" line="155"/>
+        <location filename="install.cpp" line="250"/>
         <source>exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="133"/>
-        <location filename="install.cpp" line="205"/>
+        <location filename="install.cpp" line="135"/>
+        <location filename="install.cpp" line="155"/>
+        <location filename="install.cpp" line="250"/>
         <source>doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="156"/>
+        <location filename="install.cpp" line="197"/>
         <source>^Do you want to overwrite system&apos;s config (if no, installation will abort)?|+-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="162"/>
+        <location filename="install.cpp" line="203"/>
         <source>canceled by user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="167"/>
+        <location filename="install.cpp" line="143"/>
+        <location filename="install.cpp" line="209"/>
         <source>Gummiboot setted up sucessfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="175"/>
+        <location filename="install.cpp" line="128"/>
+        <source>Setting up bootmgr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="166"/>
+        <source>Could not open the gummiboot&apos;s config-file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="218"/>
         <source>Could not open tempEnum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="199"/>
+        <location filename="install.cpp" line="244"/>
         <source>Id is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="424"/>
+        <location filename="install.cpp" line="473"/>
         <source>Could not make dir for install: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="448"/>
+        <location filename="install.cpp" line="497"/>
         <source>Start copying</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="455"/>
+        <location filename="install.cpp" line="504"/>
         <source>Copying %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="457"/>
+        <location filename="install.cpp" line="506"/>
         <source>%1 exists. So it is deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="465"/>
+        <location filename="install.cpp" line="514"/>
         <source>^Could not overwrite %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="468"/>
+        <location filename="install.cpp" line="517"/>
         <source>%1 does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="480"/>
+        <location filename="install.cpp" line="529"/>
         <source>Could not copy %1-system file%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="484"/>
+        <location filename="install.cpp" line="533"/>
         <source>%1 copied succesful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="596"/>
+        <location filename="install.cpp" line="645"/>
         <source>Entry was deleted succesfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="596"/>
+        <location filename="install.cpp" line="645"/>
         <source>Entry was deleted unsuccesfully</source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,34 +224,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="208"/>
+        <location filename="window.cpp" line="206"/>
         <location filename="window.h" line="38"/>
         <source>Ready</source>
         <translation type="unfinished">Готово</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="259"/>
+        <location filename="window.cpp" line="257"/>
         <source>^The system with written name already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="275"/>
+        <location filename="window.cpp" line="273"/>
         <source>^Could not mount image: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="288"/>
+        <location filename="window.cpp" line="286"/>
         <source>^Image has not needed files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="293"/>
-        <location filename="window.cpp" line="294"/>
+        <location filename="window.cpp" line="291"/>
+        <location filename="window.cpp" line="292"/>
         <source>Data of install is valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="301"/>
+        <location filename="window.cpp" line="300"/>
         <source>^Could not mount efi partition. Aborting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -262,169 +275,169 @@
         <translation type="vanished">^Ошибка памяти. Попробуйте перезапустить программу</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="47"/>
+        <location filename="main.cpp" line="50"/>
+        <source>^Unknown fatal error! Program will terminate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="54"/>
         <source>^Fatal error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="64"/>
+        <location filename="main.cpp" line="71"/>
         <source>getuid() returned %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="66"/>
+        <location filename="main.cpp" line="73"/>
         <source>^Program must be run with root. Press ok to try run it as root. Or press cancel to exit and run &apos;sudo %1&apos; in the terminal to fix it|+-|</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="72"/>
+        <location filename="main.cpp" line="79"/>
         <source>^Could not run it as root. Please run &apos;sudo %1&apos; in the terminal to fix it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="85"/>
+        <location filename="main.cpp" line="92"/>
         <source>Translating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="90"/>
+        <location filename="main.cpp" line="97"/>
         <source>Setting debug console...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="114"/>
+        <location filename="main.cpp" line="119"/>
         <source>Exiting... Returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="124"/>
+        <location filename="main.cpp" line="129"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="98"/>
-        <source>Type of bios is uefi</source>
+        <location filename="data.cpp" line="102"/>
+        <source>Efi partition mounted: %1. Bcdedit output contains efi: %2. So, type of bios is %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="99"/>
-        <source>Type of bios is bios</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="data.cpp" line="133"/>
+        <location filename="data.cpp" line="139"/>
         <source>GetVersionEx() returns %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="143"/>
+        <location filename="data.cpp" line="149"/>
         <source>Size is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="147"/>
+        <location filename="data.cpp" line="153"/>
         <source>efi dir found on %1 and size is valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="152"/>
+        <location filename="data.cpp" line="158"/>
         <source>efi dir did not find or size is unvalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="164"/>
+        <location filename="data.cpp" line="170"/>
         <source>Could not get info about partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="171"/>
+        <location filename="data.cpp" line="177"/>
         <source>Could not find index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="181"/>
+        <location filename="data.cpp" line="187"/>
         <source>Partition is already mounted. So mount point is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="188"/>
+        <location filename="data.cpp" line="194"/>
         <source>Partition is not already mounted. So mount point is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="195"/>
+        <location filename="data.cpp" line="201"/>
         <source>Could not mount partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="200"/>
+        <location filename="data.cpp" line="206"/>
         <source>Partition has mounted sucessfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="206"/>
-        <location filename="window.cpp" line="297"/>
+        <location filename="data.cpp" line="212"/>
+        <location filename="window.cpp" line="296"/>
         <source>Mounting efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="222"/>
+        <location filename="data.cpp" line="228"/>
         <source>Free mountpoint is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="227"/>
+        <location filename="data.cpp" line="233"/>
         <source>Mounting guid from settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="239"/>
+        <location filename="data.cpp" line="245"/>
         <source>Could not get partition list: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="250"/>
+        <location filename="data.cpp" line="256"/>
         <source>Trying by first way</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="254"/>
-        <location filename="data.cpp" line="319"/>
+        <location filename="data.cpp" line="260"/>
+        <location filename="data.cpp" line="325"/>
         <source>Efi partition sucessfully mounted to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="259"/>
+        <location filename="data.cpp" line="265"/>
         <source>Fail. Trying by second way</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="321"/>
+        <location filename="data.cpp" line="327"/>
         <source>Did not find efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="328"/>
+        <location filename="data.cpp" line="334"/>
         <source>Unmounting efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="331"/>
+        <location filename="data.cpp" line="337"/>
         <source>Efi was not already mounted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="333"/>
+        <location filename="data.cpp" line="339"/>
         <source>Unmounted sucessfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="334"/>
+        <location filename="data.cpp" line="340"/>
         <source>Unmounted unsucessfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="339"/>
+        <location filename="data.cpp" line="345"/>
         <source>Efi was already mounted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -475,138 +488,138 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="154"/>
+        <location filename="exception.cpp" line="277"/>
         <source>*** stack print error *** at %1 %2: %3 (%4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="245"/>
+        <location filename="exception.cpp" line="368"/>
         <source>Backtrace is:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="347"/>
+        <location filename="exception.cpp" line="470"/>
         <source>The thread tried to read from or write to a virtual address for which it does not have the appropriate access.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="352"/>
+        <location filename="exception.cpp" line="475"/>
         <source>The thread tried to access an array element that is out of bounds and the underlying hardware supports bounds checking.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="357"/>
+        <location filename="exception.cpp" line="480"/>
         <source>A breakpoint was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="361"/>
+        <location filename="exception.cpp" line="484"/>
         <source>The thread tried to read or write data that is misaligned on hardware that does not provide alignment. For example, 16-bit values must be aligned on 2-byte boundaries; 32-bit values on 4-byte boundaries, and so on.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="368"/>
+        <location filename="exception.cpp" line="491"/>
         <source>One of the operands in a floating-point operation is denormal. A denormal value is one that is too small to represent as a standard floating-point value.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="373"/>
+        <location filename="exception.cpp" line="496"/>
         <source>The thread tried to divide a floating-point value by a floating-point divisor of zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="377"/>
+        <location filename="exception.cpp" line="500"/>
         <source>The result of a floating-point operation cannot be represented exactly as a decimal fraction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="382"/>
+        <location filename="exception.cpp" line="505"/>
         <source>This exception represents any floating-point exception not included in this list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="386"/>
+        <location filename="exception.cpp" line="509"/>
         <source>The exponent of a floating-point operation is greater than the magnitude allowed by the corresponding type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="391"/>
+        <location filename="exception.cpp" line="514"/>
         <source>The stack overflowed or underflowed as the result of a floating-point operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="395"/>
+        <location filename="exception.cpp" line="518"/>
         <source>The exponent of a floating-point operation is less than the magnitude allowed by the corresponding type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="400"/>
+        <location filename="exception.cpp" line="523"/>
         <source>The thread tried to execute an invalid instruction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="404"/>
+        <location filename="exception.cpp" line="527"/>
         <source>The thread tried to access a page that was not present, and the system was unable to load the page. For example, this exception might occur if a network connection is lost while running a program over the network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="411"/>
+        <location filename="exception.cpp" line="534"/>
         <source>The thread tried to divide an integer value by an integer divisor of zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="415"/>
+        <location filename="exception.cpp" line="538"/>
         <source>The result of an integer operation caused a carry out of the most significant bit of the result.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="420"/>
+        <location filename="exception.cpp" line="543"/>
         <source>An exception handler returned an invalid disposition to the exception dispatcher. Programmers using a high-level language such as C should never encounter this exception.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="425"/>
+        <location filename="exception.cpp" line="548"/>
         <source>The thread tried to continue execution after a noncontinuable exception occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="429"/>
+        <location filename="exception.cpp" line="552"/>
         <source>The thread tried to execute an instruction whose operation is not allowed in the current machine mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="434"/>
+        <location filename="exception.cpp" line="557"/>
         <source>A trace trap or other single-instruction mechanism signaled that one instruction has been executed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="439"/>
+        <location filename="exception.cpp" line="562"/>
         <source>The thread used up its stack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="442"/>
+        <location filename="exception.cpp" line="565"/>
         <source>Unrecognized Exception</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="443"/>
+        <location filename="exception.cpp" line="566"/>
         <source>No description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="467"/>
+        <location filename="exception.cpp" line="590"/>
         <source>^Fatal error! Here is some info about it: description: %1; type: %2; code: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="556"/>
+        <location filename="exception.cpp" line="679"/>
         <source>^Fatal error! Here is some info about it: description: %1; exception code: %2; exception info code %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="exception.cpp" line="587"/>
+        <location filename="exception.cpp" line="710"/>
         <source>^Fatal error: description: %1; type: %2; code: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -645,7 +658,7 @@
     </message>
     <message>
         <location filename="window.ui" line="413"/>
-        <location filename="window.ui" line="619"/>
+        <location filename="window.ui" line="630"/>
         <source>Bootloader:</source>
         <translation>Загрузчик:</translation>
     </message>
@@ -661,6 +674,7 @@
     </message>
     <message>
         <location filename="window.ui" line="457"/>
+        <location filename="window.cpp" line="84"/>
         <source>Version:</source>
         <translation>Версия: </translation>
     </message>
@@ -680,22 +694,42 @@
         <translation>Установить на отдельный раздел</translation>
     </message>
     <message>
-        <location filename="window.ui" line="506"/>
+        <location filename="window.ui" line="515"/>
         <source>Install to directory</source>
         <translation>Установить в папку</translation>
     </message>
     <message>
-        <location filename="window.ui" line="527"/>
+        <location filename="window.ui" line="522"/>
+        <source>Install to flash drive</source>
+        <translation>Установить на флешку</translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="718"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Description:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;The open-source program installing android to pc(android x86)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Authors:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Profi_GMan&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Speciality thanks:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="506"/>
         <source>Coming soon</source>
         <translation>Скоро</translation>
     </message>
     <message>
-        <location filename="window.ui" line="587"/>
+        <location filename="window.ui" line="598"/>
         <source>System:</source>
         <translation>Система:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="707"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -720,7 +754,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Особые благодарности:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-style:italic;&quot;&gt;Atchan&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -734,7 +768,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="window.ui" line="725"/>
+        <location filename="window.ui" line="736"/>
         <source>Return to main menu</source>
         <translation>Вернуться в меню</translation>
     </message>
@@ -745,13 +779,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="window.ui" line="95"/>
-        <location filename="window.ui" line="694"/>
+        <location filename="window.ui" line="705"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
         <location filename="window.ui" line="102"/>
-        <location filename="window.ui" line="561"/>
+        <location filename="window.ui" line="572"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
@@ -787,8 +821,8 @@ p, li { white-space: pre-wrap; }
         <translation>Вернуться</translation>
     </message>
     <message>
-        <location filename="window.ui" line="541"/>
-        <location filename="window.ui" line="674"/>
+        <location filename="window.ui" line="552"/>
+        <location filename="window.ui" line="685"/>
         <source>To main menu</source>
         <translation>В главное меню</translation>
     </message>
@@ -810,103 +844,102 @@ p, li { white-space: pre-wrap; }
         <translation>Размер data.img(мб):</translation>
     </message>
     <message>
-        <location filename="window.ui" line="601"/>
+        <location filename="window.ui" line="612"/>
         <source>Path:</source>
         <oldsource>Путь:</oldsource>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="21"/>
+        <location filename="window.cpp" line="19"/>
         <source>^This PC does not supported</source>
         <translation>^Этот компьютер на данный момент не поддерживается</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="26"/>
+        <location filename="window.cpp" line="24"/>
         <source>Setting window</source>
         <translation>Настройка окна</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="86"/>
         <source>Version: </source>
-        <translation>Версия:</translation>
+        <translation type="vanished">Версия:</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="95"/>
+        <location filename="window.cpp" line="93"/>
         <source>YourDroid | Main menu</source>
         <translation>YourDroid | Главное меню</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="112"/>
+        <location filename="window.cpp" line="110"/>
         <source>YourDroid | Settings</source>
         <translation>YourDroid | Настройки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="119"/>
+        <location filename="window.cpp" line="117"/>
         <source>^For applying language application should restart</source>
         <translation>^Для применения языка нужно перезапустить это приложение</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="152"/>
+        <location filename="window.cpp" line="150"/>
         <source>YourDroid | Install</source>
         <translation>YourDroid | Установка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="169"/>
+        <location filename="window.cpp" line="167"/>
         <source>Choose image for install</source>
         <translation>Выберите образ для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="192"/>
+        <location filename="window.cpp" line="190"/>
         <source>Choose directory for install</source>
         <translation>Выберите папку для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="205"/>
+        <location filename="window.cpp" line="203"/>
         <source>Checking</source>
         <translation>Проверка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="206"/>
+        <location filename="window.cpp" line="204"/>
         <source>Checking data for install...</source>
         <translation>Проверка данных для установки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="218"/>
+        <location filename="window.cpp" line="216"/>
         <source>^Did not choose image</source>
         <translation>^Не выбран образ</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="223"/>
+        <location filename="window.cpp" line="221"/>
         <source>^Choosen image does not exist</source>
         <translation>^В выбранном образе нет нужных файлов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="228"/>
+        <location filename="window.cpp" line="226"/>
         <source>^Did not choose folder</source>
         <translation>^Не выбрана папка для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="233"/>
+        <location filename="window.cpp" line="231"/>
         <source>^Choosen folder is root</source>
         <translation>^Выбраная папка является корнем диска</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="238"/>
+        <location filename="window.cpp" line="236"/>
         <source>^Invalid path</source>
         <translation>^Недопустимый путь (допускаются пути, написанные латиницей и без пробелов)</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="248"/>
+        <location filename="window.cpp" line="246"/>
         <source>^Did not fill in the name</source>
         <translation>^Не вписано имя</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="253"/>
+        <location filename="window.cpp" line="251"/>
         <source>^Did not fill in the size of data.img</source>
         <translation>^Не выбран размер для data.img</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="265"/>
+        <location filename="window.cpp" line="263"/>
         <source>^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|</source>
         <translation>^Выбранная папка не пуста. Некоторые файлы будут перезаписаны. Нажмите отмена для отмены установки|+-|</translation>
     </message>
@@ -997,12 +1030,17 @@ p, li { white-space: pre-wrap; }
         <translation>Запись в gummiboot</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="325"/>
+        <location filename="install.cpp" line="122"/>
+        <source>Registering to bootmgr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="374"/>
         <source>Could not get size of %1</source>
         <translation>Невозможно получить размер %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="452"/>
+        <location filename="install.cpp" line="501"/>
         <source>File for copy is empty</source>
         <translation>Один из разархивируемых файлов из образа пуст</translation>
     </message>
@@ -1014,12 +1052,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Рабочая папка - </translation>
     </message>
     <message>
-        <location filename="main.cpp" line="109"/>
+        <location filename="main.cpp" line="114"/>
         <source>Window exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="111"/>
+        <location filename="main.cpp" line="116"/>
         <source>Window closed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1054,17 +1092,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="105"/>
+        <location filename="data.cpp" line="111"/>
         <source>Defining architecture...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="114"/>
+        <location filename="data.cpp" line="120"/>
         <source>Uname returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="119"/>
+        <location filename="data.cpp" line="125"/>
         <source>Processor type is </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1130,12 +1168,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="583"/>
+        <location filename="install.cpp" line="632"/>
         <source>/etc/grub.d/android/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="560"/>
+        <location filename="install.cpp" line="609"/>
         <source>Delete </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1145,17 +1183,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="561"/>
+        <location filename="install.cpp" line="610"/>
         <source>Удаление </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="172"/>
+        <location filename="window.cpp" line="170"/>
         <source>Choose image for install: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="195"/>
+        <location filename="window.cpp" line="193"/>
         <source>Choose dir for install: </source>
         <translation type="unfinished"></translation>
     </message>

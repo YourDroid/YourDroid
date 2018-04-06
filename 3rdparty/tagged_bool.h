@@ -7,9 +7,9 @@
 #ifndef AK_TOOLKIT_EXPLICIT_TAGGED_BOOL_HEADER_GUARD_
 #define AK_TOOLKIT_EXPLICIT_TAGGED_BOOL_HEADER_GUARD_
 
-namespace ak_toolkit {
-namespace xplicit {
-namespace tagged_bool_ns { // artificial namespace to prevent ADL into namespace xplicit
+//namespace ak_toolkit {
+//namespace xplicit {
+//namespace tagged_bool_ns { // artificial namespace to prevent ADL into namespace xplicit
 
 template <typename Tag>
 class tagged_bool
@@ -37,11 +37,11 @@ public:
     friend constexpr bool operator!=(tagged_bool l, tagged_bool r) { return l.value != r.value; }
 };
 
-}
+//}
 
-using tagged_bool_ns::tagged_bool; // with this tagged_bool is in namespace xplicit but with disabled ADL
+//using tagged_bool_ns::tagged_bool; // with this tagged_bool is in namespace xplicit but with disabled ADL
 
-}
-}
+//}
+//}
 
 #endif

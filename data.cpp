@@ -95,8 +95,14 @@ bool options::defbios() {
     return efiExist || efibootmgr;
 #elif WIN
     bool ret;
-    if((ret = QDir("C:\\Windows\\Boot").exists())) qDebug().noquote() << QObject::tr("Type of bios is uefi");
-    else qDebug().noquote() << QObject::tr("Type of bios is bios");
+    bool efiMount = mountEfiPart().first;
+    auto expr = cmd::exec("bcdedit", true);
+    bool efiContain = expr.second.contains("efi");
+    qDebug().noquote()
+            << QObject::tr("Efi partition mounted: %1. Bcdedit output contains efi: %2. "
+                           "So, type of bios is %3")
+               .arg(efiMount).arg(efiContain).arg((ret = efiMount || efiContain) ? "uefi" : "bios");
+    if(efiMount) unmountEfiPart();
     return ret;
 #endif
 }
@@ -136,12 +142,20 @@ bool options::defwinv() {
 
 QPair<bool, QString> options::mountEfiPart()
 {
+    if(efiMounted)
+    {
+        qDebug().noquote() << QObject::tr("Efi partition is already mounted");
+        return QPair<bool, QString>(true, "");
+    }
     auto check = [&](QString mountPoint) -> bool
     {
         auto expr = cmd::exec(QString("fsutil volume diskfree %1").arg(mountPoint));
         unsigned int size = expr.second.split(" ", QString::SkipEmptyParts).last().toInt();
         qDebug().noquote() << QObject::tr("Size is %1").arg(size);
-        if(QDir(QString("%1\\efi").arg(mountPoint)).exists() && size < 524288000)
+        bool dirExist;
+        qDebug().noquote() << QObject::tr("Dir exists: %1")
+                              .arg((dirExist = QDir(QString("%1\\efi").arg(mountPoint)).exists()));
+        if(dirExist && size/* < 1 * 1024 * 1024 * 1024*/)
         {
             qDebug().noquote()
                     << QObject::tr("efi dir found on %1 and size is valid").arg(mountPoint);
@@ -156,7 +170,7 @@ QPair<bool, QString> options::mountEfiPart()
 
     auto mount = [&](QString guid) -> QPair<bool, QString>
     {
-        efiAlreadyMounted = false;
+        efiWasMounted = false;
         QString mountPoint;
         auto expr = cmd::exec(QString("wmic volume get DeviceID,DriveLetter")
                          /*.arg(partList[i].remove("\n"))*/, true);
@@ -175,7 +189,7 @@ QPair<bool, QString> options::mountEfiPart()
         qDebug().noquote() << partInfo;
         if(!expr.first && partInfo.length() == 2)
         {
-            efiAlreadyMounted = true;
+            efiWasMounted = true;
             mountPoint = partInfo[1];
             qDebug().noquote()
                     << QObject::tr("Partition is already mounted. So mount point is %1")
@@ -208,9 +222,8 @@ QPair<bool, QString> options::mountEfiPart()
     bool sucess = false;
 
     {
-        char i[2] = {'a', '\0'};
-        for(; i[0] <= '{' && QDir(QString(i) + ":/").exists(); i[0]++);
-        if(i[0] == '{')
+        QString point = freeMountPoint();
+        if(point == '0')
         {
             efiMountPoint = qApp->applicationDirPath() + '/'
                     + QDate::currentDate().toString("dMyy")
@@ -218,7 +231,7 @@ QPair<bool, QString> options::mountEfiPart()
             if(!QDir().mkdir(efiMountPoint))
                 efiMountPoint = qApp->applicationDirPath() + "/data/efiPartition";
         }
-        else efiMountPoint = QString(i) + ":";
+        else efiMountPoint = point;
         qDebug().noquote() << QObject::tr("Free mountpoint is %1").arg(efiMountPoint);
     }
 
@@ -228,7 +241,7 @@ QPair<bool, QString> options::mountEfiPart()
         QPair<bool, QString> expr;
         if((sucess = (expr = mount(efiGuid)).first))
         {
-            sucess = check(expr.second);
+            if((sucess = check(expr.second))) efiMountPoint = expr.second;
         }
     }
     if(!sucess)
@@ -304,7 +317,7 @@ QPair<bool, QString> options::mountEfiPart()
                         break;
                     }
                     QPair<int, QString> expr;
-                    if(!sucess && !efiAlreadyMounted) expr = cmd::exec(QString("mountvol %1 /d")
+                    if(!sucess && !efiWasMounted) expr = cmd::exec(QString("mountvol %1 /d")
                                                                        .arg(mountPoint), true);
                     if(expr.first) break;
                 }
@@ -315,6 +328,7 @@ QPair<bool, QString> options::mountEfiPart()
     {
         if(sucess)
         {
+            efiMounted = true;
             qDebug().noquote()
                     << QObject::tr("Efi partition sucessfully mounted to %1").arg(efiMountPoint);
         }
@@ -325,19 +339,55 @@ QPair<bool, QString> options::mountEfiPart()
 
 QPair<bool, QString> options::unmountEfiPart()
 {
+    if(efiMounted == false)
+    {
+        qDebug().noquote() << QObject::tr("Efi partition is already unmounted");
+    }
     qDebug().noquote() << QObject::tr("Unmounting efi partition");
-    if(!efiAlreadyMounted)
+    QPair<bool, QString> res;
+    if(!efiWasMounted)
     {
         qDebug().noquote() << QObject::tr("Efi was not already mounted");
         auto expr = cmd::exec(QString("mountvol %1 /d").arg(efiMountPoint), true);
         if(!expr.first) qDebug().noquote() << QObject::tr("Unmounted sucessfully");
         else qWarning().noquote() << QObject::tr("Unmounted unsucessfully");
-        return QPair<bool, QString>(!expr.first, expr.second);
+        res = QPair<bool, QString>(!expr.first, expr.second);
     }
     else
     {
         qDebug().noquote() << QObject::tr("Efi was already mounted");
-        return QPair<bool, QString>(true, QString());
+        res = QPair<bool, QString>(true, QString());
+    }
+    efiMounted = !res.first;
+    return res;
+}
+
+QString options::freeMountPoint()
+{
+    qDebug().noquote() << QObject::tr("Looking for free drive letter");
+    char i[2] = {'a', '\0'};
+    for(; i[0] <= '{'; i[0]++)
+    {
+        if(QDir(QString(i) + ":/").exists())
+        {
+            qDebug().noquote() << QObject::tr("%1 exists").arg(i);
+        }
+        else
+        {
+            qDebug().noquote() << QObject::tr("%1 doesn't exist").arg(i);
+            break;
+        }
+    }
+    QString point = QString(i) + ':';
+    if(point == "{:")
+    {
+        qDebug().noquote() << QObject::tr("No free mount points available");
+        return "0";
+    }
+    else
+    {
+        qDebug().noquote() << QObject::tr("Free drive letter is %1").arg(point);
+        return point;
     }
 }
 #endif
