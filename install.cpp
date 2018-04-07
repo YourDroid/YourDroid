@@ -122,7 +122,7 @@ void install::registerBootloader() {
     case _bootloader::grub2: qDebug().noquote() << tr("Registering to grub2"); registerGrub2(); break;
     case _bootloader::gummiboot: qDebug().noquote() << tr("Registering to gummiboot"); registerGummi(); break;
     case _bootloader::bootmgr: qDebug().noquote() << tr("Registering to bootmgr"); registerBootmgr();
-        //case _bootloader::grub2_flash: qDebug().noquote() << tr("Seting up grub2 flash"); installGrub2(); break;
+        //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
 }
 

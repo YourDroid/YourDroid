@@ -153,8 +153,8 @@ void Window::on_installButtonMain_clicked()
     ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
     if(!global->set->tbios) {
-        ui->comboBoot->addItem("Grub legasy");
-        //if(global->set->winv && global->set->os) ui->comboBoot->addItem("Windows BOOTMGR");
+        //ui->comboBoot->addItem("Grub legasy");
+        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Windows BOOTMGR");
     }
     //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
     if(global->set->tbios) {
