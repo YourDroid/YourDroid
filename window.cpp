@@ -16,7 +16,7 @@ Window::Window(bool f, QWidget *parent) :
     fierst(!f),
     ui(new Ui::Window)
 {
-    if(global->set->tbios == false) {
+    if(global->set->tbios == false && OS == 0) {
         qCritical().noquote() << tr("^This PC does not supported");
     }
 
