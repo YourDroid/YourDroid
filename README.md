@@ -24,5 +24,5 @@ Because of it is in beta status, now it installs android to following pcs:
 3. Press install-button
 4. Fill in needed data
 5. Press install-button again
-6. Wait (it is the most difficult stage)
+6. Wait (it is the most difficult step)
 7. Profit :) 
