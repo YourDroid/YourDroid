@@ -165,16 +165,16 @@ void install::registerBootmgr()
     }
     else MKDIR(path);
 
-    COPY(QString("%1/data/bootloaders/grub_legasy/grldr").arg(qApp->applicationDirPath()),
-         QString("%1/grldr").arg(grubPath));
+    COPY(QString("%1/data/bootloaders/grub2/grub2Bios.mbr").arg(qApp->applicationDirPath()),
+         QString("%1/grub2.mbr").arg(grubPath));
 
-    COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
-         QString("%1/grldr.mbr").arg(grubPath));
+//    COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
+//         QString("%1/grldr.mbr").arg(grubPath));
 
-    grubLConfigure(qApp->applicationDirPath() + "/tempGrubConf", true);
+    grub2Configure(qApp->applicationDirPath() + "/tempGrubConf", true);
 
     COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()),
-         QString("%1/menu.lst").arg(grubPath));
+         QString("%1/grub.cfg").arg(grubPath));
 
     execAbort(QString("bcdedit /create /d \"%1\" /application bootsector").arg(systems.back().name));
 
@@ -186,7 +186,7 @@ void install::registerBootmgr()
 
     execAbort(QString("bcdedit /set %1 device partition=C:").arg(id));
 
-    execAbort(QString("bcdedit /set %1 path \\yourdroid_boot\\%2\\grldr.mbr").arg(id, systems.back().name));
+    execAbort(QString("bcdedit /set %1 path \\yourdroid_boot\\%2\\grub2.mbr").arg(id, systems.back().name));
 
     execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
 
