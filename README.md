@@ -20,9 +20,9 @@ Because of it is in beta status, now it installs android to following pcs:
 - It automatically detects features of your pc
 ## Getting started
 1. Download an iso-image (ISO!) of android version you want [here](http://www.android-x86.org/download)
-2. Dowload this programm, copy it anywhere and run
+2. Dowload this programm, unarchive it anywhere, copy bin/yourdroid if your os is linux or bin/yourdroid.exe if your os is windows to the root folder of yourdroid (near "data" folder), then run
 3. Press install-button
-4. Fill in needed data
+4. Fill in needed every form
 5. Press install-button again
 6. Wait (it is the most difficult step)
 7. Profit :) 
