@@ -18,3 +18,11 @@ Because of it is in beta status, now it installs android to following pcs:
 - You can download iso-image with linux distro with YourDroid and install android as a main os (coming soon)
 - You can create a VM and install with a linux distro (recommended) or windows and install android to it to make a dualboot system if you like
 - It automatically defines features of your pc
+## Getting started
+1. Download an iso-image (ISO!) of android version you want [here](http://www.android-x86.org/download)
+2. Dowload this programm, copy it anywhere and run
+3. Press install-button
+4. Fill in needed data
+5. Press install-button again
+6. Wait (it is the most difficult stage)
+7. Profit :) 
