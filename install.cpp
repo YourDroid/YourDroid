@@ -127,15 +127,18 @@ void install::registerBootloader() {
 }
 
 void install::installGrub2(install2Flash _install2Flash) {
+#if WIN
     QString efiDrive;
     if(_install2Flash) efiDrive = systems.back().place;
     else efiDrive = global->set->getEfiMountPoint();
     grub2Configure(qApp->applicationDirPath() + "/tempGrubConf");
+#endif
 
 }
 
 void install::registerBootmgr()
 {
+#if WIN
     qDebug().noquote() << QObject::tr("Setting up bootmgr");
 
     QString path;
@@ -191,6 +194,7 @@ void install::registerBootmgr()
     execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
 
     qDebug().noquote() << QObject::tr("Gummiboot setted up sucessfully");
+#endif
 }
 
 void install::registerGummi() {
@@ -720,10 +724,12 @@ void install::deleteEntry(int num) {
 
 void install::formatFlashDrive()
 {
+#if WIN
     qDebug().noquote() << QObject::tr("Formating flash drive...");
     QString part = systems.back().place;
 
     QPair<int, QString> addNew;
     execAbort(QString("format %1 /q /v:android /fs:ntfs").arg(part));
     qDebug().noquote() << QObject::tr("Flash drive formated successfully...");
+#endif
 }

@@ -99,8 +99,6 @@ int main(int argc, char *argv[])
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-        set.mountEfiPart();
-        qDebug().noquote() << QDir().mkdir(set.getEfiMountPoint() + "/test");
 
 //        *(int*)0 = 0;
 

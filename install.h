@@ -23,9 +23,7 @@ class install : public QObject {
         QString place;
         QString image;
         QString name;
-#if WIN
         QString bcdId;
-#endif
         bool ended = false;
         bool os = OS;
         //_installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e) {}
