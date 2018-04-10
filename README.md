@@ -19,7 +19,7 @@ Because of it is in beta status, now it installs android to following pcs:
 - You can create a VM and install a Linux distro (recommended) or Windows into it, then install Android to it to make it a dualboot system if you like
 - It automatically detects features of your pc
 ## Getting started
-1. Download an iso-image (ISO!) of android version you want [here](http://www.android-x86.org/download)
+1. Download an iso-image (ISO!) of any android version you want [here](http://www.android-x86.org/download)
 2. Dowload or clone this repo, unarchive it anywhere, then run bin/yourdroid if your os is linux or bin/yourdroid.exe if your os is windows
 3. Press install-button
 4. Fill in every form
