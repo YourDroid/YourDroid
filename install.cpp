@@ -162,22 +162,75 @@ void install::registerBootmgr()
         if(log::getLastPressedButton() == QMessageBox::Ok)
         {
             if(!QDir(path).removeRecursively())
+            {
                 emit abort(QObject::tr("Couldn't overwrite"));
+                return;
+            }
         }
-        else emit abort(QObject::tr("Canceled by user"));
+        else
+        {
+            emit abort(QObject::tr("Canceled by user"));
+            return;
+        }
     }
     else MKDIR(path);
 
-    COPY(QString("%1/data/bootloaders/grub2/grub2Bios.mbr").arg(qApp->applicationDirPath()),
-         QString("%1/grub2.mbr").arg(grubPath));
+    qDebug.noquote() << QObject::tr("Selecting grub4dos file name...");
 
-//    COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
-//         QString("%1/grldr.mbr").arg(grubPath));
+    srand((unsigned int)time(NULL));
+    QString grName;
+    forever()
+    {
+        char *ch = new char[3] {rand() % 256 - 128, '\0'};
+        grName = QString("gr_%1").arg(ch);
+        bool exist = QFile(QString("C:/%1").arg(grName)).exists();
+        if(exist) qDebug.noquote() << QObject::tr("%1 exists").arg(grName);
+        else qDebug.noquote() << QObject::tr("%2 doesn't exist").arg(grName);
+    }
 
-    grub2Configure(qApp->applicationDirPath() + "/tempGrubConf", true);
+    qDebug.noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
+
+    COPY(QString("%1/data/bootloaders/grub2/simple").arg(qApp->applicationDirPath()),
+         QString("C:/%1").arg(grName));
+
+    DEBUG("Editing grub4dosfile");
+    QFile gr(QString("c:/%1").arg(grName));
+    if(!gr.open(QIODevice::Append | QIODevice::WriteOnly))
+    {
+        emit abort(QObject::tr("Couldn't open the grub file"));
+        return;
+    }
+    QTextStream(gr);
+    gr << QString("yourdroid_boot/%1/menu.lst");
+    gr.close();
+
+
+    QString grMbrPath = QString("%1/grubLegasy.mbr").arg(grubPath);
+
+    COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
+         grMbrPath);
+
+    DEBUG("Editing grub4dos mbr file...");
+    QFile _grMbr(grMbrPath);
+    if(!_grMbr.open(QIODevice::ReadOnly))
+    {
+        emit abort(QObject::tr("Couldn't open the grub.mbr to read"));
+        return;
+    }
+    QTextStream grMbr(_grMbr);
+    QString grMbrText = grMbr.readAll();
+    grMbrText.replace("smpl", grName);
+    if(!_grMbr.open(QIODevice::WriteOnly))
+    {
+        emit abort(QObject::tr("Couldn't open the grub.mbr to write"));
+        return;
+    }
+    grMbr << grMbrText;
+
+    grubLConfigure(qApp->applicationDirPath() + "/tempGrubConf", true);
 
     COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()),
-         QString("%1/grub.cfg").arg(grubPath));
+         QString("%1/menu.lst").arg(grubPath));
 
     execAbort(QString("bcdedit /create /d \"%1\" /application bootsector").arg(systems.back().name));
 
@@ -189,7 +242,7 @@ void install::registerBootmgr()
 
     execAbort(QString("bcdedit /set %1 device partition=C:").arg(id));
 
-    execAbort(QString("bcdedit /set %1 path \\yourdroid_boot\\%2\\grub2.mbr").arg(id, systems.back().name));
+    execAbort(QString("bcdedit /set %1 path \\yourdroid_boot\\%2\\grubLegasy.mbr").arg(id, systems.back().name));
 
     execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
 

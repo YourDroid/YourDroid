@@ -1,0 +1,48 @@
+# Created by YourDroid 
+# Work dir: /home/profi/Документы/Programming/building/YourDroid/source/bin
+
+TIME: 19:55:09 FILE: ../source/main.cpp LINE: 72 DEBUG: getuid() returned 0
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 43 DEBUG: Reading settings...
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 73 DEBUG: Settings does not exist or settings restoring default
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 89 DEBUG: Defining type of bios...
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 28 DEBUG: Executing "efibootmgr"
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 68 DEBUG: Returned value is  0
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 71 DEBUG: BootCurrent: 0001
+Timeout: 2 seconds
+BootOrder: 0001,0006,0008,0000,0007,0003,000B,0013,0002,0004,0005
+Boot0000* Grub2Win EFI
+Boot0001* ubuntu
+Boot0002* UEFI:CD/DVD Drive
+Boot0003* test
+Boot0004* UEFI:Removable Device
+Boot0005* UEFI:Network Device
+Boot0006* Hard Drive
+Boot0007* Windows Boot Manager
+Boot0008* CD/DVD Drive
+Boot000B* YourDroid Gummiboot
+Boot0013* YourDroid Gummiboot
+
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 93 DEBUG: /boot/efi  exists
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 94 DEBUG: efibootmgr  exists
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 111 DEBUG: Defining architecture...
+TIME: 19:55:09 FILE: ../source/data.cpp LINE: 120 DEBUG: Uname returned x86_64
+TIME: 19:55:09 FILE: ../source/main.cpp LINE: 93 DEBUG: Translating...
+TIME: 19:55:09 FILE: ../source/main.cpp LINE: 98 DEBUG: Setting debug console...
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 28 DEBUG: Executing "help"
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 56 ERROR: Executing ended unsuccesfull
+TIME: 19:55:09 FILE: ../source/cmd.cpp LINE: 71 DEBUG: 
+execvp: РќРµС‚ С‚Р°РєРѕРіРѕ С„Р°Р№Р»Р° РёР»Рё РєР°С‚Р°Р»РѕРіР°
+TIME: 19:55:09 FILE: ../source/install.cpp LINE: 68 DEBUG: Reading install settings...
+TIME: 19:55:09 FILE: ../source/install.cpp LINE: 74 DEBUG: Count of systems is 0
+TIME: 19:55:09 FILE: ../source/install.cpp LINE: 116 DEBUG: Systems read succesfull
+TIME: 19:55:09 FILE: ../source/window.cpp LINE: 25 DEBUG: Setting window
+TIME: 19:55:09 FILE:  LINE: 0 WARNING: QMetaObject::connectSlotsByName: No matching signal for on_radioButton_clicked()
+TIME: 19:55:09 FILE: ../source/install.cpp LINE: 693 DEBUG: Exec progress and status bars
+TIME: 19:55:09 FILE: ../source/main.cpp LINE: 116 DEBUG: Window exec
+TIME: 19:55:17 FILE: ../source/main.cpp LINE: 118 DEBUG: Window closed
+TIME: 19:55:17 FILE: ../source/data.cpp LINE: 10 DEBUG: Writing settings...
+TIME: 19:55:17 FILE: ../source/install.cpp LINE: 26 DEBUG: Writing install settings...
+TIME: 19:55:17 FILE: ../source/install.cpp LINE: 45 DEBUG: System configs registered succesfull
+TIME: 19:55:17 FILE: ../source/install.cpp LINE: 64 DEBUG: Systems wrote succesfull
+TIME: 19:55:17 FILE: ../source/main.cpp LINE: 121 DEBUG: Exiting... Returned  0

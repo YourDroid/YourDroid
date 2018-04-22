@@ -47,10 +47,10 @@ int main(int argc, char *argv[])
     Breakpad::CrashHandler::instance()->Init("./log");
 
     //set_signal_handler();
-    std::set_terminate([=]() -> void {
-        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
-        errorAbort(1);
-    });
+//    std::set_terminate([=]() -> void {
+//        qCritical().noquote().noquote() << QObject::tr("^Unknown fatal error! Program will terminate");
+//        errorAbort(1);
+//    });
     auto exceptionAbort = [&](QString what) {
         qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
         errorAbort(1);
