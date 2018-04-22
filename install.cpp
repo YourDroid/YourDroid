@@ -193,7 +193,7 @@ void install::registerBootmgr()
     COPY(QString("%1/data/bootloaders/grub2/simple").arg(qApp->applicationDirPath()),
          QString("C:/%1").arg(grName));
 
-    //DEBUG("Editing grub4dosfile");
+    qDebug().noquote() << QObject::tr("Editing grub4dosfile");
     QFile _gr(QString("c:/%1").arg(grName));
     if(!_gr.open(QIODevice::Append | QIODevice::WriteOnly))
     {
