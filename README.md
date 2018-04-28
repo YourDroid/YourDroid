@@ -15,7 +15,7 @@ Because of it is in beta status, now it installs android to following pcs:
 - Easy to delete installed Android
 - It works on pc having any features (uefi, bios, gpt, mbr)
 - It can install any released versions of Android x86 (architecture x86 and x64 is only available). You can choose one on the web site of android x86 (more info at "getting started") or download by the programm (coming soon).
-- You can download the iso-image with YourDroid and install android as a main os (coming soon)
+- You can download the iso-image including YourDroid and install android as the main os (coming soon)
 - You can create a VM and install a Linux distro (recommended) or Windows into it, then install Android to it to make it a dualboot system if you like
 - It automatically detects features of your pc
 ## Getting started
