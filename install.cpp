@@ -175,11 +175,11 @@ void install::registerBootmgr()
     }
     else MKDIR(path);
 
-    qDebug.noquote() << QObject::tr("Selecting grub4dos file name...");
+    qDebug().noquote() << QObject::tr("Selecting grub4dos file name...");
 
     srand((unsigned int)time(NULL));
     QString grName;
-    forever()
+    while(1)
     {
         char *ch = new char[3] {rand() % 256 - 128, '\0'};
         grName = QString("gr_%1").arg(ch);
@@ -192,21 +192,21 @@ void install::registerBootmgr()
         else qDebug.noquote() << QObject::tr("%2 doesn't exist").arg(grName);
     }
 
-    qDebug.noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
+    qDebug().noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
 
     COPY(QString("%1/data/bootloaders/grub2/simple").arg(qApp->applicationDirPath()),
          QString("C:/%1").arg(grName));
 
-    DEBUG("Editing grub4dosfile");
-    QFile gr(QString("c:/%1").arg(grName));
-    if(!gr.open(QIODevice::Append | QIODevice::WriteOnly))
+    qDebug().noquote() << QObject::tr("Editing grub4dosfile");
+    QFile _gr(QString("c:/%1").arg(grName));
+    if(!_gr.open(QIODevice::Append | QIODevice::WriteOnly))
     {
         emit abort(QObject::tr("Couldn't open the grub file"));
         return;
     }
-    QTextStream(gr);
+    QTextStream gr(&_gr);
     gr << QString("yourdroid_boot/%1/menu.lst");
-    gr.close();
+    _gr.close();
 
 
     QString grMbrPath = QString("%1/grubLegasy.mbr").arg(grubPath);
@@ -214,14 +214,14 @@ void install::registerBootmgr()
     COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
          grMbrPath);
 
-    DEBUG("Editing grub4dos mbr file...");
+    //DEBUG("Editing grub4dos mbr file...");
     QFile _grMbr(grMbrPath);
     if(!_grMbr.open(QIODevice::ReadOnly))
     {
         emit abort(QObject::tr("Couldn't open the grub.mbr to read"));
         return;
     }
-    QTextStream grMbr(_grMbr);
+    QTextStream grMbr(&_grMbr);
     QString grMbrText = grMbr.readAll();
     grMbrText.replace("smpl", grName);
     if(!_grMbr.open(QIODevice::WriteOnly))
