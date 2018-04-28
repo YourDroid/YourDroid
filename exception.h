@@ -98,7 +98,7 @@
 
 #if WIN
 #include <exception>
-#include <VirtDisk.h>
+//#include <VirtDisk.h>
 #include <windows.h>
 #elif LINUX
 #include <err.h>

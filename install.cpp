@@ -184,7 +184,11 @@ void install::registerBootmgr()
         char *ch = new char[3] {rand() % 256 - 128, '\0'};
         grName = QString("gr_%1").arg(ch);
         bool exist = QFile(QString("C:/%1").arg(grName)).exists();
-        if(exist) qDebug.noquote() << QObject::tr("%1 exists").arg(grName);
+        if(exist)
+        {
+            qDebug.noquote() << QObject::tr("%1 exists").arg(grName);
+            break;
+        }
         else qDebug.noquote() << QObject::tr("%2 doesn't exist").arg(grName);
     }
 
