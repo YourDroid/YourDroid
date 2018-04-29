@@ -186,10 +186,10 @@ void install::registerBootmgr()
         bool exist = QFile(QString("C:/%1").arg(grName)).exists();
         if(exist)
         {
-            qDebug.noquote() << QObject::tr("%1 exists").arg(grName);
+            qDebug().noquote() << QObject::tr("%1 exists").arg(grName);
             break;
         }
-        else qDebug.noquote() << QObject::tr("%2 doesn't exist").arg(grName);
+        else qDebug().noquote() << QObject::tr("%2 doesn't exist").arg(grName);
     }
 
     qDebug().noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
