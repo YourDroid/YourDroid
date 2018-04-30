@@ -351,7 +351,7 @@ void install::installGummi(bool isRegUefi) {
         QString id = output.mid(begin, end - begin + 1);
         qDebug() << QObject::tr("Id is %1").arg(id);
 
-        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot/%2")
+        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot\\%2")
                   .arg(id, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")));
 
         execAbort(QString("bcdedit /set {fwbootmgr} displayorder %1 /addfirst").arg(id));
