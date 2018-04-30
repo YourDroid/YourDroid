@@ -186,10 +186,10 @@ void install::registerBootmgr()
         bool exist = QFile(QString("C:/%1").arg(grName)).exists();
         if(exist)
         {
-            qDebug.noquote() << QObject::tr("%1 exists").arg(grName);
+            qDebug().noquote() << QObject::tr("there is %1").arg(grName);
             break;
         }
-        else qDebug.noquote() << QObject::tr("%2 doesn't exist").arg(grName);
+        else qDebug().noquote() << QObject::tr("there's no %2").arg(grName);
     }
 
     qDebug().noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
@@ -351,7 +351,7 @@ void install::installGummi(bool isRegUefi) {
         QString id = output.mid(begin, end - begin + 1);
         qDebug() << QObject::tr("Id is %1").arg(id);
 
-        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot/%2")
+        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot\\%2")
                   .arg(id, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")));
 
         execAbort(QString("bcdedit /set {fwbootmgr} displayorder %1 /addfirst").arg(id));
