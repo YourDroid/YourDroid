@@ -271,10 +271,15 @@ void install::registerGummi() {
         return;
     }
     QTextStream config(&_config);
-    config << QString("title %1\nefi %2\\%3")
-              .arg(systems.back().name,
-                   QString("/efi/yourdroid_gummiboot/%2")
-                   .arg(systems.back().name).replace('/', "\\"), grub);
+    QString conf = QString("title %1\nefi %2\\%3")
+            .arg(systems.back().name,
+                 QString("/efi/yourdroid_gummiboot/%2")
+                 .arg(systems.back().name).
+                 replace('/', "\\"), grub);
+    qDebug().noquote()
+            << QObject::tr("Gummiboot's config is %1")
+               .arg(conf);
+    config << conf;
     _config.close();
 
     QString path;
