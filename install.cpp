@@ -261,7 +261,7 @@ void install::registerGummi() {
     qDebug().noquote() << QObject::tr("Setting up gummiboot");
 
     QString mountPoint = global->set->getEfiMountPoint();
-    QString grub = QString(global->set->getArch() ? "grub64.efi" : "grub32.efi");
+    QString grub = QString(global->set->getArch() ? "grubx64.efi" : "grubx32.efi");
 
     grub2Configure(qApp->applicationDirPath() + "/tempGrubConf");
 
@@ -289,8 +289,8 @@ void install::registerGummi() {
          .exists()))
     {
         MKDIR(path);
-        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
-             .arg(qApp->applicationDirPath()), path + "/0windows.conf");
+//        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
+//             .arg(qApp->applicationDirPath()), path + "/0windows.conf");
         COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()), path + "/grub.cfg");
         COPY(QString("%1/data/bootloaders/grub2/%2").arg(qApp->applicationDirPath(), grub),
              path + '/' + grub);
@@ -406,13 +406,13 @@ void install::installGummi(bool isRegUefi) {
     }
     logDirExist();
 
-    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
-    {
-        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
-             .arg(qApp->applicationDirPath()),
-             path);
-    }
-    logDirExist();
+//    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
+//    {
+//        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
+//             .arg(qApp->applicationDirPath()),
+//             path);
+//    }
+//    logDirExist();
 
 
 #endif
