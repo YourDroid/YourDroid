@@ -1,0 +1,299 @@
+
+Диспетчер загрузки микропрограмм
+---------------------
+идентификатор           {fwbootmgr}
+displayorder            {95945d2f-7ac8-11e8-adc4-f334b78d9599}
+                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006770-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676f-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676e-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676d-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676c-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676b-f206-11e7-b78f-d5f1b119ddcd}
+                        {e000676a-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006769-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006768-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006767-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006766-f206-11e7-b78f-d5f1b119ddcd}
+                        {de7872d3-40c8-11e8-bd70-806e6f6e6963}
+                        {157e1d9d-9ae6-11e7-92d4-305a3a7cea7e}
+                        {157e1dbe-9ae6-11e7-92d4-305a3a7cea7e}
+                        {157e1db8-9ae6-11e7-92d4-305a3a7cea7e}
+                        {157e1dbc-9ae6-11e7-92d4-305a3a7cea7e}
+                        {bootmgr}
+                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
+                        {825cb71e-aba2-11e8-8e7d-806e6f6e6963}
+                        {825cb71f-aba2-11e8-8e7d-806e6f6e6963}
+                        {825cb720-aba2-11e8-8e7d-806e6f6e6963}
+timeout                 1
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {157e1db8-9ae6-11e7-92d4-305a3a7cea7e}
+device                  partition=A:
+path                    \EFI\GRUB2WIN\GNUGRUB.KERNEL64.EFI
+description             Grub2Win EFI
+inherit                 {globalsettings}
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {157e1dbc-9ae6-11e7-92d4-305a3a7cea7e}
+device                  partition=A:
+path                    \EFI\REFIND\REFIND_X64.EFI
+description             Grub2Win EFI
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {95945d2f-7ac8-11e8-adc4-f334b78d9599}
+device                  partition=A:
+path                    \EFI\yourdroid_grub\grub64.efi
+description             YourDroid Grub
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {95945d2b-7ac8-11e8-adc4-f334b78d9599}
+displayorder            {current}
+                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
+                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {bootmgr}
+device                  partition=A:
+path                    \EFI\MICROSOFT\BOOT\BOOTMGFW.EFI
+description             Windows Boot Manager
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {current}
+resumeobject            {95945d2b-7ac8-11e8-adc4-f334b78d9599}
+displayorder            {current}
+                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
+                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
+                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006766-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006767-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006768-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006769-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676a-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676b-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676c-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676d-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676e-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e000676f-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006770-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006771-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Диспетчер загрузки Windows
+--------------------
+идентификатор           {e0006772-f206-11e7-b78f-d5f1b119ddcd}
+device                  partition=A:
+path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
+description             YourDroid Gummiboot
+locale                  ru-RU
+inherit                 {globalsettings}
+default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
+displayorder            {e0006771-f206-11e7-b78f-d5f1b119ddcd}
+                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
+toolsdisplayorder       {memdiag}
+timeout                 3
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {157e1d9d-9ae6-11e7-92d4-305a3a7cea7e}
+description             Hard Drive
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {157e1dbe-9ae6-11e7-92d4-305a3a7cea7e}
+description             CD/DVD Drive
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {825cb71e-aba2-11e8-8e7d-806e6f6e6963}
+description             UEFI:CD/DVD Drive
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {825cb71f-aba2-11e8-8e7d-806e6f6e6963}
+description             UEFI:Removable Device
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {825cb720-aba2-11e8-8e7d-806e6f6e6963}
+description             UEFI:Network Device
+
+Приложение микропрограммы (101fffff)
+-------------------------------
+идентификатор           {de7872d3-40c8-11e8-bd70-806e6f6e6963}
+device                  partition=A:
+path                    \EFI\UBUNTU\SHIMX64.EFI
+description             ubuntu

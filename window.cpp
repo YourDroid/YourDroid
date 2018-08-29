@@ -159,8 +159,8 @@ void Window::on_installButtonMain_clicked()
     //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
     if(global->set->tbios) {
         //ui->comboBoot->addItem("rEFInd");
-        if(global->set->os) ui->comboBoot->addItem("Gummiboot");
-        else ui->comboBoot->addItem("Grub2");
+        /*if(global->set->os) ui->comboBoot->addItem("Gummiboot");
+        else */ui->comboBoot->addItem("Grub2");
     }
 }
 
