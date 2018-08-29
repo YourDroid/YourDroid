@@ -81,7 +81,7 @@ public:
 //        install2Flash _install2Flash
         #endif
             );
-    void grub2Configure(QString, bool = false);
+    QString grub2Configure(QString, bool = false, bool = true);
     void grubLConfigure(QString, bool = false);
     void registerGummi();
     void installGummi(bool);
