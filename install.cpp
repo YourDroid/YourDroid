@@ -126,16 +126,6 @@ void install::registerBootloader() {
     }
 }
 
-void install::installGrub2(install2Flash _install2Flash) {
-#if WIN
-    QString efiDrive;
-    if(_install2Flash) efiDrive = systems.back().place;
-    else efiDrive = global->set->getEfiMountPoint();
-    grub2Configure(qApp->applicationDirPath() + "/tempGrubConf");
-#endif
-
-}
-
 void install::registerBootmgr()
 {
 #if WIN
@@ -322,25 +312,7 @@ void install::registerGummi() {
     //              .arg(qApp->applicationDirPath(), path));
 #endif
 
-    qDebug().noquote() << QObject::tr("Gummiboot setted up sucessfully");
-}
-
-bool install::isRegUefiGummi() {
-    qDebug().noquote() << "Checking gummiboot's entry";
-#if WIN
-    auto expr = cmd::exec(QString("bcdedit /enum firmware"), true);
-    QFile _enum(QString("%1/tempEnum").arg(qApp->applicationDirPath()));
-    if(!_enum.open(QIODevice::WriteOnly)) {
-        qWarning().noquote() << QObject::tr("Could not open tempEnum");
-        return false;
-    }
-    QTextStream(&_enum) << expr.second;
-    _enum.close();
-    bool res = !cmd::exec(
-                QString("find \"YourDroid Gummiboot\" %1/tempEnum").arg(qApp->applicationDirPath())).first;
-    qDebug().noquote() << (res ? "Gummiboot registered" : "Gummiboot did not registered");
-    return res;
-#endif
+    qDebug().noquote() << QObject::tr("Gummiboot was set up sucessfully");
 }
 
 void install::installGummi(bool isRegUefi) {
@@ -417,10 +389,186 @@ void install::installGummi(bool isRegUefi) {
 
 #endif
 
-    qDebug().noquote() << QObject::tr("Gummiboot installed succesful");
+    qDebug().noquote() << QObject::tr("Gummiboot installed successful");
+}
+
+bool install::grub2IsRegestered() {
+    qDebug().noquote() << "Checking if there is an entry of Grub2";
+#if WIN
+    //TODO: check the path and the displayorder
+    auto expr = cmd::exec(QString("bcdedit /enum firmware"), true);
+    QFile _enum(QString("%1/tempEnum").arg(qApp->applicationDirPath()));
+    if(!_enum.open(QIODevice::WriteOnly)) {
+        qWarning().noquote() << QObject::tr("Unable to open tempEnum");
+        return false;
+    }
+    QTextStream(&_enum) << expr.second;
+    _enum.close();
+    bool res = !cmd::exec(
+                QString("find \"YourDroid Grub\" %1/tempEnum").arg(qApp->applicationDirPath())).first;
+    qDebug().noquote() << (res ? "Grub has been registered" : "Grub has not been registered");
+    return res;
+#endif
+}
+
+void install::installGrub2(
+        #if WIN
+        bool regestered
+//        install2Flash _install2Flash
+        #endif
+        ) {
+#if WIN
+    qDebug().noquote() << "Installing Grub2...";
+
+    if(!regestered) //if a grub entry has already been created
+    {
+        execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Grub\"");
+
+        QString output = resCmd.second;
+        int begin = output.indexOf('{'), end = output.indexOf('}');
+        QString id = output.mid(begin, end - begin + 1);
+        qDebug() << QObject::tr("Id is %1").arg(id);
+
+        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_grub\\%2")
+                  .arg(id, (dat->arch ? "grub64.efi" : "grub32.efi")));
+
+        execAbort(QString("bcdedit /set {fwbootmgr} displayorder %1 /addfirst").arg(id));
+    }
+
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
+
+    QString s = global->set->getEfiMountPoint();
+
+    QString path;
+    bool res = false;
+    if(!(res = QDir((path = QString("%1/EFI/yourdroid_grub").arg(s))).exists())) //creating a dir for grub files
+    {
+        MKDIR(path);
+    }
+    logDirExist();
+
+    QString grubFile = (dat->arch ? "grubx64.efi" : "grubx32.efi");
+
+    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub/%2")
+                      .arg(s, gummiFile))).exists()))
+    {
+        COPY(qApp->applicationDirPath() + "/bin/data/bootloaders/grub/"
+             + grubFile,
+             path);
+    }
+    logDirExist();
+
+//    if(!(res = QDir((path = QString("%1/loader").arg(s))).exists()))
+//    {
+//        MKDIR(path);
+//    }
+//    logDirExist();
+
+    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub/grub.cfg").arg(s))).exists()))
+    {
+        COPY(QString("%1/bin/data/bootloaders/grub2/grub.cfg")
+             .arg(qApp->applicationDirPath()),
+             path);
+    }
+    logDirExist();
+
+//    if(!(res = QDir((path = QString("%1/loader/entries").arg(s))).exists()))
+//    {
+//        MKDIR(path);
+//    }
+//    logDirExist();
+
+//    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
+//    {
+//        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
+//             .arg(qApp->applicationDirPath()),
+//             path);
+//    }
+//    logDirExist();
+
+    qDebug().noquote() << QObject::tr("Grub2 has been installed successfully");
+
+
+#endif
+
+
+    //#if WIN
+    //    QString efiDrive;
+    //    if(_install2Flash) efiDrive = systems.back().place;
+    //    else efiDrive = global->set->getEfiMountPoint();
+    //    grub2Configure(qApp->applicationDirPath() + "/tempGrubConf");
+    //#endif
+
 }
 
 void install::registerGrub2() {
+#if WIN
+    installGrub2(grub2IsRegestered);
+
+    qDebug().noquote() << QObject::tr("Setting up grub");
+
+    QString mountPoint = global->set->getEfiMountPoint();
+    QString grub = QString(global->set->getArch() ? "grubx64.efi" : "grubx32.efi");
+
+    QString menuentry = grub2Configure(QString(), false, false);
+
+    QFile _config(mountPoint + "/EFI/yourdroid_grub/grub.cfg");
+    if(!_config.open(QIODevice::WriteOnly)) {
+        emit abort(QObject::tr("Could not open the grub's config-file"));
+        return;
+    }
+    QTextStream config(&_config);
+//    QString conf = QString("title %1\nefi %2\\%3")
+//            .arg(systems.back().name,
+//                 QString("/efi/yourdroid_gummiboot/%2")
+//                 .arg(systems.back().name).
+//                 replace('/', "\\"), grub);
+//    qDebug().noquote()
+//            << QObject::tr("Grub's entry is %1")
+//               .arg(conf);
+    config << menuentry + '\n';
+    _config.close();
+
+    /*String path;
+    bool res = false;
+
+    if(!(res = QDir((path = QString("%1/efi/yourdroid_gummiboot/%2").arg(mountPoint, systems.back().name)))
+         .exists()))
+    {
+        MKDIR(path);
+//        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
+//             .arg(qApp->applicationDirPath()), path + "/0windows.conf");
+        COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()), path + "/grub.cfg");
+        COPY(QString("%1/data/bootloaders/grub2/%2").arg(qApp->applicationDirPath(), grub),
+             path + '/' + grub);
+        //        execAbort(QString("copy %1/data/bootloaders/gummi/loader/entries/0windows.conf+"
+        //                          "%1/tempGrubConf+"
+        //                          "%1/data/bootloaders/grub2/%2 %3")
+        //                  .arg(qApp->applicationDirPath(),
+        //                       grub, path));
+    }
+    logDirExist();
+
+    res = QFile((path = QString("%1/loader/entries/%2.conf").arg(mountPoint, systems.back().name)))
+            .exists();
+    logDirExist();
+    if(res)
+    {
+        qDebug().noquote()
+                << QObject::tr("^Do you want to overwrite system's config "
+                               "(if no, installation will abort)?|+-");
+        if(log::getLastPressedButton() == QMessageBox::Ok)
+        {
+            RENAME(path, path + "_old");
+        }
+        else emit abort(QObject::tr("canceled by user"));
+    }
+    COPY(QString("%1/tempGummiConf").arg(qApp->applicationDirPath()),
+         path);*/
+    //    execAbortSep(QString("copy %1/tempGummiConf %2")
+    //              .arg(qApp->applicationDirPath(), path));
+#elif LINUX
     qDebug().noquote() << QObject::tr("Registering to grub2...");
     QFile _grub("/etc/grub.d/40_custom");
     if(!_grub.open(QIODevice::ReadOnly)) {
@@ -456,25 +604,34 @@ void install::registerGrub2() {
         emit abort(QObject::tr("Could not update grub: %1").arg(expr.second));
         return;
     }
+#endif
 }
 
-void install::grub2Configure(QString way, bool needTimeout) {
+QString install::grub2Configure(QString way, bool needTimeout, bool toFile) {
     QString place = obsolutePath(systems.back().place);
     QString name = systems.back().name;
-    QFile _config(way);
-    if(!_config.open(QIODevice::WriteOnly)) {
-        emit abort(QObject::tr("Could not open the config-file"));
-        return;
+    QString menuentry = QString("menuentry '") + name + QString("' --class android-x86 {\n") +
+            QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
+            QString("\tlinux ") + place +
+            QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 "
+                    "androidboot.selinux=permissive SRC=%1\n").arg(place) +
+            QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n";
+    qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
+
+    if(toFile)
+    {
+        QFile _config(way);
+        if(!_config.open(QIODevice::WriteOnly)) {
+            emit abort(QObject::tr("Could not open the config-file"));
+            return;
+        }
+        QTextStream config(&_config);
+        if(needTimeout) config << "set timeout=0\n";
+        config << menuentry;
+        _config.close();
+        return QString();
     }
-    QTextStream config(&_config);
-    if(needTimeout) config << "set timeout=0\n";
-    config << (QString("menuentry '") + name + QString("' --class android-x86 {\n") +
-               QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
-               QString("\tlinux ") + place +
-               QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 "
-                       "androidboot.selinux=permissive SRC=%1\n").arg(place) +
-               QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n");
-    _config.close();
+    else return menuentry;
 }
 
 void install::grubLConfigure(QString way, bool needTimeout)

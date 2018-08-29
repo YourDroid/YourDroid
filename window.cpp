@@ -265,13 +265,13 @@ void Window::on_buttonInstallInstall_clicked()
             return;
         }
     }
-    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
-        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
-        if(log::getLastPressedButton() == QMessageBox::Cancel) {
-            end();
-            return;
-        }
-    }
+//    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
+//        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
+//        if(log::getLastPressedButton() == QMessageBox::Cancel) {
+//            end();
+//            return;
+//        }
+//    }
 
 #if LINUX
     QPair<bool, QString> result = global->insSet->mountImage(ui->editImageFromDisk->text());
