@@ -1,732 +1,0 @@
-# Created by YourDroid 
-# Work dir: C:/YourDroid/source/bin
-
-TIME: 20:16:48 FILE: ..\source\data.cpp LINE: 43 DEBUG: Reading settings...
-TIME: 20:16:48 FILE: ..\source\data.cpp LINE: 49 DEBUG: Settings does exist
-TIME: 20:16:48 FILE: ..\source\main.cpp LINE: 93 DEBUG: Translating...
-TIME: 20:16:48 FILE: ..\source\main.cpp LINE: 98 DEBUG: Setting debug console...
-TIME: 20:16:48 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "help"
-TIME: 20:16:48 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:16:48 FILE: ..\source\cmd.cpp LINE: 65 WARNING: Returned value is  1
-TIME: 20:16:48 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Для получения сведений об определенной команде наберите HELP <имя команды>
-ASSOC          Вывод либо изменение сопоставлений по расширениям имен файлов.
-ATTRIB         Отображение и изменение атрибутов файлов.
-BREAK        Включение и выключение режима обработки комбинации клавиш CTRL+C.
-BCDEDIT        Задает свойства в базе данных загрузки для управления начальной
-               загрузкой.
-CACLS          Отображение и редактирование списков управления доступом (ACL)
-               к файлам.
-CALL           Вызов одного пакетного файла из другого.
-CD             Вывод имени либо смена текущей папки.
-CHCP           Вывод либо установка активной кодовой страницы.
-CHDIR          Вывод имени либо смена текущей папки.
-CHKDSK         Проверка диска и вывод статистики.
-CHKNTFS        Отображение или изменение выполнения проверки диска во время 
-               загрузки.
-CLS            Очистка экрана.
-CMD            Запуск еще одного интерпретатора командных строк Windows.
-COLOR       Установка цветов переднего плана и фона, используемых по умолчанию.
-COMP           Сравнение содержимого двух файлов или двух наборов файлов.
-COMPACT        Отображение и изменение сжатия файлов в разделах NTFS.
-CONVERT        Преобразует тома FAT в NTFS. Вы не можете 
-               преобразовать текущий диск.
-COPY           Копирование одного или нескольких файлов в другое место.
-DATE           Вывод либо установка текущей даты.
-DEL            Удаление одного или нескольких файлов.
-DIR            Вывод списка файлов и подпапок из указанной папки.
-DISKPART       Отображает или настраивает свойства раздела диска.
-DOSKEY         Редактирует командные строки, повторно вызывает команды Windows и создает 
-               макросы.
-DRIVERQUERY    Отображает текущее состояние и свойства драйвера устройства.
-ECHO           Отображает сообщения и переключает режим отображения команд на экране.
-ENDLOCAL       Завершает локализацию изменений среды для пакетного файла.
-ERASE          Удаляет один или несколько файлов.
-EXIT           Завершает работу программы CMD.EXE (интерпретатора командных строк).
-FC             Сравнивает два файла или два набора файлов и 
-               отображает различия между ними.
-FIND           Ищет текстовую строку в одном или нескольких файлах.
-FINDSTR        Ищет строки в файлах.
-FOR            Запускает указанную команду для каждого из файлов в наборе.
-FORMAT         Форматирует диск для работы с Windows.
-FSUTIL         Отображает или настраивает свойства файловой системы.
-FTYPE          Отображает либо изменяет типы файлов, используемые при 
-               сопоставлении по расширениям имен файлов.
-GOTO           Направляет интерпретатор команд Windows в отмеченную строку 
-               пакетной программы.
-GPRESULT       Отображает информацию о групповой политике для компьютера или пользователя.
-GRAFTABL       Позволяет Windows отображать расширенный набор символов в 
-               графическом режиме.
-HELP           Выводит справочную информацию о командах Windows.
-ICACLS         Отображает, изменяет, архивирует или восстанавливает
-               списки ACL для файлов и каталогов.
-IF             Выполняет условную обработку в пакетных программах.
-LABEL          Создает, изменяет или удаляет метки тома для дисков.
-MD             Создает каталог.
-MKDIR          Создает каталог.
-MKLINK         Создает символьные ссылки и жесткие связи
-MODE           Настраивает системные устройства.
-MORE           Последовательно отображает данные по частям размером в один экран.
-MOVE           Перемещает один или несколько файлов из одного каталога
-               в другой.
-OPENFILES      Отображает файлы, открытые для файлового ресурса удаленными пользователями.
-PATH           Отображает или устанавливает путь поиска исполняемых файлов.
-PAUSE          Приостанавливает выполнение пакетного файла и выводит сообщение.
-POPD           Восстанавливает предыдущее значение текущего каталога,
-               сохраненное с помощью команды PUSHD.
-PRINT          Выводит на печать содержимое текстового файла.
-PROMPT         Изменяет командную строку Windows.
-PUSHD          Сохраняет текущий каталог, затем изменяет его.
-RD             Удаляет каталог.
-RECOVER        Восстанавливает данные, которые можно прочитать, с плохого или поврежденного диска.
-REM            Записывает комментарии в пакетные файлы или файл CONFIG.SYS.
-REN            Переименовывает файлы.
-RENAME         Переименовывает файлы.
-REPLACE        Заменяет файлы.
-RMDIR          Удаляет каталог.
-ROBOCOPY       Улучшенная служебная программа копирования файлов и деревьев папок
-SET            Показывает, устанавливает или удаляет переменные среды Windows.
-SETLOCAL       Начинает локализацию изменений среды в пакетном файле.
-SC             Отображает или настраивает службы (фоновые процессы).
-SCHTASKS       Выполняет команды и запускает программы на компьютере по расписанию.
-SHIFT          Изменяет положение заменяемых параметров в пакетных файлах.
-SHUTDOWN       Позволяет локально или удаленно завершить работу компьютера.
-SORT           Сортирует ввод.
-START          Выполняет указанную программу или команду в отдельном окне.
-SUBST          Связывает путь с именем диска.
-SYSTEMINFO     Отображает сведения о свойствах и конфигурации определенного компьютера.
-TASKLIST       Отображает все выполняемые задачи, включая службы.
-TASKKILL       Прекращение или остановка процесса либо приложения.
-TIME           Отображает или устанавливает системное время.
-TITLE          Назначает заголовок окна для сеанса CMD.EXE.
-TREE           Графически отображает структуру каталогов диска или 
-          пути.
-TYPE           Отображает содержимое текстовых файлов.
-VER            Отображает сведения о версии Windows.
-VERIFY         Устанавливает режим проверки в Windows правильности записи
-               файлов на диск.
-VOL            Отображает метку и серийный номер тома для диска.
-XCOPY          Копирует файлы и деревья папок.
-WMIC           Отображает сведения об инструментарии WMI в интерактивной командной оболочке.
-
-Дополнительные сведения о средствах см. в описании программ командной строки в справке.
-
-TIME: 20:16:48 FILE: ..\source\main.cpp LINE: 102 DEBUG: fix
-TIME: 20:16:48 FILE: ..\source\install.cpp LINE: 68 DEBUG: Reading install settings...
-TIME: 20:16:48 FILE: ..\source\install.cpp LINE: 74 DEBUG: Count of systems is 0
-TIME: 20:16:48 FILE: ..\source\install.cpp LINE: 116 DEBUG: Systems read succesfull
-TIME: 20:16:48 FILE: ..\source\window.cpp LINE: 25 DEBUG: Setting window
-TIME: 20:16:48 FILE:  LINE: 0 WARNING: QMetaObject::connectSlotsByName: No matching signal for on_radioButton_clicked()
-TIME: 20:16:48 FILE: ..\source\install.cpp LINE: 912 DEBUG: Exec progress and status bars
-TIME: 20:16:48 FILE: ..\source\main.cpp LINE: 117 DEBUG: Window exec
-TIME: 20:16:49 FILE: ..\source\window.cpp LINE: 471 DEBUG: Choose Grub2
-TIME: 20:16:53 FILE: ..\source\window.cpp LINE: 172 DEBUG: Choose image for install: C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso
-TIME: 20:17:32 FILE: ..\source\window.cpp LINE: 195 DEBUG: Choose dir for install: C:/android
-TIME: 20:17:53 FILE: ..\source\window.cpp LINE: 211 DEBUG: Checking data for install...
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.img"
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 65 WARNING: Returned value is  2
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Does not exist
-
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.sfs"
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Exists
-
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso kernel"
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Exists
-
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso initrd.img"
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Exists
-
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso ramdisk.img"
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Exists
-
-TIME: 20:17:53 FILE: ..\source\window.cpp LINE: 297 DEBUG: Data of install is valid
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 220 DEBUG: Mounting efi partition
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 367 DEBUG: Looking for free drive letter
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 373 DEBUG: a exists
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 377 DEBUG: b doesn't exist
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 389 DEBUG: Free drive letter is b:
-TIME: 20:17:53 FILE: ..\source\data.cpp LINE: 235 DEBUG: Free mountpoint is b:
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:53 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "wmic volume get DeviceID"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: DeviceID                                           
-\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  
-\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\  
-\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\  
-\\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\  
-\\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  
-
-
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 260 DEBUG: (\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\, \\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\, \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\, \\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\, \\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\)
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 263 DEBUG: Trying by first way
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "mountvol b: /s"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 65 WARNING: Returned value is  1
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Параметр задан неверно.
-
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 272 DEBUG: Fail. Trying by second way
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "wmic volume get DeviceID,DriveLetter"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: DeviceID                                           DriveLetter  
-\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           
-\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               
-\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               
-\\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               
-\\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           
-
-
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 181 DEBUG: (\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           , \\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               , \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               , \\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               , \\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           , )
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 189 DEBUG: (\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\, C:)
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 194 DEBUG: Partition is already mounted. So mount point is C:
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "fsutil volume diskfree C:"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Всего свободно байт           : 29043412992
-Всего байт                    : 109513256960
-Всего доступно свободных байт : 29043412992
-
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 154 DEBUG: Size is 0
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 156 DEBUG: Dir exists: 0
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 166 DEBUG: efi dir did not find or size is unvalid
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "wmic volume get DeviceID,DriveLetter"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: DeviceID                                           DriveLetter  
-\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           
-\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               
-\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               
-\\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               
-\\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           
-
-
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 181 DEBUG: (\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           , \\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               , \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               , \\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               , \\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           , )
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 189 DEBUG: (\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\)
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 201 DEBUG: Partition is not already mounted. So mount point is b:
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "mountvol b: \\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 214 WARNING: Partition has mounted sucessfully
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "fsutil volume diskfree b:"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Всего свободно байт           : 73809920
-Всего байт                    : 471855104
-Всего доступно свободных байт : 73809920
-
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 154 DEBUG: Size is 73809920
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 156 DEBUG: Dir exists: 0
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 166 DEBUG: efi dir did not find or size is unvalid
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "mountvol b: /d"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "wmic volume get DeviceID,DriveLetter"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: DeviceID                                           DriveLetter  
-\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           
-\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               
-\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               
-\\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               
-\\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           
-
-
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 181 DEBUG: (\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           , \\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               , \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\               , \\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               , \\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\  D:           , )
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 189 DEBUG: (\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\)
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 201 DEBUG: Partition is not already mounted. So mount point is b:
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "mountvol b: \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 214 WARNING: Partition has mounted sucessfully
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "fsutil volume diskfree b:"
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Всего свободно байт           : 28413952
-Всего байт                    : 100663296
-Всего доступно свободных байт : 28413952
-
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 154 DEBUG: Size is 28413952
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 156 DEBUG: Dir exists: 1
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 160 DEBUG: efi dir found on b: and size is valid
-TIME: 20:17:54 FILE: ..\source\data.cpp LINE: 332 DEBUG: Efi partition sucessfully mounted to b:
-TIME: 20:17:54 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 50 ERROR: Application has crashed
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 56 ERROR: Executing ended unsuccesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 65 WARNING: Returned value is  1
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: #errormesstart#
-No such file or directory
-#errormesend#
-#errorfullmesstart#
-System.IO.FileNotFoundException: No such file or directory
-Имя файла: 'system.img'
-   в DiscUtils.Vfs.VfsFileSystem`4.GetFile(String path)
-   в DiscUtils.Vfs.VfsFileSystem`4.GetFileLength(String path)
-   в DiscUtils.Vfs.VfsFileSystemFacade.GetFileLength(String path)
-   в iso_editor.Program.Main(String[] args)
-#errorfullmesend#
-
-Process crashed
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 670 WARNING: Could not get size of system.img
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.sfs"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 839450624
-
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso ramdisk.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 1795295
-
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso kernel"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 6827760
-
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso initrd.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 1358592
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 681 DEBUG: Size of files is 849637071
-TIME: 20:17:55 FILE: ..\source\window.cpp LINE: 363 DEBUG: Progress step is 212409267
-TIME: 20:17:55 FILE: ..\source\window.cpp LINE: 422 DEBUG: Start install
-TIME: 20:17:55 FILE: ..\source\window.cpp LINE: 432 DEBUG: Unpacking iso...
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 65 WARNING: Returned value is  2
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Does not exist
-
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe exist C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.sfs"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Exists
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 792 DEBUG: System file is /system.sfs
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 793 DEBUG: Start copying
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 800 DEBUG: Copying /kernel
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 813 DEBUG: C:/android/kernel does not exist
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe extract C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso kernel C:/android/kernel"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: #copyingstart#
-
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#copyingend#
-
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 829 DEBUG: kernel copied succesful
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso kernel"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 6827760
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 800 DEBUG: Copying /ramdisk.img
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 813 DEBUG: C:/android/ramdisk.img does not exist
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe extract C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso ramdisk.img C:/android/ramdisk.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: #copyingstart#
-
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#copyingend#
-
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 829 DEBUG: ramdisk.img copied succesful
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso ramdisk.img"
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 1795295
-
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 800 DEBUG: Copying /initrd.img
-TIME: 20:17:55 FILE: ..\source\install.cpp LINE: 813 DEBUG: C:/android/initrd.img does not exist
-TIME: 20:17:55 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe extract C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso initrd.img C:/android/initrd.img"
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: #copyingstart#
-
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#copyingend#
-
-
-TIME: 20:17:56 FILE: ..\source\install.cpp LINE: 829 DEBUG: initrd.img copied succesful
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso initrd.img"
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 1358592
-
-TIME: 20:17:56 FILE: ..\source\install.cpp LINE: 800 DEBUG: Copying /system.sfs
-TIME: 20:17:56 FILE: ..\source\install.cpp LINE: 813 DEBUG: C:/android/system.sfs does not exist
-TIME: 20:17:56 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe extract C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.sfs C:/android/system.sfs"
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: #copyingstart#
-
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#copyingend#
-
-
-TIME: 20:18:01 FILE: ..\source\install.cpp LINE: 829 DEBUG: system.sfs copied succesful
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/iso-editor.exe size C:/Users/аеааа/Downloads/android-x86_64-7.1-r2.iso system.sfs"
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 839450624
-
-TIME: 20:18:01 FILE: ..\source\window.cpp LINE: 437 DEBUG: Creating data.img...
-TIME: 20:18:01 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "C:/YourDroid/source/bin/data/make_ext4fs/make_ext4fs.exe -l 2048M -a data C:/android/data.img "
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Creating filesystem with parameters:
-    Size: 2147483648
-    Block size: 4096
-    Blocks per group: 32768
-    Inodes per group: 8192
-    Inode size: 256
-    Journal blocks: 8192
-    Label: 
-    Blocks: 524288
-    Block groups: 16
-    Reserved block group size: 127
-Created filesystem with 11/131072 inodes and 17193/524288 blocks
-
-TIME: 20:18:27 FILE: ..\source\window.cpp LINE: 443 DEBUG: Installing bootloader...
-TIME: 20:18:27 FILE: ..\source\install.cpp LINE: 120 DEBUG: Registering to bootloader...
-TIME: 20:18:27 FILE: ..\source\install.cpp LINE: 122 DEBUG: Registering to grub2
-TIME: 20:18:27 FILE: ..\source\install.cpp LINE: 396 DEBUG: Checking if there is an entry of Grub2
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 21 DEBUG: Disabling fs redirection...
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "bcdedit /enum firmware"
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 
-Диспетчер загрузки микропрограмм
----------------------
-идентификатор           {fwbootmgr}
-displayorder            {95945d2f-7ac8-11e8-adc4-f334b78d9599}
-                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006770-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676f-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676e-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676d-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676c-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676b-f206-11e7-b78f-d5f1b119ddcd}
-                        {e000676a-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006769-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006768-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006767-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006766-f206-11e7-b78f-d5f1b119ddcd}
-                        {de7872d3-40c8-11e8-bd70-806e6f6e6963}
-                        {157e1d9d-9ae6-11e7-92d4-305a3a7cea7e}
-                        {157e1dbe-9ae6-11e7-92d4-305a3a7cea7e}
-                        {157e1db8-9ae6-11e7-92d4-305a3a7cea7e}
-                        {157e1dbc-9ae6-11e7-92d4-305a3a7cea7e}
-                        {bootmgr}
-                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
-                        {825cb71e-aba2-11e8-8e7d-806e6f6e6963}
-                        {825cb71f-aba2-11e8-8e7d-806e6f6e6963}
-                        {825cb720-aba2-11e8-8e7d-806e6f6e6963}
-timeout                 1
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {157e1db8-9ae6-11e7-92d4-305a3a7cea7e}
-device                  partition=A:
-path                    \EFI\GRUB2WIN\GNUGRUB.KERNEL64.EFI
-description             Grub2Win EFI
-inherit                 {globalsettings}
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {157e1dbc-9ae6-11e7-92d4-305a3a7cea7e}
-device                  partition=A:
-path                    \EFI\REFIND\REFIND_X64.EFI
-description             Grub2Win EFI
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {95945d2f-7ac8-11e8-adc4-f334b78d9599}
-device                  partition=A:
-path                    \EFI\yourdroid_grub\grub64.efi
-description             YourDroid Grub
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {current}
-resumeobject            {95945d2b-7ac8-11e8-adc4-f334b78d9599}
-displayorder            {current}
-                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
-                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {bootmgr}
-device                  partition=A:
-path                    \EFI\MICROSOFT\BOOT\BOOTMGFW.EFI
-description             Windows Boot Manager
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {current}
-resumeobject            {95945d2b-7ac8-11e8-adc4-f334b78d9599}
-displayorder            {current}
-                        {e0006772-f206-11e7-b78f-d5f1b119ddcd}
-                        {e0006771-f206-11e7-b78f-d5f1b119ddcd}
-                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006766-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006767-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006768-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006769-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676a-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676b-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676c-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676d-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676e-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e000676f-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006770-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\yourdroid_gummiboot\gummiboot64.efi
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006771-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Диспетчер загрузки Windows
---------------------
-идентификатор           {e0006772-f206-11e7-b78f-d5f1b119ddcd}
-device                  partition=A:
-path                    \EFI\YOURDROID_GUMMIBOOT\GUMMIBOOT64.EFI
-description             YourDroid Gummiboot
-locale                  ru-RU
-inherit                 {globalsettings}
-default                 {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-resumeobject            {157e1dab-9ae6-11e7-92d4-305a3a7cea7e}
-displayorder            {e0006771-f206-11e7-b78f-d5f1b119ddcd}
-                        {157e1dac-9ae6-11e7-92d4-305a3a7cea7e}
-toolsdisplayorder       {memdiag}
-timeout                 3
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {157e1d9d-9ae6-11e7-92d4-305a3a7cea7e}
-description             Hard Drive
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {157e1dbe-9ae6-11e7-92d4-305a3a7cea7e}
-description             CD/DVD Drive
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {825cb71e-aba2-11e8-8e7d-806e6f6e6963}
-description             UEFI:CD/DVD Drive
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {825cb71f-aba2-11e8-8e7d-806e6f6e6963}
-description             UEFI:Removable Device
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {825cb720-aba2-11e8-8e7d-806e6f6e6963}
-description             UEFI:Network Device
-
-Приложение микропрограммы (101fffff)
--------------------------------
-идентификатор           {de7872d3-40c8-11e8-bd70-806e6f6e6963}
-device                  partition=A:
-path                    \EFI\UBUNTU\SHIMX64.EFI
-description             ubuntu
-
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 76 DEBUG: Enabling fs redirection...
-TIME: 20:18:27 FILE: ..\source\cmd.cpp LINE: 28 DEBUG: Executing "find "YourDroid Grub" C:/YourDroid/source/bin/tempEnum"
-TIME: 20:18:28 FILE: ..\source\cmd.cpp LINE: 52 DEBUG: Executing ended succesfull
-TIME: 20:18:28 FILE: ..\source\cmd.cpp LINE: 68 DEBUG: Returned value is  0
-TIME: 20:18:28 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: 
----------- C:/YOURDROID/SOURCE/BIN/TEMPENUM
-description             YourDroid Grub
-
-TIME: 20:18:28 FILE: ..\source\install.cpp LINE: 409 DEBUG: Grub has been registered
-TIME: 20:18:28 FILE: ..\source\install.cpp LINE: 421 DEBUG: Installing Grub2...
-TIME: 20:18:28 FILE: ..\source\install.cpp LINE: 449 DEBUG: b:/EFI/yourdroid_grub exists
-TIME: 20:18:28 FILE: ..\source\global.h LINE: 23 DEBUG: Copying C:/YourDroid/source/bin/data/bootloaders/grub/grubx64.efi to b:/EFI/yourdroid_grub/grubx64.efi
-TIME: 20:18:28 FILE: ..\source\global.h LINE: 26 DEBUG: Сopied unsuccessfully
-TIME: 20:18:28 FILE: ..\source\install.cpp LINE: 509 DEBUG: Setting up grub
-TIME: 20:18:28 FILE:  LINE: 0 ERROR: Fatal error while installing: Couldn't copy needed files
-TIME: 20:18:28 FILE: ..\source\exception.cpp LINE: 191 DEBUG: Crash

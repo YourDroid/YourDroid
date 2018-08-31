@@ -516,7 +516,7 @@ void install::registerGrub2() {
     QString menuentry = grub2Configure(QString(), false, false);
 
     QFile _config(mountPoint + "/EFI/yourdroid_grub2/grub.cfg");
-    if(!_config.open(QIODevice::WriteOnly)) {
+    if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
     }
