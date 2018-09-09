@@ -74,17 +74,9 @@ public:
     void registerBootloader();
     void registerBootmgr();
     void registerGrub2();
-    bool grub2IsRegestered();
-    bool installGrub2(
-//        #if WIN
-//            bool install
-////        install2Flash _install2Flash
-//        #endif
-            );
+    bool installGrub2( );
     QString grub2Configure(QString, bool = false, bool = true);
     void grubLConfigure(QString, bool = false);
-    void registerGummi();
-    void installGummi(bool);
     void createDataImg(int);
     void downloadFile(QString, QString);
     void delSystemFiles(int);

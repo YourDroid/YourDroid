@@ -159,8 +159,7 @@ void Window::on_installButtonMain_clicked()
     //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
     if(global->set->tbios) {
         //ui->comboBoot->addItem("rEFInd");
-        /*if(global->set->os) ui->comboBoot->addItem("Gummiboot");
-        else */ui->comboBoot->addItem("Grub2");
+        ui->comboBoot->addItem("Grub2");
     }
 }
 
@@ -297,6 +296,9 @@ void Window::on_buttonInstallInstall_clicked()
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
+    ui->progressInstall->setValue(5);
+    taskBarProgress->setValue(5);
+
 #if WIN
     if(global->set->getBios()) {
         ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
@@ -352,37 +354,33 @@ void Window::on_buttonInstallInstall_clicked()
 #if WIN
         taskBarProgress->hide();
 #endif
-        qDebug().noquote() << QObject::tr("^Succes");
+        qDebug().noquote() << QObject::tr("^Success");
     });
 
-    int size = global->insSet->sizeOfFiles(), step = size / 2 / ((OS) ? 2 : 3);
-    ui->progressInstall->setRange(0, size * 2);
-#if WIN
-    taskBarProgress->setRange(0, size * 2);
-    taskBarProgress->setValue(size);
-#endif
+    int step = 33;
+    ui->progressInstall->setRange(0, 100);
+    taskBarProgress->setRange(0, 100);
+
     qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
-    int progressComplete = 0;
-
-    connect(global->insSet, &install::progressChange, this, [&](int progress){
-        ui->progressInstall->setValue(progress + progressComplete);
+//    connect(global->insSet, &install::progressChange, this, [&](int progress){
+//        ui->progressInstall->setValue(progress + progressComplete);
+//#if WIN
+//        taskBarProgress->setValue(progress + progressComplete);
+//#endif
+//    });
+//    connect(global->insSet, &install::fileEnded, this, [&](int value){
+//        progressComplete += value;
+//        ui->progressInstall->setValue(progressComplete);
+//#if WIN
+//        taskBarProgress->setValue(progressComplete);
+//#endif
+//    });
+    connect(this, &Window::progressAddStep, this, [&, step](){
+        qDebug().noquote() << (ui->progressInstall->value() + step) << "   " << step;
+        ui->progressInstall->setValue(ui->progressInstall->value() + step);
 #if WIN
-        taskBarProgress->setValue(progress + progressComplete);
-#endif
-    });
-    connect(global->insSet, &install::fileEnded, this, [&](int value){
-        progressComplete += value;
-        ui->progressInstall->setValue(progressComplete);
-#if WIN
-        taskBarProgress->setValue(progressComplete);
-#endif
-    });
-    connect(this, &Window::progressAddStep, this, [&](){
-        int val = ui->progressInstall->value() + step;
-        ui->progressInstall->setValue(val);
-#if WIN
-        taskBarProgress->setValue(val);
+        taskBarProgress->setValue(taskBarProgress->value() + step);
 #endif
     });
     auto logMain = [=](QtMsgType type, QString mess){
@@ -434,18 +432,19 @@ void Window::on_buttonInstallInstall_clicked()
         emit sendMesToStausbar(tr("Unpacking iso..."));
         global->insSet->unpackSystem();
         CHECK_ABORT();
+        emit progressAddStep();
 
         qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
-        emit progressAddStep();
         global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt());
         CHECK_ABORT();
+        emit progressAddStep();
 
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
-        emit progressAddStep();
         global->insSet->registerBootloader();
         CHECK_ABORT();
+        emit progressAddStep();
 
 #if LINUX
         emit sendMesToStausbar(tr("Unmounting image..."));
