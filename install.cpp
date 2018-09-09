@@ -12,6 +12,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QUrl>
 #include <QTextCodec>
+#include <QPair>
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
     systems.push_back(install::_installSet(b, t, p, i, n, e));
@@ -129,6 +130,7 @@ void install::registerBootloader() {
 void install::registerBootmgr()
 {
 #if WIN
+#define returnFault() return;
     qDebug().noquote() << QObject::tr("Setting up bootmgr");
 
     QString path;
@@ -241,257 +243,119 @@ void install::registerBootmgr()
     execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
 
     qDebug().noquote() << QObject::tr("Gummiboot setted up sucessfully");
+
+#undef returnFault
 #endif
 }
 
 void install::registerGummi() {
+    return;
+}
+
+bool install::grub2IsRegestered() {
+//    qDebug().noquote() << "Checking if there is an entry of Grub2";
 //#if WIN
-//    installGummi(isRegUefiGummi());
-
-//    qDebug().noquote() << QObject::tr("Setting up gummiboot");
-
-//    QString mountPoint = global->set->getEfiMountPoint();
-//    QString grub = QString(global->set->getArch() ? "grubx64.efi" : "grubx32.efi");
-
-//    grub2Configure(qApp->applicationDirPath() + "/tempGrubConf");
-
-//    QFile _config(qApp->applicationDirPath() + "/tempGummiConf");
-//    if(!_config.open(QIODevice::WriteOnly)) {
-//        emit abort(QObject::tr("Could not open the gummiboot's config-file"));
-//        return;
+//    //TODO: check the path and the displayorder
+//    auto expr = cmd::exec(QString("bcdedit /enum firmware"), true);
+//    QFile _enum(QString("%1/tempEnum").arg(qApp->applicationDirPath()));
+//    if(!_enum.open(QIODevice::WriteOnly)) {
+//        qWarning().noquote() << QObject::tr("Unable to open tempEnum");
+//        return false;
 //    }
-//    QTextStream config(&_config);
-//    QString conf = QString("title %1\nefi %2\\%3")
-//            .arg(systems.back().name,
-//                 QString("/efi/yourdroid_gummiboot/%2")
-//                 .arg(systems.back().name).
-//                 replace('/', "\\"), grub);
-//    qDebug().noquote()
-//            << QObject::tr("Gummiboot's config is %1")
-//               .arg(conf);
-//    config << conf;
-//    _config.close();
-
-//    QString path;
-//    bool res = false;
-
-//    if(!(res = QDir((path = QString("%1/efi/yourdroid_gummiboot/%2").arg(mountPoint, systems.back().name)))
-//         .exists()))
-//    {
-//        MKDIR(path);
-////        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
-////             .arg(qApp->applicationDirPath()), path + "/0windows.conf");
-//        COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()), path + "/grub.cfg");
-//        COPY(QString("%1/data/bootloaders/grub2/%2").arg(qApp->applicationDirPath(), grub),
-//             path + '/' + grub);
-//        //        execAbort(QString("copy %1/data/bootloaders/gummi/loader/entries/0windows.conf+"
-//        //                          "%1/tempGrubConf+"
-//        //                          "%1/data/bootloaders/grub2/%2 %3")
-//        //                  .arg(qApp->applicationDirPath(),
-//        //                       grub, path));
-//    }
-//    logDirExist();
-
-//    res = QFile((path = QString("%1/loader/entries/%2.conf").arg(mountPoint, systems.back().name)))
-//            .exists();
-//    logDirExist();
-//    if(res)
-//    {
-//        qDebug().noquote()
-//                << QObject::tr("^Do you want to overwrite system's config "
-//                               "(if no, installation will abort)?|+-");
-//        if(log::getLastPressedButton() == QMessageBox::Ok)
-//        {
-//            RENAME(path, path + "_old");
-//        }
-//        else emit abort(QObject::tr("canceled by user"));
-//    }
-//    COPY(QString("%1/tempGummiConf").arg(qApp->applicationDirPath()),
-//         path);
-//    //    execAbortSep(QString("copy %1/tempGummiConf %2")
-//    //              .arg(qApp->applicationDirPath(), path));
+//    QTextStream(&_enum) << expr.second;
+//    _enum.close();
+//    bool res = !cmd::exec(
+//                QString("find \"YourDroid Grub2\" %1/tempEnum").arg(qApp->applicationDirPath())).first;
+//    qDebug().noquote() << (res ? "Grub2 has been registered" : "Grub2 has not been registered");
+//    return res;
 //#endif
+}
 
-//    qDebug().noquote() << QObject::tr("Gummiboot was set up sucessfully");
-//}
+bool install::installGrub2(
+//        #if WIN
+//        bool regestered
+////        install2Flash _install2Flash
+//        #endif
+        ) {
+#if WIN
+    #define returnFault() return false;
+    qDebug().noquote() << "Installing Grub2...";
 
-//void install::installGummi(bool isRegUefi) {
-//    qDebug().noquote() << "Installing gummiboot...";
-//#if WIN
-
-//    if(!isRegUefi)
+//    if(!regestered) //if a grub entry has already been created
 //    {
-//        execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Gummiboot\"");
+//        execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Grub2\"");
 
 //        QString output = resCmd.second;
 //        int begin = output.indexOf('{'), end = output.indexOf('}');
 //        QString id = output.mid(begin, end - begin + 1);
 //        qDebug() << QObject::tr("Id is %1").arg(id);
 
-//        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_gummiboot\\%2")
-//                  .arg(id, (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi")));
+//        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_grub2\\%2")
+//                  .arg(id, (dat->arch ? "grubx64.efi" : "grubx32.efi")));
 
 //        execAbort(QString("bcdedit /set {fwbootmgr} displayorder %1 /addfirst").arg(id));
 //    }
 
-//#define logDirExist() qDebug().noquote() \
-//    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
-
-//    QString s = global->set->getEfiMountPoint();
-
-//    QString path;
-//    bool res = false;
-//    if(!(res = QDir((path = QString("%1/EFI/yourdroid_gummiboot").arg(s))).exists()))
-//    {
-//        MKDIR(path);
-//    }
-//    logDirExist();
-
-//    QString gummiFile = (dat->arch ? "gummiboot64.efi" : "gummiboot32.efi");
-
-//    if(!(res = QFile((path = QString("%1/EFI/yourdroid_gummiboot/%2")
-//                      .arg(s, gummiFile))).exists()))
-//    {
-//        COPY(qApp->applicationDirPath() + "/data/bootloaders/gummi/"
-//             + gummiFile,
-//             path);
-//    }
-//    logDirExist();
-
-//    if(!(res = QDir((path = QString("%1/loader").arg(s))).exists()))
-//    {
-//        MKDIR(path);
-//    }
-//    logDirExist();
-
-//    if(!(res = QFile((path = QString("%1/loader/loader.conf").arg(s))).exists()))
-//    {
-//        COPY(QString("%1/data/bootloaders/gummi/loader/loader.conf")
-//             .arg(qApp->applicationDirPath()),
-//             path);
-//    }
-//    logDirExist();
-
-//    if(!(res = QDir((path = QString("%1/loader/entries").arg(s))).exists()))
-//    {
-//        MKDIR(path);
-//    }
-//    logDirExist();
-
-////    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
-////    {
-////        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
-////             .arg(qApp->applicationDirPath()),
-////             path);
-////    }
-////    logDirExist();
-
-
-//#endif
-
-//    qDebug().noquote() << QObject::tr("Gummiboot installed successful");
-}
-
-bool install::grub2IsRegestered() {
-    qDebug().noquote() << "Checking if there is an entry of Grub2";
-#if WIN
-    //TODO: check the path and the displayorder
-    auto expr = cmd::exec(QString("bcdedit /enum firmware"), true);
-    QFile _enum(QString("%1/tempEnum").arg(qApp->applicationDirPath()));
-    if(!_enum.open(QIODevice::WriteOnly)) {
-        qWarning().noquote() << QObject::tr("Unable to open tempEnum");
-        return false;
-    }
-    QTextStream(&_enum) << expr.second;
-    _enum.close();
-    bool res = !cmd::exec(
-                QString("find \"YourDroid Grub2\" %1/tempEnum").arg(qApp->applicationDirPath())).first;
-    qDebug().noquote() << (res ? "Grub2 has been registered" : "Grub2 has not been registered");
-    return res;
-#endif
-}
-
-void install::installGrub2(
-        #if WIN
-        bool regestered
-//        install2Flash _install2Flash
-        #endif
-        ) {
-#if WIN
-    qDebug().noquote() << "Installing Grub2...";
-
-    if(!regestered) //if a grub entry has already been created
-    {
-        execAbort("bcdedit /copy {bootmgr} /d \"YourDroid Grub2\"");
-
-        QString output = resCmd.second;
-        int begin = output.indexOf('{'), end = output.indexOf('}');
-        QString id = output.mid(begin, end - begin + 1);
-        qDebug() << QObject::tr("Id is %1").arg(id);
-
-        execAbort(QString("bcdedit /set %1 path \\EFI\\yourdroid_grub2\\%2")
-                  .arg(id, (dat->arch ? "grub64.efi" : "grub32.efi")));
-
-        execAbort(QString("bcdedit /set {fwbootmgr} displayorder %1 /addfirst").arg(id));
-    }
-
 #define logDirExist() qDebug().noquote() \
     << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
 
-    QString s = global->set->getEfiMountPoint();
+    QString efiMountPoint = global->set->getEfiMountPoint();
+    QString target = (dat->arch ? "x86_64-efi" : "i386-efi");
+
+    QPair<int, QString> resGrubIns =
+            cmd::exec(QString("%1/data/bootloaders/grub2/windows/grub-install.exe "
+                              "--target=%2 --efi-directory=%3 "
+                              "--boot-directory=%3/EFI/yourdroid_grub2 "
+                              "--bootloader-id=yourdroid_grub2")
+                      .arg(qApp->applicationDirPath(), target, efiMountPoint));
+
+    if(resGrubIns.first != 0) //fault
+    {
+        emit abort(QString("Error while grub installation:\n %1")
+                   .arg(resGrubIns.second));
+        return false;
+    }
 
     QString path;
     bool res = false;
-    if(!(res = QDir((path = QString("%1/EFI/yourdroid_grub2").arg(s))).exists())) //creating a dir for grub files
-    {
-        MKDIR(path);
-    }
-    logDirExist();
-
-    QString grubFile = (dat->arch ? "grubx64.efi" : "grubx32.efi");
-
-    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/%2")
-                      .arg(s, grubFile))).exists()))
-    {
-        QString file = (qApp->applicationDirPath() + "/data/bootloaders/grub2/"
-                        + grubFile);
-        qDebug().noquote() << file << ' ' << QFile(file).exists();
-        COPY(file,
-             path);
-    }
-    logDirExist();
-
-//    if(!(res = QDir((path = QString("%1/loader").arg(s))).exists()))
+//    if(!(res = QDir((path = QString("%1/EFI/yourdroid_grub2").arg(s))).exists())) //creating a dir for grub files
 //    {
 //        MKDIR(path);
 //    }
 //    logDirExist();
 
-    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/grub.cfg").arg(s))).exists()))
+//    if(!(res = QDir((path = QString("%1/EFI/yourdroid_grub2/grub").arg(s))).exists())) //creating a dir for grub files
+//    {
+//        MKDIR(path);
+//    }
+//    logDirExist();
+
+//    QString grubFile = (dat->arch ? "grubx64.efi" : "grubx32.efi");
+
+//    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/%2")
+//                      .arg(s, grubFile))).exists()))
+//    {
+//        QString file = (qApp->applicationDirPath() + "/data/bootloaders/grub2/"
+//                        + grubFile);
+//        COPY(file,
+//             path);
+//    }
+//    logDirExist();
+
+    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/grub/grub.cfg")
+                      .arg(efiMountPoint))).exists()))
     {
-        COPY(QString("%1/data/bootloaders/grub2/grub.cfg")
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub.cfg")
              .arg(qApp->applicationDirPath()),
              path);
     }
     logDirExist();
 
-//    if(!(res = QDir((path = QString("%1/loader/entries").arg(s))).exists()))
-//    {
-//        MKDIR(path);
-//    }
-//    logDirExist();
-
-//    if(!(res = QFile((path = QString("%1/loader/entries/0windows.conf").arg(s))).exists()))
-//    {
-//        COPY(QString("%1/data/bootloaders/gummi/loader/entries/0windows.conf")
-//             .arg(qApp->applicationDirPath()),
-//             path);
-//    }
-//    logDirExist();
-
     qDebug().noquote() << QObject::tr("Grub2 has been installed successfully");
 
+    return true;
 
+#undef returnFault
 #endif
 
 
@@ -506,7 +370,7 @@ void install::installGrub2(
 
 void install::registerGrub2() {
 #if WIN
-    installGrub2(grub2IsRegestered());
+    if(!installGrub2()) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub");
 
@@ -515,7 +379,7 @@ void install::registerGrub2() {
 
     QString menuentry = grub2Configure(QString(), false, false);
 
-    QFile _config(mountPoint + "/EFI/yourdroid_grub2/grub.cfg");
+    QFile _config(mountPoint + "/EFI/yourdroid_grub2/grub/grub.cfg");
     if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
@@ -946,11 +810,13 @@ void install::deleteEntry(int num) {
 void install::formatFlashDrive()
 {
 #if WIN
+#define returnFault() return;
     qDebug().noquote() << QObject::tr("Formating flash drive...");
     QString part = systems.back().place;
 
     QPair<int, QString> addNew;
     execAbort(QString("format %1 /q /v:android /fs:ntfs").arg(part));
     qDebug().noquote() << QObject::tr("Flash drive formated successfully...");
+#undef returnFault
 #endif
 }

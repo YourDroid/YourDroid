@@ -211,7 +211,7 @@ QPair<bool, QString> options::mountEfiPart()
             }
             else
             {
-                qWarning().noquote() << QObject::tr("Partition has mounted sucessfully");
+                qWarning().noquote() << QObject::tr("Partition has mounted successfully");
                 return QPair<bool, QString>(true, mountPoint);
             }
         }
@@ -219,7 +219,7 @@ QPair<bool, QString> options::mountEfiPart()
 
     qDebug().noquote() << QObject::tr("Mounting efi partition");
 
-    bool sucess = false;
+    bool success = false;
 
     {
         QString point = freeMountPoint();
@@ -239,12 +239,17 @@ QPair<bool, QString> options::mountEfiPart()
     {
         qDebug().noquote() << QObject::tr("Mounting guid from settings");
         QPair<bool, QString> expr;
-        if((sucess = (expr = mount(efiGuid)).first))
+        if((success = (expr = mount(efiGuid)).first))
         {
-            if((sucess = check(expr.second))) efiMountPoint = expr.second;
+            if((success = check(expr.second))) efiMountPoint = expr.second;
+            else
+            {
+                qDebug().noquote() << QObject::tr("Failure. Unmounting the partition");
+                cmd::exec(QString("mountvol %1 /d").arg(expr.second));
+            }
         }
     }
-    if(!sucess)
+    if(!success)
     {
         auto expr = cmd::exec("wmic volume get DeviceID", true);
         if(expr.first)
@@ -264,8 +269,8 @@ QPair<bool, QString> options::mountEfiPart()
             if(!cmd::exec(QString("mountvol %1 /s").arg(efiMountPoint)).first)
             {
                 qDebug().noquote()
-                        << QObject::tr("Efi partition sucessfully mounted to %1").arg(efiMountPoint);
-                sucess = true;
+                        << QObject::tr("Efi partition successfully mounted to %1").arg(efiMountPoint);
+                success = true;
             }
             else
             {
@@ -313,11 +318,11 @@ QPair<bool, QString> options::mountEfiPart()
                     {
                         efiMountPoint = mountPoint;
                         efiGuid = partList[i];
-                        sucess = true;
+                        success = true;
                         break;
                     }
                     QPair<int, QString> expr;
-                    if(!sucess && !efiWasMounted) expr = cmd::exec(QString("mountvol %1 /d")
+                    if(!success && !efiWasMounted) expr = cmd::exec(QString("mountvol %1 /d")
                                                                        .arg(mountPoint), true);
                     if(expr.first) break;
                 }
@@ -326,14 +331,14 @@ QPair<bool, QString> options::mountEfiPart()
     }
 
     {
-        if(sucess)
+        if(success)
         {
             efiMounted = true;
             qDebug().noquote()
-                    << QObject::tr("Efi partition sucessfully mounted to %1").arg(efiMountPoint);
+                    << QObject::tr("Efi partition successfully mounted to %1").arg(efiMountPoint);
         }
         else qDebug().noquote() << QObject::tr("Did not find efi partition");
-        return QPair<bool, QString>(sucess, "");
+        return QPair<bool, QString>(success, "");
     }
 }
 
@@ -349,8 +354,8 @@ QPair<bool, QString> options::unmountEfiPart()
     {
         qDebug().noquote() << QObject::tr("Efi was not already mounted");
         auto expr = cmd::exec(QString("mountvol %1 /d").arg(efiMountPoint), true);
-        if(!expr.first) qDebug().noquote() << QObject::tr("Unmounted sucessfully");
-        else qWarning().noquote() << QObject::tr("Unmounted unsucessfully");
+        if(!expr.first) qDebug().noquote() << QObject::tr("Unmounted successfully");
+        else qWarning().noquote() << QObject::tr("Unmounted unsuccessfully");
         res = QPair<bool, QString>(!expr.first, expr.second);
     }
     else

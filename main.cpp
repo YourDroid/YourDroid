@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
         if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
 
         cmd::exec("help");
-        qDebug().noquote() << "fix";
+//        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;
 

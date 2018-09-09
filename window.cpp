@@ -304,6 +304,7 @@ void Window::on_buttonInstallInstall_clicked()
         {
             qCritical().noquote()
                     << QObject::tr("^Could not mount efi partition. Aborting");
+            end();
             return;
         }
     }

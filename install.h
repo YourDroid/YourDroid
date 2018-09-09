@@ -75,11 +75,11 @@ public:
     void registerBootmgr();
     void registerGrub2();
     bool grub2IsRegestered();
-    void installGrub2(
-        #if WIN
-            bool install
-//        install2Flash _install2Flash
-        #endif
+    bool installGrub2(
+//        #if WIN
+//            bool install
+////        install2Flash _install2Flash
+//        #endif
             );
     QString grub2Configure(QString, bool = false, bool = true);
     void grubLConfigure(QString, bool = false);
@@ -95,9 +95,9 @@ public:
 };
 
 #if WIN
-#define checkAbortCmd() if(resCmd.first)  { emit abort(resCmd.second); return; }
+#define checkAbortCmd() if(resCmd.first)  { emit abort(resCmd.second); returnFault(); }
 
-#define checkAbortFile() if(!resFile) { emit abort(QObject::tr("Couldn't copy needed files")); return; }
+#define checkAbortFile() if(!resFile) { emit abort(QObject::tr("Couldn't copy needed files")); returnFault(); }
 
 #define COPY(src, dst) resFile = _copy(src, dst); checkAbortFile();
 

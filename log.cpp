@@ -114,7 +114,7 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
 #elif WIN
     QString messFull = typeName + QString(' ') + mess;
 #endif
-    logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << endl;
+    logFile << "TIME:" << " " << QTime::currentTime().toString("hh:mm:ss") << " FILE: " << context.file << " LINE: " << QString::number(context.line) << " " << typeName << " " << mess << "\n\r";
     std::cout << (messFull.toStdString() + '\n') << std::flush;
     logFile.flush();
 
