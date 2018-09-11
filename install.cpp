@@ -13,6 +13,7 @@
 #include <QUrl>
 #include <QTextCodec>
 #include <QPair>
+#include <QStringList>
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
     systems.push_back(install::_installSet(b, t, p, i, n, e));
@@ -500,6 +501,7 @@ void install::unpackSystem() {
         filesCopy.push_back((systemFile = "/system.sfs"));
     qDebug().noquote() << QObject::tr("System file is %1").arg(systemFile);
     qDebug().noquote() << QObject::tr("Start copying");
+    bool filesExist = false;
     for(QString file : filesCopy) {
 
         if(file.isEmpty()) {
@@ -508,6 +510,7 @@ void install::unpackSystem() {
         }
         qDebug().noquote() << QObject::tr("Copying %1").arg(file);
         if(QFile::exists(place + file)) {
+            filesExist = true;
             qDebug().noquote() << QObject::tr("%1 exists. So it is going to be deleted").arg(place + file);
 //#if LINUX
 //            QString command = "rm -f %1";
@@ -527,7 +530,9 @@ void install::unpackSystem() {
 #elif WIN
         QPair<int, QString> expr;
         res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
-                                 .arg(qApp->applicationDirPath(), systems.back().image, file.remove(0, 1), place))).first;
+                                 .arg(qApp->applicationDirPath(), systems.back().image,
+                                      file.remove(0, 1), place),
+                                 false, QStringList(), filesExist ? "a\n" : "", true)).first;
         QString advancedInfo = QString(": %1").arg(expr.second);
 #endif
         if(!res) {
@@ -539,7 +544,8 @@ void install::unpackSystem() {
 #if LINUX
         int size = QFile(mountPoint + file).size();
 #elif WIN
-        QString command = QString("%1/data/iso-editor.exe size %2 %3").arg(qApp->applicationDirPath(), systems.back().image);
+        QString command = QString("%1/data/iso-editor.exe size %2 %3")
+                .arg(qApp->applicationDirPath(), systems.back().image);
         expr = cmd::exec(command.arg(file));
         int size = (!expr.first) ? expr.second.toInt() : 50;
 #endif

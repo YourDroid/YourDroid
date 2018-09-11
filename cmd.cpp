@@ -34,7 +34,7 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
                                                                     prepend(" "));
     QString _output;
     QProcess proc;
-    bool success = true, started = true;
+    bool success = true, started = true, inputFail = false;
 
     if(list.isEmpty()) proc.start(command);
     else proc.start(command, list);
@@ -55,12 +55,13 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
                 qCritical().noquote() << message;
                 proc.kill();
                 success = false;
+                inputFail = true;
             }
             else qWarning().noquote() << message;
         }
         else qDebug().noquote() << QObject::tr("Put the input data to the input successsfully");
     }
-    else if(!proc.waitForFinished(-1)) {
+    if(!proc.waitForFinished(-1) && started) {
         success = false;
     }
     else if(proc.exitStatus() == QProcess::CrashExit) {
@@ -71,6 +72,7 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
     else {
         _output = QTextCodec::codecForName("CP1251")->toUnicode(
                     proc.errorString().toLocal8Bit()).prepend("\n");
+        if(inputFail) _output.append(QObject::tr("\nCouldn't put the input data to the input"));
         qCritical().noquote() << QObject::tr("Executing ended unsuccessfull");
     }
 

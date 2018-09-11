@@ -108,7 +108,6 @@ private:
     bool aborted = false;
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
-    void showEvent(QShowEvent *);
     bool fierst;
     bool exiting = false;
     bool langChanged = false;

@@ -62,6 +62,8 @@ Window::Window(bool f, QWidget *parent) :
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
 
+    setTaskProgress();
+
     if(fierst) Settings_clicked();
     else returnMainWindow();
 
@@ -217,18 +219,39 @@ void Window::on_buttonInstallInstall_clicked()
         end(mess);
     });
 
+    auto retExpr = cmd::exec(QString("%1/data/iso-editor.exe")
+                             .arg(qApp->applicationDirPath()));
+    if(retExpr.second.contains("Too few arguments")) //It output this message if it works fine
+        qDebug().noquote() << QObject::tr("iso-editor works fine");
+    else
+    {
+        qCritical().noquote() << tr("^iso-editor doesn't work:\n%1").arg(retExpr.second);
+        end();
+        return;
+    }
+
+    retExpr = cmd::exec(QString("%1/data/access-to-file.exe %2")
+                        .arg(qApp->applicationDirPath(), ui->editImageFromDisk->text()));
+    if(retExpr.first != 0) {
+        qCritical().noquote() << QObject::tr("^Can't open the image:\n%1")
+                                 .arg(retExpr.second);
+        end();
+        return;
+    }
+    else qDebug().noquote() << QObject::tr("Successfully opened the image");
+
     if((image = ui->editImageFromDisk->text()).length() == 0) {
-        qCritical().noquote() << tr("^Did not choose image");
+        qCritical().noquote() << tr("^The image is chosen");
         end();
         return;
     }
     if(!QFile::exists(image)) {
-        qCritical().noquote() << tr("^Choosen image does not exist");
+        qCritical().noquote() << tr("^Chosen image does not exist");
         end();
         return;
     }
     if((dir = ui->editDirForInstall->text()).length() == 0 ) {
-        qCritical().noquote() << tr("^Did not choose folder");
+        qCritical().noquote() << tr("^The folder is not chosen");
         end();
         return;
     }
@@ -353,6 +376,7 @@ void Window::on_buttonInstallInstall_clicked()
         ui->progressInstall->setValue(ui->progressInstall->maximum());
 #if WIN
         taskBarProgress->hide();
+        taskBarProgress->stop();
 #endif
         qDebug().noquote() << QObject::tr("^Success");
     });
@@ -363,19 +387,6 @@ void Window::on_buttonInstallInstall_clicked()
 
     qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
-//    connect(global->insSet, &install::progressChange, this, [&](int progress){
-//        ui->progressInstall->setValue(progress + progressComplete);
-//#if WIN
-//        taskBarProgress->setValue(progress + progressComplete);
-//#endif
-//    });
-//    connect(global->insSet, &install::fileEnded, this, [&](int value){
-//        progressComplete += value;
-//        ui->progressInstall->setValue(progressComplete);
-//#if WIN
-//        taskBarProgress->setValue(progressComplete);
-//#endif
-//    });
     connect(this, &Window::progressAddStep, this, [&, step](){
         qDebug().noquote() << (ui->progressInstall->value() + step) << "   " << step;
         ui->progressInstall->setValue(ui->progressInstall->value() + step);
@@ -457,6 +468,7 @@ void Window::on_buttonInstallInstall_clicked()
         CHECK_ABORT();
     });
     resMonitor->setFuture(res);
+    return;
 #undef CHECK_ABORT
 }
 
@@ -562,16 +574,6 @@ void Window::setTaskProgress() {
     taskBarProgress->setVisible(true);
 }
 #endif
-
-void Window::showEvent(QShowEvent *e) {
-#if WIN
-    setTaskProgress();
-    taskBarProgress->show();
-    taskBarProgress->setRange(0, 100);
-    taskBarProgress->setValue(50);
-#endif
-    e->accept();
-}
 
 void Window::on_radioButton_clicked()
 {
