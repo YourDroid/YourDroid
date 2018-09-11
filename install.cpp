@@ -323,7 +323,7 @@ QString install::grub2Configure(QString way, bool needTimeout, bool toFile) {
             QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
             QString("\tlinux ") + place +
             QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 "
-                    "androidboot.selinux=permissive SRC=%1\n").arg(place) +
+                    "androidboot.selinux=permissive quit DATA= SRC=%1\n").arg(place) +
             QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n";
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -508,16 +508,16 @@ void install::unpackSystem() {
         }
         qDebug().noquote() << QObject::tr("Copying %1").arg(file);
         if(QFile::exists(place + file)) {
-            qDebug().noquote() << QObject::tr("%1 exists. So it is deleting").arg(place + file);
-#if LINUX
-            QString command = "rm -f %1";
-#elif WIN
-            QString command = "del /f /q %1";
-#endif
-            auto expr = cmd::exec(command.arg(place + file));
-            if(expr.first) {
-                emit logWindow(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
-            }
+            qDebug().noquote() << QObject::tr("%1 exists. So it is going to be deleted").arg(place + file);
+//#if LINUX
+//            QString command = "rm -f %1";
+//#elif WIN
+//            QString command = "del /f /q %1";
+//#endif
+//            auto expr = cmd::exec(command.arg(place + file));
+//            if(expr.first) {
+//                emit logWindow(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
+//            }
         }
         else qDebug().noquote() << QObject::tr("%1 does not exist").arg(place + file);
         bool res = 0;
@@ -526,7 +526,7 @@ void install::unpackSystem() {
         QString advancedInfo = "";
 #elif WIN
         QPair<int, QString> expr;
-        res = !(expr = cmd::exec(QString("%1/data/iso-editor.exe extract %2 %3 %4/%3")
+        res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
                                  .arg(qApp->applicationDirPath(), systems.back().image, file.remove(0, 1), place))).first;
         QString advancedInfo = QString(": %1").arg(expr.second);
 #endif
@@ -535,7 +535,7 @@ void install::unpackSystem() {
             return;
         }
 
-        qDebug().noquote() << QObject::tr("%1 copied succesful").arg(file);
+        qDebug().noquote() << QObject::tr("%1 has been copied succesfully").arg(file);
 #if LINUX
         int size = QFile(mountPoint + file).size();
 #elif WIN

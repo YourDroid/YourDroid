@@ -11,7 +11,8 @@ class cmd {
     static QThread *mainThread;
 public:
     static void init() { mainThread = QThread::currentThread(); }
-    static QPair<int, QString> exec(QString, bool = false, QStringList = QStringList());
+    static QPair<int, QString> exec(QString, bool = false, QStringList = QStringList(),
+                                    QString = QString(), bool = false);
 };
 
 #endif // CMD_H

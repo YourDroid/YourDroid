@@ -11,7 +11,9 @@
 #include <w32api.h>
 #endif
 
-QPair<int, QString> cmd::exec(QString command, bool disFsRedir, QStringList list) {
+QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
+                              QStringList list, QString input,
+                              bool inputCritical) {
 #if WIN
     static BOOL archOs = false;
     if(disFsRedir) {
@@ -32,28 +34,44 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir, QStringList list
                                                                     prepend(" "));
     QString _output;
     QProcess proc;
-    bool succes = true, started = true;
+    bool success = true, started = true;
 
     if(list.isEmpty()) proc.start(command);
     else proc.start(command, list);
 
     int _res = 22;
     if(!proc.waitForStarted()) {
-        succes = false;
+        success = false;
         started = false;
     }
+    else if(input.count()) //if "input" contains something
+    {
+        long long int res = proc.write(input.toLatin1());
+        if (res == -1) //if impossible to write the input data
+        {
+            QString message = QObject::tr("Couldn't put the input data to the input");
+            if(inputCritical) //if it is necessery to put the input data to the input
+            {
+                qCritical().noquote() << message;
+                proc.kill();
+                success = false;
+            }
+            else qWarning().noquote() << message;
+        }
+        else qDebug().noquote() << QObject::tr("Put the input data to the input successsfully");
+    }
     else if(!proc.waitForFinished(-1)) {
-        succes = false;
+        success = false;
     }
     else if(proc.exitStatus() == QProcess::CrashExit) {
-        succes = false;
+        success = false;
         qCritical().noquote() << (_output = QObject::tr("Application has crashed"));
     }
-    if(succes) qDebug().noquote() << QObject::tr("Executing ended succesfull");
+    if(success) qDebug().noquote() << QObject::tr("Executing ended successfull");
     else {
         _output = QTextCodec::codecForName("CP1251")->toUnicode(
                     proc.errorString().toLocal8Bit()).prepend("\n");
-        qCritical().noquote() << QObject::tr("Executing ended unsuccesfull");
+        qCritical().noquote() << QObject::tr("Executing ended unsuccessfull");
     }
 
     if(started) {
