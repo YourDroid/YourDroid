@@ -230,11 +230,8 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    retExpr = cmd::exec(QString("%1/data/access-to-file.exe %2")
-                        .arg(qApp->applicationDirPath(), ui->editImageFromDisk->text()));
-    if(retExpr.first != 0) {
-        qCritical().noquote() << QObject::tr("^Can't open the image:\n%1")
-                                 .arg(retExpr.second);
+    if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
+        qCritical().noquote() << QObject::tr("^Can't access the image");
         end();
         return;
     }

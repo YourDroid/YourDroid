@@ -9,10 +9,10 @@ namespace file_opener
         {
 			if (args.Length == 0)
             return 45;
-			FileStream fs;
             try
             {
-                fs = new FileStream(args[0], FileMode.Open, FileAccess.ReadWrite);
+                StreamReader sr = File.OpenText(args[0]);
+				sr.ReadLine()
             }
             catch(IOException ex)
             {
