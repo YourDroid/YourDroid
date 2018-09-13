@@ -1,0 +1,326 @@
+ils_ControllerBindingsGordon_RenameActionSet"	"액션 세트 관리하기"
+"[english]Library_Details_ControllerBindingsGordon_RenameActionSet"	"MANAGE ACTION SET"
+"Library_Details_ControllerBindingsGordon_DeleteActionSet"	"액션 세트 삭제"
+"[english]Library_Details_ControllerBindingsGordon_DeleteActionSet"	"DELETE ACTION SET"
+"Library_Details_ControllerAction_Keyboard"	"키보드 보이기"
+"[english]Library_Details_ControllerAction_Keyboard"	"SHOW KEYBOARD"
+"Library_Details_ControllerAction_Screenshot"	"스크린샷 찍기"
+"[english]Library_Details_ControllerAction_Screenshot"	"TAKE SCREENSHOT"
+"Library_Details_ControllerAction_ChangePreset"	"액션 세트 변경하기"
+"[english]Library_Details_ControllerAction_ChangePreset"	"CHANGE ACTION SET"
+"Library_Details_ControllerAction_NextPreset"	"다음 액션 세트"
+"[english]Library_Details_ControllerAction_NextPreset"	"NEXT ACTION SET"
+"Library_Details_ControllerAction_ChangeTo"	"변경하기"
+"[english]Library_Details_ControllerAction_ChangeTo"	"CHANGE TO"
+"Library_Details_FieldLabel_TestParam0"	"테스트 0"
+"[english]Library_Details_FieldLabel_TestParam0"	"Test 0"
+"Library_Details_FieldLabel_TestParam1"	"테스트 1"
+"[english]Library_Details_FieldLabel_TestParam1"	"Test 1"
+"Library_Details_FieldLabel_TestParam2"	"테스트 2"
+"[english]Library_Details_FieldLabel_TestParam2"	"Test 2"
+"Library_Details_FieldLabel_TestParam3"	"테스트 3"
+"[english]Library_Details_FieldLabel_TestParam3"	"Test 3"
+"Library_Details_FieldLabel_TestParam4"	"테스트 4"
+"[english]Library_Details_FieldLabel_TestParam4"	"Test 4"
+"Library_Details_FieldLabel_TestParam5"	"테스트 5"
+"[english]Library_Details_FieldLabel_TestParam5"	"Test 5"
+"Library_AddActionSet_Title"	"액션 세트 추가하기"
+"[english]Library_AddActionSet_Title"	"Add Action Set"
+"Library_AddActionSet_CodeLabel"	"이것은 변환될 수 있는 새로운 동작 세트를 추가합니다."
+"[english]Library_AddActionSet_CodeLabel"	"This will add a new set of actions that can be switched to. \nAll action sets must have a non-empty name."
+"Library_RenameActionSet_Title"	"액션 세트 이름 변경"
+"[english]Library_RenameActionSet_Title"	"Rename Action Set"
+"Library_RenameActionSet_CodeLabel"	"이 액션 세트는 새로운 타이틀로 변경합니다."
+"[english]Library_RenameActionSet_CodeLabel"	"Rename this Action Set to a new title. All action sets must have a non-empty name."
+"Library_DeleteActionSet_Title"	"액션 세트 삭제"
+"[english]Library_DeleteActionSet_Title"	"Delete Action Set"
+"Library_DeleteActionSet_CodeLabel"	"{s:actionsetname}을(를) 삭제하시겠습니까?"
+"[english]Library_DeleteActionSet_CodeLabel"	"Are you sure you want to delete {s:actionsetname}?"
+"Library_SelectActionSet_Title"	"동작 세트 선택"
+"[english]Library_SelectActionSet_Title"	"Select Action Set"
+"Library_SelectActionSet_CodeLabel"	"버튼을 누르면 이 액션 세트로 변경합니다."
+"[english]Library_SelectActionSet_CodeLabel"	"Change to this action set when you press the button."
+"ControllerBinding_PresetDropDown_None"	"없음"
+"[english]ControllerBinding_PresetDropDown_None"	"None"
+"ControllerBinding_PresetDropDown_Next"	"다음 액션 세트"
+"[english]ControllerBinding_PresetDropDown_Next"	"Next Action Set"
+"Library_Details_ModeShift_Title_LeftJoystickClick"	"조이스틱 클릭"
+"[english]Library_Details_ModeShift_Title_LeftJoystickClick"	"Joystick Click"
+"Library_Details_ModeShift_Title_A"	"A 버튼"
+"[english]Library_Details_ModeShift_Title_A"	"A Button"
+"Library_Details_ModeShift_Title_B"	"B 버튼"
+"[english]Library_Details_ModeShift_Title_B"	"B Button"
+"Library_Details_ModeShift_Title_X"	"X 단추"
+"[english]Library_Details_ModeShift_Title_X"	"X Button"
+"Library_Details_ModeShift_Title_Y"	"Y 단추"
+"[english]Library_Details_ModeShift_Title_Y"	"Y Button"
+"Library_Details_EnableActionSetDisplay"	"변경할 때 액션 세트 표시하기"
+"[english]Library_Details_EnableActionSetDisplay"	"Display Action Set on Change"
+"Library_Details_EnableActionSetBeep"	"변경 시 경고음"
+"[english]Library_Details_EnableActionSetBeep"	"Beep on Change"
+"SteamUI_StreamLaunch_VRActive"	"원격 컴퓨터는 현재 VR 모드에 있으므로 홈 스트리밍 세션을 시작할 수 없습니다."
+"[english]SteamUI_StreamLaunch_VRActive"	"The remote computer is currently in VR mode so it cannot start an In-Home Streaming session."
+"ControllerBinding_ModeShiftDropDown_LeftJoystickClick"	"모드 변환 - 조이스틱 클릭"
+"[english]ControllerBinding_ModeShiftDropDown_LeftJoystickClick"	"Mode Shift - Joystick Click"
+"ControllerBinding_ModeShiftDropDown_LeftJoystickClick_Description"	"이 버튼을 누르면 컨트롤러의 기본 모드를 이 스크린에 지정된 대체 모드로 전환시킵니다."
+"[english]ControllerBinding_ModeShiftDropDown_LeftJoystickClick_Description"	"When pressed, this button will shift the normal mode of the controller into its alternate mode which is assigned on this screen."
+"ControllerBinding_ModeShiftDropDown_A"	"모드 변환 - A 단추"
+"[english]ControllerBinding_ModeShiftDropDown_A"	"Mode Shift - A Button"
+"ControllerBinding_ModeShiftDropDown_A_Description"	"이 버튼을 누르면 컨트롤러의 기본 모드를 이 스크린에 지정된 대체 모드로 전환시킵니다."
+"[english]ControllerBinding_ModeShiftDropDown_A_Description"	"When pressed, this button will shift the normal mode of the controller into its alternate mode which is assigned on this screen."
+"ControllerBinding_ModeShiftDropDown_B"	"모드 변환 - B 단추"
+"[english]ControllerBinding_ModeShiftDropDown_B"	"Mode Shift - B Button"
+"ControllerBinding_ModeShiftDropDown_B_Description"	"이 버튼을 누르면 컨트롤러의 기본 모드를 이 스크린에 지정된 대체 모드로 전환시킵니다."
+"[english]ControllerBinding_ModeShiftDropDown_B_Description"	"When pressed, this button will shift the normal mode of the controller into its alternate mode which is assigned on this screen."
+"ControllerBinding_ModeShiftDropDown_X"	"모드 변환 - X 단추"
+"[english]ControllerBinding_ModeShiftDropDown_X"	"Mode Shift - X Button"
+"ControllerBinding_ModeShiftDropDown_X_Description"	"이 버튼을 누르면 컨트롤러의 기본 모드를 이 스크린에 지정된 대체 모드로 전환시킵니다."
+"[english]ControllerBinding_ModeShiftDropDown_X_Description"	"When pressed, this button will shift the normal mode of the controller into its alternate mode which is assigned on this screen."
+"ControllerBinding_ModeShiftDropDown_Y"	"모드 변환 - Y 단추"
+"[english]ControllerBinding_ModeShiftDropDown_Y"	"Mode Shift - Y Button"
+"ControllerBinding_ModeShiftDropDown_Y_Description"	"이 버튼을 누르면 컨트롤러의 기본 모드를 이 스크린에 지정된 대체 모드로 전환시킵니다."
+"[english]ControllerBinding_ModeShiftDropDown_Y_Description"	"When pressed, this button will shift the normal mode of the controller into its alternate mode which is assigned on this screen."
+"Library_ManageActionSet_Title"	"액션 세트 관리하기"
+"[english]Library_ManageActionSet_Title"	"Manage Action Sets"
+"Library_CursorOnActionSet_CodeLabel"	"커서가 표시됐을 때 액션 세트로 전환"
+"[english]Library_CursorOnActionSet_CodeLabel"	"Action Set to switch to when cursor is shown"
+"Library_CursorOffActionSet_CodeLabel"	"커서가 숨겨졌을 때 액션 세트로 전환"
+"[english]Library_CursorOffActionSet_CodeLabel"	"Action Set to switch to when cursor is hidden"
+"Library_Details_GamepadButton_LStickUp"	"왼쪽 스틱 위로"
+"[english]Library_Details_GamepadButton_LStickUp"	"LSTICK UP"
+"Library_Details_GamepadButton_LStickDown"	"왼쪽 스틱 아래로"
+"[english]Library_Details_GamepadButton_LStickDown"	"LSTICK DOWN"
+"Library_Details_GamepadButton_LStickLeft"	"왼쪽 스틱 왼쪽으로"
+"[english]Library_Details_GamepadButton_LStickLeft"	"LSTICK LEFT"
+"Library_Details_GamepadButton_LStickRight"	"왼쪽 스틱 오른쪽으로"
+"[english]Library_Details_GamepadButton_LStickRight"	"LSTICK RIGHT"
+"Library_Details_GamepadButton_RStickUp"	"오른쪽 스틱 위로"
+"[english]Library_Details_GamepadButton_RStickUp"	"RSTICK UP"
+"Library_Details_GamepadButton_RStickDown"	"오른쪽 스틱 아래로"
+"[english]Library_Details_GamepadButton_RStickDown"	"RSTICK DOWN"
+"Library_Details_GamepadButton_RStickLeft"	"오른쪽 스틱 왼쪽으로"
+"[english]Library_Details_GamepadButton_RStickLeft"	"RSTICK LEFT"
+"Library_Details_GamepadButton_RStickRight"	"오른쪽 스틱 오른쪽으로"
+"[english]Library_Details_GamepadButton_RStickRight"	"RSTICK RIGHT"
+"Library_Details_ControllerAction_PreviousPreset"	"마지막으로 사용된 액션 세트"
+"[english]Library_Details_ControllerAction_PreviousPreset"	"LAST USED ACTION SET"
+"ControllerBinding_PresetDropDown_Prev"	"이전 액션 세트"
+"[english]ControllerBinding_PresetDropDown_Prev"	"Previous Action Set"
+"Library_Details_IncorrectSDKWarning_Title"	"경고"
+"[english]Library_Details_IncorrectSDKWarning_Title"	"WARNING"
+"Library_Details_IncorrectSDKWarning_Desc"	"{s:gamename}은(는) 현재 활성화된 헤드셋을 지원하지 않습니다."
+"[english]Library_Details_IncorrectSDKWarning_Desc"	"{s:gamename} does not support your currently active headset."
+"Broadcast_Playback"	"라이브"
+"[english]Broadcast_Playback"	"LIVE"
+"Broadcast_SpectatorCount"	"{d:NumViewers}"
+"[english]Broadcast_SpectatorCount"	"{d:NumViewers}"
+"Broadcast_RequestCount"	"{d:NumRequests}"
+"[english]Broadcast_RequestCount"	"{d:NumRequests}"
+"Broadcast_Notification_Header"	"시청자 요청"
+"[english]Broadcast_Notification_Header"	"VIEWER REQUESTS"
+"Broadcast_Notification_Viewer_Request_Overlay"	"{s:friend}"
+"[english]Broadcast_Notification_Viewer_Request_Overlay"	"{s:friend}"
+"Library_Details_OculusOnlyGameWarning_Title"	"경고"
+"[english]Library_Details_OculusOnlyGameWarning_Title"	"WARNING"
+"Library_Details_OculusOnlyGameWarning_Desc"	"{s:gamename}은(는) SteamVR 환경 밖에서 실행 됩니다. Steam으로 돌아가기 위해서 헤드셋을 제거해야 할 수도 있습니다."
+"[english]Library_Details_OculusOnlyGameWarning_Desc"	"{s:gamename} will launch outside of the SteamVR environment. You may need to remove your headset in order to return to Steam."
+"CDNLoc_Brazil___Recife"	"브라질 - 헤시피"
+"[english]CDNLoc_Brazil___Recife"	"Brazil - Recife"
+"CDNLoc_Brazil___Brasilia"	"브라질 - 브라질리아"
+"[english]CDNLoc_Brazil___Brasilia"	"Brazil - Brasilia"
+"CDNLoc_Brazil___Rio_de_Janeiro"	"브라질 - 리우데자네이루"
+"[english]CDNLoc_Brazil___Rio_de_Janeiro"	"Brazil - Rio de Janeiro"
+"CDNLoc_Brazil___Porto_Alegre"	"브라질 -  포르투알레그레"
+"[english]CDNLoc_Brazil___Porto_Alegre"	"Brazil - Porto Alegre"
+"CDNLoc_Russia___Irkutsk"	"러시아 - 이르쿠츠크"
+"[english]CDNLoc_Russia___Irkutsk"	"Russia - Irkutsk"
+"CDNLoc_Kazakhstan"	"카자흐스탄"
+"[english]CDNLoc_Kazakhstan"	"Kazakhstan"
+"CDNLoc_China___Wuhan"	"중국 - 우한"
+"[english]CDNLoc_China___Wuhan"	"China - Wuhan"
+"CDNLoc_China___Xi'an"	"중국 - 시안"
+"[english]CDNLoc_China___Xi'an"	"China - Xi'an"
+"CDNLoc_Mongolia"	"몽골"
+"[english]CDNLoc_Mongolia"	"Mongolia"
+"MainMenu_NewHelpRequestReplies"	"Steam 고객지원이 보낸 답장들: {d:helprequestreplycount}"
+"[english]MainMenu_NewHelpRequestReplies"	"{d:helprequestreplycount} replies from Steam Support"
+"MainMenu_NewHelpRequestRepliesSingular"	"Steam 고객지원이 보낸 답장: {d:helprequestreplycount}"
+"[english]MainMenu_NewHelpRequestRepliesSingular"	"{d:helprequestreplycount} reply from Steam Support"
+"Notification_VirtualHere"	"VirtualHere"
+"[english]Notification_VirtualHere"	"VirtualHere"
+"Notification_PurchaseVirtualHere"	"USB 공유용으로 Steam 상점에서 판매합니다."
+"[english]Notification_PurchaseVirtualHere"	"Available in the Steam Store for USB sharing"
+"Library_Details_IncludeInVR"	"VR 라이브러리에 포함"
+"[english]Library_Details_IncludeInVR"	"Include in VR Library"
+"Library_Details_ControllerBindingsGordon_ShowActivator"	"활성자 보기"
+"[english]Library_Details_ControllerBindingsGordon_ShowActivator"	"SHOW ACTIVATORS"
+"Library_Details_FieldLabel_ActivatorType"	"활성화 종류"
+"[english]Library_Details_FieldLabel_ActivatorType"	"Activation Type"
+"Library_Details_FieldLabel_ActivatorBinding"	"바인딩"
+"[english]Library_Details_FieldLabel_ActivatorBinding"	"Binding"
+"Library_Details_Activator_Title_None"	"없음 - 활성자 제거"
+"[english]Library_Details_Activator_Title_None"	"None - Remove Activator"
+"Library_Details_Activator_Title_FullPress"	"보통 누르기"
+"[english]Library_Details_Activator_Title_FullPress"	"Regular Press"
+"Library_Details_Activator_Title_LongPress"	"길게 누르기"
+"[english]Library_Details_Activator_Title_LongPress"	"Long Press"
+"Library_Details_Activator_Title_DoublePress"	"두 번 누르기"
+"[english]Library_Details_Activator_Title_DoublePress"	"Double Press"
+"Library_Details_Activator_Title_StartPress"	"시작 누르기"
+"[english]Library_Details_Activator_Title_StartPress"	"Start Press"
+"Library_Details_Activator_Title_Release"	"누르기 해제"
+"[english]Library_Details_Activator_Title_Release"	"Release Press"
+"Library_Details_Activator_Title_SoftPress"	"살짝 누르기"
+"[english]Library_Details_Activator_Title_SoftPress"	"Soft Press"
+"None"	"없음"
+"[english]None"	"None"
+"Full_Press"	"보통 누르기"
+"[english]Full_Press"	"Regular Press"
+"Long_Press"	"길게 누르기"
+"[english]Long_Press"	"Long Press"
+"Double_Press"	"두 번 누르기"
+"[english]Double_Press"	"Double Press"
+"Start_Press"	"시작 누르기"
+"[english]Start_Press"	"Start Press"
+"Release"	"누르기 해제"
+"[english]Release"	"Release Press"
+"Soft_Press"	"살짝 누르기"
+"[english]Soft_Press"	"Soft Press"
+"Library_Details_FieldLabel_CycleBinding"	"주기 바인딩"
+"[english]Library_Details_FieldLabel_CycleBinding"	"Cycle Binding"
+"Library_Details_FieldLabel_StartDelay"	"발사 시작 지연"
+"[english]Library_Details_FieldLabel_StartDelay"	"Fire Start Delay"
+"Library_Details_FieldLabel_EndDelay"	"발사 종료 지연"
+"[english]Library_Details_FieldLabel_EndDelay"	"Fire End Delay"
+"Library_Details_FieldLabel_Toggle"	"전환"
+"[english]Library_Details_FieldLabel_Toggle"	"Toggle"
+"Library_Details_FieldLabel_RepeatRate"	"반복 속도"
+"[english]Library_Details_FieldLabel_RepeatRate"	"Repeat Rate"
+"Library_Details_FieldLabel_Interruptable"	"개입 중단 가능"
+"[english]Library_Details_FieldLabel_Interruptable"	"Interruptable"
+"Library_Details_FieldLabel_LongPressTime"	"길게 누르는 시간"
+"[english]Library_Details_FieldLabel_LongPressTime"	"Long Press Time"
+"Library_Details_FieldLabel_DoubleTapTime"	"두 번 탭 시간"
+"[english]Library_Details_FieldLabel_DoubleTapTime"	"Double Tap Time"
+"ControllerBinding_PresetDropDown_Default"	"기본 설정"
+"[english]ControllerBinding_PresetDropDown_Default"	"Default"
+"ControllerBinding_ActivatorDropDown"	"활성자 종류"
+"[english]ControllerBinding_ActivatorDropDown"	"Activator Type"
+"ControllerBinding_ActivatorDropDown_Description"	"활성자는 입력이 어떻게 반응하는지 결정합니다. 보통 누르기, 길게 누르기, 아니면 두 번 탭 하기 인가요? 여기에서 선택하거나 제거하십시오."
+"[english]ControllerBinding_ActivatorDropDown_Description"	"Activators determine how the input responds to you.  Is it a regular press, a long press, a double tap?  Select them here or remove them."
+"ControllerBinding_ActivatorDropDown_None"	"없음 - 활성자 제거"
+"[english]ControllerBinding_ActivatorDropDown_None"	"None - Remove Activator"
+"ControllerBinding_ActivatorDropDown_None_Description"	"이 옵션을 선택하면 활성자와 그에 포함된 바인딩이 제거됩니다."
+"[english]ControllerBinding_ActivatorDropDown_None_Description"	"Selecting this option will remove the activator and any bindings it contains."
+"ControllerBinding_ActivatorDropDown_FullPress"	"보통 누름 활성자"
+"[english]ControllerBinding_ActivatorDropDown_FullPress"	"Regular Press Activator"
+"ControllerBinding_ActivatorDropDown_FullPress_Description"	"보통 누름 활섺а</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.AutomaticallyAddedMakeArguments"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Очистка</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Профилирование</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Профилирование</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+    <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.BuildConfigurationCount">3</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">0</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Установка</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Deploy</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">1</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Конфигурация установки</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.AddedSuppressionFiles"/>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectBusEvents">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectSystime">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableBranchSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableCacheSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableEventToolTips">true</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.MinimumCostRatio">0.01</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.VisualisationMinimumCostRatio">10</value>
+    <value type="bool" key="Analyzer.Valgrind.FilterExternalIssues">true</value>
+    <value type="int" key="Analyzer.Valgrind.LeakCheckOnFinish">1</value>
+    <value type="int" key="Analyzer.Valgrind.NumCallers">25</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.RemovedSuppressionFiles"/>
+    <value type="int" key="Analyzer.Valgrind.SelfModifyingCodeDetection">1</value>
+    <value type="bool" key="Analyzer.Valgrind.Settings.UseGlobalSettings">true</value>
+    <value type="bool" key="Analyzer.Valgrind.ShowReachable">false</value>
+    <value type="bool" key="Analyzer.Valgrind.TrackOrigins">true</value>
+    <value type="QString" key="Analyzer.Valgrind.ValgrindExecutable">valgrind</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.VisibleErrorKinds">
+     <value type="int">0</value>
+     <value type="int">1</value>
+     <value type="int">2</value>
+     <value type="int">3</value>
+     <value type="int">4</value>
+     <value type="int">5</value>
+     <value type="int">6</value>
+     <value type="int">7</value>
+     <value type="int">8</value>
+     <value type="int">9</value>
+     <value type="int">10</value>
+     <value type="int">11</value>
+     <value type="int">12</value>
+     <value type="int">13</value>
+     <value type="int">14</value>
+    </valuelist>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">yourdroid</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/YourDroid/source/yourdroid.pro</value>
+    <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">yourdroid.pro</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory"></value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory.default">C:/YourDroid/build</value>
+    <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.TargetCount</variable>
+  <value type="int">1</value>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.Updater.FileVersion</variable>
+  <value type="int">18</value>
+ </data>
+ <data>
+  <variable>Version</variable>
+  <value type="int">18</value>
+ </data>
+</qtcreator>

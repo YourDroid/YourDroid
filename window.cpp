@@ -302,16 +302,16 @@ void Window::on_buttonInstallInstall_clicked()
     }
 #endif
 
-    int ret = 0;
-    if(!(ret = global->insSet->isInvalidImage(
-         #if WIN
-             ui->editImageFromDisk->text()
-         #endif
-             ))) {
-        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
-        end();
-        return;
-    }
+//    int ret = 0;
+//    if(!(ret = global->insSet->isInvalidImage(
+//         #if WIN
+//             ui->editImageFromDisk->text()
+//         #endif
+//             ))) {
+//        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
+//        end();
+//        return;
+//    }
 
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));

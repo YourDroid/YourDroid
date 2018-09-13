@@ -154,7 +154,7 @@ QPair<bool, QString> options::mountEfiPart()
         qDebug().noquote() << QObject::tr("Size is %1").arg(size);
         bool dirExist;
         qDebug().noquote() << QObject::tr("Dir exists: %1")
-                              .arg((dirExist = QDir(QString("%1\\efi").arg(mountPoint)).exists()));
+                              .arg((dirExist = QDir(QString("%1\\efi").arg(mountPoint)).exists() || QDir(QString("%1\\EFI").arg(mountPoint)).exists()));
         if(dirExist && size/* < 1 * 1024 * 1024 * 1024*/)
         {
             qDebug().noquote()
