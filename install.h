@@ -12,7 +12,7 @@
 
 using install2Flash = tagged_bool<class install2FlashTag>;
 
-STRING_ENUM(_bootloader, grub2, grub_legasy, refind, gummiboot, ntldr, bootmgr, grub2_flash)
+STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, ntldr, grub2_flash)
 STRING_ENUM(_typePlace, dir, partition, flash_drive)
 
 class install : public QObject {
@@ -72,11 +72,11 @@ public:
     void unpackSystem();
     QString obsolutePath(QString);
     void registerBootloader();
-    void registerBootmgr();
+    void registerGrub4dos();
     void registerGrub2();
     bool installGrub2( );
     QString grub2Configure(QString, bool = false, bool = true);
-    void grubLConfigure(QString, bool = false);
+    QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int);
     void downloadFile(QString, QString);
     void delSystemFiles(int);

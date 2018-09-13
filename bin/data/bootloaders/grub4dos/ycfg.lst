@@ -1,0 +1,4 @@
+title Windows
+rootnoverify (hd0,1)
+chainloader +1
+

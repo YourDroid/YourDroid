@@ -156,7 +156,7 @@ void Window::on_installButtonMain_clicked()
     ui->comboBoot->clear();
     if(!global->set->tbios) {
         //ui->comboBoot->addItem("Grub legasy");
-        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Windows BOOTMGR");
+        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Grub4dos");
     }
     //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
     if(global->set->tbios) {
@@ -334,9 +334,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
-    if(boot == "Grub legasy") boot = "grub_legasy";
-    else if(boot == "Windows NTLDR") boot = "ntldr";
-    else if(boot == "Windows BOOTMGR") boot = "bootmgr";
+    if(boot == "Windows NTLDR") boot = "ntldr";
     else if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());

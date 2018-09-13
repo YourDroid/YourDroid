@@ -121,112 +121,72 @@ void install::read() {
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: qDebug().noquote() << tr("Registering to grub2"); registerGrub2(); break;
-    case _bootloader::bootmgr: qDebug().noquote() << tr("Registering to bootmgr"); registerBootmgr(); break;
+    case _bootloader::grub2: registerGrub2(); break;
+    case _bootloader::grub4dos: registerGrub4dos(); break;
         //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
 }
 
-void install::registerBootmgr()
+void install::registerGrub4dos()
 {
 #if WIN
 #define returnFault() return;
-    qDebug().noquote() << QObject::tr("Setting up bootmgr");
+    qDebug().noquote() << QObject::tr("Installing grub4dos");
 
     QString path;
     bool res = false;
-    QString grubPath = QString("c:/yourdroid_boot/%1").arg(systems.back().name);
 
-    if(!(res = QDir((path = "c:/yourdroid_boot")).exists()))
+    qDebug().noquote() << QObject::tr("Copying the files");
+
+    if(!(res = QFile((path =
+                      QString("c:/yourdroid_grub4dos.mbr")))
+         .exists()))
     {
-        MKDIR(path);
+        COPY(QString("%1/data/bootloaders/grub4dos"
+                     "/yourdroid_grub4dos.mbr")
+             .arg(qApp->applicationDirPath()),
+             path);
     }
     logDirExist();
 
-    res = QDir((path = grubPath)).exists();
+    if(!(res = QFile((path =
+                      QString("c:/yg4d")))
+         .exists()))
+    {
+        COPY(QString("%1/data/bootloaders/grub4dos"
+                     "/yg4d")
+             .arg(qApp->applicationDirPath()),
+             path);
+    }
     logDirExist();
-    if(res)
+
+    if(!(res = QFile((path =
+                      QString("c:/ycfg.lst")))
+         .exists()))
     {
-        qDebug().noquote()
-                << QObject::tr("^Grub folder with a same name exists. "
-                               "Do you want to overwrite it "
-                               "(if no, installation will abort)?|+-");
-        if(log::getLastPressedButton() == QMessageBox::Ok)
-        {
-            if(!QDir(path).removeRecursively())
-            {
-                emit abort(QObject::tr("Couldn't overwrite"));
-                return;
-            }
-        }
-        else
-        {
-            emit abort(QObject::tr("Canceled by user"));
-            return;
-        }
+        COPY(QString("%1/data/bootloaders/grub4dos"
+                     "/ycfg.lst")
+             .arg(qApp->applicationDirPath()),
+             path);
     }
-    else MKDIR(path);
+    logDirExist();
 
-    qDebug().noquote() << QObject::tr("Selecting grub4dos file name...");
 
-    srand((unsigned int)time(NULL));
-    QString grName;
-    while(1)
-    {
-        char *ch = new char[3] {rand() % 256 - 128, '\0'};
-        grName = QString("gr_%1").arg(ch);
-        bool exist = QFile(QString("C:/%1").arg(grName)).exists();
-        if(exist)
-        {
-            qDebug().noquote() << QObject::tr("there is %1").arg(grName);
-            break;
-        }
-        else qDebug().noquote() << QObject::tr("there's no %2").arg(grName);
-    }
+    qDebug().noquote() << QObject::tr("Setting up grub4dos");
 
-    qDebug().noquote() << QObject::tr("Grub4dos file name is %1").arg(grName);
+    QString menuentry = grubLConfigure("", false, false);
 
-    COPY(QString("%1/data/bootloaders/grub2/simple").arg(qApp->applicationDirPath()),
-         QString("C:/%1").arg(grName));
-
-    qDebug().noquote() << QObject::tr("Editing grub4dosfile");
-    QFile _gr(QString("c:/%1").arg(grName));
-    if(!_gr.open(QIODevice::Append | QIODevice::WriteOnly))
-    {
-        emit abort(QObject::tr("Couldn't open the grub file"));
+    QFile _config(mountPoint + "с:/ycfg.lst");
+    if(!_config.open(QIODevice::Append)) {
+        emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
     }
-    QTextStream gr(&_gr);
-    gr << QString("yourdroid_boot/%1/menu.lst");
-    _gr.close();
+    QTextStream config(&_config);
 
+    config << menuentry + '\n';
+    _config.close();
 
-    QString grMbrPath = QString("%1/grubLegasy.mbr").arg(grubPath);
-
-    COPY(QString("%1/data/bootloaders/grub_legasy/grldr.mbr").arg(qApp->applicationDirPath()),
-         grMbrPath);
-
-    //DEBUG("Editing grub4dos mbr file...");
-    QFile _grMbr(grMbrPath);
-    if(!_grMbr.open(QIODevice::ReadOnly))
-    {
-        emit abort(QObject::tr("Couldn't open the grub.mbr to read"));
-        return;
-    }
-    QTextStream grMbr(&_grMbr);
-    QString grMbrText = grMbr.readAll();
-    grMbrText.replace("smpl", grName);
-    if(!_grMbr.open(QIODevice::WriteOnly))
-    {
-        emit abort(QObject::tr("Couldn't open the grub.mbr to write"));
-        return;
-    }
-    grMbr << grMbrText;
-
-    grubLConfigure(qApp->applicationDirPath() + "/tempGrubConf", true);
-
-    COPY(QString("%1/tempGrubConf").arg(qApp->applicationDirPath()),
-         QString("%1/menu.lst").arg(grubPath));
+    qDebug().noquote() << QObject::tr("adding an entry of grub4dos to UEFI");
 
     execAbort(QString("bcdedit /create /d \"%1\" /application bootsector").arg(systems.back().name));
 
@@ -238,11 +198,11 @@ void install::registerBootmgr()
 
     execAbort(QString("bcdedit /set %1 device partition=C:").arg(id));
 
-    execAbort(QString("bcdedit /set %1 path \\yourdroid_boot\\%2\\grubLegasy.mbr").arg(id, systems.back().name));
+    execAbort(QString("bcdedit /set %1 path \\yourdroid_grub4dos.mbr").arg(id, systems.back().name));
 
     execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
 
-    qDebug().noquote() << QObject::tr("Gummiboot setted up sucessfully");
+    qDebug().noquote() << QObject::tr("Grub4dos has been setted up sucessfully");
 
 #undef returnFault
 #endif
@@ -344,25 +304,36 @@ QString install::grub2Configure(QString way, bool needTimeout, bool toFile) {
     else return menuentry;
 }
 
-void install::grubLConfigure(QString way, bool needTimeout)
+QString install::grubLConfigure(QString way,
+                                bool needTimeout, bool toFile)
 {
     QString place = obsolutePath(systems.back().place);
     QString name = systems.back().name;
-    QFile _config(way);
-    if(!_config.open(QIODevice::WriteOnly)) {
-        emit abort(QObject::tr("Could not open the config-file"));
-        return;
+    QString menuentry =
+            QString("title %2\n"
+                    "find --set-root %1/kernel kernel "
+                    "%1/kernel quiet root=/dev/ram0 "
+                    "androidboot.hardware=android_x86 "
+                    "androidboot.selinux=permissive "
+                    "SRC=%1 DATA=%1/data.img\n"
+                    "find --set-root %1/initrd.img\n"
+                    "initrd %1/initrd.img").arg(place, name);
+    qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
+
+    if(toFile)
+    {
+        QFile _config(way);
+        if(!_config.open(QIODevice::WriteOnly)) {
+            emit abort(QObject::tr("Could not open the config-file"));
+            return QString();
+        }
+        QTextStream config(&_config);
+        if(needTimeout) config << "timeout=0\n";
+        config << menuentry;
+        _config.close();
+        return QString();
     }
-    QTextStream config(&_config);
-    if(needTimeout) config << "timeout=0\n";
-    config << (QString("title %2\n"
-                       "find --set-root %1/kernel kernel "
-                       "%1/kernel quiet root=/dev/ram0 "
-                       "androidboot.hardware=android_x86 androidboot.selinux=permissive "
-                       "SRC=%1 DATA=%1/data.img\n"
-                       "find --set-root %1/initrd.img\n"
-                       "initrd %1/initrd.img").arg(place, name));
-    _config.close();
+    return menuentry;
 }
 
 int install::sizeOfFiles() {
