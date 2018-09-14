@@ -71,6 +71,8 @@ public:
     void unmountImage();
     void unpackSystem();
     QString obsolutePath(QString);
+    QPair<bool, QString> getUefiEntry(QString);
+    QPair<bool, QString> findUefiId(QString, QString = QString());
     void registerBootloader();
     void registerGrub4dos();
     void registerGrub2();

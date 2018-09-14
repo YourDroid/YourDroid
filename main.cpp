@@ -96,9 +96,7 @@ int main(int argc, char *argv[])
         app.installTranslator(&translator);
 
         qDebug().noquote() << QObject::tr("Setting debug console...");
-        if(argc == 2 && argv[1] == "c" || set.getConEnable()) log::setEnabledCon(true);
-
-        cmd::exec("help");
+        if((argc == 2 && argv[1] == "c") || set.getConEnable()) log::setEnabledCon(true);
 //        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;

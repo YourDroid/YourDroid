@@ -118,6 +118,92 @@ void install::read() {
     qDebug().noquote() << "Systems read succesfull";
 }
 
+QPair<bool, QString> install::getUefiEntry(QString description)
+{
+    qDebug().noquote() << QObject::tr("Looking for "
+                                      "the \"%1\" entry")
+                          .arg(description);
+    auto res = cmd::exec("bcdedit /enum firmware", true);
+    if(res.first != 0) return QPair<bool, QString>(false, res.second);
+
+    int descrBegin =
+            res.second.indexOf(QString("description             ")
+                               + description);
+    if(descrBegin == -1)
+    {
+        QString error =QObject::tr("Can't find the entry "
+                                  "of the description");
+        qDebug().noquote() << error;
+        return QPair<bool, QString>(false, error);
+    }
+
+    QString cutRight = res.second.mid(descrBegin);
+    qDebug().noquote() << QObject::tr("The right part is %1")
+                          .arg(cutRight);
+    QString cutLeft = res.second.left(descrBegin);
+    qDebug().noquote() << QObject::tr("The left part is %1")
+                          .arg(cutLeft);
+
+
+    int entryBegin = cutLeft.lastIndexOf("-------");
+    int entryEnd = cutRight.indexOf("-------");
+
+    QString entry;
+
+    if(entryBegin == -1)
+    {
+        QString error = QObject::tr("The begin of the entry"
+                                    " isn't found");
+        qDebug().noquote() << error;
+        return QPair<bool, QString>(false, error);
+    }
+    if(entryEnd == -1)
+    {
+        qWarning().noquote()
+                << QObject::tr("Can't find the end of the entry. "
+                               "The end of the bcdedit output will "
+                               "be considered as the entry end");
+        entry = res.second.mid(entryBegin);
+    }
+    else entry
+            = cutLeft.mid(entryBegin)
+            + cutRight.mid(1, entryEnd);
+    qDebug().noquote() << QObject::tr("The entry is successfully found!"
+                                      " It is %1").arg(entry);
+    return QPair<bool, QString>(true, entry);
+}
+
+QPair<bool, QString> install::findUefiId(QString description, QString entry)
+{
+    qDebug().noquote() << QObject::tr("Looking for the id of "
+                                      "the \"%1\" entry")
+                          .arg(description);
+
+    if(entry == QString())
+    {
+        auto expr = getUefiEntry(description);
+        if(!expr.first) return expr;
+        entry = expr.second;
+    }
+
+    int idBegin = entry.indexOf('{');
+    int idEnd = entry.indexOf('}');
+    if(idBegin == -1 || idEnd == -1)
+    {
+        QString error = QObject::tr("The %1 of id line"
+                                    " isn't found")
+                        .arg(idBegin == -1 ? "begin" : "end");
+        qDebug().noquote() << error;
+        return QPair<bool, QString>(false, error);
+    }
+
+    QString id = entry.mid(idBegin, idEnd - idBegin + 1);
+    qDebug().noquote() << QObject::tr("The id is successfully found!"
+                                      " It is %1").arg(id);
+
+    return QPair<bool, QString>(true, id);
+}
+
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
@@ -176,7 +262,7 @@ void install::registerGrub4dos()
 
     QString menuentry = grubLConfigure("", false, false);
 
-    QFile _config(mountPoint + "с:/ycfg.lst");
+    QFile _config("c:/ycfg.lst");
     if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
@@ -232,6 +318,99 @@ bool install::installGrub2() {
                    .arg(resGrubIns.second));
         return false;
     }
+
+    bool grubMadeEntry = true;
+    auto expr = cmd::exec("bcdedit /enum firmware", true);
+    if(expr.first != 0) qDebug().noquote()
+            << QObject::tr("Can't make sure if yourdroid "
+                           "grub2 entry is regestered correctly");
+    else
+    {
+        qDebug().noquote() << QObject::tr("Making sure there is an "
+                                          "entry of yourdroid grub2");
+        if(expr.second.contains("yourdroid_grub2"))
+            qDebug().noquote()
+                    << QObject::tr("There is an entry of "
+                                   "yourdroid grub2");
+        else
+        {
+            qDebug().noquote()
+                    << QObject::tr("There is no entry of "
+                                   "yourdroid grub2. "
+                                   "So installing it");
+            execAbort("bcdedit /copy {bootmgr} "
+                      "/d \"yourdroid_grub2\"");
+            grubMadeEntry = false;
+        }
+
+        qDebug().noquote()
+                << QObject::tr("Making sure the path is stated "
+                               "in the entry");
+        auto resUefiEntry = getUefiEntry("yourdroid_grub2");
+        auto resFindId = findUefiId("yourdroid_grub2",
+                                    resUefiEntry.second);
+        if(!resUefiEntry.first)
+            qDebug().noquote()
+                    << QObject::tr("Can't make sure if the path is stated "
+                                   "in the entry because failed "
+                                   "to get the entry");
+        else if(!resFindId.first)
+            qDebug().noquote()
+                    << QObject::tr("Can't make sure if the path is stated "
+                                   "in the entry because failed "
+                                   "to get the id of the entry");
+        else
+        {
+            if(!resUefiEntry.second.contains("path"))
+            {
+                qDebug().noquote()
+                        << QObject::tr("No path stated. "
+                                       "So stating it");
+                execAbort(QString("bcdedit /set %1 path "
+                                  "\\EFI\\yourdroid_grub2\\%2")
+                          .arg(resFindId.second,
+                               (dat->arch ? "grubx64.efi" :
+                                            "grubia32.efi")));
+            }
+        }
+
+        qDebug().noquote() << QObject::tr("Making sure the yourdroid "
+                                          "grub2 entry is the first");
+        int dsplOrder = expr.second.indexOf("displayorder");
+        QString cut = expr.second.mid(dsplOrder);
+        int fstEntryBegin = cut.indexOf('{');
+        int fstEntryEnd = cut.indexOf('}');
+        QString fstEntryId =
+                cut.mid(fstEntryBegin,
+                        fstEntryEnd - fstEntryBegin + 1);
+        if(!resFindId.first)
+        {
+            qDebug().noquote()
+                    << QObject::tr("Can't make sure if the youdroid "
+                                   "grub2 entry is the first "
+                                   "because failed to find its "
+                                   "ID:\n%1")
+                       .arg(resFindId.second);
+        }
+        else
+        {
+            if(fstEntryId == resFindId.second)
+                qDebug().noquote()
+                        << QObject::tr("The yourdroid grub2 entry "
+                                       "is already the first");
+            else
+            {
+                qDebug().noquote()
+                        << QObject::tr("the yourdroid grub2 entry "
+                                       "isn't the first, so making "
+                                       "it be");
+                execAbort(QString("bcdedit /set {fwbootmgr} "
+                                  "displayorder %1 /addfirst")
+                          .arg(resFindId.second));
+            }
+        }
+    }
+
 
     QString path;
     bool res = false;
