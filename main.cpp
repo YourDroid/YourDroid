@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
 //        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;
+        set.mountEfiPart();
 
         install ins(&set);
         ins.read();

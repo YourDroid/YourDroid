@@ -262,9 +262,10 @@ void install::registerGrub4dos()
 
     QString menuentry = grubLConfigure("", false, false);
 
-    QFile _config("c:/ycfg.lst");
+    QString configFile = "c:/ycfg.lst";
+    QFile _config(configFile);
     if(!_config.open(QIODevice::Append)) {
-        emit abort(QObject::tr("Could not open the grub's config-file"));
+        emit abort(QObject::tr("Could not open the grub's config-file (%1)").arg(configFile));
         return;
     }
     QTextStream config(&_config);
@@ -274,7 +275,7 @@ void install::registerGrub4dos()
 
     qDebug().noquote() << QObject::tr("adding an entry of grub4dos to UEFI");
 
-    execAbort(QString("bcdedit /create /d \"%1\" /application bootsector").arg(systems.back().name));
+    execAbort(QString("bcdedit /create /d \"Android\" /application bootsector"));
 
     QString output = resCmd.second;
     int begin = output.indexOf('{'), end = output.indexOf('}');
@@ -462,8 +463,8 @@ QString install::grub2Configure(QString way, bool needTimeout, bool toFile) {
     QString menuentry = QString("menuentry '") + name + QString("' --class android-x86 {\n") +
             QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
             QString("\tlinux ") + place +
-            QString("/kernel root=/dev/ram0 androidboot.hardware=android-x86 "
-                    "androidboot.selinux=permissive quit DATA= SRC=%1\n").arg(place) +
+            QString("/kernel root=/dev/ram0 androidboot.selinux=permissive "
+                    "quiet DATA= SRC=%1\n").arg(place) +
             QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n";
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -490,12 +491,11 @@ QString install::grubLConfigure(QString way,
     QString name = systems.back().name;
     QString menuentry =
             QString("title %2\n"
-                    "find --set-root %1/kernel kernel "
-                    "%1/kernel quiet root=/dev/ram0 "
+                    "find --set-root %1/kernel\n"
+                    "kernel %1/kernel quiet root=/dev/ram0 "
                     "androidboot.hardware=android_x86 "
                     "androidboot.selinux=permissive "
                     "SRC=%1 DATA=%1/data.img\n"
-                    "find --set-root %1/initrd.img\n"
                     "initrd %1/initrd.img").arg(place, name);
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
