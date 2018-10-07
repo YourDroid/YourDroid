@@ -42,6 +42,7 @@ class install : public QObject {
     QString mountPoint;
     QPair<int, QString> resCmd;
     bool resFile = false;
+    bool sysImgOrSfs; // img - false, sfs - true
 signals:
     void logWindow(QtMsgType, QString);
     void abort(QString);
@@ -61,8 +62,7 @@ public:
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
     void formatFlashDrive();
-    int sizeOfFiles();
-    int isInvalidImage(
+    bool isInvalidImage(
         #if WIN
             QString
         #endif

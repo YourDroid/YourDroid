@@ -219,16 +219,16 @@ void Window::on_buttonInstallInstall_clicked()
         end(mess);
     });
 
-    auto retExpr = cmd::exec(QString("%1/data/iso-editor.exe")
-                             .arg(qApp->applicationDirPath()));
-    if(retExpr.second.contains("Too few arguments")) //It output this message if it works fine
-        qDebug().noquote() << QObject::tr("iso-editor works fine");
-    else
-    {
-        qCritical().noquote() << tr("^iso-editor doesn't work:\n%1").arg(retExpr.second);
-        end();
-        return;
-    }
+//    auto retExpr = cmd::exec(QString("%1/data/iso-editor.exe")
+//                             .arg(qApp->applicationDirPath()));
+//    if(retExpr.second.contains("Too few arguments")) //It output this message if it works fine
+//        qDebug().noquote() << QObject::tr("iso-editor works fine");
+//    else
+//    {
+//        qCritical().noquote() << tr("^iso-editor doesn't work:\n%1").arg(retExpr.second);
+//        end();
+//        return;
+//    }
 
     if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
         qCritical().noquote() << QObject::tr("^Can't access the image");
