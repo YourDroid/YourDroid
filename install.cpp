@@ -493,9 +493,8 @@ QString install::grubLConfigure(QString way,
             QString("title %2\n"
                     "find --set-root %1/kernel\n"
                     "kernel %1/kernel quiet root=/dev/ram0 "
-                    "androidboot.hardware=android_x86 "
                     "androidboot.selinux=permissive "
-                    "SRC=%1 DATA=%1/data.img\n"
+                    "SRC=%1 DATA=\n"
                     "initrd %1/initrd.img").arg(place, name);
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
