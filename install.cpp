@@ -28,6 +28,7 @@ void install::write() {
     qDebug().noquote() << qApp->translate("log", "Writing install settings...");
 
     QSettings install(qApp->applicationDirPath() + "/install.ini", QSettings::IniFormat);
+    install.clear();
     install.beginGroup("about_installing_systems");
     install.setValue("count_systems", cntSystems);
     int finallyCnt = 0;
@@ -36,7 +37,7 @@ void install::write() {
             qDebug().noquote() << tr("System %1 skipped").arg(systems[i].name);
             continue;
         }
-        finallyCnt = i;
+        finallyCnt = i + 1;
         qDebug().noquote() << qApp->translate("log", "System %1 config registering...").arg(systems[i].name);
         install.setValue(QString("system_") + QString::number(i), systems[i].name);
         qDebug().noquote() << qApp->translate("log", "System %1 config registered succesfull").arg(systems[i].name);
@@ -44,7 +45,7 @@ void install::write() {
     install.setValue("count_systems", finallyCnt);
     install.endGroup();
 
-    qDebug().noquote() << qApp->translate("log", "System configs registered succesfull");
+    qDebug().noquote() << QObject::tr("System configs registered succesfull");
 
     for(int i = 0; i < sysCnt; i++) {
         if(systems[i].ended == false) {
@@ -457,9 +458,18 @@ void install::registerGrub2() {
 #endif
 }
 
-QString install::grub2Configure(QString way, bool needTimeout, bool toFile) {
-    QString place = obsolutePath(systems.back().place);
-    QString name = systems.back().name;
+QString install::grub2Configure(QString way, bool needTimeout, bool toFile, int numSys) {
+    QString name, place;
+    if(numSys = -1)
+    {
+        place = obsolutePath(systems.back().place);
+        name = systems.back().name;
+    }
+    else
+    {
+        place = obsolutePath(systems[numSys].place);
+        name = systems[numSys].name;
+    }
     QString menuentry = QString("menuentry '") + name + QString("' --class android-x86 {\n") +
             QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
             QString("\tlinux ") + place +
@@ -767,22 +777,44 @@ void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QSt
     statusBar = status;
 }
 
-void install::deleteBootloader(int numSys) {
+void install::deleteBootloaderEntry(int numSys) {
     qDebug().noquote() << "Deleting bootloader...";
     switch(systems[numSys].bootloader) {
-    case _bootloader::grub2: deleteGrub2(numSys); break;
+    case _bootloader::grub2: deleteGrub2Entry(numSys); break;
+    case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
     }
 }
 
-void install::deleteGrub2(int numSys) {
-    qDebug().noquote() << "Deleting android from grub2...";
-    statusBar->showMessage("Удаление android из grub2");
-    QFile(qApp->translate("log", "/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove();
+void install::deleteGrub2Entry(int numSys) {
+    qDebug().noquote() << QObject::tr("Deleting the grub2 entry of android...");
+    statusBar->showMessage(QObject::tr("Deleting the grub2 entry of android"));
+#if LINUX
+    QFile(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove();
     system("update-grub");
+#elif WIN
+    QFile config(QString("%1/efi/yourdroid_grub2/grub/grub.cfg")
+                 .arg(global->set->efiMountPoint));
+    if(!config.open(QIODevice::ReadOnly))
+    {
+        emit abort(QObject::tr("The config cannot be found"))
+    }
+    else
+    {
+        QTextStream configTStream(&config);
+        QString configText = configTStream.readAll();
+        QString grubEntry = grub2Configure(QString(), false, false, numSys);
+        configText.remove(grubEntry);
+        if(!config.open(QIODevice::Truncate))
+        {
+            //error
+        }
+        else configTStream << configText;
+    }
+#endif
     progressBarDelete->setValue(7);
 }
 
-void install::deleteEntry(int num) {
+void install::deleteSettingsEntry(int num) {
     qDebug().noquote() << "Deleting system's entry...";
     systems.remove(num);
     cntSystems--;

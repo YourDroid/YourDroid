@@ -61,6 +61,7 @@ QMAKE_LFLAGS_RELEASE =
 }
 
 win32 {
+CONFIG += -force_debug_info
 QT += winextras
 LIBS += -lDbgHelp $$PWD/3rdparty/breakpad/src/client/windows/libbreakpad_client.a
 DEFINES += "OS=1"

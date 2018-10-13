@@ -68,7 +68,7 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
         success = false;
         qCritical().noquote() << (_output = QObject::tr("Application has crashed"));
     }
-    if(success) qDebug().noquote() << QObject::tr("Executing ended successfull");
+    if(success) qDebug().noquote() << QObject::tr("Executing ended successfully");
     else {
         _output = QTextCodec::codecForName("CP1251")->toUnicode(
                     proc.errorString().toLocal8Bit()).prepend("\n");

@@ -76,16 +76,17 @@ public:
     void registerBootloader();
     void registerGrub4dos();
     void registerGrub2();
-    bool installGrub2( );
-    QString grub2Configure(QString, bool = false, bool = true);
+    bool installGrub2();
+    QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int);
     void downloadFile(QString, QString);
     void delSystemFiles(int);
+    void deleteBootloaderEntry(int);
+    void deleteGrub2Entry(int);
     void deleteBootloader(int);
     void deleteGrub2(int);
-    void deleteEntry(int);
-
+    void deleteSettingsEntry(int);
 };
 
 #if WIN

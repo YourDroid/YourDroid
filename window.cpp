@@ -383,7 +383,6 @@ void Window::on_buttonInstallInstall_clicked()
     qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
     connect(this, &Window::progressAddStep, this, [&, step](){
-        qDebug().noquote() << (ui->progressInstall->value() + step) << "   " << step;
         ui->progressInstall->setValue(ui->progressInstall->value() + step);
 #if WIN
         taskBarProgress->setValue(taskBarProgress->value() + step);
@@ -493,6 +492,8 @@ void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 void Window::on_deleteButtonMain_clicked()
 {
     ui->progressDelete->setValue(0);
+    ui->labelPlaceDeleteText->clear();
+    ui->labelbootloaderDeleteText->clear();
 
     qDebug().noquote() << tr("Clearing systems list...");
     ui->comboSystemDelete->blockSignals(true);
@@ -521,9 +522,9 @@ void Window::on_buttonDeleteDelete_clicked()
     int num = ui->comboSystemDelete->currentIndex();
     qDebug().noquote() << qApp->translate("log", "Deleting ") + (global->insSet->systemsVector().begin() + num)->name;
     global->insSet->delSystemFiles(num);
-    global->insSet->deleteBootloader(num);
+    global->insSet->deleteBootloaderEntry(num);
     global->insSet->oldSysEdit() = true;
-    global->insSet->deleteEntry(num);
+    global->insSet->deleteSettingsEntry(num);
     on_deleteButtonMain_clicked();
     ui->statusbar->showMessage(tr("Ready"));
     ui->buttonDeleteDelete->setEnabled(true);
