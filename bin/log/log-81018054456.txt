@@ -1,59 +1,0 @@
-# Created by YourDroid 
-# Work dir: C:/YourDroid/source/bin
-
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 43 DEBUG: Reading settings...
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 49 DEBUG: Settings does exist
-TIME: 05:44:56 FILE: ..\source\main.cpp LINE: 93 DEBUG: Translating...
-TIME: 05:44:56 FILE: ..\source\main.cpp LINE: 98 DEBUG: Setting debug console...
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 220 DEBUG: Mounting efi partition
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 372 DEBUG: Looking for free drive letter
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 378 DEBUG: a exists
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 382 DEBUG: b doesn't exist
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 394 DEBUG: Free drive letter is b:
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 235 DEBUG: Free mountpoint is b:
-TIME: 05:44:56 FILE: ..\source\data.cpp LINE: 240 DEBUG: Mounting guid from settings
-TIME: 05:44:56 FILE: ..\source\cmd.cpp LINE: 23 DEBUG: Disabling fs redirection...
-TIME: 05:44:56 FILE: ..\source\cmd.cpp LINE: 30 DEBUG: Executing "wmic volume get DeviceID,DriveLetter"
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Executing ended successfull
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 88 DEBUG: Returned value is  0
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 91 DEBUG: DeviceID                                           DriveLetter  
-\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               
-\\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           
-\\?\Volume{4886708b-cae0-408a-9697-b85312576836}\               
-\\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               
-\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\  A:           
-\\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\               
-
-
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 96 DEBUG: Enabling fs redirection...
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 181 DEBUG: (\\?\Volume{081ce478-a2e7-4752-9740-9877e48158f5}\               , \\?\Volume{64963308-3b90-442b-b9d3-3b1b0e11e1c3}\  C:           , \\?\Volume{4886708b-cae0-408a-9697-b85312576836}\               , \\?\Volume{be140a7f-610e-48b1-9c2f-c8501c5cae11}\               , \\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\  A:           , \\?\Volume{aaf26ed2-7ac8-11e8-8e73-806e6f6e6963}\               , )
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 189 DEBUG: (\\?\Volume{fbfbfda7-8fb8-4ae7-9eb1-085b64a31f6d}\, A:)
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 194 DEBUG: Partition is already mounted. So mount point is A:
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 30 DEBUG: Executing "fsutil volume diskfree A:"
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 71 DEBUG: Executing ended successfull
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 88 DEBUG: Returned value is  0
-TIME: 05:44:57 FILE: ..\source\cmd.cpp LINE: 91 DEBUG: Всего свободно байт           : 40154112
-Всего байт                    : 100663296
-Всего доступно свободных байт : 40154112
-
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 154 DEBUG: Size is 40154112
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 156 DEBUG: Dir exists: 1
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 160 DEBUG: efi dir found on A: and size is valid
-TIME: 05:44:57 FILE: ..\source\data.cpp LINE: 337 DEBUG: Efi partition successfully mounted to A:
-TIME: 05:44:57 FILE: ..\source\install.cpp LINE: 70 DEBUG: Reading install settings...
-TIME: 05:44:57 FILE: ..\source\install.cpp LINE: 76 DEBUG: Count of systems is 0
-TIME: 05:44:57 FILE: ..\source\install.cpp LINE: 118 DEBUG: Systems read succesfull
-TIME: 05:44:57 FILE: ..\source\window.cpp LINE: 25 DEBUG: Setting window
-TIME: 05:44:58 FILE:  LINE: 0 WARNING: QMetaObject::connectSlotsByName: No matching signal for on_radioButton_clicked()
-TIME: 05:44:58 FILE: ..\source\install.cpp LINE: 777 DEBUG: Exec progress and status bars
-TIME: 05:44:58 FILE: ..\source\main.cpp LINE: 116 DEBUG: Window exec
-TIME: 05:44:59 FILE: ..\source\window.cpp LINE: 497 DEBUG: Clearing systems list...
-TIME: 05:44:59 FILE: ..\source\window.cpp LINE: 502 DEBUG: Filling systems list...
-TIME: 05:45:03 FILE: ..\source\window.cpp LINE: 478 DEBUG: Choose Grub2
-TIME: 05:45:18 FILE: ..\source\main.cpp LINE: 118 DEBUG: Window closed
-TIME: 05:45:18 FILE: ..\source\data.cpp LINE: 10 DEBUG: Writing settings...
-TIME: 05:45:18 FILE: ..\source\install.cpp LINE: 28 DEBUG: Writing install settings...
-TIME: 05:45:18 FILE: ..\source\install.cpp LINE: 47 DEBUG: System configs registered succesfull
-TIME: 05:45:18 FILE: ..\source\install.cpp LINE: 66 DEBUG: Systems wrote succesfull
-TIME: 05:45:18 FILE: ..\source\main.cpp LINE: 121 DEBUG: Exiting... Returned  0
-
