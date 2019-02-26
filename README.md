@@ -4,8 +4,8 @@
 YourDroid is an open-source programm that installs Android to pc on windows or linux as a second os (it doesn't replace\delete main os). It isn't an emulator! YourDroid installs Andoid x86 and adds it to the bootloader of the main OS or installs grub as the bootloader (here is the official web site of android x86: http://www.android-x86.org/). Now, status of this programm is beta, so some  features aren't available.
 ## Requirements
 It installs android to PCs with following features:
-- Windows 7-10 BIOS (coming soon)\UEFI x86\x64 
-- Linux (coming soon)
+- Windows 7-10 (BIOS coming soon)\UEFI x86\x64 
+- (Linux coming soon)
 ## Why should I try it? (Features)
 - You can choose where you want to install android: 
 	- To a flash drive (coming soon)
