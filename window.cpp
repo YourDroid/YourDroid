@@ -302,16 +302,16 @@ void Window::on_buttonInstallInstall_clicked()
     }
 #endif
 
-//    int ret = 0;
-//    if(!(ret = global->insSet->isInvalidImage(
-//         #if WIN
-//             ui->editImageFromDisk->text()
-//         #endif
-//             ))) {
-//        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
-//        end();
-//        return;
-//    }
+    int ret = 0;
+    if(!(ret = global->insSet->isInvalidImage(
+         #if WIN
+             ui->editImageFromDisk->text()
+         #endif
+             ))) {
+        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
+        end();
+        return;
+    }
 
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
@@ -322,7 +322,11 @@ void Window::on_buttonInstallInstall_clicked()
 #if WIN
     if(global->set->getBios()) {
         ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
-        if(!global->set->mountEfiPart().first)
+        if(global->set->isEfiPartMounted())
+        {
+            qDebug().noquote() << QObject::tr("The efi partition has already been mounted");
+        }
+        else if(!global->set->mountEfiPart().first)
         {
             qCritical().noquote()
                     << QObject::tr("^Could not mount efi partition. Aborting");

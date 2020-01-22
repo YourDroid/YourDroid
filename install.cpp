@@ -474,7 +474,7 @@ QString install::grub2Configure(QString way, bool needTimeout, bool toFile, int 
             QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
             QString("\tlinux ") + place +
             QString("/kernel root=/dev/ram0 androidboot.selinux=permissive "
-                    "quiet DATA= SRC=%1\n").arg(place) +
+                    "quiet SRC=%1\n").arg(place) +
             QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n";
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -504,7 +504,7 @@ QString install::grubLConfigure(QString way,
                     "find --set-root %1/kernel\n"
                     "kernel %1/kernel quiet root=/dev/ram0 "
                     "androidboot.selinux=permissive "
-                    "SRC=%1 DATA=\n"
+                    "SRC=%1\n"
                     "initrd %1/initrd.img").arg(place, name);
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -534,45 +534,80 @@ bool install::isInvalidImage(
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
 #elif WIN
-    int res;
     QPair<int, QString> expr;
-    QString command = QString("%1/data/7zip/7z.exe l %2 %3").arg(qApp->applicationDirPath(), iso);
-    auto fileExists = [&](QString file) -> bool
-    {
-        QPair<int, QString> expr = cmd::exec(command.arg(file));
-        if(expr.first) res = 2;
-        else if(expr.second.contains("0 files")) res = 1;
-        else res = 0;
-    };
-#define checkFile(file, var) \
-    bool var; \
-    expr = cmd::exec(command.arg(file)); \
-    if(expr.first) \
-    { \
-        qCritical().noquote() << expr.second.prepend("^"); \
-        var = false; \
-    } \
-    else if(expr.second.contains("0 files")) \
-    { \
-        qWarning().noquote() << QObject::tr("There is no such file: %1").arg(file); \
-        var = false; \
-    } \
-    else \
-    { \
-        qDebug().noquote() << QObject::tr("%1 is in the iso image").arg(file); \
-        var = true; \
-    }
-    checkFile("system.img", systemImg);
-    checkFile("system.sfs", systemSfs);
-    checkFile("kernel", kernel);
-    checkFile("initrd.img", initrdImg);
-    checkFile("ramdisk.img", ramdiskImg);
+    QString command = QString("%1/data/iso-editor.exe exist %2 %3").arg(qApp->applicationDirPath(), iso);
+#define checkError() \
+    if(expr.first < 0 || expr.first > 2) { \
+    QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
+    if (re.indexIn(expr.second) != -1) { \
+    qCritical().noquote() << re.cap(1).prepend("^"); \
+} \
+    else qCritical().noquote() << expr.second.prepend("^"); \
+    return 2; \
+}
+#define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
+    bool systemImg = checkFile("system.img");
+    bool systemSfs = checkFile("system.sfs");
+    bool kernel = checkFile("kernel");
+    bool initrdImg = checkFile("initrd.img");
+    bool ramdiskImg = checkFile("ramdisk.img");
     sysImgOrSfs = systemSfs;
+    qDebug().noquote() << sysImgOrSfs;
     return (systemImg || systemSfs) &&
             kernel && initrdImg &&
             ramdiskImg;
 #endif
 }
+
+//bool install::isInvalidImage(
+//        #if WIN
+//        QString iso
+//        #endif
+//        ) {
+//#if LINUX
+//    return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
+//            QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
+//            QFile(mountPoint + "/ramdisk.img").exists();
+//#elif WIN
+//    int res;
+//    QPair<int, QString> expr;
+//    QString command = QString("%1/data/7zip/7z.exe l %2 %3").arg(qApp->applicationDirPath(), iso);
+//    auto fileExists = [&](QString file) -> bool
+//    {
+//        QPair<int, QString> expr = cmd::exec(command.arg(file));
+//        if(expr.first) res = 2;
+//        else if(expr.second.contains("0 files")) res = 1;
+//        else res = 0;
+//    };
+//#define checkFile(file, var) \
+//    bool var; \
+//    expr = cmd::exec(command.arg(file)); \
+//    if(expr.first) \
+//    { \
+//        qCritical().noquote() << expr.second.prepend("^"); \
+//        var = false; \
+//    } \
+//    else if(expr.second.contains("0 files")) \
+//    { \
+//        qWarning().noquote() << QObject::tr("There is no such file: %1").arg(file); \
+//        var = false; \
+//    } \
+//    else \
+//    { \
+//        qDebug().noquote() << QObject::tr("%1 is in the iso image").arg(file); \
+//        var = true; \
+//    }
+//    checkFile("system.img", systemImg);
+//    checkFile("system.sfs", systemSfs);
+//    checkFile("kernel", kernel);
+//    checkFile("initrd.img", initrdImg);
+//    checkFile("ramdisk.img", ramdiskImg);
+//    sysImgOrSfs = systemSfs;
+//    return (systemImg || systemSfs) &&
+//            kernel && initrdImg &&
+//            ramdiskImg;
+//#endif
+//}
 
 QPair<bool, QString> install::mountImage(QString image) {
     mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
@@ -781,7 +816,7 @@ void install::deleteBootloaderEntry(int numSys) {
     qDebug().noquote() << "Deleting bootloader...";
     switch(systems[numSys].bootloader) {
     case _bootloader::grub2: deleteGrub2Entry(numSys); break;
-    case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
+    //case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
     }
 }
 
@@ -796,7 +831,7 @@ void install::deleteGrub2Entry(int numSys) {
                  .arg(global->set->efiMountPoint));
     if(!config.open(QIODevice::ReadOnly))
     {
-        emit abort(QObject::tr("The config cannot be found"))
+        emit abort(QObject::tr("The config cannot be found"));
     }
     else
     {

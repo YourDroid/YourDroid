@@ -8,7 +8,7 @@
 #include <QStatusBar>
 #include "3rdparty/enum.h"
 #include "3rdparty/tagged_bool.h"
-#include "data.h"
+#include "options.h"
 
 using install2Flash = tagged_bool<class install2FlashTag>;
 

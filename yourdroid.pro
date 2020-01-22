@@ -12,8 +12,9 @@ INCLUDEPATH += .
 CONFIG += c++14
 
 # Input
-HEADERS += data.h log.h window.h \
+HEADERS += log.h window.h \
     install.h \
+    options.h \
     version.h \
     cmd.h \
     console.h \
@@ -22,9 +23,10 @@ HEADERS += data.h log.h window.h \
     3rdparty/tagged_bool.h \
     global.h
 FORMS += window.ui
-SOURCES += data.cpp \
+SOURCES += \
            log.cpp \
            main.cpp \
+    options.cpp \
            window.cpp \
     install.cpp \
     cmd.cpp \

@@ -4,7 +4,7 @@
 #include <QString>
 #include <QDir>
 #include <QFile>
-#include "data.h"
+#include "options.h"
 #include "install.h"
 #include "version.h"
 

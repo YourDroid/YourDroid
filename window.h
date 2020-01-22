@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "data.h"
+#include "options.h"
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QDialog>
