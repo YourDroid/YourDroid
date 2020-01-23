@@ -334,7 +334,7 @@ void Window::on_buttonInstallInstall_clicked()
         else if(!global->set->mountEfiPart().first)
         {
             qCritical().noquote()
-                    << QObject::tr("^Could not mount efi partition. Aborting");
+                    << QObject::tr("^Could not mount efi partition. Aborting. \nTry rebooting your computer");
             end();
             return;
         }

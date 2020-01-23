@@ -820,7 +820,7 @@ void install::unpackSystem() {
             return;
         }
 
-        qDebug().noquote() << QObject::tr("%1 has been copied succesfully").arg(file);
+        qDebug().noquote() << QObject::tr("%1 has been copied").arg(file);
 //#if LINUX
 //        int size = QFile(mountPoint + file).size();
 //#elif WIN
@@ -831,6 +831,18 @@ void install::unpackSystem() {
 //#endif
 //        emit fileEnded(size);
     }
+
+    qDebug().noquote() << "Checking if the files exist";
+
+    for(QString file : filesCopy) {
+        qDebug().noquote() << QString("Checking %1").arg(place + file);
+        if(!QFile::exists(place + file)) {
+            emit abort(QObject::tr("Could not copy %1-system file: unknown reason").arg(file));
+            return;
+        }
+        else qDebug().noquote() << QString("%1 exists").arg(file);
+    }
+
 
     //    int complete = 0;
     //    QFile src(mountPoint + systemFile);
