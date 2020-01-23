@@ -100,6 +100,8 @@ public:
 
 #define RENAME(src, dst) resFile = _rename(src, dst); checkAbortFile();
 
+#define REMOVE(name) resFile = _remove(name); checkAbortFile();
+
 #define execAbort(command) resCmd = cmd::exec(command, true); checkAbortCmd();
 
 #define logDirExist() qDebug().noquote() \

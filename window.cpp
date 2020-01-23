@@ -359,9 +359,6 @@ void Window::on_buttonInstallInstall_clicked()
     global->insSet->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
-#if WIN
-        if(global->set->getBios()) global->set->unmountEfiPart();
-#endif
         qApp->alert(this, 2000);
         if(aborted) {
             emit ending(QObject::tr("Aborted"));

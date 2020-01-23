@@ -100,7 +100,9 @@ int main(int argc, char *argv[])
 //        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;
+#if WIN
         set.mountEfiPart();
+#endif
 
         install ins(&set);
         ins.read();
@@ -118,6 +120,9 @@ int main(int argc, char *argv[])
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();
         ins.write();
+#if WIN
+        set.unmountEfiPart();
+#endif
         qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
         return res;
     }

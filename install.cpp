@@ -306,11 +306,15 @@ bool install::installGrub2() {
 
     QString efiMountPoint = global->set->getEfiMountPoint();
     QString target = (dat->arch ? "x86_64-efi" : "i386-efi");
+    QString efiFile = (dat->arch ? "grubx64.efi" : "grubia32.efi");
+
+    QString path;
+    bool res = false;
 
     QPair<int, QString> resGrubIns =
             cmd::exec(QString("%1/data/bootloaders/grub2/windows/grub-ins.exe "
                               "--target=%2 --efi-directory=%3 "
-                              "--boot-directory=%3/EFI/yourdroid_grub2 "
+                              "--boot-directory=%3/yourdroid_cfg "
                               "--bootloader-id=yourdroid_grub2")
                       .arg(qApp->applicationDirPath(), target, efiMountPoint));
 
@@ -320,6 +324,23 @@ bool install::installGrub2() {
                    .arg(resGrubIns.second));
         return false;
     }
+
+    qDebug().noquote() << "Replacing the grub efi file with a fixed one";
+
+    REMOVE(QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile));
+
+    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), efiFile),
+         (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
+    logDirExist();
+
+    qDebug().noquote() << "Making a config dir";
+
+    if(!(res = QDir((path = QString("%1/yourdroid_cfg")
+                      .arg(efiMountPoint))).exists()))
+    {
+        MKDIR(path);
+    }
+    logDirExist();
 
     bool grubMadeEntry = true;
     auto expr = cmd::exec("bcdedit /enum firmware", true);
@@ -413,11 +434,7 @@ bool install::installGrub2() {
         }
     }
 
-
-    QString path;
-    bool res = false;
-
-    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/grub/grub.cfg")
+    if(!(res = QFile((path = QString("%1/yourdroid_cfg/grub.cfg")
                       .arg(efiMountPoint))).exists()))
     {
         COPY(QString("%1/data/bootloaders/grub2/windows/grub.cfg")
@@ -445,7 +462,7 @@ void install::registerGrub2() {
 
     QString menuentry = grub2Configure(QString(), false, false);
 
-    QFile _config(mountPoint + "/EFI/yourdroid_grub2/grub/grub.cfg");
+    QFile _config(mountPoint + "/yourdroid_cfg/grub.cfg");
     if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
