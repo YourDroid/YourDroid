@@ -75,8 +75,10 @@ public:
     QPair<bool, QString> findUefiId(QString, QString = QString());
     void registerBootloader();
     void registerGrub4dos();
-    void registerGrub2();
-    bool installGrub2();
+    void registerGrub2Uefi();
+    bool installGrub2Uefi();
+    void registerGrub2Bios();
+    bool installGrub2Bios();
     QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int);

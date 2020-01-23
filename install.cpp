@@ -208,7 +208,8 @@ QPair<bool, QString> install::findUefiId(QString description, QString entry)
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: registerGrub2(); break;
+    case _bootloader::grub2: if(global->set->tbios) registerGrub2Uefi();
+                             else registerGrub2Bios();  break;
     case _bootloader::grub4dos: registerGrub4dos(); break;
         //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
@@ -296,10 +297,11 @@ void install::registerGrub4dos()
 #endif
 }
 
-bool install::installGrub2() {
+bool install::installGrub2Uefi() {
 #if WIN
     #define returnFault() return false;
-    qDebug().noquote() << "Installing Grub2...";
+
+    qDebug().noquote() << "Installing Grub2 for uefi...";
 
 #define logDirExist() qDebug().noquote() \
     << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
@@ -437,7 +439,7 @@ bool install::installGrub2() {
     if(!(res = QFile((path = QString("%1/yourdroid_cfg/grub.cfg")
                       .arg(efiMountPoint))).exists()))
     {
-        COPY(QString("%1/data/bootloaders/grub2/windows/grub.cfg")
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi.cfg")
              .arg(qApp->applicationDirPath()),
              path);
     }
@@ -451,9 +453,9 @@ bool install::installGrub2() {
 #endif
 }
 
-void install::registerGrub2() {
+void install::registerGrub2Uefi() {
 #if WIN
-    if(!installGrub2()) return;
+    if(!installGrub2Uefi()) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub");
 
@@ -463,6 +465,85 @@ void install::registerGrub2() {
     QString menuentry = grub2Configure(QString(), false, false);
 
     QFile _config(mountPoint + "/yourdroid_cfg/grub.cfg");
+    if(!_config.open(QIODevice::Append)) {
+        emit abort(QObject::tr("Could not open the grub's config-file"));
+        return;
+    }
+    QTextStream config(&_config);
+
+    config << menuentry + '\n';
+    _config.close();
+
+#endif
+}
+
+bool install::installGrub2Bios() {
+#if WIN
+#define returnFault() return false;
+
+    qDebug().noquote() << "Installing Grub2 for bios...";
+
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
+
+    QString path;
+    bool res = false;
+
+    resCmd = cmd::exec("wmic OS GET Name /VALUE");
+    if(resCmd.first != 0)
+    {
+        emit abort(QString("Error while grub installation:\n %1")
+                   .arg(resCmd.second));
+        return false;
+    }
+
+    int driveIndex = resCmd.second.indexOf("\\Partition") - 1;
+    if(driveIndex < 0)
+    {
+        emit abort(QString("Error while grub installation:\nCannot find the drive index"));
+        return false;
+    }
+
+
+    QPair<int, QString> resGrubIns =
+            cmd::exec(QString("%1/data/bootloaders/grub2/windows/grub-ins.exe "
+                              "--target=i386-pc "
+                              "--boot-directory=c:/yourdroid_cfg "
+                              "//./PHYSICALDRIVE%2")
+                      .arg(qApp->applicationDirPath(), resCmd.second.at(driveIndex)));
+
+    if(resGrubIns.first != 0) //fault
+    {
+        emit abort(QString("Error while grub installation:\n %1")
+                   .arg(resGrubIns.second));
+        return false;
+    }
+
+    if(!(res = QFile((path = QString("c:/yourdroid_cfg/grub/grub.cfg"))).exists()))
+    {
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub-bios.cfg")
+             .arg(qApp->applicationDirPath()),
+             path);
+    }
+    logDirExist();
+
+    qDebug().noquote() << QObject::tr("Grub2 has been installed successfully");
+
+    return true;
+
+#undef returnFault
+#endif
+}
+
+void install::registerGrub2Bios() {
+#if WIN
+    if(!installGrub2Bios()) return;
+
+    qDebug().noquote() << QObject::tr("Setting up grub");
+
+    QString menuentry = grub2Configure(QString(), false, false);
+
+    QFile _config("c:/yourdroid_cfg/grub/grub.cfg");
     if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;

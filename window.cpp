@@ -154,13 +154,18 @@ void Window::on_installButtonMain_clicked()
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
-    if(!global->set->tbios) {
-        //ui->comboBoot->addItem("Grub legasy");
-        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Grub4dos");
-    }
-    //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
-    if(global->set->tbios) {
-        //ui->comboBoot->addItem("rEFInd");
+//    if(!global->set->tbios) {
+//        //ui->comboBoot->addItem("Grub legasy");
+//        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Grub4dos");
+//    }
+//    //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
+//    if(global->set->tbios) {
+//        //ui->comboBoot->addItem("rEFInd");
+//        ui->comboBoot->addItem("Grub2");
+//    }
+
+    if(global->set->os)
+    {
         ui->comboBoot->addItem("Grub2");
     }
 }
