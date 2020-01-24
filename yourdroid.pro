@@ -14,6 +14,7 @@ CONFIG += c++14
 # Input
 HEADERS += log.h window.h \
     install.h \
+    options.h \
     version.h \
     cmd.h \
     console.h \
@@ -26,6 +27,7 @@ FORMS += window.ui
 SOURCES += \
            log.cpp \
            main.cpp \
+    options.cpp \
            window.cpp \
     install.cpp \
     cmd.cpp \

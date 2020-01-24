@@ -75,8 +75,10 @@ public:
     QPair<bool, QString> findUefiId(QString, QString = QString());
     void registerBootloader();
     void registerGrub4dos();
-    void registerGrub2();
-    bool installGrub2();
+    void registerGrub2Uefi();
+    bool installGrub2Uefi();
+    void registerGrub2Bios();
+    bool installGrub2Bios();
     QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int);
@@ -99,6 +101,8 @@ public:
 #define MKDIR(name) resFile = _mkdir(name); checkAbortFile();
 
 #define RENAME(src, dst) resFile = _rename(src, dst); checkAbortFile();
+
+#define REMOVE(name) resFile = _remove(name); checkAbortFile();
 
 #define execAbort(command) resCmd = cmd::exec(command, true); checkAbortCmd();
 

@@ -49,6 +49,7 @@ public:
 #if WIN
     QString getEfiMountPoint() const { return efiMountPoint; }
     QPair<bool, QString> mountEfiPart();
+    bool isEfiPartMounted() { return efiMounted; }
     QPair<bool, QString> unmountEfiPart();
     QString freeMountPoint();
     bool defwinv();

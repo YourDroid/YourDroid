@@ -94,15 +94,14 @@ bool options::defbios() {
     qDebug().noquote() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
     return efiExist || efibootmgr;
 #elif WIN
+
     bool ret;
-    bool efiMount = mountEfiPart().first;
     auto expr = cmd::exec("bcdedit", true);
     bool efiContain = expr.second.contains("efi");
     qDebug().noquote()
             << QObject::tr("Efi partition mounted: %1. Bcdedit output contains efi: %2. "
                            "So, type of bios is %3")
-               .arg(efiMount).arg(efiContain).arg((ret = efiMount || efiContain) ? "uefi" : "bios");
-    if(efiMount) unmountEfiPart();
+               .arg(efiMounted).arg(efiContain).arg((ret = efiContain) ? "uefi" : "bios");
     return ret;
 #endif
 }

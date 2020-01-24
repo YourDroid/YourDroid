@@ -208,7 +208,8 @@ QPair<bool, QString> install::findUefiId(QString description, QString entry)
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: registerGrub2(); break;
+    case _bootloader::grub2: if(global->set->tbios) registerGrub2Uefi();
+                             else registerGrub2Bios();  break;
     case _bootloader::grub4dos: registerGrub4dos(); break;
         //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
@@ -296,21 +297,26 @@ void install::registerGrub4dos()
 #endif
 }
 
-bool install::installGrub2() {
+bool install::installGrub2Uefi() {
 #if WIN
     #define returnFault() return false;
-    qDebug().noquote() << "Installing Grub2...";
+
+    qDebug().noquote() << "Installing Grub2 for uefi...";
 
 #define logDirExist() qDebug().noquote() \
     << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
 
     QString efiMountPoint = global->set->getEfiMountPoint();
     QString target = (dat->arch ? "x86_64-efi" : "i386-efi");
+    QString efiFile = (dat->arch ? "grubx64.efi" : "grubia32.efi");
+
+    QString path;
+    bool res = false;
 
     QPair<int, QString> resGrubIns =
             cmd::exec(QString("%1/data/bootloaders/grub2/windows/grub-ins.exe "
                               "--target=%2 --efi-directory=%3 "
-                              "--boot-directory=%3/EFI/yourdroid_grub2 "
+                              "--boot-directory=%3/yourdroid_cfg "
                               "--bootloader-id=yourdroid_grub2")
                       .arg(qApp->applicationDirPath(), target, efiMountPoint));
 
@@ -320,6 +326,23 @@ bool install::installGrub2() {
                    .arg(resGrubIns.second));
         return false;
     }
+
+    qDebug().noquote() << "Replacing the grub efi file with a fixed one";
+
+    REMOVE(QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile));
+
+    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), efiFile),
+         (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
+    logDirExist();
+
+    qDebug().noquote() << "Making a config dir";
+
+    if(!(res = QDir((path = QString("%1/yourdroid_cfg")
+                      .arg(efiMountPoint))).exists()))
+    {
+        MKDIR(path);
+    }
+    logDirExist();
 
     bool grubMadeEntry = true;
     auto expr = cmd::exec("bcdedit /enum firmware", true);
@@ -413,14 +436,10 @@ bool install::installGrub2() {
         }
     }
 
-
-    QString path;
-    bool res = false;
-
-    if(!(res = QFile((path = QString("%1/EFI/yourdroid_grub2/grub/grub.cfg")
+    if(!(res = QFile((path = QString("%1/yourdroid_cfg/grub.cfg")
                       .arg(efiMountPoint))).exists()))
     {
-        COPY(QString("%1/data/bootloaders/grub2/windows/grub.cfg")
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi.cfg")
              .arg(qApp->applicationDirPath()),
              path);
     }
@@ -434,9 +453,9 @@ bool install::installGrub2() {
 #endif
 }
 
-void install::registerGrub2() {
+void install::registerGrub2Uefi() {
 #if WIN
-    if(!installGrub2()) return;
+    if(!installGrub2Uefi()) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub");
 
@@ -445,7 +464,86 @@ void install::registerGrub2() {
 
     QString menuentry = grub2Configure(QString(), false, false);
 
-    QFile _config(mountPoint + "/EFI/yourdroid_grub2/grub/grub.cfg");
+    QFile _config(mountPoint + "/yourdroid_cfg/grub.cfg");
+    if(!_config.open(QIODevice::Append)) {
+        emit abort(QObject::tr("Could not open the grub's config-file"));
+        return;
+    }
+    QTextStream config(&_config);
+
+    config << menuentry + '\n';
+    _config.close();
+
+#endif
+}
+
+bool install::installGrub2Bios() {
+#if WIN
+#define returnFault() return false;
+
+    qDebug().noquote() << "Installing Grub2 for bios...";
+
+#define logDirExist() qDebug().noquote() \
+    << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
+
+    QString path;
+    bool res = false;
+
+    resCmd = cmd::exec("wmic OS GET Name /VALUE");
+    if(resCmd.first != 0)
+    {
+        emit abort(QString("Error while grub installation:\n %1")
+                   .arg(resCmd.second));
+        return false;
+    }
+
+    int driveIndex = resCmd.second.indexOf("\\Partition") - 1;
+    if(driveIndex < 0)
+    {
+        emit abort(QString("Error while grub installation:\nCannot find the drive index"));
+        return false;
+    }
+
+
+    QPair<int, QString> resGrubIns =
+            cmd::exec(QString("%1/data/bootloaders/grub2/windows/grub-ins.exe "
+                              "--target=i386-pc "
+                              "--boot-directory=c:/yourdroid_cfg "
+                              "//./PHYSICALDRIVE%2")
+                      .arg(qApp->applicationDirPath(), resCmd.second.at(driveIndex)));
+
+    if(resGrubIns.first != 0) //fault
+    {
+        emit abort(QString("Error while grub installation:\n %1")
+                   .arg(resGrubIns.second));
+        return false;
+    }
+
+    if(!(res = QFile((path = QString("c:/yourdroid_cfg/grub/grub.cfg"))).exists()))
+    {
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub-bios.cfg")
+             .arg(qApp->applicationDirPath()),
+             path);
+    }
+    logDirExist();
+
+    qDebug().noquote() << QObject::tr("Grub2 has been installed successfully");
+
+    return true;
+
+#undef returnFault
+#endif
+}
+
+void install::registerGrub2Bios() {
+#if WIN
+    if(!installGrub2Bios()) return;
+
+    qDebug().noquote() << QObject::tr("Setting up grub");
+
+    QString menuentry = grub2Configure(QString(), false, false);
+
+    QFile _config("c:/yourdroid_cfg/grub/grub.cfg");
     if(!_config.open(QIODevice::Append)) {
         emit abort(QObject::tr("Could not open the grub's config-file"));
         return;
@@ -474,7 +572,7 @@ QString install::grub2Configure(QString way, bool needTimeout, bool toFile, int 
             QString("\tsearch --file --no-floppy --set=root ") + place +  QString("/kernel\n") +
             QString("\tlinux ") + place +
             QString("/kernel root=/dev/ram0 androidboot.selinux=permissive "
-                    "quiet DATA= SRC=%1\n").arg(place) +
+                    "quiet SRC=%1\n").arg(place) +
             QString("\tinitrd ") + place + QString("/initrd.img\n") + "}\n";
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -504,7 +602,7 @@ QString install::grubLConfigure(QString way,
                     "find --set-root %1/kernel\n"
                     "kernel %1/kernel quiet root=/dev/ram0 "
                     "androidboot.selinux=permissive "
-                    "SRC=%1 DATA=\n"
+                    "SRC=%1\n"
                     "initrd %1/initrd.img").arg(place, name);
     qDebug().noquote() << QObject::tr("Grub's entry is %1").arg(menuentry);
 
@@ -534,45 +632,80 @@ bool install::isInvalidImage(
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
 #elif WIN
-    int res;
     QPair<int, QString> expr;
-    QString command = QString("%1/data/7zip/7z.exe l %2 %3").arg(qApp->applicationDirPath(), iso);
-    auto fileExists = [&](QString file) -> bool
-    {
-        QPair<int, QString> expr = cmd::exec(command.arg(file));
-        if(expr.first) res = 2;
-        else if(expr.second.contains("0 files")) res = 1;
-        else res = 0;
-    };
-#define checkFile(file, var) \
-    bool var; \
-    expr = cmd::exec(command.arg(file)); \
-    if(expr.first) \
-    { \
-        qCritical().noquote() << expr.second.prepend("^"); \
-        var = false; \
-    } \
-    else if(expr.second.contains("0 files")) \
-    { \
-        qWarning().noquote() << QObject::tr("There is no such file: %1").arg(file); \
-        var = false; \
-    } \
-    else \
-    { \
-        qDebug().noquote() << QObject::tr("%1 is in the iso image").arg(file); \
-        var = true; \
-    }
-    checkFile("system.img", systemImg);
-    checkFile("system.sfs", systemSfs);
-    checkFile("kernel", kernel);
-    checkFile("initrd.img", initrdImg);
-    checkFile("ramdisk.img", ramdiskImg);
+    QString command = QString("%1/data/iso-editor.exe exist %2 %3").arg(qApp->applicationDirPath(), iso);
+#define checkError() \
+    if(expr.first < 0 || expr.first > 2) { \
+    QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
+    if (re.indexIn(expr.second) != -1) { \
+    qCritical().noquote() << re.cap(1).prepend("^"); \
+} \
+    else qCritical().noquote() << expr.second.prepend("^"); \
+    return 2; \
+}
+#define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
+    bool systemImg = checkFile("system.img");
+    bool systemSfs = checkFile("system.sfs");
+    bool kernel = checkFile("kernel");
+    bool initrdImg = checkFile("initrd.img");
+    bool ramdiskImg = checkFile("ramdisk.img");
     sysImgOrSfs = systemSfs;
+    qDebug().noquote() << sysImgOrSfs;
     return (systemImg || systemSfs) &&
             kernel && initrdImg &&
             ramdiskImg;
 #endif
 }
+
+//bool install::isInvalidImage(
+//        #if WIN
+//        QString iso
+//        #endif
+//        ) {
+//#if LINUX
+//    return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
+//            QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
+//            QFile(mountPoint + "/ramdisk.img").exists();
+//#elif WIN
+//    int res;
+//    QPair<int, QString> expr;
+//    QString command = QString("%1/data/7zip/7z.exe l %2 %3").arg(qApp->applicationDirPath(), iso);
+//    auto fileExists = [&](QString file) -> bool
+//    {
+//        QPair<int, QString> expr = cmd::exec(command.arg(file));
+//        if(expr.first) res = 2;
+//        else if(expr.second.contains("0 files")) res = 1;
+//        else res = 0;
+//    };
+//#define checkFile(file, var) \
+//    bool var; \
+//    expr = cmd::exec(command.arg(file)); \
+//    if(expr.first) \
+//    { \
+//        qCritical().noquote() << expr.second.prepend("^"); \
+//        var = false; \
+//    } \
+//    else if(expr.second.contains("0 files")) \
+//    { \
+//        qWarning().noquote() << QObject::tr("There is no such file: %1").arg(file); \
+//        var = false; \
+//    } \
+//    else \
+//    { \
+//        qDebug().noquote() << QObject::tr("%1 is in the iso image").arg(file); \
+//        var = true; \
+//    }
+//    checkFile("system.img", systemImg);
+//    checkFile("system.sfs", systemSfs);
+//    checkFile("kernel", kernel);
+//    checkFile("initrd.img", initrdImg);
+//    checkFile("ramdisk.img", ramdiskImg);
+//    sysImgOrSfs = systemSfs;
+//    return (systemImg || systemSfs) &&
+//            kernel && initrdImg &&
+//            ramdiskImg;
+//#endif
+//}
 
 QPair<bool, QString> install::mountImage(QString image) {
     mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
@@ -687,7 +820,7 @@ void install::unpackSystem() {
             return;
         }
 
-        qDebug().noquote() << QObject::tr("%1 has been copied succesfully").arg(file);
+        qDebug().noquote() << QObject::tr("%1 has been copied").arg(file);
 //#if LINUX
 //        int size = QFile(mountPoint + file).size();
 //#elif WIN
@@ -698,6 +831,18 @@ void install::unpackSystem() {
 //#endif
 //        emit fileEnded(size);
     }
+
+    qDebug().noquote() << "Checking if the files exist";
+
+    for(QString file : filesCopy) {
+        qDebug().noquote() << QString("Checking %1").arg(place + file);
+        if(!QFile::exists(place + file)) {
+            emit abort(QObject::tr("Could not copy %1-system file: unknown reason").arg(file));
+            return;
+        }
+        else qDebug().noquote() << QString("%1 exists").arg(file);
+    }
+
 
     //    int complete = 0;
     //    QFile src(mountPoint + systemFile);
@@ -796,7 +941,7 @@ void install::deleteGrub2Entry(int numSys) {
                  .arg(global->set->efiMountPoint));
     if(!config.open(QIODevice::ReadOnly))
     {
-        emit abort(QObject::tr("The config cannot be found"))
+        emit abort(QObject::tr("The config cannot be found"));
     }
     else
     {

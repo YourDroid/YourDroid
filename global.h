@@ -45,4 +45,13 @@ auto _rename = [=](QString src, QString dst) -> bool
     return res;
 };
 
+auto _remove = [=](QString name) -> bool
+{
+    qDebug().noquote() << QObject::tr("Deleting %1").arg(name);
+    bool res = QFile::remove(name);
+    if(res) qDebug().noquote() << QObject::tr("Deleted successfully");
+    else qDebug().noquote() << QObject::tr("Deleted unsuccessfully");
+    return res;
+};
+
 #endif // GLOBAL_CPP

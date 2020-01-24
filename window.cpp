@@ -156,13 +156,18 @@ void Window::on_installButtonMain_clicked()
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
-    if(!global->set->tbios) {
-        //ui->comboBoot->addItem("Grub legasy");
-        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Grub4dos");
-    }
-    //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
-    if(global->set->tbios) {
-        //ui->comboBoot->addItem("rEFInd");
+//    if(!global->set->tbios) {
+//        //ui->comboBoot->addItem("Grub legasy");
+//        if(global->set->winv && global->set->os) ui->comboBoot->addItem("Grub4dos");
+//    }
+//    //if(!global->set->winv && global->set->os) ui->comboBoot->addItem("Windows NTLDR");
+//    if(global->set->tbios) {
+//        //ui->comboBoot->addItem("rEFInd");
+//        ui->comboBoot->addItem("Grub2");
+//    }
+
+    if(global->set->os)
+    {
         ui->comboBoot->addItem("Grub2");
     }
 }
@@ -304,16 +309,16 @@ void Window::on_buttonInstallInstall_clicked()
     }
 #endif
 
-//    int ret = 0;
-//    if(!(ret = global->insSet->isInvalidImage(
-//         #if WIN
-//             ui->editImageFromDisk->text()
-//         #endif
-//             ))) {
-//        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
-//        end();
-//        return;
-//    }
+    int ret = 0;
+    if(!(ret = global->insSet->isInvalidImage(
+         #if WIN
+             ui->editImageFromDisk->text()
+         #endif
+             ))) {
+        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
+        end();
+        return;
+    }
 
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
@@ -326,10 +331,14 @@ void Window::on_buttonInstallInstall_clicked()
 #if WIN
     if(global->set->getBios()) {
         ui->statusbar->showMessage(QObject::tr("Mounting efi partition"));
-        if(!global->set->mountEfiPart().first)
+        if(global->set->isEfiPartMounted())
+        {
+            qDebug().noquote() << QObject::tr("The efi partition has already been mounted");
+        }
+        else if(!global->set->mountEfiPart().first)
         {
             qCritical().noquote()
-                    << QObject::tr("^Could not mount efi partition. Aborting");
+                    << QObject::tr("^Could not mount efi partition. Aborting. \nTry rebooting your computer");
             end();
             return;
         }
@@ -359,9 +368,6 @@ void Window::on_buttonInstallInstall_clicked()
     global->insSet->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
-#if WIN
-        if(global->set->getBios()) global->set->unmountEfiPart();
-#endif
         qApp->alert(this, 2000);
         if(aborted) {
             emit ending(QObject::tr("Aborted"));
