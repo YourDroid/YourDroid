@@ -12,7 +12,7 @@ INCLUDEPATH += .
 CONFIG += c++14
 
 # Input
-HEADERS += data.h log.h window.h \
+HEADERS += log.h window.h \
     install.h \
     version.h \
     cmd.h \
@@ -20,16 +20,18 @@ HEADERS += data.h log.h window.h \
     exception.h \
     3rdparty/enum.h \
     3rdparty/tagged_bool.h \
-    global.h
+    global.h \
+    options.h
 FORMS += window.ui
-SOURCES += data.cpp \
+SOURCES += \
            log.cpp \
            main.cpp \
            window.cpp \
     install.cpp \
     cmd.cpp \
     console.cpp \
-    exception.cpp
+    exception.cpp \
+    options.cpp
 LIBS += -lz
 #-std=gnu++14
 

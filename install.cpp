@@ -781,7 +781,7 @@ void install::deleteBootloaderEntry(int numSys) {
     qDebug().noquote() << "Deleting bootloader...";
     switch(systems[numSys].bootloader) {
     case _bootloader::grub2: deleteGrub2Entry(numSys); break;
-    case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
+    //case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
     }
 }
 

@@ -1,5 +1,5 @@
 //#include "client/linux/handler/exception_handler.h"
-#include "data.h"
+#include "options.h"
 #include "window.h"
 #include "install.h"
 #include <version.h>
@@ -100,7 +100,9 @@ int main(int argc, char *argv[])
 //        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;
+#if WIN
         set.mountEfiPart();
+#endif
 
         install ins(&set);
         ins.read();

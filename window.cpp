@@ -62,7 +62,9 @@ Window::Window(bool f, QWidget *parent) :
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
 
+#if WIN
     setTaskProgress();
+#endif
 
     if(fierst) Settings_clicked();
     else returnMainWindow();
@@ -317,7 +319,9 @@ void Window::on_buttonInstallInstall_clicked()
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
     ui->progressInstall->setValue(5);
+#if WIN
     taskBarProgress->setValue(5);
+#endif
 
 #if WIN
     if(global->set->getBios()) {
@@ -378,7 +382,9 @@ void Window::on_buttonInstallInstall_clicked()
 
     int step = 33;
     ui->progressInstall->setRange(0, 100);
+#if WIN
     taskBarProgress->setRange(0, 100);
+#endif
 
     qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
 
