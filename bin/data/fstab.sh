@@ -1,0 +1,1 @@
+grep UUID /etc/fstab | tr -s " " " "| cut -d " " -f 2 | sed -n '/\/\w/p'

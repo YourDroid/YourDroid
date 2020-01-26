@@ -166,10 +166,7 @@ void Window::on_installButtonMain_clicked()
 //        ui->comboBoot->addItem("Grub2");
 //    }
 
-    if(global->set->os)
-    {
-        ui->comboBoot->addItem("Grub2");
-    }
+    ui->comboBoot->addItem("Grub2");
 }
 
 void Window::on_buttonChooseImage_clicked()

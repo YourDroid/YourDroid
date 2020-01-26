@@ -1,4 +1,3 @@
-//#include "client/linux/handler/exception_handler.h"
 #include "options.h"
 #include "window.h"
 #include "install.h"
@@ -36,15 +35,9 @@ console *log::con;
 
 int main(int argc, char *argv[])
 {
-//    google_breakpad::MinidumpDescriptor descriptor("./log");
-//    google_breakpad::ExceptionHandler eh(descriptor, NULL, 0, NULL, true, -1);
-//    *(int*)0 = 0;
-    //    QString dumpPath = "./log";
-    //    QtBreakpad::init(dumpPath);
     //qDebug() << QString::number(getpid()).prepend('^');
     std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###");
-    Breakpad::CrashHandler::instance()->Init("./log");
 
     //set_signal_handler();
 //    std::set_terminate([=]() -> void {
@@ -106,7 +99,6 @@ int main(int argc, char *argv[])
 
         install ins(&set);
         ins.read();
-        //qDebug().noquote() << ins.obsolutePath("/home/profi/andoid");
 
         global = new _global(&set, &ins);
 

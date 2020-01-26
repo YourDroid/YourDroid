@@ -21,8 +21,7 @@ HEADERS += log.h window.h \
     exception.h \
     3rdparty/enum.h \
     3rdparty/tagged_bool.h \
-    global.h \
-    options.h
+    global.h
 FORMS += window.ui
 SOURCES += \
            log.cpp \
@@ -32,8 +31,7 @@ SOURCES += \
     install.cpp \
     cmd.cpp \
     console.cpp \
-    exception.cpp \
-    options.cpp
+    exception.cpp
 LIBS += -lz
 #-std=gnu++14
 
@@ -50,13 +48,9 @@ DEFINES -= QT_NO_DEBUG_OUTPUT
 #QMAKE_TARGET_COMPANY = YourDroid-Group
 unix {
 DEFINES += "OS=0"
-LIBS += $$PWD/3rdparty/breakpad/src/client/linux/libbreakpad_client.a
 }
 
 DEFINES += QT_MESSAGELOGCONTEXT
-
-include(3rdparty/breakpad/src/breakpad.pri)
-#INCLUDEPATH += 3rdparty/breakpad
 
 CONFIG(release) {
 QMAKE_CXXFLAGS_RELEASE += -g -O0
@@ -67,7 +61,7 @@ QMAKE_LFLAGS_RELEASE =
 win32 {
 CONFIG += -force_debug_info
 QT += winextras
-LIBS += -lDbgHelp $$PWD/3rdparty/breakpad/src/client/windows/libbreakpad_client.a
+LIBS += -lDbgHelp
 DEFINES += "OS=1"
 RC_FILE = info.rc
 }
