@@ -143,202 +143,114 @@ QPair<bool, QString> options::mountEfiPart()
 {
     if(efiMounted)
     {
-        qDebug().noquote() << QObject::tr("Efi partition is already mounted");
+        qDebug().noquote() << QObject::tr("The efi partition is already mounted");
         return QPair<bool, QString>(true, "");
     }
-    auto check = [&](QString mountPoint) -> bool
+
+    QString mountPoint = freeMountPoint();
+    auto res = cmd::exec(QString("mountvol %1 /S").arg(mountPoint));
+    QString mountvolOutput = res.second;
+    if(res.first == 0)
     {
-        auto expr = cmd::exec(QString("fsutil volume diskfree %1").arg(mountPoint));
-        unsigned int size = expr.second.split(" ", QString::SkipEmptyParts).last().toInt();
-        qDebug().noquote() << QObject::tr("Size is %1").arg(size);
-        bool dirExist;
-        qDebug().noquote() << QObject::tr("Dir exists: %1")
-                              .arg((dirExist = QDir(QString("%1\\efi").arg(mountPoint)).exists() || QDir(QString("%1\\EFI").arg(mountPoint)).exists()));
-        if(dirExist && size/* < 1 * 1024 * 1024 * 1024*/)
+        efiMounted = true;
+        efiMountPoint = mountPoint;
+        qDebug().noquote() << QString("The efi partition has been mounted on %1").arg(mountPoint);
+        return QPair<bool, QString>(true, "");
+    }
+
+    qDebug().noquote() << "Failed to mount the efi partition. It is possibly already mounted. "
+                          "Looking for it...";
+
+    res = cmd::exec("fsutil fsinfo drives");
+    QStringList mountedDrives = res.second.split(QRegExp("\\s+"));
+    mountedDrives.removeAt(0);
+    mountedDrives.removeAt(0);
+    mountedDrives.removeLast();
+    qDebug().noquote() << mountedDrives;
+    QFile script("diskpart_script");
+    if(script.open(QIODevice::WriteOnly))
+    {
+        QTextStream stream(&script);
+        stream << "list volume\n";
+    }
+    else
+    {
+        qCritical().noquote() << "Failed to create a diskpart script";
+        return QPair<bool, QString>(false, "");
+    }
+    script.close();
+    res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+    if(res.first)
+    {
+        qCritical().noquote() << "Failed to execute the diskpart script";
+        return QPair<bool, QString>(false, "");
+    }
+    QStringList volumeList = res.second.split(QRegExp("\\s+"));
+
+    for(auto x : mountedDrives)
+    {
+        qDebug().noquote() << QString("Checking %1").arg(x);
+        int driveLetterIndex = volumeList.indexOf(x.chopped(2)) - 1;
+        if(driveLetterIndex < 0)
         {
-            qDebug().noquote()
-                    << QObject::tr("efi dir found on %1 and size is valid").arg(mountPoint);
-            return true;
+            qWarning().noquote() << QString("Failed to find the letter index of %1. "
+                                            "Checking if the efi partition is already "
+                                            "mounted with mountvol").arg(x);
+            res = cmd::exec("mountvol");
+            if(res.first)
+            {
+                qWarning().noquote() << "Can't execute mountvol";
+                qWarning().noquote() << QString("Failed to check if %1 is efi partition").arg(x);
+                continue;
+            }
+            QStringList mountvolOutput = res.second.split(QRegExp("\\s+"));
+            mountvolOutput.removeLast();
+            qDebug().noquote() << mountvolOutput;
+            if(!mountvolOutput.at(mountvolOutput.length() - 2).contains("\\\\?\\Volume{") &&
+                    mountvolOutput.last() == x)
+            {
+                qDebug().noquote() << QString("The efi partition is already mounted on %1").arg(x);
+                efiMounted = true;
+                efiMountPoint = x.chopped(1);
+                efiWasMounted = true;
+                return QPair<bool, QString>(true, "");
+            }
+            else
+            {
+                qDebug().noquote() << QString("%1 is not the efi partition").arg(x);
+                continue;
+            }
+        }
+        QString volumeIndex = volumeList.at(driveLetterIndex);
+        qDebug().noquote() << QString("The volume index of %1 is %2").arg(x, volumeIndex);
+        if(script.open(QIODevice::ReadWrite))
+        {
+            QTextStream stream(&script);
+            stream << "select volume %1\ndetail partition\n";
         }
         else
         {
-            qDebug().noquote() << QObject::tr("efi dir did not find or size is unvalid");
-            return false;
+            qCritical().noquote() << "Failed to open the diskpart script";
+            return QPair<bool, QString>(false, "");
         }
-    };
-
-    auto mount = [&](QString guid) -> QPair<bool, QString>
-    {
-        efiWasMounted = false;
-        QString mountPoint;
-        auto expr = cmd::exec(QString("wmic volume get DeviceID,DriveLetter")
-                         /*.arg(partList[i].remove("\n"))*/, true);
-        if(expr.first) qWarning().noquote()
-                << QObject::tr("Could not get info about partition");
-        QStringList tmp = expr.second.split('\n', QString::SkipEmptyParts);
-        tmp.removeFirst();
-        qDebug().noquote() << tmp;
-        int i = tmp.indexOf(QRegExp("^" + QRegExp::escape(guid) + ".*"));
-        if(i == -1)
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        if(res.first)
         {
-            qDebug().noquote() << QObject::tr("Could not find index");
-            return QPair<bool, QString>(false, mountPoint);
+            qCritical().noquote() << "Failed to execute the diskpart script";
+            return QPair<bool, QString>(false, "");
         }
-        QStringList partInfo = tmp[i].split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        qDebug().noquote() << partInfo;
-        if(!expr.first && partInfo.length() == 2)
-        {
-            efiWasMounted = true;
-            mountPoint = partInfo[1];
-            qDebug().noquote()
-                    << QObject::tr("Partition is already mounted. So mount point is %1")
-                       .arg(mountPoint);
-            return QPair<bool, QString>(true, mountPoint);
-        }
-        else
-        {
-            qDebug().noquote()
-                    << QObject::tr("Partition is not already mounted. "
-                                   "So mount point is %1")
-                       .arg(efiMountPoint);
-            mountPoint = efiMountPoint;
-            if(cmd::exec(QString("mountvol %1 %2")
-                         .arg(efiMountPoint, guid), true).first)
-            {
-                qWarning().noquote() << QObject::tr("Could not mount partition");
-                return QPair<bool, QString>(false, mountPoint);
-            }
-            else
-            {
-                qWarning().noquote() << QObject::tr("Partition has mounted successfully");
-                return QPair<bool, QString>(true, mountPoint);
-            }
-        }
-    };
-
-    qDebug().noquote() << QObject::tr("Mounting efi partition");
-
-    bool success = false;
-
-    {
-        QString point = freeMountPoint();
-        if(point == '0')
-        {
-            efiMountPoint = qApp->applicationDirPath() + '/'
-                    + QDate::currentDate().toString("dMyy")
-                    + QTime::currentTime().toString("hhmmss");
-            if(!QDir().mkdir(efiMountPoint))
-                efiMountPoint = qApp->applicationDirPath() + "/data/efiPartition";
-        }
-        else efiMountPoint = point;
-        qDebug().noquote() << QObject::tr("Free mountpoint is %1").arg(efiMountPoint);
-    }
-
-    if(!efiGuid.isEmpty())
-    {
-        qDebug().noquote() << QObject::tr("Mounting guid from settings");
-        QPair<bool, QString> expr;
-        if((success = (expr = mount(efiGuid)).first))
-        {
-            if((success = check(expr.second))) efiMountPoint = expr.second;
-            else
-            {
-                qDebug().noquote() << QObject::tr("Failure. Unmounting the partition");
-                cmd::exec(QString("mountvol %1 /d").arg(expr.second));
-            }
-        }
-    }
-    if(!success)
-    {
-        auto expr = cmd::exec("wmic volume get DeviceID", true);
-        if(expr.first)
-        {
-            QString err = QObject::tr("Could not get partition list: %1")
-                    .arg(expr.second);
-            qDebug().noquote() << err;
-            return QPair<bool, QString>(false,
-                                        err);
-        }
-        QStringList partList = expr.second.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        partList.removeFirst();
-        qDebug().noquote() << partList;
-
-        {
-            qDebug().noquote() << QObject::tr("Trying by first way");
-            if(!cmd::exec(QString("mountvol %1 /s").arg(efiMountPoint)).first)
-            {
-                qDebug().noquote()
-                        << QObject::tr("Efi partition successfully mounted to %1").arg(efiMountPoint);
-                success = true;
-            }
-            else
-            {
-                qDebug().noquote() << QObject::tr("Fail. Trying by second way");
-                for(int i = 0; i < partList.length(); i++)
-                {
-//                    efiAlreadyMounted = false;
-//                    QString mountPoint;
-//                    expr = cmd::exec(QString("wmic volume get DeviceID,DriveLetter")
-//                                     /*.arg(partList[i].remove("\n"))*/, true);
-//                    if(expr.first) qWarning().noquote()
-//                            << QObject::tr("Could not get info about partition");
-//                    QStringList tmp = expr.second.split('\n', QString::SkipEmptyParts);
-//                    tmp.removeFirst();
-//                    QStringList partInfo = tmp[i].split(QRegExp("\\s+"), QString::SkipEmptyParts);
-//                    qDebug().noquote() << partInfo;
-//                    if(!expr.first && partInfo.length() == 2)
-//                    {
-//                        efiAlreadyMounted = true;
-//                        mountPoint = partInfo[1];
-//                        qDebug().noquote()
-//                                << QObject::tr("Partition is already mounted. So mount point is %1")
-//                                   .arg(mountPoint);
-//                    }
-//                    else
-//                    {
-//                        qDebug().noquote()
-//                                << QObject::tr("Partition is not already mounted. "
-//                                               "So mount point is %1")
-//                                   .arg(efiMountPoint);
-//                        mountPoint = efiMountPoint;
-//                        if(cmd::exec(QString("mountvol %1 %2")
-//                                     .arg(efiMountPoint, partList[i]), true).first)
-//                        {
-//                            qWarning().noquote() << QObject::tr("Cannot mount partition");
-//                            continue;
-//                        }
-//                    }
-                    QPair<bool, QString> mounted;
-                    if(!(mounted = mount(partList[i])).first) continue;
-                    QString mountPoint = mounted.second;
-
-
-                    if(check(mountPoint))
-                    {
-                        efiMountPoint = mountPoint;
-                        efiGuid = partList[i];
-                        success = true;
-                        break;
-                    }
-                    QPair<int, QString> expr;
-                    if(!success && !efiWasMounted) expr = cmd::exec(QString("mountvol %1 /d")
-                                                                       .arg(mountPoint), true);
-                    if(expr.first) break;
-                }
-            }
-        }
-    }
-
-    {
-        if(success)
+        if(res.second.contains("c12a7328-f81f-11d2-ba4b-00a0c93ec93b"))
         {
             efiMounted = true;
-            qDebug().noquote()
-                    << QObject::tr("Efi partition successfully mounted to %1").arg(efiMountPoint);
+            efiMountPoint = x.chopped(1);
+            efiWasMounted = true;
+            qDebug().noquote() << QString("The efi partition is already mounted on %1").arg(x);
+            return QPair<bool, QString>(true, "");
         }
-        else qDebug().noquote() << QObject::tr("Did not find efi partition");
-        return QPair<bool, QString>(success, "");
+        qDebug().noquote() << QString("%1 is not the efi partition").arg(x);
     }
+    qCritical().noquote() << "The efi partition not found";
+    return QPair<bool, QString>(false, "");
 }
 
 QPair<bool, QString> options::unmountEfiPart()
