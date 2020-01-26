@@ -79,6 +79,7 @@ public:
     bool installGrub2Uefi();
     void registerGrub2Bios();
     bool installGrub2Bios();
+    bool registerGrub2Linux();
     QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int);

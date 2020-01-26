@@ -208,8 +208,14 @@ QPair<bool, QString> install::findUefiId(QString description, QString entry)
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
     switch(systems.back().bootloader) {
-    case _bootloader::grub2: if(global->set->tbios) registerGrub2Uefi();
-                             else registerGrub2Bios();  break;
+    case _bootloader::grub2:
+#if LINUX
+        registerGrub2Linux();
+#elif WIN
+        else if(global->set->tbios) registerGrub2Uefi();
+        else registerGrub2Bios();
+#endif
+        break;
     case _bootloader::grub4dos: registerGrub4dos(); break;
         //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
@@ -556,6 +562,99 @@ void install::registerGrub2Bios() {
 #endif
 }
 
+bool install::registerGrub2Linux()
+{
+    qDebug().noquote() << "Registering to grub2...";
+    QString tempGrub = "";
+    QFile grub("/etc/grub.d/40_custom");
+    bool grubExisted = true;
+    if(!grub.open(QIODevice::ReadOnly))
+    {
+        if(!QFile().exists("/etc/grub.d/40_custom"))
+        {
+            qDebug().noquote() << "40_custom doesn't exist";
+            grubExisted = false;
+        }
+        else
+        {
+            emit abort("Cannot open the /etc/grub.d/40_custom file");
+            return false;
+        }
+    }
+
+    QStringList grubStr;
+    QTextStream textStream(&grub);
+    while (true)
+    {
+        QString line = textStream.readLine();
+        if (line.isNull())
+            break;
+        else
+            grubStr.append(line);
+    }
+
+    qDebug().noquote() << grubStr;
+
+    QString insertString = "cat /etc/grub.d/android/*.cfg | more";
+    if(grubStr.isEmpty())
+    {
+        tempGrub = QString("#!/bin/sh\n") + insertString;
+    }
+    else if(!grubStr.contains(insertString)) {
+        tempGrub += grubStr[0] + QString("\n") + insertString + QString("\n");
+        for(int i = 1; i < grubStr.length(); i++) tempGrub += grubStr[i] + '\n';
+        qDebug().noquote() << tempGrub;
+    }
+    grub.close();
+
+    if(tempGrub != "")
+    {
+        qDebug().noquote() << QString("The new 40_custom file:\n%1").arg(tempGrub);
+        if(!grub.open(QIODevice::WriteOnly))
+        {
+            emit abort("Cannot open 40_custom to write in");
+            return false;
+        }
+        textStream << tempGrub;
+        grub.close();
+        if(!grubExisted)
+        {
+            auto res = cmd::exec("chmod 777 /etc/grub.d/40_custom");
+            if(res.first != 0)
+            {
+                emit abort(QString("Couldn't change the access permition "
+                                   "of 40_custom:\n%1").arg(res.second));
+                return false;
+            }
+            else qDebug().noquote() << "Changed the access permition of 40_custom";
+        }
+    }
+
+
+    if(!QDir().exists("/etc/grub.d/android"))
+    {
+        qDebug().noquote() << "Grub android dir doesn't exist so making it";
+        if(!QDir().mkdir("/etc/grub.d/android"))
+        {
+            emit abort("Cannot make an android grub directory");
+            return false;
+        }
+    }
+
+    grub2Configure(QString("/etc/grub.d/android/") + systems.back().name + ".cfg");
+
+    auto res = cmd::exec("update-grub");
+    if(res.first == 0)
+    {
+        qDebug().noquote() << "Grub2 has been installed";
+    }
+    else
+    {
+        emit abort(QString("Error while grub installation:\n%1").arg(res.second));
+        return false;
+    }
+}
+
 QString install::grub2Configure(QString way, bool needTimeout, bool toFile, int numSys) {
     QString name, place;
     if(numSys = -1)
@@ -737,15 +836,15 @@ void install::unmountImage() {
 
 QString install::obsolutePath(QString path) {
 #if LINUX
-    auto expr = cmd::exec("grep UUID /etc/fstab | tr -s \" \" \" \"| cut -d \" \" -f 2 | sed -n '/\\/\\w/p'");
-    QString fstab = expr.second, temp;
-    while(fstab.count('\n') != 0) {
-        temp = fstab.left(fstab.indexOf('\n') + 1);
-        fstab.remove(0, fstab.indexOf('\n') + 1);
-        temp = temp.remove('\n');
-        qDebug().noquote() << temp;
-        if(path.contains(temp)) path.remove(temp);
+    auto expr = cmd::exec(QString("sh %1/data/fstab.sh")
+                          .arg(qApp->applicationDirPath()));
+    QStringList fstab = expr.second.split(QRegExp("\\s+"));
+    qDebug().noquote() << fstab;
+    for(auto x : fstab)
+    {
+        if(path.contains(x)) path.remove(x);
     }
+    qDebug().noquote() << QString("The path is %1").arg(path);
 #elif WIN
     path.remove(0, 2);
 #endif

@@ -4,252 +4,312 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="install.cpp" line="415"/>
-        <source>Registering to grub2...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="418"/>
-        <source>Could not open the grub config-file to read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="428"/>
-        <source>Could not open the grub config-file to write</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="431"/>
-        <source>Grub-config:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="439"/>
-        <source>Could not make dir for configs: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="445"/>
-        <source>Updating grub...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="447"/>
-        <source>Could not update grub: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="457"/>
-        <location filename="install.cpp" line="477"/>
+        <location filename="install.cpp" line="485"/>
+        <location filename="install.cpp" line="515"/>
         <source>Could not open the config-file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="515"/>
-        <source>Size of files is %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="559"/>
+        <location filename="install.cpp" line="584"/>
         <source>Cannot make dir for image&apos;s mount point!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="411"/>
-        <source>Gummiboot installed succesful</source>
+        <location filename="install.cpp" line="124"/>
+        <source>Looking for the &quot;%1&quot; entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="564"/>
+        <location filename="install.cpp" line="135"/>
+        <source>Can&apos;t find the entry of the description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="142"/>
+        <source>The right part is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="145"/>
+        <source>The left part is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="156"/>
+        <source>The begin of the entry isn&apos;t found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="164"/>
+        <source>Can&apos;t find the end of the entry. The end of the bcdedit output will be considered as the entry end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="172"/>
+        <source>The entry is successfully found! It is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="179"/>
+        <source>Looking for the id of the &quot;%1&quot; entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="194"/>
+        <source>The %1 of id line isn&apos;t found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="202"/>
+        <source>The id is successfully found! It is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="221"/>
+        <source>Installing grub4dos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="226"/>
+        <source>Copying the files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="262"/>
+        <source>Setting up grub4dos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="269"/>
+        <source>Could not open the grub&apos;s config-file (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="277"/>
+        <source>adding an entry of grub4dos to UEFI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="293"/>
+        <source>Grub4dos has been setted up sucessfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="327"/>
+        <source>Can&apos;t make sure if yourdroid grub2 entry is regestered correctly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="331"/>
+        <source>Making sure there is an entry of yourdroid grub2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="335"/>
+        <source>There is an entry of yourdroid grub2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="340"/>
+        <source>There is no entry of yourdroid grub2. So installing it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="349"/>
+        <source>Making sure the path is stated in the entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="356"/>
+        <source>Can&apos;t make sure if the path is stated in the entry because failed to get the entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="361"/>
+        <source>Can&apos;t make sure if the path is stated in the entry because failed to get the id of the entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="369"/>
+        <source>No path stated. So stating it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="379"/>
+        <source>Making sure the yourdroid grub2 entry is the first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="391"/>
+        <source>Can&apos;t make sure if the youdroid grub2 entry is the first because failed to find its ID:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="401"/>
+        <source>The yourdroid grub2 entry is already the first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="406"/>
+        <source>the yourdroid grub2 entry isn&apos;t the first, so making it be</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="429"/>
+        <source>Grub2 has been installed successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="441"/>
+        <source>Setting up grub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="450"/>
+        <source>Could not open the grub&apos;s config-file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="479"/>
+        <location filename="install.cpp" line="509"/>
+        <source>Grub&apos;s entry is %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="557"/>
+        <source>There is no such file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="562"/>
+        <source>%1 is in the iso image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="589"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="573"/>
+        <location filename="install.cpp" line="598"/>
         <source>Cannot unmount image: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="577"/>
+        <location filename="install.cpp" line="602"/>
         <source>Cannot delete image&apos;s mount point: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="626"/>
+        <location filename="install.cpp" line="649"/>
         <source>System file is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="600"/>
+        <location filename="install.cpp" line="661"/>
+        <source>%1 exists. So it is going to be deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="690"/>
+        <source>%1 has been copied succesfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="789"/>
+        <source>Deleting the grub2 entry of android...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="790"/>
+        <source>Deleting the grub2 entry of android</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="799"/>
+        <source>The config cannot be found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="625"/>
         <source>Making dir for install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="74"/>
+        <location filename="install.cpp" line="48"/>
+        <source>System configs registered succesfull</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="77"/>
         <source>Count of systems is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="98"/>
+        <location filename="install.cpp" line="101"/>
         <source>Config of system %1 does not have section os</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="257"/>
-        <source>Setting up gummiboot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="357"/>
+        <location filename="install.cpp" line="305"/>
         <location filename="install.h" line="106"/>
         <source>exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="357"/>
+        <location filename="install.cpp" line="305"/>
         <location filename="install.h" line="106"/>
         <source>doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="302"/>
-        <source>^Do you want to overwrite system&apos;s config (if no, installation will abort)?|+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="308"/>
-        <source>canceled by user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="249"/>
-        <location filename="install.cpp" line="316"/>
-        <source>Gummiboot setted up sucessfully</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="142"/>
-        <source>Setting up bootmgr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="266"/>
-        <source>Could not open the gummiboot&apos;s config-file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="325"/>
-        <source>Could not open tempEnum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="240"/>
-        <location filename="install.cpp" line="348"/>
+        <location filename="install.cpp" line="284"/>
         <source>Id is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="159"/>
-        <source>^Grub folder with a same name exists. Do you want to overwrite it (if no, installation will abort)?|+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="166"/>
-        <source>Couldn&apos;t overwrite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="172"/>
-        <source>Canceled by user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="178"/>
-        <source>Selecting grub4dos file name...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="188"/>
-        <source>%2 doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="191"/>
-        <source>Grub4dos file name is %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="200"/>
-        <source>Couldn&apos;t open the grub file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="217"/>
-        <source>Couldn&apos;t open the grub.mbr to read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="225"/>
-        <source>Couldn&apos;t open the grub.mbr to write</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="603"/>
+        <location filename="install.cpp" line="628"/>
         <source>Could not make dir for install: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="627"/>
+        <location filename="install.cpp" line="650"/>
         <source>Start copying</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="634"/>
+        <location filename="install.cpp" line="658"/>
         <source>Copying %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="636"/>
-        <source>%1 exists. So it is deleting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="644"/>
-        <source>^Could not overwrite %1: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="647"/>
+        <location filename="install.cpp" line="672"/>
         <source>%1 does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="659"/>
+        <location filename="install.cpp" line="686"/>
         <source>Could not copy %1-system file%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="663"/>
-        <source>%1 copied succesful</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="775"/>
+        <location filename="install.cpp" line="825"/>
         <source>Entry was deleted succesfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="775"/>
+        <location filename="install.cpp" line="825"/>
         <source>Entry was deleted unsuccesfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="781"/>
+        <location filename="install.cpp" line="832"/>
         <source>Formating flash drive...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="786"/>
+        <location filename="install.cpp" line="837"/>
         <source>Flash drive formated successfully...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -279,49 +339,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="213"/>
+        <location filename="window.cpp" line="216"/>
         <location filename="window.h" line="38"/>
         <source>Ready</source>
         <translation type="unfinished">Готово</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="263"/>
+        <location filename="window.cpp" line="236"/>
+        <source>^Can&apos;t access the image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="240"/>
+        <source>Successfully opened the image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="284"/>
         <source>^The system with written name already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="279"/>
+        <location filename="window.cpp" line="300"/>
         <source>^Could not mount image: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="292"/>
-        <source>^Image has not needed files</source>
+        <location filename="window.cpp" line="380"/>
+        <source>^Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="297"/>
-        <location filename="window.cpp" line="298"/>
+        <location filename="window.cpp" line="318"/>
+        <location filename="window.cpp" line="319"/>
         <source>Data of install is valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="306"/>
+        <location filename="window.cpp" line="332"/>
         <source>^Could not mount efi partition. Aborting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="342"/>
+        <location filename="window.cpp" line="367"/>
         <source>Aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="354"/>
-        <source>^Succes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.cpp" line="363"/>
+        <location filename="window.cpp" line="389"/>
         <source>Progress step is %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -360,221 +425,241 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="121"/>
+        <location filename="main.cpp" line="123"/>
         <source>Exiting... Returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="131"/>
+        <location filename="main.cpp" line="133"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="102"/>
+        <location filename="options.cpp" line="102"/>
         <source>Efi partition mounted: %1. Bcdedit output contains efi: %2. So, type of bios is %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="139"/>
+        <location filename="options.cpp" line="139"/>
         <source>GetVersionEx() returns %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="147"/>
+        <location filename="options.cpp" line="147"/>
         <source>Efi partition is already mounted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="154"/>
+        <location filename="options.cpp" line="154"/>
         <source>Size is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="156"/>
+        <location filename="options.cpp" line="156"/>
         <source>Dir exists: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="161"/>
+        <location filename="options.cpp" line="161"/>
         <source>efi dir found on %1 and size is valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="166"/>
+        <location filename="options.cpp" line="166"/>
         <source>efi dir did not find or size is unvalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="178"/>
+        <location filename="options.cpp" line="178"/>
         <source>Could not get info about partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="185"/>
+        <location filename="options.cpp" line="185"/>
         <source>Could not find index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="195"/>
+        <location filename="options.cpp" line="195"/>
         <source>Partition is already mounted. So mount point is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="202"/>
+        <location filename="options.cpp" line="202"/>
         <source>Partition is not already mounted. So mount point is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="209"/>
+        <location filename="options.cpp" line="209"/>
         <source>Could not mount partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="214"/>
-        <source>Partition has mounted sucessfully</source>
+        <location filename="options.cpp" line="214"/>
+        <source>Partition has mounted successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="220"/>
-        <location filename="window.cpp" line="302"/>
+        <location filename="options.cpp" line="272"/>
+        <location filename="options.cpp" line="338"/>
+        <source>Efi partition successfully mounted to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="options.cpp" line="357"/>
+        <source>Unmounted successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="options.cpp" line="358"/>
+        <source>Unmounted unsuccessfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="options.cpp" line="220"/>
+        <location filename="window.cpp" line="328"/>
         <source>Mounting efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="235"/>
+        <location filename="options.cpp" line="235"/>
         <source>Free mountpoint is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="240"/>
+        <location filename="options.cpp" line="240"/>
         <source>Mounting guid from settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="252"/>
+        <location filename="options.cpp" line="247"/>
+        <source>Failure. Unmounting the partition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="options.cpp" line="257"/>
         <source>Could not get partition list: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="263"/>
+        <location filename="options.cpp" line="268"/>
         <source>Trying by first way</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="267"/>
-        <location filename="data.cpp" line="333"/>
-        <source>Efi partition sucessfully mounted to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="data.cpp" line="272"/>
+        <location filename="options.cpp" line="277"/>
         <source>Fail. Trying by second way</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="335"/>
+        <location filename="options.cpp" line="340"/>
         <source>Did not find efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="344"/>
+        <location filename="options.cpp" line="349"/>
         <source>Efi partition is already unmounted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="346"/>
+        <location filename="options.cpp" line="351"/>
         <source>Unmounting efi partition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="350"/>
+        <location filename="options.cpp" line="355"/>
         <source>Efi was not already mounted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="352"/>
-        <source>Unmounted sucessfully</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="data.cpp" line="353"/>
-        <source>Unmounted unsucessfully</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="data.cpp" line="358"/>
+        <location filename="options.cpp" line="363"/>
         <source>Efi was already mounted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="367"/>
+        <location filename="options.cpp" line="372"/>
         <source>Looking for free drive letter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="373"/>
-        <location filename="install.cpp" line="187"/>
+        <location filename="options.cpp" line="378"/>
         <source>%1 exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="377"/>
+        <location filename="options.cpp" line="382"/>
         <source>%1 doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="384"/>
+        <location filename="options.cpp" line="389"/>
         <source>No free mount points available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="389"/>
+        <location filename="options.cpp" line="394"/>
         <source>Free drive letter is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="21"/>
+        <location filename="cmd.cpp" line="23"/>
         <source>Disabling fs redirection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="23"/>
+        <location filename="cmd.cpp" line="25"/>
         <source>Could not disable fs redirection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="28"/>
+        <location filename="cmd.cpp" line="30"/>
         <source>Executing &quot;%1%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="50"/>
+        <location filename="cmd.cpp" line="52"/>
+        <source>Couldn&apos;t put the input data to the input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cmd.cpp" line="62"/>
+        <source>Put the input data to the input successsfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cmd.cpp" line="69"/>
         <source>Application has crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="52"/>
-        <source>Executing ended succesfull</source>
+        <location filename="cmd.cpp" line="71"/>
+        <source>Executing ended successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="56"/>
-        <source>Executing ended unsuccesfull</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cmd.cpp" line="65"/>
-        <location filename="cmd.cpp" line="68"/>
-        <source>Returned value is </source>
+        <location filename="cmd.cpp" line="75"/>
+        <source>
+Couldn&apos;t put the input data to the input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="cmd.cpp" line="76"/>
+        <source>Executing ended unsuccessfull</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cmd.cpp" line="85"/>
+        <location filename="cmd.cpp" line="88"/>
+        <source>Returned value is </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cmd.cpp" line="96"/>
         <source>Enabling fs redirection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cmd.cpp" line="78"/>
+        <location filename="cmd.cpp" line="98"/>
         <source>Could not enable fs redirection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -815,7 +900,7 @@
     </message>
     <message>
         <location filename="window.ui" line="443"/>
-        <location filename="window.cpp" line="85"/>
+        <location filename="window.cpp" line="89"/>
         <source>Version:</source>
         <translation>Версия: </translation>
     </message>
@@ -1005,121 +1090,132 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Версия:</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="94"/>
+        <location filename="window.cpp" line="98"/>
         <source>YourDroid | Main menu</source>
         <translation>YourDroid | Главное меню</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="111"/>
+        <location filename="window.cpp" line="115"/>
         <source>YourDroid | Settings</source>
         <translation>YourDroid | Настройки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="118"/>
+        <location filename="window.cpp" line="122"/>
         <source>^For applying language application should restart</source>
         <translation>^Для применения языка нужно перезапустить это приложение</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="152"/>
+        <location filename="window.cpp" line="156"/>
         <source>YourDroid | Install</source>
         <translation>YourDroid | Установка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="169"/>
+        <location filename="window.cpp" line="172"/>
         <source>Choose image for install</source>
         <translation>Выберите образ для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="192"/>
+        <location filename="window.cpp" line="195"/>
         <source>Choose directory for install</source>
         <translation>Выберите папку для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="210"/>
+        <location filename="window.cpp" line="213"/>
         <source>Checking</source>
         <translation>Проверка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="211"/>
+        <location filename="window.cpp" line="214"/>
         <source>Checking data for install...</source>
         <translation>Проверка данных для установки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="222"/>
+        <location filename="window.cpp" line="243"/>
+        <source>^The image is chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="248"/>
+        <source>^Chosen image does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="253"/>
+        <source>^The folder is not chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>^Did not choose image</source>
-        <translation>^Не выбран образ</translation>
+        <translation type="vanished">^Не выбран образ</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="227"/>
         <source>^Choosen image does not exist</source>
-        <translation>^В выбранном образе нет нужных файлов</translation>
+        <translation type="vanished">^В выбранном образе нет нужных файлов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="232"/>
         <source>^Did not choose folder</source>
-        <translation>^Не выбрана папка для установки</translation>
+        <translation type="vanished">^Не выбрана папка для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="237"/>
+        <location filename="window.cpp" line="258"/>
         <source>^Choosen folder is root</source>
         <translation>^Выбраная папка является корнем диска</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="242"/>
+        <location filename="window.cpp" line="263"/>
         <source>^Invalid path</source>
         <translation>^Недопустимый путь (допускаются пути, написанные латиницей и без пробелов)</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="252"/>
+        <location filename="window.cpp" line="273"/>
         <source>^Did not fill in the name</source>
         <translation>^Не вписано имя</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="257"/>
+        <location filename="window.cpp" line="278"/>
         <source>^Did not fill in the size of data.img</source>
         <translation>^Не выбран размер для data.img</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="269"/>
         <source>^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|</source>
-        <translation>^Выбранная папка не пуста. Некоторые файлы будут перезаписаны. Нажмите отмена для отмены установки|+-|</translation>
+        <translation type="vanished">^Выбранная папка не пуста. Некоторые файлы будут перезаписаны. Нажмите отмена для отмены установки|+-|</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="416"/>
+        <location filename="window.cpp" line="426"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Критическая ошибка во время установки: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="422"/>
+        <location filename="window.cpp" line="432"/>
         <source>Start install</source>
         <translation>Начало установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="426"/>
-        <location filename="window.cpp" line="427"/>
+        <location filename="window.cpp" line="436"/>
+        <location filename="window.cpp" line="437"/>
         <source>Formating flash drive...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="432"/>
-        <location filename="window.cpp" line="433"/>
+        <location filename="window.cpp" line="442"/>
+        <location filename="window.cpp" line="443"/>
         <source>Unpacking iso...</source>
         <translation>Расспаковка iso-образа...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="437"/>
-        <location filename="window.cpp" line="438"/>
+        <location filename="window.cpp" line="448"/>
+        <location filename="window.cpp" line="449"/>
         <source>Creating data.img...</source>
         <translation>Создание data.img...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="443"/>
-        <location filename="window.cpp" line="444"/>
+        <location filename="window.cpp" line="454"/>
+        <location filename="window.cpp" line="455"/>
         <source>Installing bootloader...</source>
         <translation>Установка загрузчика...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="450"/>
+        <location filename="window.cpp" line="461"/>
         <source>Unmounting image...</source>
         <translation>Отмонтирование образа...</translation>
     </message>
@@ -1128,27 +1224,27 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Установка закончена</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="465"/>
+        <location filename="window.cpp" line="477"/>
         <source>YourDroid | About</source>
         <translation>YourDroid | О программе</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="490"/>
+        <location filename="window.cpp" line="504"/>
         <source>Clearing systems list...</source>
         <translation>Очистка списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="495"/>
+        <location filename="window.cpp" line="509"/>
         <source>Filling systems list...</source>
         <translation>Заполнение списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="498"/>
+        <location filename="window.cpp" line="512"/>
         <source>YourDroid | Delete</source>
         <translation>YourDroid | Удаление</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="521"/>
+        <location filename="window.cpp" line="535"/>
         <source>Ready</source>
         <translation>Готово</translation>
     </message>
@@ -1156,38 +1252,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>install</name>
     <message>
-        <location filename="install.cpp" line="34"/>
-        <location filename="install.cpp" line="49"/>
+        <location filename="install.cpp" line="37"/>
+        <location filename="install.cpp" line="52"/>
         <source>System %1 skipped</source>
         <translation>Система &quot;%1&quot; пропущена</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="120"/>
+        <location filename="install.cpp" line="209"/>
         <source>Registering to bootloader...</source>
         <translation>Запись в загрузчик...</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="122"/>
         <source>Registering to grub2</source>
-        <translation>Запись в grub2</translation>
+        <translation type="vanished">Запись в grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="123"/>
         <source>Registering to gummiboot</source>
-        <translation>Запись в gummiboot</translation>
+        <translation type="vanished">Запись в gummiboot</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="124"/>
-        <source>Registering to bootmgr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="504"/>
         <source>Could not get size of %1</source>
-        <translation>Невозможно получить размер %1</translation>
+        <translation type="vanished">Невозможно получить размер %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="631"/>
+        <location filename="install.cpp" line="655"/>
         <source>File for copy is empty</source>
         <translation>Один из разархивируемых файлов из образа пуст</translation>
     </message>
@@ -1199,158 +1287,148 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Рабочая папка - </translation>
     </message>
     <message>
-        <location filename="main.cpp" line="116"/>
+        <location filename="main.cpp" line="118"/>
         <source>Window exec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="118"/>
+        <location filename="main.cpp" line="120"/>
         <source>Window closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="10"/>
+        <location filename="options.cpp" line="10"/>
         <source>Writing settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="43"/>
+        <location filename="options.cpp" line="43"/>
         <source>Reading settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="49"/>
+        <location filename="options.cpp" line="49"/>
         <source>Settings does exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="73"/>
+        <location filename="options.cpp" line="73"/>
         <source>Settings does not exist or settings restoring default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="85"/>
+        <location filename="options.cpp" line="85"/>
         <source>Settings read succesfull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="89"/>
+        <location filename="options.cpp" line="89"/>
         <source>Defining type of bios...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="111"/>
+        <location filename="options.cpp" line="111"/>
         <source>Defining architecture...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="120"/>
+        <location filename="options.cpp" line="120"/>
         <source>Uname returned </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="data.cpp" line="125"/>
+        <location filename="options.cpp" line="125"/>
         <source>Processor type is </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="26"/>
+        <location filename="install.cpp" line="28"/>
         <source>Writing install settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="40"/>
+        <location filename="install.cpp" line="43"/>
         <source>System %1 config registered succesfull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="45"/>
-        <source>System configs registered succesfull</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="52"/>
+        <location filename="install.cpp" line="55"/>
         <source>System %1 writing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="62"/>
+        <location filename="install.cpp" line="65"/>
         <source>System %1 wrote succesfull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="64"/>
+        <location filename="install.cpp" line="67"/>
         <source>Systems wrote succesfull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="68"/>
+        <location filename="install.cpp" line="71"/>
         <source>Reading install settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="81"/>
+        <location filename="install.cpp" line="84"/>
         <source>Config of system %1 does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="89"/>
+        <location filename="install.cpp" line="92"/>
         <source>Config of system %1 have not section bootloader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="92"/>
+        <location filename="install.cpp" line="95"/>
         <source>Config of system %1 does not have section type_place</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="95"/>
+        <location filename="install.cpp" line="98"/>
         <source>Config of system %1 does not have section place</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="108"/>
-        <location filename="install.cpp" line="110"/>
+        <location filename="install.cpp" line="111"/>
+        <location filename="install.cpp" line="113"/>
         <source>System </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="762"/>
-        <source>/etc/grub.d/android/</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="install.cpp" line="739"/>
+        <location filename="install.cpp" line="767"/>
         <source>Delete </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="38"/>
+        <location filename="install.cpp" line="41"/>
         <source>System %1 config registering...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="740"/>
+        <location filename="install.cpp" line="768"/>
         <source>Удаление </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="172"/>
+        <location filename="window.cpp" line="175"/>
         <source>Choose image for install: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="195"/>
+        <location filename="window.cpp" line="198"/>
         <source>Choose dir for install: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="471"/>
+        <location filename="window.cpp" line="483"/>
         <source>Choose </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="515"/>
+        <location filename="window.cpp" line="529"/>
         <source>Deleting </source>
         <translation type="unfinished"></translation>
     </message>
