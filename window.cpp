@@ -444,7 +444,7 @@ void Window::on_buttonInstallInstall_clicked()
 
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
-        global->insSet->unpackSystem();
+        global->insSet->unpackSystem(ui->comboSysMountAs->currentIndex() == 0 ? true : false);
         CHECK_ABORT();
         emit progressAddStep();
 

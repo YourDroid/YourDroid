@@ -212,7 +212,7 @@ void install::registerBootloader() {
 #if LINUX
         registerGrub2Linux();
 #elif WIN
-        else if(global->set->tbios) registerGrub2Uefi();
+        if(global->set->tbios) registerGrub2Uefi();
         else registerGrub2Bios();
 #endif
         break;
@@ -851,7 +851,7 @@ QString install::obsolutePath(QString path) {
     return path;
 }
 
-void install::unpackSystem() {
+void install::unpackSystem(bool systemReadWrite) {
     QPair<int, QString> expr;
     if(!QFile::exists(systems.back().place)) {
         qDebug().noquote() << QObject::tr("Making dir for install");
@@ -864,6 +864,8 @@ void install::unpackSystem() {
 
     QFile copier;
     QString place = systems.back().place;
+    if(place.back() == '/' || place.back() == '\\') place.chop(1);
+
     QVector<QString> filesCopy = { "/kernel", "/ramdisk.img", "/initrd.img" };
     QString systemFile;
 #if LINUX
@@ -941,6 +943,37 @@ void install::unpackSystem() {
         }
         else qDebug().noquote() << QString("%1 exists").arg(file);
     }
+
+    if(systemReadWrite)
+    {
+        qDebug().noquote() << "System is going to be set as read-write.";
+        if(sysImgOrSfs) //sfs
+        {
+            qDebug().noquote() << "Extracting system.img out of system.sfs";
+            bool res = false;
+#if WIN
+            QPair<int, QString> expr;
+            res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
+                                     .arg(qApp->applicationDirPath(), place + "/system.sfs",
+                                          "system.img", place),
+                                     false, QStringList(), filesExist ? "a\n" : "", true)).first;
+            QString advancedInfo = QString(": %1").arg(expr.second);
+#elif LINUX
+            lol_you_gotta_do_it_reminder;
+#endif
+            if(res && QFile::exists(place + "/system.img"))
+            {
+                qDebug().noquote() << "Success. Deleting system.sfs";
+                if(!QFile::remove(place + "/system.sfs")) qWarning().noquote()
+                        << "Cannot delete system.sfs";
+            }
+            else qWarning().noquote() << QObject::tr("^The system is going to be set as read-only"
+                                                     " because of the failure in extracting "
+                                                     "system.img") + advancedInfo;
+        }
+        else qDebug().noquote() << "The system file is already .img";
+    }
+
 
 
     //    int complete = 0;

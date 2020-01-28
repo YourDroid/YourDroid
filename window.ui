@@ -72,7 +72,7 @@
     <item row="1" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -416,6 +416,31 @@
                </item>
                <item>
                 <widget class="QComboBox" name="comboBoot"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_19">
+               <item>
+                <widget class="QLabel" name="labelSysMountAs">
+                 <property name="text">
+                  <string>Mount /system as:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboSysMountAs">
+                 <item>
+                  <property name="text">
+                   <string>read-write</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>read-only</string>
+                  </property>
+                 </item>
+                </widget>
                </item>
               </layout>
              </item>
