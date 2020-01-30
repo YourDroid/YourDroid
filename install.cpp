@@ -647,6 +647,7 @@ bool install::registerGrub2Linux()
     if(res.first == 0)
     {
         qDebug().noquote() << "Grub2 has been installed";
+        return true;
     }
     else
     {
@@ -727,6 +728,7 @@ bool install::isInvalidImage(
         #endif
         ) {
 #if LINUX
+    sysImgOrSfs = QFile(mountPoint + "/system.sfs").exists();
     return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
@@ -851,7 +853,7 @@ QString install::obsolutePath(QString path) {
     return path;
 }
 
-void install::unpackSystem(bool systemReadWrite) {
+void install::unpackSystem(sysImgExtractType sysType) {
     QPair<int, QString> expr;
     if(!QFile::exists(systems.back().place)) {
         qDebug().noquote() << QObject::tr("Making dir for install");
@@ -944,12 +946,11 @@ void install::unpackSystem(bool systemReadWrite) {
         else qDebug().noquote() << QString("%1 exists").arg(file);
     }
 
-    if(systemReadWrite)
+    if(sysType == sysImgExtractType::toImg || sysType == sysImgExtractType::toFolder)
     {
-        qDebug().noquote() << "System is going to be set as read-write.";
+        qDebug().noquote() << "Extracting system.img out of system.sfs";
         if(sysImgOrSfs) //sfs
         {
-            qDebug().noquote() << "Extracting system.img out of system.sfs";
             bool res = false;
 #if WIN
             QPair<int, QString> expr;
@@ -959,19 +960,59 @@ void install::unpackSystem(bool systemReadWrite) {
                                      false, QStringList(), filesExist ? "a\n" : "", true)).first;
             QString advancedInfo = QString(": %1").arg(expr.second);
 #elif LINUX
-            lol_you_gotta_do_it_reminder;
+            QPair<int, QString> expr;
+            expr = cmd::exec(QString("chmod +x %1/data/p7zip/7z")
+                             .arg(qApp->applicationDirPath()));
+            if(expr.first != 0) qWarning().noquote() << "Cannot do chmod +x 7z";
+
+            res = !(expr = cmd::exec(QString("%1/data/p7zip/7z x %2 %3 -o\"%4\"")
+                                     .arg(qApp->applicationDirPath(), place + "/system.sfs",
+                                          "system.img", place),
+                                     false, QStringList(), filesExist ? "a\n" : "", true)).first;
+            QString advancedInfo = QString(": %1").arg(expr.second);
 #endif
             if(res && QFile::exists(place + "/system.img"))
             {
                 qDebug().noquote() << "Success. Deleting system.sfs";
                 if(!QFile::remove(place + "/system.sfs")) qWarning().noquote()
-                        << "Cannot delete system.sfs";
+                        << QObject::tr("^Cannot delete system.sfs");
             }
-            else qWarning().noquote() << QObject::tr("^The system is going to be set as read-only"
+            else
+            {
+                qWarning().noquote() << QObject::tr("^The system is going to be set as read-only"
                                                      " because of the failure in extracting "
                                                      "system.img") + advancedInfo;
+                return;
+            }
         }
         else qDebug().noquote() << "The system file is already .img";
+        if(sysType == sysImgExtractType::toFolder)
+        {
+            qDebug().noquote() << "extracting system.img to /system";
+#if LINUX
+            auto res = cmd::exec(QString("%1/data/p7zip/7z x %2 -o\"%4\"")
+                                 .arg(qApp->applicationDirPath(), place + "/system.img",
+                                      place + "/system"));
+#elif WIN
+            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x %2 -o\"%4\"")
+                                 .arg(qApp->applicationDirPath(), place + "/system.img",
+                                      place + "/system"));
+#endif
+            if(res.first == 0 && QDir(place + "/system").exists())
+            {
+                qDebug().noquote() << "Success. Deleting the system.img";
+                if(!QFile::remove(place + "/system.img")) qWarning().noquote()
+                        << QObject::tr("^Cannot delete system.img");
+            }
+            else
+            {
+                qWarning().noquote() << QObject::tr("^The system is extracted as .img "
+                                                    "because of the failure in "
+                                                    "extracting system.img: %1")
+                                        .arg(res.second);
+                return;
+            }
+        }
     }
 
 
@@ -994,16 +1035,34 @@ void install::unpackSystem(bool systemReadWrite) {
     //    }
 }
 
-void install::createDataImg(int size) {
+void install::createDataImg(int size, bool toFolder) {
+    if(toFolder)
+    {
+        if(!QDir().mkdir(systems.back().place + "/data"))
+        {
+            emit abort(QObject::tr("Cannot make a directory for /data.\n"
+                                   "Try creating an .img file instead"));
+            return;
+        }
+    }
+    else
+    {
 #if LINUX
-    system((QString("chmod 777 ") + qApp->applicationDirPath() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-    QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
-            QString("M -a data ") + systems.back().place + QString("/data.img ");
+        system((QString("chmod 777 ") + qApp->applicationDirPath() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+        QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+                QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif WIN
-    QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
-            QString("M -a data ") + systems.back().place + QString("/data.img ");
+        QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
+                QString("M -a data ") + systems.back().place + QString("/data.img ");
 #endif
-    cmd::exec(command);
+        auto res = cmd::exec(command);
+        if(res.first != 0)
+        {
+            emit abort(QObject::tr("Cannot create an image for /data: %1")
+                       .arg(res.second));
+            return;
+        }
+    }
 }
 
 void install::downloadFile(QString url, QString dest) {

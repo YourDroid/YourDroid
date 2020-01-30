@@ -148,6 +148,8 @@ void Window::on_installButtonMain_clicked()
     ui->radioInstallOnPart->setEnabled(false);
     ui->radioInstallOnDir->setChecked(true);
 
+    ui->radioDataToImg->setChecked(true);
+
     ui->radioDownload->setEnabled(false);
     ui->radioChooseFromDisk->setChecked(true);
 
@@ -256,11 +258,11 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-        qCritical().noquote() << tr("^Choosen folder is root");
-        end();
-        return;
-    }
+//    if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
+//        qCritical().noquote() << tr("^Choosen folder is root");
+//        end();
+//        return;
+//    }
     if(!ui->editDirForInstall->hasAcceptableInput()) {
         qCritical().noquote() << tr("^Invalid path");
         end();
@@ -276,7 +278,8 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    if((name = ui->editSizeDataInstall->text()).length() == 0) {
+    if((name = ui->editSizeDataInstall->text()).length() == 0 &&
+            !ui->radioDataToFolder->isChecked()) {
         qCritical().noquote() << tr("^Did not fill in the size of data.img");
         end();
         return;
@@ -444,13 +447,15 @@ void Window::on_buttonInstallInstall_clicked()
 
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
-        global->insSet->unpackSystem(ui->comboSysMountAs->currentIndex() == 0 ? true : false);
+        global->insSet->unpackSystem(static_cast<sysImgExtractType>
+                                     (ui->comboSysMountAs->currentIndex()));
         CHECK_ABORT();
         emit progressAddStep();
 
         qDebug().noquote() << tr("Creating data.img...");
         emit sendMesToStausbar(tr("Creating data.img..."));
-        global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt());
+        global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt(),
+                                      ui->radioDataToFolder->isChecked());
         CHECK_ABORT();
         emit progressAddStep();
 
