@@ -1,0 +1,2 @@
+grub-mkimage -O x86_64-efi -o grub64.efi -p "" --config=init.cfg part_gpt part_msdos ntfs ntfscomp hfsplus fat ext2 normal chain boot configfile linux multiboot ls cat echo configfile search search_fs_file search_fs_uuid search_label usb
+grub-mkimage -O i386-efi -o grub32.efi -p "" --config=init.cfg part_gpt part_msdos ntfs ntfscomp hfsplus fat ext2 normal chain boot configfile linux multiboot ls cat echo configfile search search_fs_file search_fs_uuid search_label usb
