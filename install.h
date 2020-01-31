@@ -72,6 +72,7 @@ public:
     void unmountImage();
     void unpackSystem(sysImgExtractType);
     QString obsolutePath(QString);
+    void formatPartExt4();
     QPair<bool, QString> getUefiEntry(QString);
     QPair<bool, QString> findUefiId(QString, QString = QString());
     void registerBootloader();

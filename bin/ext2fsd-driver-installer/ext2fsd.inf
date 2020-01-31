@@ -1,0 +1,180 @@
+; Ext2Fsd.INF
+;
+; Setup information file for the Linux ext2 filesystem driver for
+; Windows 2000/XP and Windows 64-bit.
+;
+; Project: http://ext2fsd.sourceforge.net
+; Ext2Fsd Author:  Matt Wu <mattwu@163.com>.
+; Inf Author: Stefan Kanthak <skanthak@nexgo.de>
+;
+; Copyright (C) 2016, Stefan Kanthak, Matt Wu
+
+[Version]
+Class      = System
+ClassGuid  = {00000000-0000-0000-0000-000000000000} 
+InfVersion = "01.02.00"
+Provider   = "Matt Wu"
+Signature  = "$Windows NT$"
+DriverVer  = 05/10/2016, 0.68
+CatalogFile = Ext2Fsd.cat
+
+[ClassInstall32]
+AddReg     = Ext2Fsd.Install.ClassReg
+
+[Ext2Fsd.Install.ClassReg]
+HKR,,,%REG_SZ%,"%Ext2Fsd*Class%"
+HKR,,"Icon",%REG_SZ%,"-5"
+
+[Manufacturer]
+%Ext2Fsd*Author% = FileSystem,NTamd64
+
+[FileSystem]
+%Ext2Fsd*Description% = DefaultInstall,%Ext2Fsd*Key%
+
+[FileSystem.NTamd64]
+%Ext2Fsd*Description% = DefaultInstall.NTamd64,%Ext2Fsd*Key%
+
+[DefaultInstall]
+AddReg     = Ext2Fsd.Install.AddReg
+CopyFiles  = Ext2Fsd.Files.Inf,Ext2Fsd.Files.Drv
+DelFiles   = Ext2Fsd.Files.Pnf
+
+[DefaultInstall.NTamd64]
+AddReg     = Ext2Fsd.Install.AddReg
+CopyFiles  = Ext2Fsd.Files.Inf,Ext2Fsd.Files.Drv.NTamd64
+DelFiles   = Ext2Fsd.Files.Pnf
+
+[DefaultInstall.Services]
+AddService = "%Ext2Fsd*Key%",%SVCINST_TAGTOFRONT%,Ext2Fsd.Service,Ext2Fsd.EventLog
+
+[DefaultInstall.NTamd64.Services]
+AddService = "%Ext2Fsd*Key%",%SVCINST_TAGTOFRONT%,Ext2Fsd.Service,Ext2Fsd.EventLog
+
+[DefaultUninstall]
+DelFiles   = Ext2Fsd.Files.Inf,Ext2Fsd.Files.Pnf,Ext2Fsd.Files.Drv
+DelReg     = Ext2Fsd.Remove.DelReg
+Reboot
+
+[DefaultUninstall.NTamd64]
+DelFiles   = Ext2Fsd.Files.Inf,Ext2Fsd.Files.Pnf,Ext2Fsd.Files.Drv.NTamd64
+DelReg     = Ext2Fsd.Remove.DelReg
+Reboot
+
+[DefaultUninstall.Services]
+DelService = "%Ext2Fsd*Key%",%SVCINST_DELETEEVENTLOGENTRY%
+
+[DefaultUninstall.NTamd64.Services]
+DelService = "%Ext2Fsd*Key%",%SVCINST_DELETEEVENTLOGENTRY%
+
+[Ext2Fsd.Install.AddReg]
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","DisplayName",%REG_SZ%,"%Ext2Fsd*Description%"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","DisplayVersion",%REG_SZ%,"%Ext2Fsd*Version%"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","HelpLink",%REG_SZ%,"%Ext2Fsd*URL%"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","InstallLocation",%REG_SZ%,"%12%"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","InstallSource",%REG_SZ%,"%01%"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","Publisher",%REG_SZ%,"%Ext2Fsd*Author% <%Ext2Fsd*eMail%>"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","UninstallString",%REG_SZ%,"%11%\RunDll32.exe %11%\SetupAPI.Dll,InstallHinfSection DefaultUninstall 4 %17%\Ext2Fsd.Inf"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%","URLInfoAbout",%REG_SZ%,"%Ext2Fsd*URL%"
+
+[Ext2Fsd.Remove.DelReg]
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\%Ext2Fsd*Key%"
+HKLM,"System\CurrentControlSet\Services\%Ext2Fsd*Key%\Parameters"
+
+[Ext2Fsd.Service]
+DisplayName    = "%Ext2Fsd*Driver%"
+ServiceType    = %SERVICE_KERNEL_FILESYSTEM_DRIVER%
+StartType      = %SERVICE_SYSTEM_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+ServiceBinary  = "%12%\Ext2Fsd.sys"
+AddReg         = Ext2Fsd.Service.Reg
+
+[Ext2Fsd.Service.Reg]
+HKR,"Parameters","AutoMount",%REG_DWORD%,0x00000001
+HKR,"Parameters","CheckingBitmap",%REG_DWORD%,0x00000000
+HKR,"Parameters","Ext3ForceWriting",%REG_DWORD%,0x00000001
+HKR,"Parameters","WritingSupport",%REG_DWORD%,0x00000001
+HKR,"Parameters","CodePage",%REG_SZ%,"utf8"
+
+[Ext2Fsd.EventLog]
+AddReg = Ext2Fsd.EventLog.Reg
+
+[Ext2Fsd.EventLog.Reg]
+HKR,,"EventMessageFile",%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.Dll"
+HKR,,"TypesSupported",%REG_DWORD%,7
+
+[SourceDisksNames]
+; Cabinet file names and associated disks
+; <disk or cabinet number> = <disk description>,[<cabinet filename>],<identifier (unused, must be 0)>,[<relative source path>]
+1 = "%Ext2Fsd*Description%",,0000-0000
+
+[SourceDisksFiles]
+; <filename> = <disk or cabinet number>,[<subdirectory>],[<filename>],[<size>],[<checksum>]
+; Note: <filename> is neither on a disk nor in a cabinet if <disk or ;cabinet number> is 0
+Ext2Fsd.sys   = 1, "."
+
+[DestinationDirs]
+Ext2Fsd.Files.Drv         = 12   ; %SystemRoot%\System32\Drivers
+Ext2Fsd.Files.Drv.NTamd64 = 12   ; %SystemRoot%\System32\Drivers
+Ext2Fsd.Files.Inf         = 17   ; %SystemRoot%\Inf
+Ext2Fsd.Files.Pnf         = 17   ; %SystemRoot%\Pnf
+
+[Ext2Fsd.Files.Drv]
+Ext2Fsd.sys,,,%DELFLG_IN_USE1%
+
+[Ext2Fsd.Files.Drv.NTamd64]
+Ext2Fsd.sys,,,%DELFLG_IN_USE1%
+
+[Ext2Fsd.Files.Inf]
+Ext2Fsd.inf,,,%DELFLG_IN_USE1%
+
+[Ext2Fsd.Files.Pnf]
+Ext2Fsd.pnf,,,%DELFLG_IN_USE1%
+
+[Strings]
+Ext2Fsd*Author      = "Matt Wu"
+Ext2Fsd*Class       = "File System"
+Ext2Fsd*Description = "Linux ext2 file system driver"
+Ext2Fsd*Driver      = "Linux ext2 file system driver"
+Ext2Fsd*eMail       = "matt@ext2fsd.com"
+Ext2Fsd*Key         = "Ext2Fsd"
+Ext2Fsd*URL         = "http://www.ext2fsd.com"
+Ext2Fsd*Version     = "0.68"
+
+; Non-Localizable Strings
+DELFLG_IN_USE1 = 0x00010000
+
+; Registry Data Types
+REG_SZ                  = 0x00000000
+REG_BINARY              = 0x00000001
+REG_SZ_NOCLOBBER        = 0x00000002
+REG_BINARY_NOCLOBBER    = 0x00000003
+REG_MULTI_SZ            = 0x00010000
+REG_DWORD               = 0x00010001
+REG_MULTI_SZ_NOCLOBBER  = 0x00010002
+REG_DWORD_NOCLOBBER     = 0x00010003
+REG_EXPAND_SZ           = 0x00020000
+REG_EXPAND_SZ_NOCLOBBER = 0x00020002
+
+; Driver and Service Types
+SERVICE_KERNEL_DRIVER                = 0x00000001
+SERVICE_KERNEL_FILESYSTEM_DRIVER     = 0x00000002
+SERVICE_NETWORK_ADAPTER_DRIVER       = 0x00000004
+SERVICE_WIN32_OWN_PROCESS            = 0x00000010
+SERVICE_WIN32_SHARED_PROCESS         = 0x00000020
+
+; Driver and Service Start Types
+SERVICE_BOOT_START   = 0
+SERVICE_SYSTEM_START = 1
+SERVICE_AUTO_START   = 2
+SERVICE_MANUAL_START = 3
+SERVICE_NEVER_START  = 4   ; (deactivated)
+
+; Driver and Service Error Control
+SERVICE_ERROR_IGNORE   = 0
+SERVICE_ERROR_NORMAL   = 1
+SERVICE_ERROR_SEVERE   = 2
+SERVICE_ERROR_CRITICAL = 3
+
+SVCINST_TAGTOFRONT          = 0x00000001
+SVCINST_ASSOCSERVICE        = 0x00000002
+SVCINST_DELETEEVENTLOGENTRY = 0x00000004

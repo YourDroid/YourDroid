@@ -145,7 +145,6 @@ void Window::on_restoreSettings_clicked()
 void Window::on_installButtonMain_clicked()
 {
     ui->comboFlashDrivesInstall->setEnabled(false);
-    ui->radioInstallOnPart->setEnabled(false);
     ui->radioInstallOnDir->setChecked(true);
 
     ui->radioDataToImg->setChecked(true);
@@ -169,6 +168,38 @@ void Window::on_installButtonMain_clicked()
 //    }
 
     ui->comboBoot->addItem("Grub2");
+
+#if WIN
+    ui->comboDriveSelect->clear();
+    auto res = cmd::exec("fsutil fsinfo drives");
+    QStringList mountedDrives = res.second.split(QRegExp("\\s+"));
+    if(res.first != 0)
+    {
+        qWarning().noquote() << "Cannot get the mounted drives";
+
+    }
+    else
+    {
+        mountedDrives.removeAt(0);
+        mountedDrives.removeAt(0);
+        mountedDrives.removeLast();
+        qDebug().noquote() << "Excluding c:/";
+        mountedDrives.removeOne("C:\\");
+        qDebug().noquote() << mountedDrives;
+        if(global->set->tbios)
+        {
+            qDebug().noquote() << "Excluding the efi partition";
+            mountedDrives.removeOne(global->set->efiMountPoint.toUpper() + '\\');
+            qDebug().noquote() << mountedDrives;
+        }
+        ui->comboDriveSelect->addItems(mountedDrives);
+
+        if(QFile::exists("C:/Windows/INF/Ext2Fsd.inf")) ui->radioInstallOnPart->setEnabled(true);
+        else ui->radioInstallOnPart->setEnabled(false);
+    }
+#elif LINUX
+    ui->radioInstallOnPart->setEnabled(false);
+#endif
 }
 
 void Window::on_buttonChooseImage_clicked()
@@ -253,7 +284,8 @@ void Window::on_buttonInstallInstall_clicked()
         end();
         return;
     }
-    if((dir = ui->editDirForInstall->text()).length() == 0 ) {
+    if((dir = ui->editDirForInstall->text()).length() == 0 && ui->radioDataToFolder->isChecked()
+            && !ui->radioInstallOnPart->isChecked() && !ui->radioInstallFlashDriveIns->isChecked()) {
         qCritical().noquote() << tr("^The folder is not chosen");
         end();
         return;
@@ -365,7 +397,13 @@ void Window::on_buttonInstallInstall_clicked()
     //    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
     //    taskBarProgress->setVisible(true);
 
-    global->insSet->addSystem(bootloader, typePlace, ui->editDirForInstall->text(), ui->editImageFromDisk->text(), ui->editName->text(), false);
+    QString installPath;
+    if(ui->radioInstallOnPart->isChecked()) installPath = ui->comboDriveSelect->currentText();
+    else installPath = ui->editDirForInstall->text();
+    installPath.replace('\\', '/');
+    if(installPath.back() == '/') installPath.chop(1);
+    qDebug().noquote() << QString("The install path is: %1").arg(installPath);
+    global->insSet->addSystem(bootloader, typePlace, installPath, ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
         qApp->alert(this, 2000);
@@ -442,6 +480,14 @@ void Window::on_buttonInstallInstall_clicked()
             qDebug().noquote() << tr("Formating flash drive...");
             emit sendMesToStausbar(tr("Formating flash drive..."));
             global->insSet->formatFlashDrive();
+            CHECK_ABORT();
+        }
+
+        if(ui->radioInstallOnPart->isChecked())
+        {
+            qDebug().noquote() << tr("Formating the selected drive...");
+            emit sendMesToStausbar(tr("Formating the selected drive..."));
+            global->insSet->formatPartExt4();
             CHECK_ABORT();
         }
 
