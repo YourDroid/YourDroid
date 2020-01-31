@@ -853,6 +853,21 @@ QString install::obsolutePath(QString path) {
     return path;
 }
 
+void install::formatPartExt4()
+{
+    qDebug().noquote() << QString("%1 is going to be formated to ext4").arg(systems.back().place);
+    auto res = cmd::exec(QString("%1/data/ext4fsd/mke2fs.exe -t ext4 %2")
+                         .arg(qApp->applicationDirPath(), systems.back().place),
+                         false, QStringList(), "\n");
+    if(res.first != 0)
+    {
+        emit abort(QObject::tr("Cannot format the selected partition to ext4: %1")
+                   .arg(res.second));
+        return;
+    }
+
+}
+
 void install::unpackSystem(sysImgExtractType sysType) {
     QPair<int, QString> expr;
     if(!QFile::exists(systems.back().place)) {
