@@ -145,7 +145,7 @@ void Window::on_restoreSettings_clicked()
 void Window::on_installButtonMain_clicked()
 {
     ui->comboFlashDrivesInstall->setEnabled(false);
-    ui->radioInstallOnDir->setChecked(true);
+    ui->radioInstallOnDir->setChecked(false);
 
     ui->radioDataToImg->setChecked(true);
 
@@ -194,7 +194,7 @@ void Window::on_installButtonMain_clicked()
         }
         ui->comboDriveSelect->addItems(mountedDrives);
 
-        if(QFile::exists("C:/Windows/INF/Ext2Fsd.inf")) ui->radioInstallOnPart->setEnabled(true);
+        if(global->set->ext2fsdDrvInstalled) ui->radioInstallOnPart->setEnabled(true);
         else ui->radioInstallOnPart->setEnabled(false);
     }
 #elif LINUX

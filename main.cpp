@@ -100,6 +100,13 @@ int main(int argc, char *argv[])
         install ins(&set);
         ins.read();
 
+        if(!set.installExt4fsd())
+        {
+            qWarning().noquote() << QObject::tr("^Ext2fsd driver is not installed. "
+                                                "Please run install.bat as administrator first "
+                                                "otherwise some features will be unavailable");
+        }
+
         global = new _global(&set, &ins);
 
         Window *window = new Window(readSet);

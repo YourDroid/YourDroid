@@ -856,7 +856,7 @@ QString install::obsolutePath(QString path) {
 void install::formatPartExt4()
 {
     qDebug().noquote() << QString("%1 is going to be formated to ext4").arg(systems.back().place);
-    auto res = cmd::exec(QString("%1/data/ext4fsd/mke2fs.exe -t ext4 %2")
+    auto res = cmd::exec(QString("%1/data/ext2fsd/mke2fs.exe -t ext4 %2")
                          .arg(qApp->applicationDirPath(), systems.back().place),
                          false, QStringList(), "\n");
     if(res.first != 0)

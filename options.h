@@ -32,6 +32,7 @@ private:
     QString efiMountPoint;
     bool efiWasMounted = false;
     bool efiMounted = false;
+    bool ext2fsdDrvInstalled = false;
 #endif
 public slots:
     void write_set(bool, bool, bool, bool, bool, _lang);
@@ -47,6 +48,7 @@ public:
     bool defbios();
     bool defarch();
 #if WIN
+    bool installExt4fsd();
     QString getEfiMountPoint() const { return efiMountPoint; }
     QPair<bool, QString> mountEfiPart();
     bool isEfiPartMounted() { return efiMounted; }

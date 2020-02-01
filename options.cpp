@@ -139,6 +139,97 @@ bool options::defwinv() {
     return osvi.dwMajorVersion > 5;
 }
 
+bool options::installExt4fsd()
+{
+    qDebug().noquote() << "Installing the ext2fsd driver";
+
+    if(QFile::exists("C:/windows/INF/ext2fsd.inf"))
+    {
+        qDebug().noquote() << "The driver is already installed";
+        ext2fsdDrvInstalled = true;
+        return true;
+    }
+
+//    auto res = cmd::exec(QString("%1/data/ext2fsd-driver/Setup.bat").arg(qApp->applicationDirPath()));
+//    if(res.first != 0)
+//    {
+//        qWarning().noquote() << "Fail";
+//        QFile::remove("C:/windows/inf/ext2fsd.inf");
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+
+
+//    if(QFile::exists(QString("%1/data/ext2fsd-driver/ext2fsd.sys").arg(qApp->applicationDirPath())))
+//    {
+//        qDebug().noquote() << "ext2fsd.sys exists and is going to be deleted";
+//        if(!QFile::remove(
+//                    QString("%1/data/ext2fsd-driver/ext2fsd.sys").arg(qApp->applicationDirPath())))
+//        {
+//            qWarning().noquote() << "Cannot delete ext2fsd.sys";
+//            ext2fsdDrvInstalled = false;
+//            return false;
+//        }
+//    }
+
+//    QString copyFrom = QString("%1/data/ext2fsd-driver/wxp/%2/ext2fsd.sys")
+//            .arg(qApp->applicationDirPath(), arch ? "amd64" : "i386");
+//    qDebug().noquote() << QString("Copying ") + copyFrom;
+//    if(!QFile::copy(copyFrom, qApp->applicationDirPath() + "/data/ext2fsd-driver/ext2fsd.sys"))
+//    {
+//        qWarning().noquote() << "Cannot copy ext2fsd.sys";
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+
+//    qDebug().noquote() << "Copying ext2fsd.inf";
+//    if(!QFile::copy(QString("%1/data/ext2fsd-driver/ext2fsd.inf").arg(qApp->applicationDirPath()),
+//                    "C:/windows/inf/ext2fsd.inf"))
+//    {
+//        qWarning().noquote() << "Cannot copy ext2fsd.inf";
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+
+//    QFile file("ext2fsd_ins.bat");
+//    if(!file.open(QIODevice::WriteOnly))
+//    {
+//        qWarning().noquote() << "Cannot create a script for installing ext2fsd";
+//        QFile::remove("C:/windows/inf/ext2fsd.inf");
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+//    QTextStream stream(&file);
+//    stream << QString("C:/windows/system32/rundll32.exe setupapi.dll,InstallHinfSection "
+//                      "DefaultInstall 132 %1/data/ext2fsd-driver/ext2fsd.inf")
+//              .arg(qApp->applicationDirPath());
+//    file.close();
+
+//    auto res = cmd::exec(QString("%1/ext2fsd_ins.bat").arg(qApp->applicationDirPath()));
+//    if(res.first != 0)
+//    {
+//        qWarning().noquote() << "Fail";
+//        QFile::remove("C:/windows/inf/ext2fsd.inf");
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+
+//    res = cmd::exec("net start ext2fsd");
+//    if(res.first != 0)
+//    {
+//        qWarning().noquote() << "Fail";
+//        QFile::remove("C:/windows/inf/ext2fsd.inf");
+//        ext2fsdDrvInstalled = false;
+//        return false;
+//    }
+
+//    QFile::remove(qApp->applicationDirPath() + "/data/ext2fsd-driver/ext2fsd.sys");
+
+    qDebug().noquote() << "Success";
+    ext2fsdDrvInstalled = true;
+    return true;
+}
+
 QPair<bool, QString> options::mountEfiPart()
 {
     if(efiMounted)
