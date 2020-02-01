@@ -119,12 +119,14 @@ void install::read() {
     qDebug().noquote() << "Systems read succesfull";
 }
 
-QPair<bool, QString> install::getUefiEntry(QString description)
+QPair<bool, QString> install::getBcdEntry(QString description, bool efi)
 {
     qDebug().noquote() << QObject::tr("Looking for "
                                       "the \"%1\" entry")
                           .arg(description);
-    auto res = cmd::exec("bcdedit /enum firmware", true);
+    QPair<int, QString> res;
+    if(efi) res = cmd::exec("bcdedit /enum firmware", true);
+    else res = cmd::exec("bcdedit /enum", true);
     if(res.first != 0) return QPair<bool, QString>(false, res.second);
 
     int descrBegin =
@@ -174,7 +176,7 @@ QPair<bool, QString> install::getUefiEntry(QString description)
     return QPair<bool, QString>(true, entry);
 }
 
-QPair<bool, QString> install::findUefiId(QString description, QString entry)
+QPair<bool, QString> install::findBcdId(QString description, QString entry)
 {
     qDebug().noquote() << QObject::tr("Looking for the id of "
                                       "the \"%1\" entry")
@@ -182,7 +184,7 @@ QPair<bool, QString> install::findUefiId(QString description, QString entry)
 
     if(entry == QString())
     {
-        auto expr = getUefiEntry(description);
+        auto expr = getBcdEntry(description);
         if(!expr.first) return expr;
         entry = expr.second;
     }
@@ -216,16 +218,17 @@ void install::registerBootloader() {
         else registerGrub2Bios();
 #endif
         break;
-    case _bootloader::grub4dos: registerGrub4dos(); break;
+    case _bootloader::win_bootloader: registerGrub4dos(); break;
         //case _bootloader::grub2_flash: qDebug().noquote() << tr("Setting up grub2 flash"); installGrub2(); break;
     }
 }
 
-void install::registerGrub4dos()
+bool install::installGrub4dos()
 {
 #if WIN
-#define returnFault() return;
-    qDebug().noquote() << QObject::tr("Installing grub4dos");
+#define returnFault() return false;
+
+    qDebug().noquote() << "Installing Grub4dos...";
 
     QString path;
     bool res = false;
@@ -265,6 +268,115 @@ void install::registerGrub4dos()
     }
     logDirExist();
 
+    bool grubMadeEntry = true;
+    auto expr = cmd::exec("bcdedit /enum", true);
+    if(expr.first != 0) qDebug().noquote()
+            << QObject::tr("Can't make sure if yourdroid "
+                           "grub4dos entry is registered correctly");
+    else
+    {
+        qDebug().noquote() << QObject::tr("Checking if there is an "
+                                          "entry of yourdroid grub4dos");
+        QString bcdeditOutput;
+        if(expr.second.contains("Android (YourDroid)"))
+            qDebug().noquote()
+                    << QObject::tr("There is an entry of "
+                                   "yourdroid grub4dos");
+        else
+        {
+            qDebug().noquote()
+                    << QObject::tr("There is no entry of "
+                                   "yourdroid grub4dos. "
+                                   "So installing it");
+            execAbort(QString("bcdedit /create /d \"Android (YourDroid)\" /application bootsector"));
+            grubMadeEntry = false;
+            bcdeditOutput = resCmd.second;
+        }
+
+        qDebug().noquote()
+                << QObject::tr("Checking if the path is stated "
+                               "in the entry");
+        auto resUefiEntry = getBcdEntry("Android (YourDroid)", false);
+        if(bcdeditOutput == "") bcdeditOutput = resUefiEntry.second;
+        auto resFindId = findBcdId("Android (YourDroid)",
+                                    bcdeditOutput);
+        if(!resUefiEntry.first)
+            qDebug().noquote()
+                    << QObject::tr("Can't make sure if the path is stated "
+                                   "in the entry because failed "
+                                   "to get the entry");
+        if(!resFindId.first)
+            qDebug().noquote()
+                    << QObject::tr("Can't make sure if the path is stated "
+                                   "in the entry because failed "
+                                   "to get the id of the entry");
+        else
+        {
+            systems.back().bcdId = resFindId.second;
+//            if(!resUefiEntry.second.contains("partition=C:"))
+//            {
+                qDebug().noquote()
+                        << QObject::tr("The partition is set incorrectly. "
+                                       "So fixing it");
+                execAbort(QString("bcdedit /set %1 device partition=C:").arg(resFindId.second));
+//            }
+
+//            if(!resUefiEntry.second.contains("path"))
+//            {
+                qDebug().noquote()
+                        << QObject::tr("No path stated. "
+                                       "So stating it");
+                execAbort(QString("bcdedit /set %1 path \\yourdroid_grub4dos.mbr")
+                          .arg(resFindId.second));
+//            }
+        }
+
+        qDebug().noquote() << QObject::tr("Checking if the yourdroid "
+                                          "grub4dos entry is the last");
+//        int dsplOrder = expr.second.indexOf("displayorder");
+//        QString cut = expr.second.mid(dsplOrder);
+//        int fstEntryBegin = cut.indexOf('{');
+//        int fstEntryEnd = cut.indexOf('}');
+//        QString fstEntryId =
+//                cut.mid(fstEntryBegin,
+//                        fstEntryEnd - fstEntryBegin + 1);
+//        if(!resFindId.first)
+//        {
+//            qDebug().noquote()
+//                    << QObject::tr("Can't check if the yourdroid "
+//                                   "grub4dos entry is the last "
+//                                   "because failed to find its "
+//                                   "ID:\n%1")
+//                       .arg(resFindId.second);
+//        }
+//        else
+//        {
+//            if(fstEntryId == resFindId.second)
+//                qDebug().noquote()
+//                        << QObject::tr("The yourdroid grub4dos entry "
+//                                       "is already the last");
+//            else
+//            {
+                qDebug().noquote()
+                        << QObject::tr("The yourdroid grub4dos entry "
+                                       "is going to be set the last");
+                execAbort(QString("bcdedit /displayorder %1 /addlast")
+                          .arg(resFindId.second));
+//            }
+//        }
+    }
+
+    qDebug().noquote() << "Grub4dos has been installed successfully";
+
+
+#undef returnFault
+#endif
+}
+
+void install::registerGrub4dos()
+{
+#if WIN
+    if(!installGrub4dos()) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub4dos");
 
@@ -278,28 +390,9 @@ void install::registerGrub4dos()
     }
     QTextStream config(&_config);
 
-    config << menuentry + '\n';
+    config << menuentry + "\n\n";
     _config.close();
 
-    qDebug().noquote() << QObject::tr("adding an entry of grub4dos to UEFI");
-
-    execAbort(QString("bcdedit /create /d \"Android\" /application bootsector"));
-
-    QString output = resCmd.second;
-    int begin = output.indexOf('{'), end = output.indexOf('}');
-    QString id = output.mid(begin, end - begin + 1);
-    qDebug() << QObject::tr("Id is %1").arg(id);
-    systems.back().bcdId = id;
-
-    execAbort(QString("bcdedit /set %1 device partition=C:").arg(id));
-
-    execAbort(QString("bcdedit /set %1 path \\yourdroid_grub4dos.mbr").arg(id, systems.back().name));
-
-    execAbort(QString("bcdedit /displayorder %1 /addlast").arg(id));
-
-    qDebug().noquote() << QObject::tr("Grub4dos has been setted up sucessfully");
-
-#undef returnFault
 #endif
 }
 
@@ -377,8 +470,8 @@ bool install::installGrub2Uefi() {
         qDebug().noquote()
                 << QObject::tr("Making sure the path is stated "
                                "in the entry");
-        auto resUefiEntry = getUefiEntry("yourdroid_grub2");
-        auto resFindId = findUefiId("yourdroid_grub2",
+        auto resUefiEntry = getBcdEntry("yourdroid_grub2");
+        auto resFindId = findBcdId("yourdroid_grub2",
                                     resUefiEntry.second);
         if(!resUefiEntry.first)
             qDebug().noquote()
@@ -417,7 +510,7 @@ bool install::installGrub2Uefi() {
         if(!resFindId.first)
         {
             qDebug().noquote()
-                    << QObject::tr("Can't make sure if the youdroid "
+                    << QObject::tr("Can't make sure if the yourdroid "
                                    "grub2 entry is the first "
                                    "because failed to find its "
                                    "ID:\n%1")

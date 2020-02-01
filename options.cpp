@@ -232,6 +232,8 @@ bool options::installExt4fsd()
 
 QPair<bool, QString> options::mountEfiPart()
 {
+    if(!tbios) return QPair<bool, QString> (false, "");
+
     if(efiMounted)
     {
         qDebug().noquote() << QObject::tr("The efi partition is already mounted");

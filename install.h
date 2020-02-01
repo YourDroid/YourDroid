@@ -12,7 +12,7 @@
 
 using install2Flash = tagged_bool<class install2FlashTag>;
 
-STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, ntldr, grub2_flash)
+STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, win_bootloader, grub2_flash)
 STRING_ENUM(_typePlace, dir, partition, flash_drive)
 enum sysImgExtractType {toImg = 0, toSfs = 1, toFolder = 2};
 
@@ -73,10 +73,11 @@ public:
     void unpackSystem(sysImgExtractType);
     QString obsolutePath(QString);
     void formatPartExt4();
-    QPair<bool, QString> getUefiEntry(QString);
-    QPair<bool, QString> findUefiId(QString, QString = QString());
+    QPair<bool, QString> getBcdEntry(QString, bool = true);
+    QPair<bool, QString> findBcdId(QString, QString = QString());
     void registerBootloader();
     void registerGrub4dos();
+    bool installGrub4dos();
     void registerGrub2Uefi();
     bool installGrub2Uefi();
     void registerGrub2Bios();

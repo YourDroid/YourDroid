@@ -145,7 +145,7 @@ void Window::on_restoreSettings_clicked()
 void Window::on_installButtonMain_clicked()
 {
     ui->comboFlashDrivesInstall->setEnabled(false);
-    ui->radioInstallOnDir->setChecked(false);
+    ui->radioInstallOnDir->setChecked(true);
 
     ui->radioDataToImg->setChecked(true);
 
@@ -166,7 +166,9 @@ void Window::on_installButtonMain_clicked()
 //        //ui->comboBoot->addItem("rEFInd");
 //        ui->comboBoot->addItem("Grub2");
 //    }
-
+#if WIN
+    if(!global->set->tbios) ui->comboBoot->addItem("Windows bootloader");
+#endif
     ui->comboBoot->addItem("Grub2");
 
 #if WIN
@@ -379,7 +381,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
-    if(boot == "Windows NTLDR") boot = "ntldr";
+    if(boot == "Windows bootloader") boot = "win_bootloader";
     else if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
