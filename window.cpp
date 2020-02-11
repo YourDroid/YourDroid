@@ -170,6 +170,7 @@ void Window::on_installButtonMain_clicked()
     if(!global->set->tbios) ui->comboBoot->addItem("Windows bootloader");
 #endif
     ui->comboBoot->addItem("Grub2");
+    if(global->set->tbios) ui->comboBoot->addItem("Grub2 for tablets");
 
 #if WIN
     ui->comboDriveSelect->clear();
@@ -196,7 +197,8 @@ void Window::on_installButtonMain_clicked()
         }
         ui->comboDriveSelect->addItems(mountedDrives);
 
-        if(global->set->ext2fsdDrvInstalled) ui->radioInstallOnPart->setEnabled(true);
+        if(global->set->ext2fsdDrvInstalled && ui->comboDriveSelect->count() > 0)
+            ui->radioInstallOnPart->setEnabled(true);
         else ui->radioInstallOnPart->setEnabled(false);
     }
 #elif LINUX
@@ -382,6 +384,7 @@ void Window::on_buttonInstallInstall_clicked()
     //ui->progressInstall->setRange(0, (ui->radioChooseFromDisk->isChecked() && !ui->radioDownload->isChecked()) ? 125 : 150);
     QString boot = ui->comboBoot->currentText();
     if(boot == "Windows bootloader") boot = "win_bootloader";
+    else if(boot == "Grub2 for tablets") boot = "grub2_tablet";
     else if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
     else boot = boot.toLower();
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());

@@ -209,12 +209,15 @@ QPair<bool, QString> install::findBcdId(QString description, QString entry)
 
 void install::registerBootloader() {
     qDebug().noquote() << tr("Registering to bootloader...");
+    bool grub2Tablet = false;
     switch(systems.back().bootloader) {
+    case _bootloader::grub2_tablet: qDebug().noquote() << "Setting grub2 for tablets";
+        grub2Tablet = true;
     case _bootloader::grub2:
 #if LINUX
         registerGrub2Linux();
 #elif WIN
-        if(global->set->tbios) registerGrub2Uefi();
+        if(global->set->tbios) registerGrub2Uefi(grub2Tablet);
         else registerGrub2Bios();
 #endif
         break;
@@ -396,7 +399,7 @@ void install::registerGrub4dos()
 #endif
 }
 
-bool install::installGrub2Uefi() {
+bool install::installGrub2Uefi(bool forTablet) {
 #if WIN
     #define returnFault() return false;
 
@@ -430,7 +433,9 @@ bool install::installGrub2Uefi() {
 
     REMOVE(QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile));
 
-    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), efiFile),
+    QString sourceEfiFile = efiFile;
+    if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
+    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
          (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
     logDirExist();
 
@@ -552,9 +557,9 @@ bool install::installGrub2Uefi() {
 #endif
 }
 
-void install::registerGrub2Uefi() {
+void install::registerGrub2Uefi(bool forTablet) {
 #if WIN
-    if(!installGrub2Uefi()) return;
+    if(!installGrub2Uefi(forTablet)) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub");
 
@@ -821,30 +826,31 @@ bool install::isInvalidImage(
         #endif
         ) {
 #if LINUX
-    sysImgOrSfs = QFile(mountPoint + "/system.sfs").exists();
+    sysTypeSfs = QFile(mountPoint + "/system.sfs").exists();
     return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
 #elif WIN
-    QPair<int, QString> expr;
-    QString command = QString("%1/data/iso-editor.exe exist %2 %3").arg(qApp->applicationDirPath(), iso);
-#define checkError() \
-    if(expr.first < 0 || expr.first > 2) { \
-    QRegExp re("#errormesstart#\r\n(.+)\r\n#errormesend#"); \
-    if (re.indexIn(expr.second) != -1) { \
-    qCritical().noquote() << re.cap(1).prepend("^"); \
-} \
-    else qCritical().noquote() << expr.second.prepend("^"); \
-    return 2; \
-}
-#define checkFile(file) !(bool)((expr = cmd::exec(command.arg(file))).first); checkError();
-    bool systemImg = checkFile("system.img");
-    bool systemSfs = checkFile("system.sfs");
-    bool kernel = checkFile("kernel");
-    bool initrdImg = checkFile("initrd.img");
-    bool ramdiskImg = checkFile("ramdisk.img");
-    sysImgOrSfs = systemSfs;
-    qDebug().noquote() << sysImgOrSfs;
+    auto res = cmd::exec(QString("%1/data/7zip/7z.exe l %2")
+                         .arg(qApp->applicationDirPath(), iso));
+    if(res.first != 0)
+    {
+        qCritical().noquote() << "Can't execute 7zip";
+        return false;
+    }
+
+    bool systemImg = res.second.contains("system.img");
+    bool systemSfs = res.second.contains("system.sfs");
+    bool kernel = res.second.contains("kernel");
+    bool initrdImg = res.second.contains("initrd.img");
+    bool ramdiskImg = res.second.contains("ramdisk.img");
+    qDebug().noquote() << QString("system.img: %1; system.sfs: %2; kernel: %3; "
+                                  "initrd.img: %4; ramdisk.img: %5")
+                          .arg(QString::number(systemImg), QString::number(systemSfs),
+                               QString::number(kernel), QString::number(initrdImg),
+                               QString::number(ramdiskImg));
+    sysTypeSfs = systemSfs;
+    qDebug().noquote() << QString("sysTypeSfs = %1").arg(QString::number(sysTypeSfs));
     return (systemImg || systemSfs) &&
             kernel && initrdImg &&
             ramdiskImg;
@@ -894,7 +900,7 @@ bool install::isInvalidImage(
 //    checkFile("kernel", kernel);
 //    checkFile("initrd.img", initrdImg);
 //    checkFile("ramdisk.img", ramdiskImg);
-//    sysImgOrSfs = systemSfs;
+//    sysTypeSfs = systemSfs;
 //    return (systemImg || systemSfs) &&
 //            kernel && initrdImg &&
 //            ramdiskImg;
@@ -981,13 +987,13 @@ void install::unpackSystem(sysImgExtractType sysType) {
 #if LINUX
     if(QFile(mountPoint + "/system.img").exists())
 #elif WIN
-    if(!sysImgOrSfs) // img
+    if(!sysTypeSfs) // img
 #endif
         filesCopy.push_back((systemFile = "/system.img"));
 #if LINUX
     else if(QFile(mountPoint + "/system.sfs").exists())
 #elif WIN
-    else if(sysImgOrSfs) //sfs
+    else if(sysTypeSfs) //sfs
 #endif
         filesCopy.push_back((systemFile = "/system.sfs"));
     qDebug().noquote() << QObject::tr("System file is %1").arg(systemFile);
@@ -1057,7 +1063,7 @@ void install::unpackSystem(sysImgExtractType sysType) {
     if(sysType == sysImgExtractType::toImg || sysType == sysImgExtractType::toFolder)
     {
         qDebug().noquote() << "Extracting system.img out of system.sfs";
-        if(sysImgOrSfs) //sfs
+        if(sysTypeSfs) //sfs
         {
             bool res = false;
 #if WIN

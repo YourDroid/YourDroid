@@ -12,7 +12,7 @@
 
 using install2Flash = tagged_bool<class install2FlashTag>;
 
-STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, win_bootloader, grub2_flash)
+STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, win_bootloader, grub2_flash, grub2_tablet)
 STRING_ENUM(_typePlace, dir, partition, flash_drive)
 enum sysImgExtractType {toImg = 0, toSfs = 1, toFolder = 2};
 
@@ -43,7 +43,7 @@ class install : public QObject {
     QString mountPoint;
     QPair<int, QString> resCmd;
     bool resFile = false;
-    bool sysImgOrSfs; // img - false, sfs - true
+    bool sysTypeSfs; // img - false, sfs - true
 signals:
     void logWindow(QtMsgType, QString);
     void abort(QString);
@@ -78,8 +78,8 @@ public:
     void registerBootloader();
     void registerGrub4dos();
     bool installGrub4dos();
-    void registerGrub2Uefi();
-    bool installGrub2Uefi();
+    void registerGrub2Uefi(bool);
+    bool installGrub2Uefi(bool);
     void registerGrub2Bios();
     bool installGrub2Bios();
     bool registerGrub2Linux();
