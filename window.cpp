@@ -171,8 +171,19 @@ void Window::on_installButtonMain_clicked()
 #endif
     ui->comboBoot->addItem("Grub2");
     if(global->set->tbios) ui->comboBoot->addItem("Grub2 for tablets");
-
 #if WIN
+    bool touchScreen = true;
+//    auto res = cmd::exec("wmic path CIM_LogicalDevice where \"Description like 'HID%'\" get /value");
+//    if(res.first != 0) qDebug().noquote() << "Failed to determine if the device has a touch screen";
+//    else
+//    {
+//        if(!res.second.contains("PNPDeviceID=HID\\SYNA7300&amp;COL01\\4&amp;DD570D9&amp;0&amp;0000")
+//                && !res.second.contains("touch screen")) touchScreen = false;
+//    }
+
+    if(touchScreen) ui->comboBoot->setCurrentText("Grub2 for tablets");
+
+
     ui->comboDriveSelect->clear();
     auto res = cmd::exec("fsutil fsinfo drives");
     QStringList mountedDrives = res.second.split(QRegExp("\\s+"));
