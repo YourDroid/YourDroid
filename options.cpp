@@ -42,6 +42,12 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
 bool options::read_set(bool dflt) {
     qDebug().noquote() << qApp->translate("log", "Reading settings...");
 
+    QString language = QLocale::languageToString(QLocale::system().language());
+    qDebug().noquote() << language;
+    if(language == "Russian") language = "ru";
+    else language = "en";
+    qDebug().noquote() << language;
+
     bool existConf;
     if (!dflt) existConf = QFile::exists(qApp->applicationDirPath() + "/config.ini");
     else existConf = false;
@@ -52,7 +58,8 @@ bool options::read_set(bool dflt) {
 
         settings.beginGroup("settings");
         conEnable = settings.value("enable_debug_console", false).toBool();
-        lang = _langHelper::from_string(settings.value("language", QLocale::system().name().mid(0, 2)).toString().toStdString());
+
+        lang = _langHelper::from_string(settings.value("language", language).toString().toStdString());
         settings.endGroup();
 
         settings.beginGroup("feutures_of_pc");
@@ -78,7 +85,7 @@ bool options::read_set(bool dflt) {
         winv = defwinv();
 #endif
         conEnable = false;
-        lang = _langHelper::from_string(QLocale::system().name().mid(0, 2).toStdString());
+        lang = _langHelper::from_string(language.toStdString());
     }
     return existConf;
 
