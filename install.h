@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QProgressBar>
 #include <QStatusBar>
+#include <QCoreApplication>
 #include "3rdparty/enum.h"
 #include "3rdparty/tagged_bool.h"
 #include "options.h"
@@ -32,7 +33,7 @@ class install : public QObject {
         _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e, bool o = OS, QString bId = "") : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e), os(o), bcdId(bId) {}
     };
     QVector<install::_installSet> systems;
-    int cntSystems = 0;
+    QString settingsPath = QCoreApplication::instance()->applicationDirPath() + "/config";
     bool _oldSysEdit = false;
     options *dat;
     QProgressBar *progressBarInstall;
@@ -52,7 +53,7 @@ signals:
 public:
     install(options *d) : dat(d) {}
     const QVector<install::_installSet>& systemsVector() { return systems; }
-    int cntSys() { return cntSystems; }
+    int cntSys() { return systems.count(); }
     bool &oldSysEdit() { return _oldSysEdit; }
     QVector<int> &deletedSystems() { return deletedSys; }
     void addSystem(_bootloader, _typePlace, QString, QString, QString, bool);
@@ -62,6 +63,7 @@ public:
     void write();
     void execBars(QProgressBar*, QProgressBar*, QStatusBar*);
 
+    void sysSetSuccess();
     void formatFlashDrive();
     bool isInvalidImage(
         #if WIN
@@ -89,9 +91,10 @@ public:
     void downloadFile(QString, QString);
     void delSystemFiles(int);
     void deleteBootloaderEntry(int);
+    void deleteGrubLEntry(int);
     void deleteGrub2Entry(int);
     void deleteBootloader(int);
-    void deleteGrub2(int);
+    void deleteGrubL(int);
     void deleteSettingsEntry(int);
 };
 

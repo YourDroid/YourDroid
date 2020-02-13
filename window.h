@@ -95,6 +95,8 @@ private slots:
     void on_radioInstallOnDir_clicked();
 
 private:
+    void androidDelete();
+
     void setLabelSetInfo();
 
     void retranslateUi(QString);

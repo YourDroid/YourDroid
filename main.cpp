@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         int res = app.exec();
         qDebug().noquote() << app.translate("log", "Window closed");
         set.autowrite_set();
-        ins.write();
+        //ins.write();
 #if WIN
         set.unmountEfiPart();
 #endif

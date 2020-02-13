@@ -1,4 +1,4 @@
-title Windows
+title Windows bootloader
 rootnoverify (hd0,1)
 chainloader +1
 

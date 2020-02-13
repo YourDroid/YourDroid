@@ -429,9 +429,13 @@ void Window::on_buttonInstallInstall_clicked()
 #if WIN
             taskBarProgress->stop();
 #endif
+//            disconnect(global->insSet, &install::abort, this, nullptr);
+//            androidDelete();
             return;
         }
         emit ending();
+        global->insSet->sysSetSuccess();
+        global->insSet->write();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
 #if WIN
         taskBarProgress->hide();
@@ -591,6 +595,27 @@ void Window::on_comboSystemDelete_currentIndexChanged(int index)
 void Window::on_buttonDeleteDelete_clicked()
 {
     if(ui->comboSystemDelete->currentIndex() == -1) return;
+    qDebug().noquote() << QString("^%1|+-|").arg(QObject::tr("Are you sure?"));
+    auto choice = log::getLastPressedButton();
+    if(choice == QMessageBox::Ok)
+    {
+        qDebug().noquote() << "Yes";
+    }
+    else
+    {
+        qDebug().noquote() << "No. Canceling";
+        return;
+    }
+
+    androidDelete();
+
+    global->insSet->write();
+
+    qDebug().noquote() << QObject::tr("^Finished");
+}
+
+void Window::androidDelete()
+{
     ui->buttonDeleteDelete->setEnabled(false);
     ui->buttonReturnMainDelete->setEnabled(false);
     ui->settingsMini->setEnabled(false);
