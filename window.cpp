@@ -82,8 +82,7 @@ void Window::setLabelSetInfo() {
 }
 
 void Window::retranslateUi(QString lang) {
-    QTranslator translator;
-    translator.load(QString("yourdroid_") + lang);
+    translator.load(QString("%1/translations/yourdroid_%2").arg(qApp->applicationDirPath(), lang));
     qApp->installTranslator(&translator);
     ui->retranslateUi(this);
     ui->labelVersion->setText(QString("<b>") + tr("Version:") + QString(" ") + global->VERSION + "<\b>");
@@ -119,9 +118,9 @@ void Window::on_applaySettings_clicked()
 {
     if(langChanged) {
         langChanged = false;
-        qInfo().noquote() << tr("^For applying language application should restart");
-        //        retranslateUi(QString::fromStdString(_langHelper::to_string(
-        //                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
+        //qInfo().noquote() << tr("^For applying language application should restart");
+        retranslateUi(QString::fromStdString(_langHelper::to_string(
+                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
     }
     global->set->write_set(true, ui->arch->currentIndex(),
                            ui->typeBios->currentIndex(),
@@ -251,6 +250,18 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
+    qDebug().noquote() << QString("^%1|+-|").arg(QObject::tr("Are you sure?"));
+    auto choice = log::getLastPressedButton();
+    if(choice == QMessageBox::Ok)
+    {
+        qDebug().noquote() << "Yes";
+    }
+    else
+    {
+        qDebug().noquote() << "No. Canceling";
+        return;
+    }
+
     ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
     ui->progressInstall->setValue(0);
     auto setBlocked = [=](bool _blocked)
@@ -640,8 +651,8 @@ void Window::receiveMesToStatusbar(QString mes) {
 
 void Window::closeEvent(QCloseEvent *event) {
     exiting = true;
-    emit closed();
-    event->accept();
+    //emit closed();
+    //event->accept();
 }
 
 void Window::changeEvent(QEvent *event) {

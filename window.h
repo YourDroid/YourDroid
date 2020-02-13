@@ -110,6 +110,7 @@ private:
     bool aborted = false;
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
+    QTranslator translator;
     bool fierst;
     bool exiting = false;
     bool langChanged = false;

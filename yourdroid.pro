@@ -37,7 +37,7 @@ LIBS += -lz
 
 RESOURCES += \
     resource.qrc
-TRANSLATIONS = yourdroid_ru.ts
+TRANSLATIONS = yourdroid_ru.ts yourdroid_en.ts
 DEFINES += "LINUX=\"defined(Q_OS_LINUX)\"" "WIN=\"defined(Q_OS_WIN)\""
 DEFINES -= QT_NO_DEBUG_OUTPUT
 #VERSION = 0.0.4

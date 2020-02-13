@@ -111,60 +111,6 @@ void install::read() {
         qDebug().noquote() << QString("%1 is successfully added to the systems list").arg(x);
         system.endGroup();
     }
-
-
-
-
-//    qDebug().noquote() << qApp->translate("log", "Reading install settings...");
-
-//    QSettings install(qApp->applicationDirPath() + "/install.ini", QSettings::IniFormat);
-
-//    install.beginGroup("about_installing_systems");
-//    cntSystems = install.value("count_systems", 0).toInt();
-//    qDebug().noquote() << QObject::tr("Count of systems is %1").arg(cntSystems);
-
-//    for(int i = 0; i < cntSystems; i++) {
-//        QString name = install.value(QString("system_") + QString::number(i), i).toString();
-//        QString sys = name + ".ini";
-//        qDebug().noquote() << name;
-//        if(!QFile::exists(qApp->applicationDirPath() + QString("/") + sys)) {
-//            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not exist").arg(name);
-//            _oldSysEdit = true;
-//            cntSystems = cntSystems - 1;
-//            continue;
-//        }
-//        QSettings system(sys, QSettings::IniFormat);
-//        system.beginGroup("about");
-//        if(!system.contains("bootloader")) {
-//            qCritical().noquote() << qApp->translate("log", "Config of system %1 have not section bootloader").arg(QString::number(i + 1));
-//        }
-//        else if(!system.contains("type_place")) {
-//            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not have section type_place").arg(QString::number(i + 1));
-//        }
-//        else if(!system.contains("place")) {
-//            qCritical().noquote() << qApp->translate("log", "Config of system %1 does not have section place").arg(QString::number(i + 1));
-//        }
-//        if(!system.contains("os")) {
-//            qCritical().noquote() << QObject::tr("Config of system %1 does not have section os").arg(name);
-//        }
-//        _bootloader boot;
-//        boot = _bootloaderHelper::from_string(system.value("bootloader", "Gummiboot").toString().toStdString());
-//        _typePlace typePlace;
-//        typePlace = _typePlaceHelper::from_string(system.value("type_place", "Error of read!").toString().toStdString());
-//        QString place = system.value("place", "Error of read!").toString();
-//        QString image = system.value("image", "Error of read!").toString();
-//        bool os = system.value("os", false).toBool();
-//        QString _bcdId = system.value("bcd_id", "").toString();
-//        qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " read succesfull";
-//        systems.push_back(_installSet(boot, typePlace, place, image, name, false, os, _bcdId));
-//        systems.back().ended = true;
-//        qDebug().noquote() << qApp->translate("log", "System ") + QString::number(i + 1) + " push succesfull";
-//        system.endGroup();
-//    }
-
-//    install.endGroup();
-
-//    qDebug().noquote() << "Systems read succesfull";
 }
 
 void install::sysSetSuccess()
