@@ -27,6 +27,38 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
     }
 #endif
 
+    QString appDir = qApp->applicationDirPath();
+    if(appDir.contains(' ') && command.contains(appDir))
+    {
+        qDebug().noquote() << QString("There is the dirPath in the command"
+                                      " and it contains a space: %1")
+                              .arg(command);
+
+        int previousIndex = -2;
+        QString log;
+        while(1)
+        {
+            int appDirIndex = command.indexOf(appDir, previousIndex + 2);
+            if(appDirIndex == -1) break;
+            previousIndex = appDirIndex;
+            int appDirEndIndex = appDirIndex + appDir.length();
+            log += QString::number(appDirIndex) + ' ' + QString::number(appDirEndIndex) + "\n\n";
+            if((appDirIndex == 0 || command[appDirIndex - 1] != '\"')
+                    && (appDirEndIndex == command.length() || command[appDirEndIndex] != '\"'))
+            {
+                int spaceIndex = command.indexOf(QRegularExpression("[\'\" ,;]"), appDirEndIndex);
+                log += QString("spaceIndex: ") + QString::number(spaceIndex) + "\n\n";
+                if(spaceIndex == -1) spaceIndex = command.length();
+                QString thePart = command.mid(appDirIndex, spaceIndex - appDirIndex);
+                log += thePart + "\n\n";
+                QString newPart = QString("\"") + thePart + QString("\"");
+                log += command.replace(thePart, newPart) + "\n\n";
+            }
+            else log += "Skipping\n\n";
+        }
+        qDebug().noquote() << log;
+    }
+
     qDebug().noquote() << QObject::tr("Executing \"%1%2\"").arg(command,
                                                                 list.isEmpty() ?
                                                                     "" :

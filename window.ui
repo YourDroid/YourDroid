@@ -179,30 +179,6 @@
                  </item>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="labelWinVer">
-                 <property name="text">
-                  <string>Windows version</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QComboBox" name="winVer">
-                 <property name="currentText">
-                  <string notr="true">Xp</string>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string notr="true">Xp</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string notr="true">Vista+</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
               </layout>
              </item>
              <item>
@@ -257,6 +233,9 @@
              </item>
              <item>
               <widget class="QCheckBox" name="checkEnableConSettings">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string>Output debugging console</string>
                </property>
@@ -626,7 +605,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="daletePage">
+      <widget class="QWidget" name="deletePage">
        <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_14">

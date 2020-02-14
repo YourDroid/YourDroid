@@ -50,7 +50,8 @@ Window::Window(bool f, QWidget *parent) :
     //    });
     //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
 
-    ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
+    ui->radioInstallFlashDriveIns->setEnabled(false);
+    ui->progressDelete->setHidden(true);
     ui->progressInstall->setAlignment(Qt::AlignCenter);
     ui->progressInstall->setValue(0);
     ui->progressDelete->setRange(0, 7);
@@ -74,9 +75,6 @@ Window::Window(bool f, QWidget *parent) :
 
 void Window::setLabelSetInfo() {
     QString info = QString(global->set->tbios ? "Uefi " : "Bios ") + QString(global->set->arch ? "x64" : "x86");
-#if WIN
-    info = QString((global->set->winv ? "win. vista+ | " : "win. xp | ")) + info;
-#endif
     info = QString("<b>") + info + "<\b>";
     ui->labelSetInfo->setText(info);
 }
@@ -103,7 +101,6 @@ void Window::Settings_clicked()
     if(!fierst) global->set->read_set(false);
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
-    ui->winVer->setCurrentIndex((int)global->set->winv);
 #if LINUX
     ui->winVer->setEnabled(false);
 #endif
@@ -124,7 +121,6 @@ void Window::on_applaySettings_clicked()
     }
     global->set->write_set(true, ui->arch->currentIndex(),
                            ui->typeBios->currentIndex(),
-                           ui->winVer->currentIndex(),
                            ui->checkEnableConSettings->checkState() == Qt::Checked,
                            (_lang)ui->comboLanguageSettings->currentIndex());
     log::setEnabledCon(ui->checkEnableConSettings->checkState() == Qt::Checked);
@@ -136,7 +132,6 @@ void Window::on_restoreSettings_clicked()
     global->set->read_set(true);
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
-    ui->winVer->setCurrentIndex((int)global->set->winv);
     ui->checkEnableConSettings->setChecked(global->set->getConEnable());
     ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
 }
@@ -227,6 +222,7 @@ void Window::on_buttonChooseImage_clicked()
 
 void Window::on_back_settings_clicked()
 {
+    emit on_applaySettings_clicked();
     if(fierst) {
         fierst = !fierst;
         on_applaySettings_clicked();
@@ -236,7 +232,7 @@ void Window::on_back_settings_clicked()
     else if(lastPage == ui->mainWindowPage) returnMainWindow();
     else if(lastPage == ui->aboutPage) on_buttonAboutMain_clicked();
     else if(lastPage == ui->installPage) on_installButtonMain_clicked();
-    else if(lastPage == ui->daletePage) on_deleteButtonMain_clicked();
+    else if(lastPage == ui->deletePage) on_deleteButtonMain_clicked();
 }
 
 void Window::on_buttonChooseDirForInstall_clicked()
@@ -262,7 +258,7 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
-    ui->progressInstall->setStyleSheet("QProgressBar::chunk {background-color: green;}");
+    ui->progressInstall->setStyleSheet(QProgressBar().styleSheet());
     ui->progressInstall->setValue(0);
     auto setBlocked = [=](bool _blocked)
     {
@@ -383,6 +379,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     ui->progressInstall->setValue(5);
 #if WIN
+    taskBarProgress->resume();
     taskBarProgress->setValue(5);
 #endif
 
@@ -450,7 +447,7 @@ void Window::on_buttonInstallInstall_clicked()
         ui->progressInstall->setValue(ui->progressInstall->maximum());
 #if WIN
         taskBarProgress->hide();
-        taskBarProgress->stop();
+        taskBarProgress->pause();
 #endif
         qDebug().noquote() << QObject::tr("^Success");
     });
@@ -595,7 +592,7 @@ void Window::on_deleteButtonMain_clicked()
     for(auto sys : global->insSet->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
 
     setWindowTitle(tr("YourDroid | Delete"));
-    ui->windows->setCurrentWidget(ui->daletePage);
+    ui->windows->setCurrentWidget(ui->deletePage);
 }
 
 void Window::on_comboSystemDelete_currentIndexChanged(int index)
@@ -617,6 +614,10 @@ void Window::on_buttonDeleteDelete_clicked()
         qDebug().noquote() << "No. Canceling";
         return;
     }
+
+#if WIN
+    taskBarProgress->resume();
+#endif
 
     androidDelete();
 

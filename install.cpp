@@ -1393,11 +1393,19 @@ void install::deleteSettingsEntry(int num) {
     system.setValue("deleted", 1);
 
     qDebug().noquote() << "Deleting the system's config...";
-//    if(!QFile::remove(config))
-//    {
-//        qWarning().noquote() << "The config cannot be deleted";
-//    }
-//    else qDebug().noquote() << "The config has been deleted";
+    if(!QFile::remove(config))
+    {
+        qWarning().noquote() << "The config cannot be deleted";
+    }
+    else
+    {
+        qDebug().noquote() << "The config has been deleted";
+#if WIN
+        cmd::exec(QString("del %1").arg(config));
+#elif LINUX
+        cmd::exec(QString("rm -rf %1").arg(config));
+#endif
+    }
 }
 
 void install::formatFlashDrive()

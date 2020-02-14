@@ -25,7 +25,6 @@ private:
     bool tbios;
     bool arch;
     const bool os = OS;
-    bool winv = true;
     bool conEnable = false;
 #if WIN
     QString efiGuid;
@@ -35,7 +34,7 @@ private:
     bool ext2fsdDrvInstalled = false;
 #endif
 public slots:
-    void write_set(bool, bool, bool, bool, bool, _lang);
+    void write_set(bool, bool, bool, bool, _lang);
 public:
     bool getBios() const { return tbios; }
     bool getArch() const { return arch; }
@@ -54,7 +53,6 @@ public:
     bool isEfiPartMounted() { return efiMounted; }
     QPair<bool, QString> unmountEfiPart();
     QString freeMountPoint();
-    bool defwinv();
 #endif
 };
 #endif // DATA_H

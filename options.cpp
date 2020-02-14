@@ -3,18 +3,15 @@
 #include "cmd.h"
 
 void options::autowrite_set() {
-    write_set(false, arch, tbios, winv, conEnable, lang);
+    write_set(false, arch, tbios, conEnable, lang);
 }
 
-void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang l) {
+void options::write_set(bool needSet, bool a, bool tb, bool con, _lang l) {
     qDebug().noquote() << qApp->translate("log", "Writing settings...");
 
     if(needSet) {
         arch = a;
         tbios = tb;
-#if WIN
-        winv = wv;
-#endif
         conEnable = con;
         lang = l;
     }
@@ -30,7 +27,6 @@ void options::write_set(bool needSet, bool a, bool tb, bool wv, bool con, _lang 
     settings.setValue("archeticture", QString((a) ? "x64" : "x86"));
     settings.setValue("type_of_bios", QString((tb) ? "uefi" : "bios"));
 #if WIN
-    settings.setValue("windows_version", QString((wv) ? "vista+" : "winxp"));
     //settings.setValue("efi_part_mountpoint", efiMountPoint);
     if(!efiGuid.isEmpty()) settings.setValue("efi_part_guid", efiGuid);
 #endif
@@ -66,11 +62,6 @@ bool options::read_set(bool dflt) {
         arch = (settings.value("archeticture", "x86").toString() == "x86") ? 0 : 1;
         tbios = (settings.value("type_of_bios", "uefi").toString() == "uefi") ? 1 : 0;
 #if WIN
-        if(!settings.contains("windows_version")) {
-            winv = defwinv();
-            //write_set(false,arch,tbios,winv);
-        }
-        else winv = (settings.value("windows_version", "vista+").toString() == "vista+") ? 1 : 0;
         //efiMountPoint = settings.value("efi_part_mountpoint", "").toString();
         efiGuid = settings.value("efi_part_guid", "").toString();
 #endif
@@ -81,9 +72,6 @@ bool options::read_set(bool dflt) {
         //mountEfiPart();
         tbios = defbios();
         arch = defarch();
-#if WIN
-        winv = defwinv();
-#endif
         conEnable = false;
         lang = _langHelper::from_string(language.toStdString());
     }
@@ -134,18 +122,6 @@ bool options::defarch() {
 }
 
 #if WIN
-bool options::defwinv() {
-    qDebug().noquote() << "Defining windows version";
-    OSVERSIONINFO osvi;
-
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-    GetVersionEx(&osvi);
-    qDebug().noquote() << QObject::tr("GetVersionEx() returns %1").arg(osvi.dwMajorVersion);
-    return osvi.dwMajorVersion > 5;
-}
-
 bool options::installExt4fsd()
 {
     qDebug().noquote() << "Installing the ext2fsd driver";
