@@ -968,7 +968,7 @@ void install::formatPartExt4()
 
 void install::unpackSystem(sysImgExtractType sysType) {
     QPair<int, QString> expr;
-    if(!QFile::exists(systems.back().place)) {
+    if(!QFile::exists(systems.back().place) && systems.back().place.length() > 3) {
         qDebug().noquote() << QObject::tr("Making dir for install");
         expr = cmd::exec(QString("mkdir ") + systems.back().place);
         if(expr.first) {
@@ -1400,12 +1400,12 @@ void install::deleteSettingsEntry(int num) {
     else
     {
         qDebug().noquote() << "The config has been deleted";
+    }
 #if WIN
         cmd::exec(QString("del %1").arg(config));
 #elif LINUX
         cmd::exec(QString("rm -rf %1").arg(config));
 #endif
-    }
 }
 
 void install::formatFlashDrive()

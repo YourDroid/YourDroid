@@ -8,7 +8,7 @@
 #define MyAppExeName "yourdroid.exe"
 
 [Setup]
-DisableDirPage=yes
+;DisableDirPage=yes
 DefaultDirName=c:\{#MyAppName}
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
