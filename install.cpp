@@ -1411,9 +1411,9 @@ void install::deleteSettingsEntry(int num) {
         qDebug().noquote() << "The config has been deleted";
     }
 #if WIN
-        cmd::exec(QString("del %1").arg(config));
+        cmd::exec(QString("del \"%1\"").arg(config));
 #elif LINUX
-        cmd::exec(QString("rm -rf %1").arg(config));
+        cmd::exec(QString("rm -rf \"%1\"").arg(config));
 #endif
 }
 
