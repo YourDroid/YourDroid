@@ -500,169 +500,174 @@ Couldn&apos;t put the input data to the input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="972"/>
+        <location filename="install.cpp" line="974"/>
+        <source>Can&apos;t access the selected drive. Please make sure you have ext4fsd installed on your computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="980"/>
         <source>Making dir for install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="975"/>
+        <location filename="install.cpp" line="983"/>
         <source>Could not make dir for install: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="998"/>
+        <location filename="install.cpp" line="1007"/>
         <source>System file is %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="999"/>
+        <location filename="install.cpp" line="1008"/>
         <source>Start copying</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1007"/>
+        <location filename="install.cpp" line="1016"/>
         <source>Copying %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1010"/>
+        <location filename="install.cpp" line="1019"/>
         <source>%1 exists. So it is going to be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1021"/>
+        <location filename="install.cpp" line="1030"/>
         <source>%1 does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1035"/>
+        <location filename="install.cpp" line="1044"/>
         <source>Could not copy %1-system file%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1039"/>
+        <location filename="install.cpp" line="1048"/>
         <source>%1 has been copied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1056"/>
+        <location filename="install.cpp" line="1065"/>
         <source>Could not copy %1-system file: unknown reason</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1091"/>
+        <location filename="install.cpp" line="1100"/>
         <source>^Cannot delete system.sfs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1095"/>
+        <location filename="install.cpp" line="1104"/>
         <source>^The system is going to be set as read-only because of the failure in extracting system.img</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1118"/>
+        <location filename="install.cpp" line="1127"/>
         <source>^Cannot delete system.img</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1122"/>
+        <location filename="install.cpp" line="1131"/>
         <source>^The system is extracted as .img because of the failure in extracting system.img: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1156"/>
+        <location filename="install.cpp" line="1165"/>
         <source>Cannot make a directory for /data.
 Try creating an .img file instead</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1174"/>
+        <location filename="install.cpp" line="1183"/>
         <source>Cannot create an image for /data: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1216"/>
+        <location filename="install.cpp" line="1225"/>
         <source>log</source>
         <comment>Deleting android files</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1219"/>
+        <location filename="install.cpp" line="1228"/>
         <source>^Cannot delete android files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1234"/>
-        <location filename="install.cpp" line="1235"/>
+        <location filename="install.cpp" line="1243"/>
+        <location filename="install.cpp" line="1244"/>
         <source>log</source>
         <comment>Deleting </comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1277"/>
+        <location filename="install.cpp" line="1286"/>
         <source>Deleting the grub legacy entry of android...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1278"/>
+        <location filename="install.cpp" line="1287"/>
         <source>Deleting the grub legacy entry of android</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1284"/>
-        <location filename="install.cpp" line="1346"/>
+        <location filename="install.cpp" line="1293"/>
+        <location filename="install.cpp" line="1355"/>
         <source>The config cannot be found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1294"/>
-        <location filename="install.cpp" line="1356"/>
+        <location filename="install.cpp" line="1303"/>
+        <location filename="install.cpp" line="1365"/>
         <source>Cannot find the begining of the entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1301"/>
-        <location filename="install.cpp" line="1363"/>
+        <location filename="install.cpp" line="1310"/>
+        <location filename="install.cpp" line="1372"/>
         <source>Cannot find the end of the entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1314"/>
+        <location filename="install.cpp" line="1323"/>
         <source>Cannot open the grub legacy config as write only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1325"/>
+        <location filename="install.cpp" line="1334"/>
         <source>Deleting the grub2 entry of android...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1326"/>
+        <location filename="install.cpp" line="1335"/>
         <source>Deleting the grub2 entry of android</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1330"/>
+        <location filename="install.cpp" line="1339"/>
         <source>Cannot delete the entry in grub2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1335"/>
+        <location filename="install.cpp" line="1344"/>
         <source>^Cannot update grub</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1375"/>
+        <location filename="install.cpp" line="1384"/>
         <source>Cannot open the grub2 config as write only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1415"/>
+        <location filename="install.cpp" line="1424"/>
         <source>Formating flash drive...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1420"/>
+        <location filename="install.cpp" line="1429"/>
         <source>Flash drive formated successfully...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -894,6 +899,7 @@ Try rebooting your computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="window.ui" line="89"/>
         <location filename="window.ui" line="726"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
@@ -902,11 +908,6 @@ Try rebooting your computer</source>
         <location filename="window.ui" line="96"/>
         <location filename="window.ui" line="593"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="window.ui" line="89"/>
-        <source>Manage installed systems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1247,7 +1248,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1004"/>
+        <location filename="install.cpp" line="1013"/>
         <source>File for copy is empty</source>
         <translation type="unfinished"></translation>
     </message>

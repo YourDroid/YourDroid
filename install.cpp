@@ -968,12 +968,21 @@ void install::formatPartExt4()
 
 void install::unpackSystem(sysImgExtractType sysType) {
     QPair<int, QString> expr;
-    if(!QFile::exists(systems.back().place) && systems.back().place.length() > 3) {
-        qDebug().noquote() << QObject::tr("Making dir for install");
-        expr = cmd::exec(QString("mkdir ") + systems.back().place);
-        if(expr.first) {
-            emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
+    if(!QFile::exists(systems.back().place)) {
+        if(systems.back().place.length() <= 3)
+        {
+            emit abort(QObject::tr("Can't access the selected drive. Please make sure you have "
+                                   "ext4fsd installed on your computer"));
             return;
+        }
+        else
+        {
+            qDebug().noquote() << QObject::tr("Making dir for install");
+            expr = cmd::exec(QString("mkdir ") + systems.back().place);
+            if(expr.first) {
+                emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
+                return;
+            }
         }
     }
 

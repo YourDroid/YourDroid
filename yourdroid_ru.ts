@@ -168,104 +168,109 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1039"/>
+        <location filename="install.cpp" line="974"/>
+        <source>Can&apos;t access the selected drive. Please make sure you have ext4fsd installed on your computer</source>
+        <translation>Невозможно получить доступ к отворматированному разделу. Возможно, у Вас не установлен ext4fsd, и тогда Вам нужно его установить по ссылке: https://sourceforge.net/projects/ext2fsd/files/Ext2fsd/0.69/Ext2Fsd-0.69.exe/download</translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="1048"/>
         <source>%1 has been copied</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1056"/>
+        <location filename="install.cpp" line="1065"/>
         <source>Could not copy %1-system file: unknown reason</source>
         <translation>Не получилось скопировать %1: неизвестная причина</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1091"/>
+        <location filename="install.cpp" line="1100"/>
         <source>^Cannot delete system.sfs</source>
         <translation>^Не получается удалить system.sfs</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1095"/>
+        <location filename="install.cpp" line="1104"/>
         <source>^The system is going to be set as read-only because of the failure in extracting system.img</source>
         <translation>^Системная папка будет подключаться как read-only потому что не удалось распаковать system.img</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1118"/>
+        <location filename="install.cpp" line="1127"/>
         <source>^Cannot delete system.img</source>
         <translation>^Не получается удалить system.img</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1122"/>
+        <location filename="install.cpp" line="1131"/>
         <source>^The system is extracted as .img because of the failure in extracting system.img: %1</source>
         <translation>^Системная папка распакована в виде .img потому что не удалось распаковать system.img: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1156"/>
+        <location filename="install.cpp" line="1165"/>
         <source>Cannot make a directory for /data.
 Try creating an .img file instead</source>
         <translation>Невозможно создать папку под данные.
 Попробуйте выбрать создание .img файла</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1174"/>
+        <location filename="install.cpp" line="1183"/>
         <source>Cannot create an image for /data: %1</source>
         <translation>Не удалось создать образ под данные: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1216"/>
+        <location filename="install.cpp" line="1225"/>
         <source>log</source>
         <comment>Deleting android files</comment>
         <translation>Удаление файлов android</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1219"/>
+        <location filename="install.cpp" line="1228"/>
         <source>^Cannot delete android files</source>
         <translation>^Невозможно удалить файлы android</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1234"/>
-        <location filename="install.cpp" line="1235"/>
+        <location filename="install.cpp" line="1243"/>
+        <location filename="install.cpp" line="1244"/>
         <source>log</source>
         <comment>Deleting </comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1277"/>
+        <location filename="install.cpp" line="1286"/>
         <source>Deleting the grub legacy entry of android...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1278"/>
+        <location filename="install.cpp" line="1287"/>
         <source>Deleting the grub legacy entry of android</source>
         <translation>Удаление записи из grub legacy</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1294"/>
-        <location filename="install.cpp" line="1356"/>
+        <location filename="install.cpp" line="1303"/>
+        <location filename="install.cpp" line="1365"/>
         <source>Cannot find the begining of the entry</source>
         <translation>Не удалось найти начало записи</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1301"/>
-        <location filename="install.cpp" line="1363"/>
+        <location filename="install.cpp" line="1310"/>
+        <location filename="install.cpp" line="1372"/>
         <source>Cannot find the end of the entry</source>
         <translation>Не удалось найти конец записи</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1314"/>
+        <location filename="install.cpp" line="1323"/>
         <source>Cannot open the grub legacy config as write only</source>
         <translation>Не удалось открыть конфиг grub legacy в режиме write-only</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1330"/>
+        <location filename="install.cpp" line="1339"/>
         <source>Cannot delete the entry in grub2</source>
         <translation>Не удалось удалить запись из grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1335"/>
+        <location filename="install.cpp" line="1344"/>
         <source>^Cannot update grub</source>
         <translation>^Не удаётся запустить grub-update</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1375"/>
+        <location filename="install.cpp" line="1384"/>
         <source>Cannot open the grub2 config as write only</source>
         <translation>Не удалось открыть конфиг grub2 в режиме write-only</translation>
     </message>
@@ -324,28 +329,28 @@ Try creating an .img file instead</source>
         <translation>Не удалось отформатировать выбранный раздел в ext4: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="998"/>
+        <location filename="install.cpp" line="1007"/>
         <source>System file is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1010"/>
+        <location filename="install.cpp" line="1019"/>
         <source>%1 exists. So it is going to be deleted</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1325"/>
+        <location filename="install.cpp" line="1334"/>
         <source>Deleting the grub2 entry of android...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1326"/>
+        <location filename="install.cpp" line="1335"/>
         <source>Deleting the grub2 entry of android</source>
         <translation>Удаление записи из grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1284"/>
-        <location filename="install.cpp" line="1346"/>
+        <location filename="install.cpp" line="1293"/>
+        <location filename="install.cpp" line="1355"/>
         <source>The config cannot be found</source>
         <translation>Не удалось открыть конфиг grub</translation>
     </message>
@@ -356,7 +361,7 @@ Try creating an .img file instead</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="972"/>
+        <location filename="install.cpp" line="980"/>
         <source>Making dir for install</source>
         <translation></translation>
     </message>
@@ -375,37 +380,37 @@ Try creating an .img file instead</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="975"/>
+        <location filename="install.cpp" line="983"/>
         <source>Could not make dir for install: %1</source>
         <translation>Не удалось создать папку для установки: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="999"/>
+        <location filename="install.cpp" line="1008"/>
         <source>Start copying</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1007"/>
+        <location filename="install.cpp" line="1016"/>
         <source>Copying %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1021"/>
+        <location filename="install.cpp" line="1030"/>
         <source>%1 does not exist</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1035"/>
+        <location filename="install.cpp" line="1044"/>
         <source>Could not copy %1-system file%2</source>
         <translation>Не удалось скопировать %1%2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1415"/>
+        <location filename="install.cpp" line="1424"/>
         <source>Formating flash drive...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1420"/>
+        <location filename="install.cpp" line="1429"/>
         <source>Flash drive formated successfully...</source>
         <translation></translation>
     </message>
@@ -1043,6 +1048,7 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки</translation>
     </message>
     <message>
+        <location filename="window.ui" line="89"/>
         <location filename="window.ui" line="726"/>
         <source>Delete</source>
         <translation>Удалить</translation>
@@ -1054,9 +1060,8 @@ p, li { white-space: pre-wrap; }
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="window.ui" line="89"/>
         <source>Manage installed systems</source>
-        <translation>Управление установленными системами</translation>
+        <translation type="vanished">Управление установленными системами</translation>
     </message>
     <message>
         <location filename="window.ui" line="116"/>
@@ -1370,7 +1375,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Невозможно получить размер %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1004"/>
+        <location filename="install.cpp" line="1013"/>
         <source>File for copy is empty</source>
         <translation>Один из файлов из образа пуст</translation>
     </message>
