@@ -81,7 +81,8 @@ public:
     void registerGrub4dos();
     bool installGrub4dos();
     void registerGrub2Uefi(bool);
-    bool installGrub2Uefi(bool);
+    bool installGrub2Uefi();
+    bool installGrub2TabletUefi();
     void registerGrub2Bios();
     bool installGrub2Bios();
     bool registerGrub2Linux();

@@ -81,6 +81,8 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
         mess.chop(mess.length() - pos);
         if(buttonsString.contains('+')) buttons = QMessageBox::Ok;
         if(buttonsString.contains('-')) buttons = buttons | QMessageBox::Cancel;
+        if(buttonsString.contains('y')) buttons = QMessageBox::Yes;
+        if(buttonsString.contains('n')) buttons = buttons | QMessageBox::No;
     }
     else buttons = QMessageBox::Ok;
 

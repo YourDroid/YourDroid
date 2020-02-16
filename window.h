@@ -114,6 +114,7 @@ private:
     bool fierst;
     bool exiting = false;
     bool langChanged = false;
+    //int thisIsTablet = 2; //0 - no; 1 - yes; 2 - not set yet
     Ui::Window *ui = nullptr;
     QWidget *lastPage = nullptr;
 };

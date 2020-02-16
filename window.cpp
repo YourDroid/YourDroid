@@ -166,16 +166,19 @@ void Window::on_installButtonMain_clicked()
     ui->comboBoot->addItem("Grub2");
     if(global->set->tbios) ui->comboBoot->addItem("Grub2 for tablets");
 #if WIN
-    bool touchScreen = true;
-//    auto res = cmd::exec("wmic path CIM_LogicalDevice where \"Description like 'HID%'\" get /value");
-//    if(res.first != 0) qDebug().noquote() << "Failed to determine if the device has a touch screen";
-//    else
-//    {
-//        if(!res.second.contains("PNPDeviceID=HID\\SYNA7300&amp;COL01\\4&amp;DD570D9&amp;0&amp;0000")
-//                && !res.second.contains("touch screen")) touchScreen = false;
-//    }
 
-    if(touchScreen) ui->comboBoot->setCurrentText("Grub2 for tablets");
+    qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
+    auto choice = log::getLastPressedButton();
+    if(choice == QMessageBox::Yes)
+    {
+        qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
+        ui->comboBoot->setCurrentText("Grub2 for tablets");
+    }
+    else
+    {
+        qDebug().noquote() << "No. Setting grub2 the default";
+        ui->comboBoot->setCurrentText("Grub2");
+    }
 
 
     ui->comboDriveSelect->clear();
@@ -289,6 +292,13 @@ void Window::on_buttonInstallInstall_clicked()
 //        return;
 //    }
 
+    if(ui->editImageFromDisk->text().contains(' '))
+    {
+        qCritical().noquote() << QObject::tr("^Image path must not contain any spaces");
+        end();
+        return;
+    }
+
     if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
         qCritical().noquote() << QObject::tr("^Can't access the image");
         end();
@@ -309,6 +319,12 @@ void Window::on_buttonInstallInstall_clicked()
     if((dir = ui->editDirForInstall->text()).length() == 0 && ui->radioDataToFolder->isChecked()
             && !ui->radioInstallOnPart->isChecked() && !ui->radioInstallFlashDriveIns->isChecked()) {
         qCritical().noquote() << tr("^The folder is not chosen");
+        end();
+        return;
+    }
+    if(dir.contains(' '))
+    {
+        qCritical().noquote() << QObject::tr("^The installation path must not contain any spaces");
         end();
         return;
     }
