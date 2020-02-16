@@ -147,9 +147,6 @@ void Window::on_installButtonMain_clicked()
     ui->radioChooseFromDisk->setChecked(true);
 
     //ui->progressInstall->setRange(0, 100);
-
-    setWindowTitle(tr("YourDroid | Install"));
-    ui->windows->setCurrentWidget(ui->installPage);
     ui->comboBoot->clear();
 //    if(!global->set->tbios) {
 //        //ui->comboBoot->addItem("Grub legasy");
@@ -212,6 +209,9 @@ void Window::on_installButtonMain_clicked()
 #elif LINUX
     ui->radioInstallOnPart->setEnabled(false);
 #endif
+
+    setWindowTitle(tr("YourDroid | Install"));
+    ui->windows->setCurrentWidget(ui->installPage);
 }
 
 void Window::on_buttonChooseImage_clicked()
