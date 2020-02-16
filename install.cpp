@@ -401,7 +401,8 @@ void install::registerGrub4dos()
 bool install::installGrub2TabletUefi()
 {
 #if WIN
-    #define returnFault() return false;
+    #define returnFault() _copy(qApp->applicationDirPath() + "/bootmgfw.efi", \
+            QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); return false;
 
     qDebug().noquote() << "Installing Grub2 for uefi...";
 
@@ -416,36 +417,32 @@ bool install::installGrub2TabletUefi()
     bool res = false;
 
 
-    qDebug().noquote() << "Making a grub dir";
-
-    if(!(res = QDir((path = QString("%1/efi/yourdroid_grub2")
-                      .arg(efiMountPoint))).exists()))
-    {
-        MKDIR(path);
-    }
-    logDirExist();
-
-
     qDebug().noquote() << "Copying the efi file";
 
-    if((res = QDir((path = QString("%1/efi/yourdroid_grub2/%2")
-                    .arg(efiMountPoint, efiFile))).exists()))
+    if((res = QFile((path = QString("%1/efi/Microsoft/Boot/bootmgfw_.efi")
+                    .arg(efiMountPoint))).exists()))
     {
+        if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+            COPY(QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint),
+                 qApp->applicationDirPath() + "/bootmgfw.efi");
+
         REMOVE(path);
     }
+    else if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+        COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
+             qApp->applicationDirPath() + "/bootmgfw.efi");
     logDirExist();
+
+
+    COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
+         QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint));
+
+    REMOVE(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint));
 
     QString sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
     COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
-         (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
+         (path = QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)));
     logDirExist();
-
-
-    qDebug().noquote() << "Setting the path of the windows entry";
-    execAbort(QString("bcdedit /set {bootmgr} path "
-                      "\\EFI\\yourdroid_grub2\\%2")
-              .arg((dat->arch ? "grubx64.efi" :
-                                "grubia32.efi")));
 
 
     qDebug().noquote() << "Making a config dir";
@@ -459,7 +456,7 @@ bool install::installGrub2TabletUefi()
     if(!(res = QFile((path = QString("%1/yourdroid_cfg/grub.cfg")
                       .arg(efiMountPoint))).exists()))
     {
-        COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi.cfg")
+        COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi-tablet.cfg")
              .arg(qApp->applicationDirPath()),
              path);
     }
