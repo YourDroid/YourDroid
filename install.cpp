@@ -428,7 +428,12 @@ bool install::installGrub2TabletUefi()
 
     qDebug().noquote() << "Copying the efi file";
 
-    REMOVE(QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile));
+    if((res = QDir((path = QString("%1/efi/yourdroid_grub2/%2")
+                    .arg(efiMountPoint, efiFile))).exists()))
+    {
+        REMOVE(path);
+    }
+    logDirExist();
 
     QString sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
     COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
