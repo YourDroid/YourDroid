@@ -94,6 +94,12 @@ private slots:
 
     void on_radioInstallOnDir_clicked();
 
+    void on_buttonRefreshInstall_clicked();
+
+    void on_radioInstallFlashDriveIns_clicked();
+
+    void on_radioInstallOnPart_clicked();
+
 private:
     void androidDelete();
 

@@ -50,7 +50,6 @@ Window::Window(bool f, QWidget *parent) :
     //    });
     //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
 
-    ui->radioInstallFlashDriveIns->setEnabled(false);
     ui->progressDelete->setHidden(true);
     ui->progressInstall->setAlignment(Qt::AlignCenter);
     ui->progressInstall->setValue(0);
@@ -136,9 +135,60 @@ void Window::on_restoreSettings_clicked()
     ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
 }
 
+void Window::on_buttonRefreshInstall_clicked()
+{
+#if WIN
+    ui->comboDriveSelect->clear();
+    QStringList mountedDrives = global->insSet->getDrives("where (drivetype!=5 and drivetype!=6)");
+    if(!mountedDrives.isEmpty())
+    {
+        if(mountedDrives[0] == "error")
+        {
+            qWarning().noquote() << "Cannot get the mounted drives";
+        }
+        else
+        {
+            qDebug().noquote() << "Excluding c:/";
+            mountedDrives.removeOne("C:\\");
+            qDebug().noquote() << mountedDrives;
+            if(global->set->tbios)
+            {
+                qDebug().noquote() << "Excluding the efi partition";
+                mountedDrives.removeOne(global->set->efiMountPoint.toUpper() + '\\');
+                qDebug().noquote() << mountedDrives;
+            }
+            ui->comboDriveSelect->addItems(mountedDrives);
+        }
+    }
+    if(global->set->ext2fsdDrvInstalled && ui->comboDriveSelect->count() > 0)
+        ui->radioInstallOnPart->setEnabled(true);
+    else ui->radioInstallOnPart->setEnabled(false);
+
+
+    ui->comboFlashDrivesInstall->clear();
+    mountedDrives = global->insSet->getDrives("where drivetype=2");
+    if(!mountedDrives.isEmpty())
+    {
+        if(mountedDrives[0] == "error")
+        {
+            qWarning().noquote() << "Cannot get the mounted removable drives";
+        }
+        else
+        {
+            ui->comboFlashDrivesInstall->addItems(mountedDrives);
+        }
+    }
+    if(ui->comboFlashDrivesInstall->count() > 0)
+        ui->radioInstallFlashDriveIns->setEnabled(true);
+    else ui->radioInstallFlashDriveIns->setEnabled(false);
+#elif LINUX
+    ui->radioInstallOnPart->setEnabled(false);
+    ui->radioInstallFlashDriveIns->setEnabled(false);
+#endif
+}
+
 void Window::on_installButtonMain_clicked()
 {
-    ui->comboFlashDrivesInstall->setEnabled(false);
     ui->radioInstallOnDir->setChecked(true);
 
     ui->radioDataToImg->setChecked(true);
@@ -161,54 +211,25 @@ void Window::on_installButtonMain_clicked()
     if(!global->set->tbios) ui->comboBoot->addItem("Windows bootloader");
 #endif
     ui->comboBoot->addItem("Grub2");
-    if(global->set->tbios) ui->comboBoot->addItem("Grub2 for tablets");
-#if WIN
-
-    qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
-    auto choice = log::getLastPressedButton();
-    if(choice == QMessageBox::Yes)
+    if(global->set->tbios)
     {
-        qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
-        ui->comboBoot->setCurrentText("Grub2 for tablets");
-    }
-    else
-    {
-        qDebug().noquote() << "No. Setting grub2 the default";
-        ui->comboBoot->setCurrentText("Grub2");
-    }
+        ui->comboBoot->addItem("Grub2 for tablets");
 
-
-    ui->comboDriveSelect->clear();
-    auto res = cmd::exec("fsutil fsinfo drives");
-    QStringList mountedDrives = res.second.split(QRegExp("\\s+"));
-    if(res.first != 0)
-    {
-        qWarning().noquote() << "Cannot get the mounted drives";
-
-    }
-    else
-    {
-        mountedDrives.removeAt(0);
-        mountedDrives.removeAt(0);
-        mountedDrives.removeLast();
-        qDebug().noquote() << "Excluding c:/";
-        mountedDrives.removeOne("C:\\");
-        qDebug().noquote() << mountedDrives;
-        if(global->set->tbios)
+        qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
+        auto choice = log::getLastPressedButton();
+        if(choice == QMessageBox::Yes)
         {
-            qDebug().noquote() << "Excluding the efi partition";
-            mountedDrives.removeOne(global->set->efiMountPoint.toUpper() + '\\');
-            qDebug().noquote() << mountedDrives;
+            qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
+            ui->comboBoot->setCurrentText("Grub2 for tablets");
         }
-        ui->comboDriveSelect->addItems(mountedDrives);
-
-        if(global->set->ext2fsdDrvInstalled && ui->comboDriveSelect->count() > 0)
-            ui->radioInstallOnPart->setEnabled(true);
-        else ui->radioInstallOnPart->setEnabled(false);
+        else
+        {
+            qDebug().noquote() << "No. Setting grub2 the default";
+            ui->comboBoot->setCurrentText("Grub2");
+        }
     }
-#elif LINUX
-    ui->radioInstallOnPart->setEnabled(false);
-#endif
+
+    emit on_buttonRefreshInstall_clicked();
 
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
@@ -268,6 +289,7 @@ void Window::on_buttonInstallInstall_clicked()
         _blocked = !_blocked;
         ui->returnInstallButton->setEnabled(_blocked);
         ui->buttonInstallInstall->setEnabled(_blocked);
+        ui->buttonRefreshInstall->setEnabled(_blocked);
     };
     setBlocked(true);
     ui->statusbar->showMessage(tr("Checking"));
@@ -406,7 +428,7 @@ void Window::on_buttonInstallInstall_clicked()
         {
             qDebug().noquote() << QObject::tr("The efi partition has already been mounted");
         }
-        else if(!global->set->mountEfiPart().first)
+        else if(!global->set->mountEfiPart().first && !ui->radioInstallFlashDriveIns->isChecked())
         {
             qCritical().noquote()
                     << QObject::tr("^Could not mount efi partition. Aborting. \nTry rebooting your computer");
@@ -420,8 +442,9 @@ void Window::on_buttonInstallInstall_clicked()
     QString boot = ui->comboBoot->currentText();
     if(boot == "Windows bootloader") boot = "win_bootloader";
     else if(boot == "Grub2 for tablets") boot = "grub2_tablet";
-    else if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
     else boot = boot.toLower();
+    if(ui->radioInstallFlashDriveIns->isChecked()) boot = "grub2_flash";
+    qDebug().noquote() << "The bootloader is " << boot;
     _bootloader bootloader = _bootloaderHelper::from_string(boot.toStdString());
 
     _typePlace typePlace;
@@ -439,6 +462,8 @@ void Window::on_buttonInstallInstall_clicked()
 
     QString installPath;
     if(ui->radioInstallOnPart->isChecked()) installPath = ui->comboDriveSelect->currentText();
+    else if(ui->radioInstallFlashDriveIns->isChecked())
+        installPath = ui->comboFlashDrivesInstall->currentText();
     else installPath = ui->editDirForInstall->text();
     installPath.replace('\\', '/');
     if(installPath.back() == '/') installPath.chop(1);
@@ -465,6 +490,7 @@ void Window::on_buttonInstallInstall_clicked()
         taskBarProgress->hide();
         taskBarProgress->pause();
 #endif
+        on_buttonRefreshInstall_clicked();
         qDebug().noquote() << QObject::tr("^Success");
     });
 
@@ -702,14 +728,25 @@ void Window::setTaskProgress() {
 
 void Window::on_radioButton_clicked()
 {
-    ui->comboFlashDrivesInstall->setEnabled(true);
+    //ui->comboFlashDrivesInstall->setEnabled(true);
     ui->editDirForInstall->setEnabled(false);
     ui->buttonChooseDirForInstall->setEnabled(false);
 }
 
 void Window::on_radioInstallOnDir_clicked()
 {
-    ui->comboFlashDrivesInstall->setEnabled(false);
+    ui->comboBoot->setEnabled(true);
+    //ui->comboFlashDrivesInstall->setEnabled(false);
     ui->editDirForInstall->setEnabled(true);
     ui->buttonChooseDirForInstall->setEnabled(true);
+}
+
+void Window::on_radioInstallFlashDriveIns_clicked()
+{
+    ui->comboBoot->setEnabled(false);
+}
+
+void Window::on_radioInstallOnPart_clicked()
+{
+    ui->comboBoot->setEnabled(true);
 }

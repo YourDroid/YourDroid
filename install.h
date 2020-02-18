@@ -42,6 +42,9 @@ class install : public QObject {
     QVector<int> deletedSys;
     QString abortMes;
     QString mountPoint;
+    QString usbBootPart;
+    QString usbMainPart;
+    int usbDiskIndex = 0;
     QPair<int, QString> resCmd;
     bool resFile = false;
     bool sysTypeSfs; // img - false, sfs - true
@@ -74,6 +77,7 @@ public:
     void unmountImage();
     void unpackSystem(sysImgExtractType);
     QString obsolutePath(QString);
+    QStringList getDrives(QString);
     void formatPartExt4();
     QPair<bool, QString> getBcdEntry(QString, bool = true);
     QPair<bool, QString> findBcdId(QString, QString = QString());
@@ -86,6 +90,9 @@ public:
     void registerGrub2Bios();
     bool installGrub2Bios();
     bool registerGrub2Linux();
+    bool installGrubUsb();
+    void registerGrubUsb();
+    QString grub2UsbConfigure(QString, bool = false, bool = true, int = -1);
     QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int, bool);

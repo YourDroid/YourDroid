@@ -114,10 +114,20 @@ bool options::defarch() {
     qDebug().noquote() << (qApp->translate("log", "Uname returned ") + tarch);
     return (tarch=="x86\n") ? 0 : 1;
 #elif WIN
-    SYSTEM_INFO inf;
-    GetNativeSystemInfo(&inf);
-    qDebug().noquote() << qApp->translate("log", "Processor type is ") + char(inf.dwProcessorType + 48);
-    return inf.dwProcessorType;
+    auto res = cmd::exec("wmic OS get OSArchitecture");
+    if(res.first == 0)
+    {
+        qDebug().noquote() << "Can't execute wmic, trying another way";
+        SYSTEM_INFO inf;
+        GetNativeSystemInfo(&inf);
+        qDebug().noquote() << QString("Processor type is ") + char(inf.dwProcessorType + 48);
+        return inf.dwProcessorType;
+    }
+    else
+    {
+        return res.second.contains("64");
+    }
+
 #endif
 }
 

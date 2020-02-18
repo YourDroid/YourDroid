@@ -109,6 +109,9 @@ int main(int argc, char *argv[])
 
         global = new _global(&set, &ins);
 
+        ins.getDrives("where drivetype!=0");
+        ins.getDrives("where drivetype=0");
+
         Window *window = new Window(readSet);
         window->show();
         //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });

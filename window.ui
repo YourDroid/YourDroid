@@ -66,7 +66,7 @@
     <item row="1" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -352,7 +352,7 @@
              <item>
               <widget class="QRadioButton" name="radioDataToFolder">
                <property name="text">
-                <string>Create a folder for data</string>
+                <string>Create a folder for data (only for ext4 partitions!)</string>
                </property>
               </widget>
              </item>
@@ -515,7 +515,7 @@
              <item>
               <widget class="QRadioButton" name="radioInstallFlashDriveIns">
                <property name="text">
-                <string>Install to flash drive</string>
+                <string>Install to flash drive with loss of the data</string>
                </property>
               </widget>
              </item>
@@ -571,6 +571,13 @@
            <widget class="QPushButton" name="returnInstallButton">
             <property name="text">
              <string>To main menu</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonRefreshInstall">
+            <property name="text">
+             <string>Refresh</string>
             </property>
            </widget>
           </item>
