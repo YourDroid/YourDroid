@@ -281,7 +281,24 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
-    qDebug().noquote() << QString("^%1|+-|").arg(QObject::tr("Are you sure?"));
+    QString installPath;
+    if(ui->radioInstallOnPart->isChecked()) installPath = ui->comboDriveSelect->currentText();
+    else if(ui->radioInstallFlashDriveIns->isChecked())
+        installPath = ui->comboFlashDrivesInstall->currentText();
+    else installPath = ui->editDirForInstall->text();
+    installPath.replace('\\', '/');
+    if(installPath.back() == '/') installPath.chop(1);
+    qDebug().noquote() << QString("The install path is: %1").arg(installPath);
+
+    QString message = QObject::tr("Are you sure?");
+    if(ui->radioInstallFlashDriveIns->isChecked() &&
+            !global->insSet->isUsbAlreadyFormatted(installPath))
+    {
+        message += ' ';
+        message += QObject::tr("The flash drive is going to be formatted!");
+        qWarning().noquote() << QString("^%1|+-|").arg(message);
+    }
+    else qDebug().noquote() << QString("^%1|+-|").arg(message);
     auto choice = log::getLastPressedButton();
     if(choice == QMessageBox::Ok)
     {
@@ -471,14 +488,8 @@ void Window::on_buttonInstallInstall_clicked()
     //    QWinTaskbarProgress *taskBarProgress = taskBarButton->progress();
     //    taskBarProgress->setVisible(true);
 
-    QString installPath;
-    if(ui->radioInstallOnPart->isChecked()) installPath = ui->comboDriveSelect->currentText();
-    else if(ui->radioInstallFlashDriveIns->isChecked())
-        installPath = ui->comboFlashDrivesInstall->currentText();
-    else installPath = ui->editDirForInstall->text();
-    installPath.replace('\\', '/');
-    if(installPath.back() == '/') installPath.chop(1);
-    qDebug().noquote() << QString("The install path is: %1").arg(installPath);
+    //installPath is defined at the begining of this function
+
     global->insSet->addSystem(bootloader, typePlace, installPath, ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){

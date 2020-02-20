@@ -70,6 +70,7 @@ public:
 
     void sysSetSuccess();
     void formatFlashDrive();
+    bool isUsbAlreadyFormatted(QString);
     void saveFlashData(int = -1);
     bool isInvalidImage(
         #if WIN

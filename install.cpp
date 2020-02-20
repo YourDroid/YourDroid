@@ -1780,6 +1780,19 @@ void install::deleteSettingsEntry(int num) {
 #endif
 }
 
+bool install::isUsbAlreadyFormatted(QString path)
+{
+    usbAlreadyFormatted = QFile::exists(path + "/yourdroid_usb_cfg/yourdroid_usb.cfg");
+    if(usbAlreadyFormatted) qDebug().noquote() << QString("%1 is already formatted")
+                                                  .arg(path);
+    else
+    {
+        qDebug().noquote() << QString("%1 is not formatted yet")
+                                                          .arg(path);
+    }
+    return usbAlreadyFormatted;
+}
+
 void install::formatFlashDrive()
 {
 #if WIN
@@ -1788,10 +1801,9 @@ void install::formatFlashDrive()
     QString part = systems.back().place;
     qDebug().noquote() << part;
 
-    if(QFile::exists(part + "/yourdroid_usb_cfg/yourdroid_usb.cfg"))
+    if(usbAlreadyFormatted)
     {
         qDebug().noquote() << QString("%1 is already formatted").arg(part);
-        usbAlreadyFormatted = true;
         usbMainPart = part + '/';
         return;
     }
