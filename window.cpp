@@ -69,6 +69,7 @@ Window::Window(bool f, QWidget *parent) :
     if(fierst) Settings_clicked();
     else returnMainWindow();
 
+    qDebug().noquote() << "############## STARTED ##############";
 
 }
 
@@ -175,6 +176,16 @@ void Window::on_buttonRefreshInstall_clicked()
         }
         else
         {
+            for(int i = 0; i < mountedDrives.count(); i++)
+            {
+                if(QFile::exists(mountedDrives[i] + "yourdroid_usb_boot.cfg"))
+                {
+                    qDebug().noquote() << QString("%1 is a boot partition, skipping it")
+                                          .arg(mountedDrives[i]);
+                    mountedDrives.removeAt(i);
+                    i--;
+                }
+            }
             ui->comboFlashDrivesInstall->addItems(mountedDrives);
         }
     }
@@ -484,7 +495,7 @@ void Window::on_buttonInstallInstall_clicked()
         }
         emit ending();
         global->insSet->sysSetSuccess();
-        global->insSet->write();
+//        global->insSet->write();
         ui->progressInstall->setValue(ui->progressInstall->maximum());
 #if WIN
         taskBarProgress->hide();
@@ -588,7 +599,10 @@ void Window::on_buttonInstallInstall_clicked()
 #endif
         global->insSet->systemEnd();
         global->insSet->oldSysEdit() = true;
-        global->insSet->write();
+        if(typePlace == _typePlace::flash_drive)
+            global->insSet->saveFlashData();
+        else
+            global->insSet->write();
         CHECK_ABORT();
     });
     resMonitor->setFuture(res);

@@ -37,7 +37,15 @@ void install::write() {
 
     for(int i = 0; i < systems.count(); i++) {
         if(systems[i].ended == false) {
-            qDebug().noquote() << tr("System %1 has been skipped").arg(systems[i].name);
+            qDebug().noquote() << QString("System %1 has been skipped because it's marked as deleted")
+                                  .arg(systems[i].name);
+            continue;
+        }
+        if(systems[i].typePlace == _typePlace::flash_drive)
+        {
+            qDebug().noquote() << QString("System %1 has been skipped because "
+                                          "it's installed to a flash drive")
+                                  .arg(systems[i].name);
             continue;
         }
         qDebug().noquote() << QString("System %1 is being saved...").arg(systems[i].name);
@@ -70,11 +78,38 @@ void install::read() {
     qDebug().noquote() << configs;
     qDebug().noquote() << "Excluding config.ini";
     configs.removeOne("config.ini");
+    qDebug().noquote() << "Adding the path";
+    for(int i = 0; i < configs.count(); i++)
+    {
+        configs[i] = settingsPath + '/' + configs[i];
+    }
+    qDebug().noquote() << configs;
+
+    QStringList flashDrives = getDrives("where drivetype=2");
+    for(auto x : flashDrives)
+    {
+        x.replace('\\', '/');
+        if(!QFile::exists(x + "yourdroid_usb_cfg/yourdroid_usb.cfg"))
+        {
+            qDebug().noquote() << QString("%1 is not a drive formatted with yourdroid").arg(x);
+            continue;
+        }
+        settingsDir = QDir(x + "yourdroid_usb_cfg");
+        QStringList usbConfigs = settingsDir.entryList(QStringList() << "*.ini", QDir::Files);
+        qDebug().noquote() << usbConfigs;
+        qDebug().noquote() << "Adding the path";
+        for(int i = 0; i < usbConfigs.count(); i++)
+        {
+            usbConfigs[i] = x + "yourdroid_usb_cfg/" + usbConfigs[i];
+        }
+        qDebug().noquote() << usbConfigs;
+        configs << usbConfigs;
+    }
     qDebug().noquote() << configs;
 
     for(auto x : configs)
     {
-        QSettings system(settingsPath + '/' + x, QSettings::IniFormat);
+        QSettings system(x, QSettings::IniFormat);
         system.beginGroup("about");
         if(system.value("deleted", 0).toInt() == 1)
         {
@@ -100,12 +135,16 @@ void install::read() {
         boot = _bootloaderHelper::from_string(system.value("bootloader", "Gummiboot").toString().toStdString());
         _typePlace typePlace;
         typePlace = _typePlaceHelper::from_string(system.value("type_place", "Error of read!").toString().toStdString());
-        QString place = system.value("place", "Error of read!").toString();
+        QString name = x;
+        name.remove(".ini");
+        int pathEndIndex = name.lastIndexOf('/');
+        name.remove(0, pathEndIndex + 1);
+        QString place;
+        if(typePlace == _typePlace::flash_drive) place = x.mid(0, 2) + "/yourdroid_usb/" + name;
+        else place = system.value("place", "Error of read!").toString();
         QString image = system.value("image", "Error of read!").toString();
         bool os = system.value("os", false).toBool();
         QString _bcdId = system.value("bcd_id", "").toString();
-        QString name = x;
-        name.remove(".ini");
         qDebug().noquote() << QString("%1 is read succesfully").arg(x);
         systems.push_back(_installSet(boot, typePlace, place, image, name, false, os, _bcdId));
         systems.back().ended = true;
@@ -117,6 +156,38 @@ void install::read() {
 void install::sysSetSuccess()
 {
     systems.back().ended = true;
+}
+
+void install::saveFlashData(int i)
+{
+    if(i == -1) i = systems.count() - 1;
+    QString iniPath = usbMainPart + "yourdroid_usb_cfg/" + systems[i].name + ".ini";
+    qDebug().noquote() << QString("Saving %1 to %2").arg(systems[i].name, iniPath);
+    QSettings system(iniPath,
+                     QSettings::IniFormat);
+    system.beginGroup("about");
+    system.setValue("bootloader", _bootloaderHelper::to_string(systems[i].bootloader).c_str());
+    system.setValue("type_place", _typePlaceHelper::to_string(systems[i].typePlace).c_str());
+    system.setValue("place", systems[i].place);
+    system.setValue("image", systems[i].image);
+    system.setValue("os", systems[i].os);
+    system.setValue("main_size", usbMainSize);
+    if(!systems[i].bcdId.isEmpty()) system.setValue("bcd_id", systems[i].bcdId);
+    system.endGroup();
+
+    if(!usbAlreadyFormatted)
+    {
+        iniPath = usbMainPart + "yourdroid_usb_cfg/yourdroid_usb.cfg";
+        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+        QSettings usbCfg(iniPath, QSettings::IniFormat);
+        usbCfg.setValue("main_size", usbMainSize);
+
+        iniPath = usbBootPart + "yourdroid_usb_boot.cfg";
+        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+        QSettings usbBootCfg(iniPath, QSettings::IniFormat);
+        usbBootCfg.setValue("formatted", true);
+    }
+    else qDebug().noquote() << "The flash drive was already formatted";
 }
 
 QPair<bool, QString> install::getBcdEntry(QString description, bool efi)
@@ -302,7 +373,11 @@ bool install::installGrubUsb()
 
 void install::registerGrubUsb()
 {
-    if(!installGrubUsb()) return;
+    if(!usbAlreadyFormatted)
+    {
+        if(!installGrubUsb()) return;
+    }
+    else  qDebug().noquote() << "The flash drive is already formatted";
     qDebug().noquote() << "Registering grub2_flash";
 
     QString menuentry = grub2UsbConfigure(QString(), false, false);
@@ -1508,6 +1583,7 @@ void install::deleteBootloaderEntry(int numSys) {
     case _bootloader::grub2: deleteGrub2Entry(numSys); break;
     case _bootloader::win_bootloader:
     case _bootloader::grub4dos: deleteGrubLEntry(numSys); break;
+    case _bootloader::grub2_flash: deleteGrub2UsbEntry(numSys); break;
     }
 }
 
@@ -1621,16 +1697,72 @@ void install::deleteGrub2Entry(int numSys) {
     progressBarDelete->setValue(7);
 }
 
+void install::deleteGrub2UsbEntry(int index)
+{
+#if WIN
+    qDebug().noquote() << QObject::tr("Deleting the grub2 usb entry of android...");
+    statusBar->showMessage(QObject::tr("Deleting the grub2 usb entry of android"));
+
+    QString cfgPath = systems[index].place.mid(0, 2) + "/yourdroid_usb_cfg/grub.cfg";
+    qDebug().noquote() << "The config is: " << cfgPath;
+    QFile config(cfgPath);
+    if(!config.open(QIODevice::ReadOnly))
+    {
+        emit abort(QObject::tr("The config cannot be found"));
+        return;
+    }
+    else
+    {
+        QTextStream configTStream(&config);
+        QString configText = configTStream.readAll();
+        int entryBeginIndex = configText.indexOf(QString("submenu '%1'").arg(systems[index].name));
+        if(entryBeginIndex == -1)
+        {
+            emit abort(QObject::tr("Cannot find the begining of the entry"));
+            return;
+        }
+
+        int entryEndIndex = configText.indexOf("\n}", entryBeginIndex);
+        if(entryEndIndex == -1)
+        {
+            emit abort(QObject::tr("Cannot find the end of the entry"));
+            return;
+        }
+        entryEndIndex += 1; //index of the } itself
+
+        QString entry = configText.mid(entryBeginIndex, entryEndIndex - entryBeginIndex + 3);
+
+        qDebug().noquote() << entry;
+
+        configText.remove(entry);
+        config.close();
+        if(!config.open(QIODevice::WriteOnly))
+        {
+            emit abort(QObject::tr("Cannot open the grub legacy config as write only"));
+            return;
+        }
+        else configTStream << configText;
+    }
+
+    progressBarDelete->setValue(7);
+#endif
+}
+
 void install::deleteSettingsEntry(int num) {
     qDebug().noquote() << "Deleting the system's entry...";
-    systems.remove(num);
 
     qDebug().noquote() << "Marking the entry as deleted";
-    QString config = settingsPath + '/' + systems[num].name + ".ini";
+    QString config;
+    if(systems[num].typePlace == _typePlace::flash_drive)
+        config = systems[num].place.mid(0, 2) + "/yourdroid_usb_cfg/" + systems[num].name + ".ini";
+    else config = settingsPath + '/' + systems[num].name + ".ini";
     qDebug().noquote() << config;
-    QSettings system(config, QSettings::IniFormat);
-    system.beginGroup("about");
-    system.setValue("deleted", 1);
+    QSettings *system = new QSettings(config, QSettings::IniFormat);
+    system->beginGroup("about");
+    system->setValue("deleted", 1);
+    delete system;
+    systems.remove(num);
+
 
     qDebug().noquote() << "Deleting the system's config...";
     if(!QFile::remove(config))
@@ -1656,6 +1788,13 @@ void install::formatFlashDrive()
     QString part = systems.back().place;
     qDebug().noquote() << part;
 
+    if(QFile::exists(part + "/yourdroid_usb_cfg/yourdroid_usb.cfg"))
+    {
+        qDebug().noquote() << QString("%1 is already formatted").arg(part);
+        usbAlreadyFormatted = true;
+        usbMainPart = part + '/';
+        return;
+    }
 //    usbMainPart = "B:/";
 //    usbBootPart = "G:/";
 //    usbDiskIndex = 1;
@@ -1697,6 +1836,7 @@ void install::formatFlashDrive()
     qDebug().noquote() << "The size converted to MB is " << size;
     qint64 newPartSize = size - 150;
     qDebug().noquote() << "The size for the new main partition is " << newPartSize;
+    usbMainSize = newPartSize;
 
     QStringList drives = getDrives("");
     QStringList freeMountLetters;

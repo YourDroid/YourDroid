@@ -515,7 +515,7 @@
              <item>
               <widget class="QRadioButton" name="radioInstallFlashDriveIns">
                <property name="text">
-                <string>Install to flash drive with loss of the data</string>
+                <string>Install to flash drive</string>
                </property>
               </widget>
              </item>

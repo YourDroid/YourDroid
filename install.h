@@ -44,7 +44,9 @@ class install : public QObject {
     QString mountPoint;
     QString usbBootPart;
     QString usbMainPart;
+    qint64 usbMainSize = 0;
     int usbDiskIndex = 0;
+    bool usbAlreadyFormatted = false;
     QPair<int, QString> resCmd;
     bool resFile = false;
     bool sysTypeSfs; // img - false, sfs - true
@@ -68,6 +70,7 @@ public:
 
     void sysSetSuccess();
     void formatFlashDrive();
+    void saveFlashData(int = -1);
     bool isInvalidImage(
         #if WIN
             QString
@@ -101,6 +104,7 @@ public:
     void deleteBootloaderEntry(int);
     void deleteGrubLEntry(int);
     void deleteGrub2Entry(int);
+    void deleteGrub2UsbEntry(int);
     void deleteBootloader(int);
     void deleteGrubL(int);
     void deleteSettingsEntry(int);
