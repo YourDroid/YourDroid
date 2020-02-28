@@ -85,12 +85,12 @@ public:
     void formatPartExt4();
     QPair<bool, QString> getBcdEntry(QString, bool = true);
     QPair<bool, QString> findBcdId(QString, QString = QString());
-    void registerBootloader();
+    void registerBootloader(bool);
     void registerGrub4dos();
     bool installGrub4dos();
-    void registerGrub2Uefi(bool);
-    bool installGrub2Uefi();
-    bool installGrub2TabletUefi();
+    void registerGrub2Uefi(bool, bool);
+    bool installGrub2Uefi(bool);
+    bool installGrub2BootmgrUefi(bool);
     void registerGrub2Bios();
     bool installGrub2Bios();
     bool registerGrub2Linux();

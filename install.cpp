@@ -278,7 +278,7 @@ QPair<bool, QString> install::findBcdId(QString description, QString entry)
     return QPair<bool, QString>(true, id);
 }
 
-void install::registerBootloader() {
+void install::registerBootloader(bool replaceWinBootloader) {
     qDebug().noquote() << "Registering to bootloader...";
     bool grub2Tablet = false;
     switch(systems.back().bootloader) {
@@ -290,7 +290,7 @@ void install::registerBootloader() {
 #if LINUX
         registerGrub2Linux();
 #elif WIN
-        if(global->set->tbios) registerGrub2Uefi(grub2Tablet);
+        if(global->set->tbios) registerGrub2Uefi(grub2Tablet, replaceWinBootloader);
         else registerGrub2Bios();
 #endif
         break;
@@ -614,13 +614,13 @@ void install::registerGrub4dos()
 #endif
 }
 
-bool install::installGrub2TabletUefi()
+bool install::installGrub2BootmgrUefi(bool forTablet)
 {
 #if WIN
     #define returnFault() _copy(qApp->applicationDirPath() + "/bootmgfw.efi", \
             QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); return false;
 
-    qDebug().noquote() << "Installing Grub2 for uefi...";
+    qDebug().noquote() << "Installing Grub2 for uefi (replacing bootmgr)...";
 
 #define logDirExist() qDebug().noquote() \
     << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
@@ -655,7 +655,8 @@ bool install::installGrub2TabletUefi()
 
     REMOVE(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint));
 
-    QString sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
+    QString sourceEfiFile = efiFile;
+    if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
     COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
          (path = QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)));
     logDirExist();
@@ -686,11 +687,11 @@ bool install::installGrub2TabletUefi()
 #endif
 }
 
-bool install::installGrub2Uefi() {
+bool install::installGrub2Uefi(bool forTablet) {
 #if WIN
     #define returnFault() return false;
 
-    qDebug().noquote() << "Installing Grub2 for uefi...";
+    qDebug().noquote() << "Installing Grub2 for uefi (creating a uefi entry for it)...";
 
 #define logDirExist() qDebug().noquote() \
     << QString("%1 %2").arg(path, (res ? QObject::tr("exists") : QObject::tr("doesn't exist")));
@@ -721,7 +722,7 @@ bool install::installGrub2Uefi() {
     REMOVE(QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile));
 
     QString sourceEfiFile = efiFile;
-    //if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
+    if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
     COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
          (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
     logDirExist();
@@ -844,11 +845,11 @@ bool install::installGrub2Uefi() {
 #endif
 }
 
-void install::registerGrub2Uefi(bool forTablet) {
+void install::registerGrub2Uefi(bool forTablet, bool replaceWinBootloader) {
 #if WIN
     bool installRes = false;
-    if(forTablet) installRes = installGrub2TabletUefi();
-    else installRes = installGrub2Uefi();
+    if(replaceWinBootloader) installRes = installGrub2BootmgrUefi(forTablet);
+    else installRes = installGrub2Uefi(forTablet);
     if(!installRes) return;
 
     qDebug().noquote() << QObject::tr("Setting up grub");

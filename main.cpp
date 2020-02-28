@@ -21,6 +21,7 @@
 #include "exception.h"
 #include <QtConcurrent/QtConcurrentRun>
 #include "global.h"
+#include <QSettings>
 
 #if WIN
 #include <windows.h>
@@ -108,9 +109,6 @@ int main(int argc, char *argv[])
         }
 
         global = new _global(&set, &ins);
-
-        ins.getDrives("where drivetype!=0");
-        ins.getDrives("where drivetype=0");
 
         Window *window = new Window(readSet);
         window->show();

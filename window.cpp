@@ -218,12 +218,16 @@ void Window::on_installButtonMain_clicked()
 //        //ui->comboBoot->addItem("rEFInd");
 //        ui->comboBoot->addItem("Grub2");
 //    }
+    bool replaceWinBtldr = false;
 #if WIN
     if(!global->set->tbios) ui->comboBoot->addItem("Windows bootloader");
 #endif
     ui->comboBoot->addItem("Grub2");
     if(global->set->tbios)
     {
+#if WIN
+        replaceWinBtldr = true;
+#endif
         ui->comboBoot->addItem("Grub2 for tablets");
 
         qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
@@ -239,6 +243,8 @@ void Window::on_installButtonMain_clicked()
             ui->comboBoot->setCurrentText("Grub2");
         }
     }
+
+    ui->checkReplaceWinBootloader->setEnabled(replaceWinBtldr);
 
     emit on_buttonRefreshInstall_clicked();
 
@@ -599,7 +605,7 @@ void Window::on_buttonInstallInstall_clicked()
 
         qDebug().noquote() << tr("Installing bootloader...");
         emit sendMesToStausbar(tr("Installing bootloader..."));
-        global->insSet->registerBootloader();
+        global->insSet->registerBootloader(ui->checkReplaceWinBootloader->isChecked());
         CHECK_ABORT();
         emit progressAddStep();
 

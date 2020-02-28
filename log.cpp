@@ -92,7 +92,7 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
-        logFile << QString("# Created by YourDroid %1\n# Work dir: %2\n\n").arg(global->VERSION, qApp->applicationDirPath());
+        logFile << QString("# Created by YourDroid %1\n# Work dir: %2\n\n").arg(QString(VER_PRODUCTVERSION_STR), qApp->applicationDirPath());
         std::freopen(logName.toStdString().c_str(), "a+", stderr);
     }
     //static ofstream logFile("log.txt");

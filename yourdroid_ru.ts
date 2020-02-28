@@ -317,44 +317,44 @@ Try creating an .img file instead</source>
         <translation>Удаление записи андроида в grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1806"/>
+        <location filename="install.cpp" line="1818"/>
         <source>Can&apos;t get the size of partitions</source>
         <translation>Не удалось получить размер разделов</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1816"/>
+        <location filename="install.cpp" line="1828"/>
         <source>Can&apos;t find the partition in the list</source>
         <translation>Не удалось найти искомый раздел в списке</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1824"/>
+        <location filename="install.cpp" line="1836"/>
         <source>The size of the flash stick is too little</source>
         <translation>Флешка слишком маленького размера</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1830"/>
+        <location filename="install.cpp" line="1842"/>
         <source>Can&apos;t convert the size to int</source>
         <translation>Не удалось конвертировать размер usb-накопителя в нужный формат</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1852"/>
+        <location filename="install.cpp" line="1864"/>
         <source>Can&apos;t get the list of disks</source>
         <translation>Не удалось получить список дисков</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1875"/>
-        <location filename="install.cpp" line="1943"/>
+        <location filename="install.cpp" line="1887"/>
+        <location filename="install.cpp" line="1955"/>
         <source>Failed to create a diskpart script</source>
         <translation>Не удалось создать скрипт diskpart</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1882"/>
-        <location filename="install.cpp" line="1950"/>
+        <location filename="install.cpp" line="1894"/>
+        <location filename="install.cpp" line="1962"/>
         <source>Failed to execute the diskpart script</source>
         <translation>Не удалось запустить скрипт diskpart</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1913"/>
+        <location filename="install.cpp" line="1925"/>
         <source>Too few free drive letters</source>
         <translation>Слишком мало свободных букв для разделов</translation>
     </message>
@@ -456,7 +456,7 @@ Try creating an .img file instead</source>
         <location filename="install.cpp" line="626"/>
         <location filename="install.cpp" line="696"/>
         <location filename="install.cpp" line="881"/>
-        <location filename="install.h" line="129"/>
+        <location filename="install.h" line="130"/>
         <source>exists</source>
         <translation></translation>
     </message>
@@ -464,7 +464,7 @@ Try creating an .img file instead</source>
         <location filename="install.cpp" line="626"/>
         <location filename="install.cpp" line="696"/>
         <location filename="install.cpp" line="881"/>
-        <location filename="install.h" line="129"/>
+        <location filename="install.h" line="130"/>
         <source>doesn&apos;t exist</source>
         <translation></translation>
     </message>
@@ -519,77 +519,82 @@ Try creating an .img file instead</source>
         <translation>Критическая ошибка!</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="284"/>
-        <location filename="window.cpp" line="662"/>
+        <location filename="window.cpp" line="293"/>
+        <location filename="window.cpp" line="673"/>
         <source>Are you sure?</source>
         <translation>Вы уверены?</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="309"/>
+        <location filename="window.cpp" line="298"/>
+        <source>The flash drive is going to be formatted!</source>
+        <translation>Флеш-накопитель будет отформатирован!</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="326"/>
         <location filename="window.h" line="38"/>
         <source>Ready</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="330"/>
+        <location filename="window.cpp" line="347"/>
         <source>^Image path must not contain any spaces</source>
         <translation>В путе до образа не должно быть пробелов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="336"/>
+        <location filename="window.cpp" line="353"/>
         <source>^Can&apos;t access the image</source>
         <translation>^Невозможно получить доступ к образу</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="340"/>
+        <location filename="window.cpp" line="357"/>
         <source>Successfully opened the image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="360"/>
+        <location filename="window.cpp" line="377"/>
         <source>^The installation path must not contain any spaces</source>
         <translation>Путь до папки, в которую будет установлен андроид, не должен содержать пробелов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="392"/>
+        <location filename="window.cpp" line="409"/>
         <source>^The system with written name already exists</source>
         <translation>^Уже существует установленный андроид с таким названием</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="408"/>
+        <location filename="window.cpp" line="425"/>
         <source>^Could not mount image: %1</source>
         <translation>^Не удалось примонтировать образ: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="421"/>
+        <location filename="window.cpp" line="438"/>
         <source>^Image has not needed files</source>
         <translation>^В образе нету нужных файлов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="440"/>
+        <location filename="window.cpp" line="457"/>
         <source>The efi partition has already been mounted</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="445"/>
+        <location filename="window.cpp" line="462"/>
         <source>^Could not mount efi partition. Aborting. 
 Try rebooting your computer</source>
         <translation>^Не удалось примонтировать раздел efi.
 Попробуйте перезагрузить компьютер</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="505"/>
+        <location filename="window.cpp" line="516"/>
         <source>^Success</source>
         <translation>^Андроид успешно установлен</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="682"/>
+        <location filename="window.cpp" line="693"/>
         <source>^Finished</source>
         <translation>^Удаление завершено</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="426"/>
-        <location filename="window.cpp" line="427"/>
+        <location filename="window.cpp" line="443"/>
+        <location filename="window.cpp" line="444"/>
         <source>Data of install is valid</source>
         <translation>Данные сведения верны</translation>
     </message>
@@ -599,12 +604,12 @@ Try rebooting your computer</source>
         <translation>Это планшет?</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="487"/>
+        <location filename="window.cpp" line="498"/>
         <source>Aborted</source>
         <translation>Установка аварийно завершена</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="514"/>
+        <location filename="window.cpp" line="525"/>
         <source>Progress step is %1</source>
         <translation></translation>
     </message>
@@ -673,7 +678,7 @@ Try rebooting your computer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="437"/>
+        <location filename="window.cpp" line="454"/>
         <source>Mounting efi partition</source>
         <translation>Монтирование раздела efi</translation>
     </message>
@@ -987,7 +992,7 @@ Couldn&apos;t put the input data to the input</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.h" line="116"/>
+        <location filename="install.h" line="117"/>
         <source>Couldn&apos;t copy needed files</source>
         <translation>Не удалось скопировать нужные файлы</translation>
     </message>
@@ -1018,39 +1023,39 @@ Couldn&apos;t put the input data to the input</source>
         <translation type="vanished">Как установить?</translation>
     </message>
     <message>
-        <location filename="window.ui" line="386"/>
+        <location filename="window.ui" line="566"/>
         <source>Title:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="400"/>
-        <location filename="window.ui" line="658"/>
+        <location filename="window.ui" line="580"/>
+        <location filename="window.ui" line="705"/>
         <source>Bootloader:</source>
         <translation>Загрузчик:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="440"/>
+        <location filename="window.ui" line="328"/>
         <source>Input</source>
         <translation>Откуда установить?</translation>
     </message>
     <message>
-        <location filename="window.ui" line="446"/>
+        <location filename="window.ui" line="334"/>
         <source>Download &amp;ISO image</source>
         <translation>Скачать &amp;ISO образ</translation>
     </message>
     <message>
-        <location filename="window.ui" line="455"/>
+        <location filename="window.ui" line="350"/>
         <location filename="window.cpp" line="86"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="467"/>
+        <location filename="window.ui" line="341"/>
         <source>Choose I&amp;SO image from HD</source>
         <translation>Выбрать I&amp;SO образ с диска</translation>
     </message>
     <message>
-        <location filename="window.ui" line="491"/>
+        <location filename="window.ui" line="392"/>
         <source>Output</source>
         <translation>Куда установить?</translation>
     </message>
@@ -1059,23 +1064,35 @@ Couldn&apos;t put the input data to the input</source>
         <translation type="vanished">Установить на отдельный раздел</translation>
     </message>
     <message>
-        <location filename="window.ui" line="545"/>
+        <location filename="window.ui" line="446"/>
         <source>Install to directory</source>
         <translation>Установить в папку</translation>
     </message>
     <message>
-        <location filename="window.ui" line="518"/>
+        <location filename="window.ui" line="419"/>
         <source>Install to flash drive</source>
         <oldsource>Install to flash drive with loss of the data</oldsource>
         <translation>Установить на флешку</translation>
     </message>
     <message>
-        <location filename="window.ui" line="580"/>
+        <location filename="window.ui" line="483"/>
+        <source>System and data</source>
+        <translation>Место под данные и распаковка системных файлов</translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="592"/>
+        <source>Replace Windows bootloader 
+(the only way for some tablets)</source>
+        <translation>Подменить загрузчик windows
+(единственный способ для части планшетов)</translation>
+    </message>
+    <message>
+        <location filename="window.ui" line="627"/>
         <source>Refresh</source>
         <translation>Обновить список разделов</translation>
     </message>
     <message>
-        <location filename="window.ui" line="746"/>
+        <location filename="window.ui" line="793"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1095,7 +1112,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Скоро</translation>
     </message>
     <message>
-        <location filename="window.ui" line="626"/>
+        <location filename="window.ui" line="673"/>
         <source>System:</source>
         <translation>Система:</translation>
     </message>
@@ -1138,7 +1155,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="window.ui" line="764"/>
+        <location filename="window.ui" line="811"/>
         <source>Return to main menu</source>
         <translation>Вернуться в меню</translation>
     </message>
@@ -1149,13 +1166,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="window.ui" line="89"/>
-        <location filename="window.ui" line="733"/>
+        <location filename="window.ui" line="780"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
         <location filename="window.ui" line="96"/>
-        <location filename="window.ui" line="600"/>
+        <location filename="window.ui" line="647"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
@@ -1195,56 +1212,54 @@ p, li { white-space: pre-wrap; }
         <translation>Вернуться</translation>
     </message>
     <message>
-        <location filename="window.ui" line="328"/>
         <source>Data </source>
-        <translation>Выделяемое место для данных</translation>
+        <translation type="vanished">Выделяемое место для данных</translation>
     </message>
     <message>
-        <location filename="window.ui" line="334"/>
+        <location filename="window.ui" line="489"/>
         <source>Create an .img file for data</source>
         <translation>Создать .img файл для данных</translation>
     </message>
     <message>
-        <location filename="window.ui" line="355"/>
+        <location filename="window.ui" line="510"/>
         <source>Create a folder for data (only for ext4 partitions!)</source>
         <oldsource>Create a folder for data</oldsource>
-        <translation>Создать папку для данных 
-(только для разделов ext4!)</translation>
+        <translation>Создать папку для данных (для разделов ext4!)</translation>
     </message>
     <message>
-        <location filename="window.ui" line="378"/>
+        <location filename="window.ui" line="558"/>
         <source>Other information</source>
         <translation>Другие сведения</translation>
     </message>
     <message>
-        <location filename="window.ui" line="414"/>
+        <location filename="window.ui" line="519"/>
         <source>Extract /system to:</source>
         <translation>Распаковать /system в:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="422"/>
+        <location filename="window.ui" line="527"/>
         <source>.img (read-write)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.ui" line="427"/>
+        <location filename="window.ui" line="532"/>
         <source>.sfs (read-only)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.ui" line="497"/>
+        <location filename="window.ui" line="398"/>
         <source>Install to separate &amp;partition with loss of the data</source>
         <translation>Установить на отдельный &amp;раздел 
 (все файлы на разделе будут удалены)</translation>
     </message>
     <message>
-        <location filename="window.ui" line="506"/>
+        <location filename="window.ui" line="407"/>
         <source>Select a drive to format:</source>
         <translation>Выберите раздел:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="573"/>
-        <location filename="window.ui" line="713"/>
+        <location filename="window.ui" line="620"/>
+        <location filename="window.ui" line="760"/>
         <source>To main menu</source>
         <translation>В главное меню</translation>
     </message>
@@ -1259,13 +1274,13 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Сколько выделить места под данные?</translation>
     </message>
     <message>
-        <location filename="window.ui" line="343"/>
+        <location filename="window.ui" line="498"/>
         <source>Size of data.img(mb):</source>
         <oldsource>Размер data.img(мб):</oldsource>
         <translation>Размер data.img(мб):</translation>
     </message>
     <message>
-        <location filename="window.ui" line="640"/>
+        <location filename="window.ui" line="687"/>
         <source>Path:</source>
         <oldsource>Путь:</oldsource>
         <translation>Путь:</translation>
@@ -1314,27 +1329,27 @@ p, li { white-space: pre-wrap; }
         <translation>Выберите папку для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="306"/>
+        <location filename="window.cpp" line="323"/>
         <source>Checking</source>
         <translation>Проверка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="307"/>
+        <location filename="window.cpp" line="324"/>
         <source>Checking data for install...</source>
         <translation>Проверка данных для установки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="343"/>
+        <location filename="window.cpp" line="360"/>
         <source>^The image is chosen</source>
         <translation>^Образ не выбран</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="348"/>
+        <location filename="window.cpp" line="365"/>
         <source>^Chosen image does not exist</source>
         <translation>^Выбранный образ не существует</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="354"/>
+        <location filename="window.cpp" line="371"/>
         <source>^The folder is not chosen</source>
         <translation>^Не выбрана папка для установки</translation>
     </message>
@@ -1355,17 +1370,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">^Выбраная папка является корнем диска</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="370"/>
+        <location filename="window.cpp" line="387"/>
         <source>^Invalid path</source>
         <translation>^Недопустимый путь (допускаются пути, написанные латиницей и без пробелов)</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="380"/>
+        <location filename="window.cpp" line="397"/>
         <source>^Did not fill in the name</source>
         <translation>^Не вписано имя</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="386"/>
+        <location filename="window.cpp" line="403"/>
         <source>^Did not fill in the size of data.img</source>
         <translation>^Не выбран размер для data.img</translation>
     </message>
@@ -1374,47 +1389,47 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">^Выбранная папка не пуста. Некоторые файлы будут перезаписаны. Нажмите отмена для отмены установки|+-|</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="551"/>
+        <location filename="window.cpp" line="562"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Критическая ошибка во время установки: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="557"/>
+        <location filename="window.cpp" line="568"/>
         <source>Start install</source>
         <translation>Начало установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="561"/>
-        <location filename="window.cpp" line="562"/>
+        <location filename="window.cpp" line="572"/>
+        <location filename="window.cpp" line="573"/>
         <source>Formating flash drive...</source>
         <translation>Форматирование флешки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="569"/>
-        <location filename="window.cpp" line="570"/>
+        <location filename="window.cpp" line="580"/>
+        <location filename="window.cpp" line="581"/>
         <source>Formating the selected drive...</source>
         <translation>Форматирование выбранного раздела...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="575"/>
-        <location filename="window.cpp" line="576"/>
+        <location filename="window.cpp" line="586"/>
+        <location filename="window.cpp" line="587"/>
         <source>Unpacking iso...</source>
         <translation>Распаковка iso-образа...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="582"/>
-        <location filename="window.cpp" line="583"/>
+        <location filename="window.cpp" line="593"/>
+        <location filename="window.cpp" line="594"/>
         <source>Creating data.img...</source>
         <translation>Создание data.img...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="589"/>
-        <location filename="window.cpp" line="590"/>
+        <location filename="window.cpp" line="600"/>
+        <location filename="window.cpp" line="601"/>
         <source>Installing bootloader...</source>
         <translation>Установка загрузчика...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="596"/>
+        <location filename="window.cpp" line="607"/>
         <source>Unmounting image...</source>
         <translation>Отмонтирование образа...</translation>
     </message>
@@ -1423,27 +1438,27 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Установка закончена</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="615"/>
+        <location filename="window.cpp" line="626"/>
         <source>YourDroid | About</source>
         <translation>YourDroid | О программе</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="642"/>
+        <location filename="window.cpp" line="653"/>
         <source>Clearing systems list...</source>
         <translation>Очистка списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="647"/>
+        <location filename="window.cpp" line="658"/>
         <source>Filling systems list...</source>
         <translation>Заполнение списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="650"/>
+        <location filename="window.cpp" line="661"/>
         <source>YourDroid | Delete</source>
         <translation>YourDroid | Удаление</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="698"/>
+        <location filename="window.cpp" line="709"/>
         <source>Ready</source>
         <translation>Готово</translation>
     </message>
@@ -1547,12 +1562,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="621"/>
+        <location filename="window.cpp" line="632"/>
         <source>Choose </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="692"/>
+        <location filename="window.cpp" line="703"/>
         <source>Deleting </source>
         <translation></translation>
     </message>
