@@ -3,6 +3,7 @@
 #include "window.h"
 #include "cmd.h"
 #include "global.h"
+#include "downloader.h"
 #include <QErrorMessage>
 #include <QFile>
 #include <QDir>
@@ -14,6 +15,11 @@
 #include <QTextCodec>
 #include <QPair>
 #include <QStringList>
+
+install::install(options *d)
+{
+    dat = d;
+}
 
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
     systems.push_back(install::_installSet(b, t, p, i, n, e));
@@ -175,19 +181,19 @@ void install::saveFlashData(int i)
     if(!systems[i].bcdId.isEmpty()) system.setValue("bcd_id", systems[i].bcdId);
     system.endGroup();
 
-    if(!usbAlreadyFormatted)
-    {
-        iniPath = usbMainPart + "yourdroid_usb_cfg/yourdroid_usb.cfg";
-        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
-        QSettings usbCfg(iniPath, QSettings::IniFormat);
-        usbCfg.setValue("main_size", usbMainSize);
+//    if(!usbAlreadyFormatted)
+//    {
+//        iniPath = usbMainPart + "yourdroid_usb_cfg/yourdroid_usb.cfg";
+//        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+//        QSettings usbCfg(iniPath, QSettings::IniFormat);
+//        usbCfg.setValue("main_size", usbMainSize);
 
-        iniPath = usbBootPart + "yourdroid_usb_boot.cfg";
-        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
-        QSettings usbBootCfg(iniPath, QSettings::IniFormat);
-        usbBootCfg.setValue("formatted", true);
-    }
-    else qDebug().noquote() << "The flash drive was already formatted";
+//        iniPath = usbBootPart + "yourdroid_usb_boot.cfg";
+//        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+//        QSettings usbBootCfg(iniPath, QSettings::IniFormat);
+//        usbBootCfg.setValue("formatted", true);
+//    }
+//    else qDebug().noquote() << "The flash drive was already formatted";
 }
 
 QPair<bool, QString> install::getBcdEntry(QString description, bool efi)
@@ -355,7 +361,8 @@ bool install::installGrubUsb()
          .arg(qApp->applicationDirPath()), usbBootPart + "grub/grub.cfg");
 
     qDebug().noquote() << "Making main yourdroid_usb_cfg";
-    MKDIR(usbMainPart + "yourdroid_usb_cfg");
+    if(!QDir().exists(usbMainPart + "yourdroid_usb_cfg"))
+        MKDIR(usbMainPart + "yourdroid_usb_cfg");
 
     qDebug().noquote() << "Making main config";
     QFile config(usbMainPart + "yourdroid_usb_cfg/grub.cfg");
@@ -373,12 +380,7 @@ bool install::installGrubUsb()
 
 void install::registerGrubUsb()
 {
-    if(!usbAlreadyFormatted)
-    {
-        if(!installGrubUsb()) return;
-    }
-    else  qDebug().noquote() << "The flash drive is already formatted";
-    qDebug().noquote() << "Registering grub2_flash";
+    qDebug().noquote() << "Configuring grub2_flash";
 
     QString menuentry = grub2UsbConfigure(QString(), false, false);
 
@@ -1482,7 +1484,7 @@ void install::createDataImg(int size, bool toFolder) {
                 QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif WIN
         QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
-                QString("M -a data ") + systems.back().place + QString("/data.img ");
+                QString("M -a data \"") + systems.back().place + QString("/data.img\" ");
 #endif
         auto res = cmd::exec(command);
         if(res.first != 0)
@@ -1494,33 +1496,31 @@ void install::createDataImg(int size, bool toFolder) {
     }
 }
 
-void install::downloadFile(QString url, QString dest) {
+void install::downloadImage(QUrl url)
+{
+    qDebug().noquote() << "###### Downloading " << url.toString();
+    if(loop != 0) delete loop;
+    loop = new QEventLoop();
 
-    /* создаем объект для запрос
+    if(downloader != 0) delete downloader;
+    downloader = new Downloader;
+    systems.back().image = qApp->applicationDirPath() + "/android.iso";
 
-       // Выполняем запрос, получаем указатель на объект
-       // ответственный за ответ
-       QNetworkReply* reply=  (new QNetworkAccessManager())->get(QNetworkRequest(QUrl(url)));
+    QObject::connect(downloader, &Downloader::updateDownloadProgress,
+                     this, &install::downloadProgress);
 
-    // Подписываемся на сигнал о готовности загрузки
-    QObject::connect(reply, &QNetworkReply::finished, [=]() -> void {
-        if (reply->error() == QNetworkReply::NoError)
-        {
-          QFile file(dest);
-          if( file.open(QIODevice::WriteOnly) )
-          {
-            QByteArray content = reply->readAll();
-            file.write(content); // пишем в файл
-          }
-        }
-        else {
-           QString err = reply->errorString();
-           LOG(2, err, err);
-        }
+    QObject::connect(downloader, &Downloader::ended, [this](){
+        qDebug().noquote() << "Download is finished";
+        loop->quit();
+        _downloadEnded = true;
+        emit downloadEnded();
+    });
 
+    downloader->get(systems.back().image, url);
 
-        reply->deleteLater();
-    });*/
+    loop->exec();
+    qDebug().noquote() << "###### Download ended";
+    _downloadEnded = false;
 }
 
 void install::delSystemFiles(int numSys) {
@@ -1848,6 +1848,7 @@ void install::formatFlashDrive()
     size = size / 1024 / 1024;
     qDebug().noquote() << "The size converted to MB is " << size;
     qint64 newPartSize = size - 150;
+    if(QFile::exists(part + "/yourdroid_usb_cfg/yourdroid_formatted")) newPartSize = size;
     qDebug().noquote() << "The size for the new main partition is " << newPartSize;
     usbMainSize = newPartSize;
 
@@ -1966,9 +1967,28 @@ void install::formatFlashDrive()
 
     usbDiskIndex = diskIndex;
 
-    QPair<int, QString> addNew;
+    QDir().mkdir(usbMainPart + "/yourdroid_usb_cfg");
+    QFile file(usbMainPart + "/yourdroid_usb_cfg/yourdroid_formatted");
+    file.open(QIODevice::WriteOnly);
+    file.close();
+
+    if(global->insSet->installGrubUsb())
+    {
+        qDebug().noquote() << "Flash drive formated successfully, saving the data";
+
+        QString iniPath = usbMainPart + "yourdroid_usb_cfg/yourdroid_usb.cfg";
+        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+        QSettings usbCfg(iniPath, QSettings::IniFormat);
+        usbCfg.setValue("main_size", usbMainSize);
+
+        iniPath = usbBootPart + "yourdroid_usb_boot.cfg";
+        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
+        QSettings usbBootCfg(iniPath, QSettings::IniFormat);
+        usbBootCfg.setValue("formatted", true);
+    }
+    else return;
+
     //execAbort(QString("format %1 /q /v:android /fs:ntfs").arg(part));
-    qDebug().noquote() << "Flash drive formated successfully...";
 #undef returnFault
 #endif
 }

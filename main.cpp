@@ -5,6 +5,7 @@
 #include "log.h"
 #include "cmd.h"
 #include "console.h"
+#include "downloader.h"
 #include <QApplication>
 #include <QMessageBox>
 #include <QString>
@@ -111,6 +112,9 @@ int main(int argc, char *argv[])
         global = new _global(&set, &ins);
 
         Window *window = new Window(readSet);
+        //global->insSet->downloadImage(QUrl("https://raw.githubusercontent.com/YourDroid/Info/master/android_list.ini"));
+//        Downloader downloader;
+//        downloader.get(qApp->applicationDirPath() + "/andra.iso", QUrl("https://dotsrc.dl.osdn.net/osdn/android-x86/71931/android-x86-9.0-r1.iso"));
         window->show();
         //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
         //        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });

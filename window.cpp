@@ -10,6 +10,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QtWidgets>
 
 Window::Window(bool f, QWidget *parent) :
     QMainWindow(parent),
@@ -248,6 +249,79 @@ void Window::on_installButtonMain_clicked()
 
     emit on_buttonRefreshInstall_clicked();
 
+    ui->comboVersionDown->clear();
+    ui->radioDownload->setEnabled(false);
+    QStringList androidNameList;
+    if(!androidListDownloaded)
+    {
+        QVBoxLayout *layout = new QVBoxLayout(this);
+        QLabel *label = new QLabel(this);
+        QProgressBar *progressBar = new QProgressBar(this);
+        QDialog dialog(this);
+
+        layout->addWidget(label);
+        layout->addWidget(progressBar);
+        label->setText(QObject::tr("Downloading the list of android's urls"));
+        progressBar->setRange(0, 100);
+        dialog.setLayout(layout);
+        dialog.setWindowTitle(QObject::tr("Downloading the list of android's urls"));
+
+        Downloader *downloader = new Downloader(this);
+        QObject *context = new QObject(this);
+
+        auto downloadEnded = [&](){
+            dialog.done(0);
+        };
+
+        QObject::connect(downloader, &Downloader::success, context, [&](){
+            downloadEnded();
+            qDebug().noquote() << "Android list is downloaded successfully";
+            androidListDownloaded = true;
+        });
+
+        QObject::connect(downloader, &Downloader::error, context, [&](QString mess){
+            downloadEnded();
+            qCritical().noquote() << QObject::tr("^Error downloading the android list: %1").arg(mess);
+            androidListDownloaded = false;
+        });
+
+        QObject::connect(downloader, &Downloader::updateDownloadProgress, context,
+                         [&](qint64 received, qint64 total){
+            int progress = received / total * 100;
+            progressBar->setValue(progress);
+        });
+
+        downloader->get(qApp->applicationDirPath() + "/android_list.ini",
+                       QUrl("https://raw.githubusercontent.com/YourDroid/Info/master/android_list.ini"));
+        dialog.exec();
+        delete context;
+        delete downloader;
+    }
+    if(QFile::exists(qApp->applicationDirPath() + "/android_list.ini"))
+    {
+        QSettings s(qApp->applicationDirPath() + "/android_list.ini", QSettings::IniFormat);
+        QStringList groups = s.childGroups();
+        qDebug().noquote() << "Android list groups: " << groups;
+
+        for(auto x : groups)
+        {
+            s.beginGroup(x);
+            QUrl url = s.value("url").toString();
+            qDebug().noquote() << QString("The url of %1 is %2").arg(x, url.toString());
+            androidsToDownload.push_front(QPair<QString, QUrl>(x, url));
+            androidNameList.push_front(x);
+            s.endGroup();
+        }
+    }
+
+    if(!androidNameList.isEmpty())
+    {
+        qDebug().noquote() << "The android list is not empty";
+        ui->comboVersionDown->addItems(androidNameList);
+        ui->radioDownload->setEnabled(true);
+    }
+
+
     setWindowTitle(tr("YourDroid | Install"));
     ui->windows->setCurrentWidget(ui->installPage);
 }
@@ -348,29 +422,31 @@ void Window::on_buttonInstallInstall_clicked()
 //        return;
 //    }
 
-    if(ui->editImageFromDisk->text().contains(' '))
-    {
-        qCritical().noquote() << QObject::tr("^Image path must not contain any spaces");
-        end();
-        return;
-    }
+    if(!ui->radioDownload->isChecked()) {
+        if(ui->editImageFromDisk->text().contains(' '))
+        {
+            qCritical().noquote() << QObject::tr("^Image path must not contain any spaces");
+            end();
+            return;
+        }
 
-    if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
-        qCritical().noquote() << QObject::tr("^Can't access the image");
-        end();
-        return;
-    }
-    else qDebug().noquote() << QObject::tr("Successfully opened the image");
+        if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
+            qCritical().noquote() << QObject::tr("^Can't access the image");
+            end();
+            return;
+        }
+        else qDebug().noquote() << QObject::tr("Successfully opened the image");
 
-    if((image = ui->editImageFromDisk->text()).length() == 0) {
-        qCritical().noquote() << tr("^The image is chosen");
-        end();
-        return;
-    }
-    if(!QFile::exists(image)) {
-        qCritical().noquote() << tr("^Chosen image does not exist");
-        end();
-        return;
+        if((image = ui->editImageFromDisk->text()).length() == 0) {
+            qCritical().noquote() << tr("^The image is not chosen");
+            end();
+            return;
+        }
+        if(!QFile::exists(image)) {
+            qCritical().noquote() << tr("^Chosen image does not exist");
+            end();
+            return;
+        }
     }
     if((dir = ui->editDirForInstall->text()).length() == 0 && ui->radioDataToFolder->isChecked()
             && !ui->radioInstallOnPart->isChecked() && !ui->radioInstallFlashDriveIns->isChecked()) {
@@ -435,24 +511,25 @@ void Window::on_buttonInstallInstall_clicked()
     }
 #endif
 
-    int ret = 0;
-    if(!(ret = global->insSet->isInvalidImage(
-         #if WIN
-             ui->editImageFromDisk->text()
-         #endif
-             ))) {
-        if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
-        end();
-        return;
+    if(!ui->radioDownload->isChecked())
+    {
+        int ret = 0;
+        if(!(ret = global->insSet->isInvalidImage(
+#if WIN
+                 ui->editImageFromDisk->text()
+#endif
+                 ))) {
+            if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
+            end();
+            return;
+        }
     }
 
     qDebug().noquote() << QObject::tr("Data of install is valid");
     ui->statusbar->showMessage(QObject::tr("Data of install is valid"));
 
-    ui->progressInstall->setValue(5);
 #if WIN
     taskBarProgress->resume();
-    taskBarProgress->setValue(5);
 #endif
 
 #if WIN
@@ -522,20 +599,41 @@ void Window::on_buttonInstallInstall_clicked()
         qDebug().noquote() << QObject::tr("^Success");
     });
 
-    int step = 33;
-    ui->progressInstall->setRange(0, 100);
+    progressSteps = 3;
+    currentSteps = 1;
+    if(ui->radioInstallOnPart->isChecked() || ui->radioInstallFlashDriveIns->isChecked())
+        progressSteps++;
+    if(ui->radioDownload->isChecked()) progressSteps++;
+    int step = 100 / progressSteps;
+    qDebug().noquote() << "The number of progress steps is " << progressSteps;
+    qDebug().noquote() << "Progress step is " << step;
+
+    ui->progressInstall->setRange(0, 105);
+    ui->progressInstall->setValue(5);
 #if WIN
-    taskBarProgress->setRange(0, 100);
+    taskBarProgress->setRange(0, 105);
+    taskBarProgress->setValue(5);
 #endif
 
-    qDebug().noquote() << QObject::tr("Progress step is %1").arg(step);
-
-    connect(this, &Window::progressAddStep, this, [&, step](){
-        ui->progressInstall->setValue(ui->progressInstall->value() + step);
+    connect(this, &Window::progressAddStep, this, [step, this](){
+        qDebug().noquote() << "Current steps: " << currentSteps;
+        ui->progressInstall->setValue(5 + step * currentSteps);
 #if WIN
-        taskBarProgress->setValue(taskBarProgress->value() + step);
+        taskBarProgress->setValue(5 + step * currentSteps);
 #endif
+        currentSteps++;
     });
+    connect(global->insSet, &install::downloadProgress, this, [step, this](qint64 received, qint64 total) {
+        float progress = (received * 100) / total;
+        qDebug().noquote() << "The download progress is " << progress;
+        int totalProgress = 5 + step * (currentSteps - 1) + progress * step / 100;
+        qDebug().noquote() << "Total progress is " << totalProgress;
+        ui->progressInstall->setValue(totalProgress);
+#if WIN
+        taskBarProgress->setValue(totalProgress);
+#endif
+    }, Qt::QueuedConnection);
+
     auto logMain = [=](QtMsgType type, QString mess){
         QDebug(type).noquote() << mess;
     };
@@ -546,6 +644,7 @@ void Window::on_buttonInstallInstall_clicked()
     connect(this, &Window::setAborted, this, [=](bool a) {
         aborted = a;
     });
+
 
     if(aborted) {
         aborted = false;
@@ -573,20 +672,60 @@ void Window::on_buttonInstallInstall_clicked()
         });
         qDebug().noquote() << tr("Start install");
 
-        if(ui->radioInstallFlashDriveIns->isChecked())
+        if(ui->radioDownload->isChecked())
         {
-            qDebug().noquote() << tr("Formating flash drive...");
-            emit sendMesToStausbar(tr("Formating flash drive..."));
-            global->insSet->formatFlashDrive();
+            qDebug().noquote() << tr("Downloading the image...");
+            emit sendMesToStausbar(tr("Downloading the image..."));
+            QString androidName = ui->comboVersionDown->currentText();
+            qDebug().noquote() << "Chosen image is " << androidName;
+            QUrl url;
+            for(auto x : androidsToDownload)
+            {
+                if(x.first == androidName)
+                {
+                    url = x.second;
+                    qDebug().noquote() << QString("%1 matches the chosen image. The url is %2")
+                                          .arg(x.first, x.second.toString());
+                    break;
+                }
+                else qDebug().noquote() << QString("%1 doesn't match the chosen image")
+                                           .arg(x.first);
+            }
+            if(url.isEmpty())
+            {
+                emit global->insSet->abort(tr("Can't find the url of the chosen image"));
+            }
+            else global->insSet->downloadImage(url);
+
+            int ret = 0;
+            if(!(ret = global->insSet->isInvalidImage(
+#if WIN
+                     qApp->applicationDirPath() + "/android.iso"
+#endif
+                     ))) {
+                if(ret != 2) global->insSet->abort(tr("The downloaded image doesn't contain "
+                                                      "all of the required files"));
+            }
+
             CHECK_ABORT();
+            emit progressAddStep();
         }
 
-        if(ui->radioInstallOnPart->isChecked())
+        if(ui->radioInstallFlashDriveIns->isChecked())
+        {
+            qDebug().noquote() << tr("Formating flash drive and installing the bootloader (may take a while)...");
+            emit sendMesToStausbar(tr("Formating flash drive and installing the bootloader (may take a while)..."));
+            global->insSet->formatFlashDrive();
+            CHECK_ABORT();
+            emit progressAddStep();
+        }
+        else if(ui->radioInstallOnPart->isChecked())
         {
             qDebug().noquote() << tr("Formating the selected drive...");
             emit sendMesToStausbar(tr("Formating the selected drive..."));
             global->insSet->formatPartExt4();
             CHECK_ABORT();
+            emit progressAddStep();
         }
 
         qDebug().noquote() << tr("Unpacking iso...");
@@ -603,8 +742,8 @@ void Window::on_buttonInstallInstall_clicked()
         CHECK_ABORT();
         emit progressAddStep();
 
-        qDebug().noquote() << tr("Installing bootloader...");
-        emit sendMesToStausbar(tr("Installing bootloader..."));
+        qDebug().noquote() << tr("Installing and configuring bootloader...");
+        emit sendMesToStausbar(tr("Installing and configuring bootloader..."));
         global->insSet->registerBootloader(ui->checkReplaceWinBootloader->isChecked());
         CHECK_ABORT();
         emit progressAddStep();

@@ -15,7 +15,7 @@ public:
     explicit Downloader(QObject* parent = nullptr);
 
     // Метод для запуска скачиввания
-    bool get(const QString& targetFolder, const QUrl& url);
+    bool get(const QString& targetFile, const QUrl& url);
 
 public slots:
     // Метод отмены загрузки
@@ -24,6 +24,9 @@ public slots:
 signals:
     // Сигнал передающий информацию о прогрессе загрузки
     void updateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void success();
+    void error(QString);
+    void ended();
 
 private slots:
     // Слот для постепенного считывания загружаемых данных

@@ -10,6 +10,7 @@
 #include "3rdparty/enum.h"
 #include "3rdparty/tagged_bool.h"
 #include "options.h"
+#include "downloader.h"
 
 using install2Flash = tagged_bool<class install2FlashTag>;
 
@@ -34,6 +35,9 @@ class install : public QObject {
     };
     QVector<install::_installSet> systems;
     QString settingsPath = QCoreApplication::instance()->applicationDirPath() + "/config";
+    Downloader *downloader = 0;
+    QEventLoop *loop = 0;
+    bool _downloadEnded = false;
     bool _oldSysEdit = false;
     options *dat;
     QProgressBar *progressBarInstall;
@@ -53,10 +57,11 @@ class install : public QObject {
 signals:
     void logWindow(QtMsgType, QString);
     void abort(QString);
-    void progressChange(qint64);
+    void downloadProgress(qint64, qint64);
     void fileEnded(int);
+    void downloadEnded();
 public:
-    install(options *d) : dat(d) {}
+    install(options*);
     const QVector<install::_installSet>& systemsVector() { return systems; }
     int cntSys() { return systems.count(); }
     bool &oldSysEdit() { return _oldSysEdit; }
@@ -100,7 +105,7 @@ public:
     QString grub2Configure(QString, bool = false, bool = true, int = -1);
     QString grubLConfigure(QString, bool = false, bool = true);
     void createDataImg(int, bool);
-    void downloadFile(QString, QString);
+    void downloadImage(QUrl);
     void delSystemFiles(int);
     void deleteBootloaderEntry(int);
     void deleteGrubLEntry(int);

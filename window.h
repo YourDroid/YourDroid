@@ -123,6 +123,10 @@ private:
     //int thisIsTablet = 2; //0 - no; 1 - yes; 2 - not set yet
     Ui::Window *ui = nullptr;
     QWidget *lastPage = nullptr;
+    QList<QPair<QString, QUrl>> androidsToDownload;
+    bool androidListDownloaded = false;
+    int progressSteps = 0;
+    int currentSteps = 1;
 };
 
 #endif // WINDOW_H
