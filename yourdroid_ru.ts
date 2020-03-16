@@ -4,492 +4,501 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="install.cpp" line="432"/>
-        <location filename="install.cpp" line="1071"/>
-        <location filename="install.cpp" line="1101"/>
+        <location filename="install.cpp" line="434"/>
+        <location filename="install.cpp" line="1125"/>
+        <location filename="install.cpp" line="1155"/>
         <source>Could not open the config-file</source>
         <translation>Не получается открыть конфиг grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1157"/>
+        <location filename="install.cpp" line="1211"/>
         <source>Cannot make dir for image&apos;s mount point!</source>
         <translation>Не получается создать папку для монтирования образа!</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="195"/>
+        <location filename="install.cpp" line="201"/>
         <source>Looking for the &quot;%1&quot; entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="208"/>
+        <location filename="install.cpp" line="214"/>
         <source>Can&apos;t find the entry of the description</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="215"/>
+        <location filename="install.cpp" line="221"/>
         <source>The right part is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="218"/>
+        <location filename="install.cpp" line="224"/>
         <source>The left part is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="229"/>
+        <location filename="install.cpp" line="235"/>
         <source>The begin of the entry isn&apos;t found</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="237"/>
+        <location filename="install.cpp" line="243"/>
         <source>Can&apos;t find the end of the entry. The end of the bcdedit output will be considered as the entry end</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="245"/>
+        <location filename="install.cpp" line="251"/>
         <source>The entry is successfully found! It is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="252"/>
+        <location filename="install.cpp" line="258"/>
         <source>Looking for the id of the &quot;%1&quot; entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="267"/>
+        <location filename="install.cpp" line="273"/>
         <source>The %1 of id line isn&apos;t found</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="275"/>
+        <location filename="install.cpp" line="281"/>
         <source>The id is successfully found! It is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="454"/>
+        <location filename="install.cpp" line="456"/>
         <source>Copying the files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="599"/>
+        <location filename="install.cpp" line="601"/>
         <source>Setting up grub4dos</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="606"/>
+        <location filename="install.cpp" line="608"/>
         <source>Could not open the grub&apos;s config-file (%1)</source>
         <translation>Не получается открыть конфиг grub (%1)</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="741"/>
+        <location filename="install.cpp" line="771"/>
         <source>Can&apos;t make sure if yourdroid grub2 entry is regestered correctly</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="745"/>
+        <location filename="install.cpp" line="775"/>
         <source>Making sure there is an entry of yourdroid grub2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="749"/>
+        <location filename="install.cpp" line="779"/>
         <source>There is an entry of yourdroid grub2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="754"/>
+        <location filename="install.cpp" line="784"/>
         <source>There is no entry of yourdroid grub2. So installing it</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="763"/>
+        <location filename="install.cpp" line="793"/>
         <source>Making sure the path is stated in the entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="523"/>
-        <location filename="install.cpp" line="770"/>
+        <location filename="install.cpp" line="525"/>
+        <location filename="install.cpp" line="800"/>
         <source>Can&apos;t make sure if the path is stated in the entry because failed to get the entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="331"/>
-        <location filename="install.cpp" line="347"/>
+        <location filename="install.cpp" line="337"/>
+        <location filename="install.cpp" line="353"/>
         <source>^Error installing grub for %1. This means you will not be able to boot this usb stick on computer with that configuration</source>
         <translation>^Не удалось установить grub для %1. Это значит, что Вы не сможете загружаться с этой флешки на компьютерах с такой конфигурацией</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="364"/>
+        <location filename="install.cpp" line="371"/>
         <source>Can&apos;t make a grub config</source>
         <translation>Невозможно создать конфиг grub</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="414"/>
-        <location filename="install.cpp" line="422"/>
+        <location filename="install.cpp" line="416"/>
+        <location filename="install.cpp" line="424"/>
         <source>Grub&apos;s normal entry is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="426"/>
+        <location filename="install.cpp" line="428"/>
         <source>The whole Grub&apos;s entry is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="492"/>
+        <location filename="install.cpp" line="494"/>
         <source>Can&apos;t make sure if yourdroid grub4dos entry is registered correctly</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="496"/>
+        <location filename="install.cpp" line="498"/>
         <source>Checking if there is an entry of yourdroid grub4dos</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="501"/>
+        <location filename="install.cpp" line="503"/>
         <source>There is an entry of yourdroid grub4dos</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="506"/>
+        <location filename="install.cpp" line="508"/>
         <source>There is no entry of yourdroid grub4dos. So installing it</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="515"/>
+        <location filename="install.cpp" line="517"/>
         <source>Checking if the path is stated in the entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="528"/>
-        <location filename="install.cpp" line="775"/>
+        <location filename="install.cpp" line="530"/>
+        <location filename="install.cpp" line="805"/>
         <source>Can&apos;t make sure if the path is stated in the entry because failed to get the id of the entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="537"/>
+        <location filename="install.cpp" line="539"/>
         <source>The partition is set incorrectly. So fixing it</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="545"/>
-        <location filename="install.cpp" line="783"/>
+        <location filename="install.cpp" line="547"/>
+        <location filename="install.cpp" line="813"/>
         <source>No path stated. So stating it</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="552"/>
+        <location filename="install.cpp" line="554"/>
         <source>Checking if the yourdroid grub4dos entry is the last</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="579"/>
+        <location filename="install.cpp" line="581"/>
         <source>The yourdroid grub4dos entry is going to be set the last</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="793"/>
+        <location filename="install.cpp" line="823"/>
         <source>Making sure the yourdroid grub2 entry is the first</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1254"/>
+        <location filename="install.cpp" line="893"/>
+        <source>Could not open the grub&apos;s config-file for read-only</source>
+        <translation>Не получается открыть конфиг grub для чтения</translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="914"/>
+        <source>Could not open the grub&apos;s config-file for write-only</source>
+        <translation>Не получается открыть конфиг grub для записи</translation>
+    </message>
+    <message>
+        <location filename="install.cpp" line="1308"/>
         <source>Can&apos;t access the selected drive. Please make sure you have ext4fsd installed on your computer</source>
         <translation>Невозможно получить доступ к отворматированному разделу. Возможно, у Вас не установлен ext4fsd, и тогда Вам нужно его установить по ссылке: https://sourceforge.net/projects/ext2fsd/files/Ext2fsd/0.69/Ext2Fsd-0.69.exe/download</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1282"/>
-        <location filename="install.cpp" line="1289"/>
+        <location filename="install.cpp" line="1336"/>
+        <location filename="install.cpp" line="1343"/>
         <source>Can&apos;t make a folder for android</source>
         <translation>Не удалось создать папку для андроид</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1354"/>
+        <location filename="install.cpp" line="1408"/>
         <source>%1 has been copied</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1371"/>
+        <location filename="install.cpp" line="1425"/>
         <source>Could not copy %1-system file: unknown reason</source>
         <translation>Не получилось скопировать %1: неизвестная причина</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1406"/>
+        <location filename="install.cpp" line="1460"/>
         <source>^Cannot delete system.sfs</source>
         <translation>^Не получается удалить system.sfs</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1410"/>
+        <location filename="install.cpp" line="1464"/>
         <source>^The system is going to be set as read-only because of the failure in extracting system.img</source>
         <translation>^Системная папка будет подключаться как read-only потому что не удалось распаковать system.img</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1433"/>
+        <location filename="install.cpp" line="1487"/>
         <source>^Cannot delete system.img</source>
         <translation>^Не получается удалить system.img</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1437"/>
+        <location filename="install.cpp" line="1491"/>
         <source>^The system is extracted as .img because of the failure in extracting system.img: %1</source>
         <translation>^Системная папка распакована в виде .img потому что не удалось распаковать system.img: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1471"/>
+        <location filename="install.cpp" line="1525"/>
         <source>Cannot make a directory for /data.
 Try creating an .img file instead</source>
         <translation>Невозможно создать папку под данные.
 Попробуйте выбрать создание .img файла</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1489"/>
+        <location filename="install.cpp" line="1543"/>
         <source>Cannot create an image for /data: %1</source>
         <translation>Не удалось создать образ под данные: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1531"/>
+        <location filename="install.cpp" line="1583"/>
         <source>log</source>
         <comment>Deleting android files</comment>
         <translation>Удаление файлов android</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1534"/>
+        <location filename="install.cpp" line="1586"/>
         <source>^Cannot delete android files</source>
         <translation>^Невозможно удалить файлы android</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1549"/>
-        <location filename="install.cpp" line="1550"/>
+        <location filename="install.cpp" line="1601"/>
+        <location filename="install.cpp" line="1602"/>
         <source>log</source>
         <comment>Deleting </comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1593"/>
+        <location filename="install.cpp" line="1645"/>
         <source>Deleting the grub legacy entry of android...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1594"/>
+        <location filename="install.cpp" line="1646"/>
         <source>Deleting the grub legacy entry of android</source>
         <translation>Удаление записи из grub legacy</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1610"/>
-        <location filename="install.cpp" line="1672"/>
-        <location filename="install.cpp" line="1721"/>
+        <location filename="install.cpp" line="1662"/>
+        <location filename="install.cpp" line="1724"/>
+        <location filename="install.cpp" line="1773"/>
         <source>Cannot find the begining of the entry</source>
         <translation>Не удалось найти начало записи</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1617"/>
-        <location filename="install.cpp" line="1679"/>
-        <location filename="install.cpp" line="1728"/>
+        <location filename="install.cpp" line="1669"/>
+        <location filename="install.cpp" line="1731"/>
+        <location filename="install.cpp" line="1780"/>
         <source>Cannot find the end of the entry</source>
         <translation>Не удалось найти конец записи</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1630"/>
-        <location filename="install.cpp" line="1741"/>
+        <location filename="install.cpp" line="1682"/>
+        <location filename="install.cpp" line="1793"/>
         <source>Cannot open the grub legacy config as write only</source>
         <translation>Не удалось открыть конфиг grub legacy в режиме write-only</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1646"/>
+        <location filename="install.cpp" line="1698"/>
         <source>Cannot delete the entry in grub2</source>
         <translation>Не удалось удалить запись из grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1651"/>
+        <location filename="install.cpp" line="1703"/>
         <source>^Cannot update grub</source>
         <translation>^Не удаётся запустить grub-update</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1691"/>
+        <location filename="install.cpp" line="1743"/>
         <source>Cannot open the grub2 config as write only</source>
         <translation>Не удалось открыть конфиг grub2 в режиме write-only</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1703"/>
+        <location filename="install.cpp" line="1755"/>
         <source>Deleting the grub2 usb entry of android...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1704"/>
+        <location filename="install.cpp" line="1756"/>
         <source>Deleting the grub2 usb entry of android</source>
         <translation>Удаление записи андроида в grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1818"/>
+        <location filename="install.cpp" line="1870"/>
         <source>Can&apos;t get the size of partitions</source>
         <translation>Не удалось получить размер разделов</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1828"/>
+        <location filename="install.cpp" line="1880"/>
         <source>Can&apos;t find the partition in the list</source>
         <translation>Не удалось найти искомый раздел в списке</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1836"/>
+        <location filename="install.cpp" line="1888"/>
         <source>The size of the flash stick is too little</source>
         <translation>Флешка слишком маленького размера</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1842"/>
+        <location filename="install.cpp" line="1894"/>
         <source>Can&apos;t convert the size to int</source>
         <translation>Не удалось конвертировать размер usb-накопителя в нужный формат</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1864"/>
+        <location filename="install.cpp" line="1917"/>
         <source>Can&apos;t get the list of disks</source>
         <translation>Не удалось получить список дисков</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1887"/>
-        <location filename="install.cpp" line="1955"/>
+        <location filename="install.cpp" line="1940"/>
+        <location filename="install.cpp" line="2008"/>
         <source>Failed to create a diskpart script</source>
         <translation>Не удалось создать скрипт diskpart</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1894"/>
-        <location filename="install.cpp" line="1962"/>
+        <location filename="install.cpp" line="1947"/>
+        <location filename="install.cpp" line="2015"/>
         <source>Failed to execute the diskpart script</source>
         <translation>Не удалось запустить скрипт diskpart</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1925"/>
+        <location filename="install.cpp" line="1978"/>
         <source>Too few free drive letters</source>
         <translation>Слишком мало свободных букв для разделов</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="815"/>
+        <location filename="install.cpp" line="845"/>
         <source>The yourdroid grub2 entry is already the first</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="820"/>
+        <location filename="install.cpp" line="850"/>
         <source>the yourdroid grub2 entry isn&apos;t the first, so making it be</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="681"/>
-        <location filename="install.cpp" line="839"/>
-        <location filename="install.cpp" line="924"/>
+        <location filename="install.cpp" line="711"/>
+        <location filename="install.cpp" line="869"/>
+        <location filename="install.cpp" line="978"/>
         <source>Grub2 has been installed successfully</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="854"/>
-        <location filename="install.cpp" line="936"/>
+        <location filename="install.cpp" line="884"/>
+        <location filename="install.cpp" line="990"/>
         <source>Setting up grub</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="387"/>
-        <location filename="install.cpp" line="863"/>
-        <location filename="install.cpp" line="942"/>
+        <location filename="install.cpp" line="389"/>
+        <location filename="install.cpp" line="996"/>
         <source>Could not open the grub&apos;s config-file</source>
         <translation>Не удалось открыть конфиг grub</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1065"/>
-        <location filename="install.cpp" line="1095"/>
+        <location filename="install.cpp" line="1119"/>
+        <location filename="install.cpp" line="1149"/>
         <source>Grub&apos;s entry is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1162"/>
+        <location filename="install.cpp" line="1216"/>
         <source>%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1171"/>
+        <location filename="install.cpp" line="1225"/>
         <source>Cannot unmount image: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1175"/>
+        <location filename="install.cpp" line="1229"/>
         <source>Cannot delete image&apos;s mount point: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1242"/>
+        <location filename="install.cpp" line="1296"/>
         <source>Cannot format the selected partition to ext4: %1</source>
         <translation>Не удалось отформатировать выбранный раздел в ext4: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1313"/>
+        <location filename="install.cpp" line="1367"/>
         <source>System file is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1325"/>
+        <location filename="install.cpp" line="1379"/>
         <source>%1 exists. So it is going to be deleted</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1641"/>
+        <location filename="install.cpp" line="1693"/>
         <source>Deleting the grub2 entry of android...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1642"/>
+        <location filename="install.cpp" line="1694"/>
         <source>Deleting the grub2 entry of android</source>
         <translation>Удаление записи из grub2</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1600"/>
-        <location filename="install.cpp" line="1662"/>
-        <location filename="install.cpp" line="1711"/>
+        <location filename="install.cpp" line="1652"/>
+        <location filename="install.cpp" line="1714"/>
+        <location filename="install.cpp" line="1763"/>
         <source>The config cannot be found</source>
         <translation>Не удалось открыть конфиг grub</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="805"/>
+        <location filename="install.cpp" line="835"/>
         <source>Can&apos;t make sure if the yourdroid grub2 entry is the first because failed to find its ID:
 %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1260"/>
+        <location filename="install.cpp" line="1314"/>
         <source>Making dir for install</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="626"/>
-        <location filename="install.cpp" line="696"/>
-        <location filename="install.cpp" line="881"/>
-        <location filename="install.h" line="130"/>
+        <location filename="install.cpp" line="635"/>
+        <location filename="install.cpp" line="726"/>
+        <location filename="install.cpp" line="935"/>
+        <location filename="install.h" line="135"/>
         <source>exists</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="626"/>
-        <location filename="install.cpp" line="696"/>
-        <location filename="install.cpp" line="881"/>
-        <location filename="install.h" line="130"/>
+        <location filename="install.cpp" line="635"/>
+        <location filename="install.cpp" line="726"/>
+        <location filename="install.cpp" line="935"/>
+        <location filename="install.h" line="135"/>
         <source>doesn&apos;t exist</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1263"/>
+        <location filename="install.cpp" line="1317"/>
         <source>Could not make dir for install: %1</source>
         <translation>Не удалось создать папку для установки: %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1314"/>
+        <location filename="install.cpp" line="1368"/>
         <source>Start copying</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1322"/>
+        <location filename="install.cpp" line="1376"/>
         <source>Copying %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1336"/>
+        <location filename="install.cpp" line="1390"/>
         <source>%1 does not exist</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1350"/>
+        <location filename="install.cpp" line="1404"/>
         <source>Could not copy %1-system file%2</source>
         <translation>Не удалось скопировать %1%2</translation>
     </message>
@@ -519,146 +528,152 @@ Try creating an .img file instead</source>
         <translation>Критическая ошибка!</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="293"/>
-        <location filename="window.cpp" line="673"/>
+        <location filename="window.cpp" line="373"/>
+        <location filename="window.cpp" line="823"/>
         <source>Are you sure?</source>
         <translation>Вы уверены?</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="298"/>
+        <location filename="window.cpp" line="378"/>
         <source>The flash drive is going to be formatted!</source>
         <translation>Флеш-накопитель будет отформатирован!</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="326"/>
+        <location filename="window.cpp" line="406"/>
         <location filename="window.h" line="38"/>
         <source>Ready</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="347"/>
+        <location filename="window.cpp" line="428"/>
         <source>^Image path must not contain any spaces</source>
         <translation>В путе до образа не должно быть пробелов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="353"/>
+        <location filename="window.cpp" line="434"/>
         <source>^Can&apos;t access the image</source>
         <translation>^Невозможно получить доступ к образу</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="357"/>
+        <location filename="window.cpp" line="438"/>
         <source>Successfully opened the image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="377"/>
+        <location filename="window.cpp" line="459"/>
         <source>^The installation path must not contain any spaces</source>
         <translation>Путь до папки, в которую будет установлен андроид, не должен содержать пробелов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="409"/>
+        <location filename="window.cpp" line="491"/>
         <source>^The system with written name already exists</source>
         <translation>^Уже существует установленный андроид с таким названием</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="425"/>
+        <location filename="window.cpp" line="507"/>
         <source>^Could not mount image: %1</source>
         <translation>^Не удалось примонтировать образ: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="438"/>
+        <location filename="window.cpp" line="522"/>
         <source>^Image has not needed files</source>
         <translation>^В образе нету нужных файлов</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="457"/>
+        <location filename="window.cpp" line="540"/>
         <source>The efi partition has already been mounted</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="462"/>
+        <location filename="window.cpp" line="545"/>
         <source>^Could not mount efi partition. Aborting. 
 Try rebooting your computer</source>
         <translation>^Не удалось примонтировать раздел efi.
 Попробуйте перезагрузить компьютер</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="516"/>
+        <location filename="window.cpp" line="599"/>
         <source>^Success</source>
         <translation>^Андроид успешно установлен</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="693"/>
+        <location filename="window.cpp" line="843"/>
         <source>^Finished</source>
         <translation>^Удаление завершено</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="443"/>
-        <location filename="window.cpp" line="444"/>
+        <location filename="window.cpp" line="528"/>
+        <location filename="window.cpp" line="529"/>
         <source>Data of install is valid</source>
         <translation>Данные сведения верны</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="229"/>
+        <location filename="window.cpp" line="234"/>
         <source>Is this a tablet?</source>
         <translation>Это планшет?</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="498"/>
-        <source>Aborted</source>
-        <translation>Установка аварийно завершена</translation>
+        <location filename="window.cpp" line="264"/>
+        <location filename="window.cpp" line="267"/>
+        <source>Downloading the list of android&apos;s urls</source>
+        <translation>Скачивание списка ссылок на образы андроид</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="525"/>
-        <source>Progress step is %1</source>
-        <translation></translation>
+        <location filename="window.cpp" line="284"/>
+        <source>^Error downloading the android list: %1</source>
+        <translation>^Ошибка: Невозможно скачать список ссылок на образы андроид</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="581"/>
+        <source>Aborted</source>
+        <translation>Установка аварийно завершена</translation>
     </message>
     <message>
         <source>^Segmitation Fault</source>
         <translation type="vanished">^Ошибка памяти. Попробуйте перезапустить программу</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="48"/>
+        <location filename="main.cpp" line="50"/>
         <source>^Fatal error: %1</source>
         <translation>^Критическая ошибка: %1</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="65"/>
+        <location filename="main.cpp" line="67"/>
         <source>getuid() returned %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="67"/>
+        <location filename="main.cpp" line="69"/>
         <source>^Program must be run with root. Press ok to try run it as root. Or press cancel to exit and run &apos;sudo %1&apos; in the terminal to fix it|+-|</source>
         <translation>^Эта программа должна быть запущена с root правами. Нажмите окей, чтобы YourDroid попробовал перезапуститься с root правами или нажмите &quot;отмена&quot; и введите в коммандную строку &apos;sudo %1&apos;|+-|</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="73"/>
+        <location filename="main.cpp" line="75"/>
         <source>^Could not run it as root. Please run &apos;sudo %1&apos; in the terminal to fix it</source>
         <translation>^Не удалось запуститься с root правами. Пожалуйста, введите &apos;sudo %1&apos; в коммандную строку</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="86"/>
+        <location filename="main.cpp" line="88"/>
         <source>Translating...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="91"/>
+        <location filename="main.cpp" line="93"/>
         <source>Setting debug console...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="105"/>
+        <location filename="main.cpp" line="107"/>
         <source>^Ext2fsd driver is not installed. Please run install.bat as administrator first otherwise some features will be unavailable</source>
         <translation>^Драйвер ext4fsd не установлен. Пожалуйста, запустите сначала от имени администратора install.bat, иначе некоторые функции будут недоступны</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="128"/>
+        <location filename="main.cpp" line="130"/>
         <source>Exiting... Returned </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="138"/>
+        <location filename="main.cpp" line="140"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
@@ -678,7 +693,7 @@ Try rebooting your computer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="454"/>
+        <location filename="window.cpp" line="537"/>
         <source>Mounting efi partition</source>
         <translation>Монтирование раздела efi</translation>
     </message>
@@ -992,9 +1007,19 @@ Couldn&apos;t put the input data to the input</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="install.h" line="117"/>
+        <location filename="install.h" line="122"/>
         <source>Couldn&apos;t copy needed files</source>
         <translation>Не удалось скопировать нужные файлы</translation>
+    </message>
+    <message>
+        <location filename="downloader.cpp" line="21"/>
+        <source>Target file is empty or the url is</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="downloader.cpp" line="33"/>
+        <source>Error opening the file</source>
+        <translation>Не удалось открыть файл для скачивания</translation>
     </message>
 </context>
 <context>
@@ -1023,13 +1048,13 @@ Couldn&apos;t put the input data to the input</source>
         <translation type="vanished">Как установить?</translation>
     </message>
     <message>
-        <location filename="window.ui" line="566"/>
+        <location filename="window.ui" line="573"/>
         <source>Title:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="580"/>
-        <location filename="window.ui" line="705"/>
+        <location filename="window.ui" line="587"/>
+        <location filename="window.ui" line="712"/>
         <source>Bootloader:</source>
         <translation>Загрузчик:</translation>
     </message>
@@ -1045,7 +1070,7 @@ Couldn&apos;t put the input data to the input</source>
     </message>
     <message>
         <location filename="window.ui" line="350"/>
-        <location filename="window.cpp" line="86"/>
+        <location filename="window.cpp" line="87"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
@@ -1080,19 +1105,19 @@ Couldn&apos;t put the input data to the input</source>
         <translation>Место под данные и распаковка системных файлов</translation>
     </message>
     <message>
-        <location filename="window.ui" line="592"/>
+        <location filename="window.ui" line="599"/>
         <source>Replace Windows bootloader 
 (the only way for some tablets)</source>
         <translation>Подменить загрузчик windows
 (единственный способ для части планшетов)</translation>
     </message>
     <message>
-        <location filename="window.ui" line="627"/>
+        <location filename="window.ui" line="634"/>
         <source>Refresh</source>
         <translation>Обновить список разделов</translation>
     </message>
     <message>
-        <location filename="window.ui" line="793"/>
+        <location filename="window.ui" line="800"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1112,7 +1137,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Скоро</translation>
     </message>
     <message>
-        <location filename="window.ui" line="673"/>
+        <location filename="window.ui" line="680"/>
         <source>System:</source>
         <translation>Система:</translation>
     </message>
@@ -1155,7 +1180,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-style:italic;&quot;&gt;Atchan, severagent007&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="window.ui" line="811"/>
+        <location filename="window.ui" line="818"/>
         <source>Return to main menu</source>
         <translation>Вернуться в меню</translation>
     </message>
@@ -1166,13 +1191,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="window.ui" line="89"/>
-        <location filename="window.ui" line="780"/>
+        <location filename="window.ui" line="787"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
         <location filename="window.ui" line="96"/>
-        <location filename="window.ui" line="647"/>
+        <location filename="window.ui" line="654"/>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
@@ -1227,22 +1252,22 @@ p, li { white-space: pre-wrap; }
         <translation>Создать папку для данных (для разделов ext4!)</translation>
     </message>
     <message>
-        <location filename="window.ui" line="558"/>
+        <location filename="window.ui" line="565"/>
         <source>Other information</source>
         <translation>Другие сведения</translation>
     </message>
     <message>
-        <location filename="window.ui" line="519"/>
+        <location filename="window.ui" line="526"/>
         <source>Extract /system to:</source>
         <translation>Распаковать /system в:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="527"/>
+        <location filename="window.ui" line="534"/>
         <source>.img (read-write)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.ui" line="532"/>
+        <location filename="window.ui" line="539"/>
         <source>.sfs (read-only)</source>
         <translation></translation>
     </message>
@@ -1258,8 +1283,8 @@ p, li { white-space: pre-wrap; }
         <translation>Выберите раздел:</translation>
     </message>
     <message>
-        <location filename="window.ui" line="620"/>
-        <location filename="window.ui" line="760"/>
+        <location filename="window.ui" line="627"/>
+        <location filename="window.ui" line="767"/>
         <source>To main menu</source>
         <translation>В главное меню</translation>
     </message>
@@ -1280,18 +1305,18 @@ p, li { white-space: pre-wrap; }
         <translation>Размер data.img(мб):</translation>
     </message>
     <message>
-        <location filename="window.ui" line="687"/>
+        <location filename="window.ui" line="694"/>
         <source>Path:</source>
         <oldsource>Путь:</oldsource>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="20"/>
+        <location filename="window.cpp" line="21"/>
         <source>^This PC does not supported</source>
         <translation>^Этот компьютер на данный момент не поддерживается</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="25"/>
+        <location filename="window.cpp" line="26"/>
         <source>Setting window</source>
         <translation>Настройка окна</translation>
     </message>
@@ -1300,12 +1325,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Версия:</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="95"/>
+        <location filename="window.cpp" line="96"/>
         <source>YourDroid | Main menu</source>
         <translation>YourDroid | Главное меню</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="111"/>
+        <location filename="window.cpp" line="112"/>
         <source>YourDroid | Settings</source>
         <translation>YourDroid | Настройки</translation>
     </message>
@@ -1314,42 +1339,74 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">^Для применения языка нужно перезапустить это приложение</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="245"/>
+        <location filename="window.cpp" line="325"/>
         <source>YourDroid | Install</source>
         <translation>YourDroid | Установка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="251"/>
+        <location filename="window.cpp" line="331"/>
         <source>Choose image for install</source>
         <translation>Выберите образ для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="275"/>
+        <location filename="window.cpp" line="355"/>
         <source>Choose directory for install</source>
         <translation>Выберите папку для установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="323"/>
+        <location filename="window.cpp" line="403"/>
         <source>Checking</source>
         <translation>Проверка</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="324"/>
+        <location filename="window.cpp" line="404"/>
         <source>Checking data for install...</source>
         <translation>Проверка данных для установки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="360"/>
-        <source>^The image is chosen</source>
-        <translation>^Образ не выбран</translation>
+        <location filename="window.cpp" line="441"/>
+        <source>^The image is not chosen</source>
+        <translation>^Не выбран образ</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="365"/>
+        <location filename="window.cpp" line="682"/>
+        <location filename="window.cpp" line="683"/>
+        <source>Downloading the image...</source>
+        <translation>Скачивание образа...</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="701"/>
+        <source>Can&apos;t find the url of the chosen image</source>
+        <translation>Невозможно найти ссылку на выбранный образ</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="711"/>
+        <source>The downloaded image doesn&apos;t contain all of the required files</source>
+        <translation>Скачанный образ не содержит всех нужных файлов</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="721"/>
+        <location filename="window.cpp" line="722"/>
+        <source>Formating flash drive and installing the bootloader (may take a while)...</source>
+        <translation>Форматирование флеш-накопителя и установка загрузчика (займет много времени)...</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="750"/>
+        <location filename="window.cpp" line="751"/>
+        <source>Installing and configuring bootloader...</source>
+        <translation>Установка и конфигурирование загрузчика...</translation>
+    </message>
+    <message>
+        <source>^The image is chosen</source>
+        <translation type="vanished">^Образ не выбран</translation>
+    </message>
+    <message>
+        <location filename="window.cpp" line="446"/>
         <source>^Chosen image does not exist</source>
         <translation>^Выбранный образ не существует</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="371"/>
+        <location filename="window.cpp" line="453"/>
         <source>^The folder is not chosen</source>
         <translation>^Не выбрана папка для установки</translation>
     </message>
@@ -1370,17 +1427,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">^Выбраная папка является корнем диска</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="387"/>
+        <location filename="window.cpp" line="469"/>
         <source>^Invalid path</source>
         <translation>^Недопустимый путь (допускаются пути, написанные латиницей и без пробелов)</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="397"/>
+        <location filename="window.cpp" line="479"/>
         <source>^Did not fill in the name</source>
         <translation>^Не вписано имя</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="403"/>
+        <location filename="window.cpp" line="485"/>
         <source>^Did not fill in the size of data.img</source>
         <translation>^Не выбран размер для data.img</translation>
     </message>
@@ -1389,47 +1446,43 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">^Выбранная папка не пуста. Некоторые файлы будут перезаписаны. Нажмите отмена для отмены установки|+-|</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="562"/>
+        <location filename="window.cpp" line="672"/>
         <source>^Fatal error while installing: %1</source>
         <translation>^Критическая ошибка во время установки: %1</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="568"/>
+        <location filename="window.cpp" line="678"/>
         <source>Start install</source>
         <translation>Начало установки</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="572"/>
-        <location filename="window.cpp" line="573"/>
         <source>Formating flash drive...</source>
-        <translation>Форматирование флешки...</translation>
+        <translation type="vanished">Форматирование флешки...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="580"/>
-        <location filename="window.cpp" line="581"/>
+        <location filename="window.cpp" line="729"/>
+        <location filename="window.cpp" line="730"/>
         <source>Formating the selected drive...</source>
         <translation>Форматирование выбранного раздела...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="586"/>
-        <location filename="window.cpp" line="587"/>
+        <location filename="window.cpp" line="736"/>
+        <location filename="window.cpp" line="737"/>
         <source>Unpacking iso...</source>
         <translation>Распаковка iso-образа...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="593"/>
-        <location filename="window.cpp" line="594"/>
+        <location filename="window.cpp" line="743"/>
+        <location filename="window.cpp" line="744"/>
         <source>Creating data.img...</source>
         <translation>Создание data.img...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="600"/>
-        <location filename="window.cpp" line="601"/>
         <source>Installing bootloader...</source>
-        <translation>Установка загрузчика...</translation>
+        <translation type="vanished">Установка загрузчика...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="607"/>
+        <location filename="window.cpp" line="757"/>
         <source>Unmounting image...</source>
         <translation>Отмонтирование образа...</translation>
     </message>
@@ -1438,27 +1491,27 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Установка закончена</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="626"/>
+        <location filename="window.cpp" line="776"/>
         <source>YourDroid | About</source>
         <translation>YourDroid | О программе</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="653"/>
+        <location filename="window.cpp" line="803"/>
         <source>Clearing systems list...</source>
         <translation>Очистка списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="658"/>
+        <location filename="window.cpp" line="808"/>
         <source>Filling systems list...</source>
         <translation>Заполнение списка систем...</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="661"/>
+        <location filename="window.cpp" line="811"/>
         <source>YourDroid | Delete</source>
         <translation>YourDroid | Удаление</translation>
     </message>
     <message>
-        <location filename="window.cpp" line="709"/>
+        <location filename="window.cpp" line="859"/>
         <source>Ready</source>
         <translation>Готово</translation>
     </message>
@@ -1490,7 +1543,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Невозможно получить размер %1</translation>
     </message>
     <message>
-        <location filename="install.cpp" line="1319"/>
+        <location filename="install.cpp" line="1373"/>
         <source>File for copy is empty</source>
         <translation>Один из файлов из образа пуст</translation>
     </message>
@@ -1502,12 +1555,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Рабочая папка - </translation>
     </message>
     <message>
-        <location filename="main.cpp" line="120"/>
+        <location filename="main.cpp" line="122"/>
         <source>Window exec</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="122"/>
+        <location filename="main.cpp" line="124"/>
         <source>Window closed</source>
         <translation></translation>
     </message>
@@ -1552,22 +1605,22 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="254"/>
+        <location filename="window.cpp" line="334"/>
         <source>Choose image for install: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="278"/>
+        <location filename="window.cpp" line="358"/>
         <source>Choose dir for install: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="632"/>
+        <location filename="window.cpp" line="782"/>
         <source>Choose </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="window.cpp" line="703"/>
+        <location filename="window.cpp" line="853"/>
         <source>Deleting </source>
         <translation></translation>
     </message>
