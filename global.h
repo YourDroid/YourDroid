@@ -18,7 +18,7 @@ struct _global
 };
 extern const _global *global;
 
-auto _copy = [=](QString src, QString dst) -> bool
+auto _copy = [](QString src, QString dst) -> bool
 {
     qDebug().noquote() << QObject::tr("Copying %1 to %2").arg(src, dst);
     bool res = QFile(src).copy(dst);
@@ -27,7 +27,7 @@ auto _copy = [=](QString src, QString dst) -> bool
     return res;
 };
 
-auto _mkdir = [=](QString name) -> bool
+auto _mkdir = [](QString name) -> bool
 {
     qDebug().noquote() << QObject::tr("Making dir %1").arg(name);
     bool res = QDir().mkdir(name);
@@ -36,7 +36,7 @@ auto _mkdir = [=](QString name) -> bool
     return res;
 };
 
-auto _rename = [=](QString src, QString dst) -> bool
+auto _rename = [](QString src, QString dst) -> bool
 {
     qDebug().noquote() << QObject::tr("Renaming %1 to %2").arg(src, dst);
     bool res = QFile(src).rename(dst);
@@ -45,7 +45,7 @@ auto _rename = [=](QString src, QString dst) -> bool
     return res;
 };
 
-auto _remove = [=](QString name) -> bool
+auto _remove = [](QString name) -> bool
 {
     qDebug().noquote() << QObject::tr("Deleting %1").arg(name);
     bool res = QFile::remove(name);

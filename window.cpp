@@ -617,6 +617,11 @@ void Window::on_buttonInstallInstall_clicked()
 
     connect(this, &Window::progressAddStep, this, [step, this](){
         qDebug().noquote() << "Current steps: " << currentSteps;
+        if(currentSteps > progressSteps)
+        {
+            qWarning().noquote() << "Too many progress steps";
+            return;
+        }
         ui->progressInstall->setValue(5 + step * currentSteps);
 #if WIN
         taskBarProgress->setValue(5 + step * currentSteps);

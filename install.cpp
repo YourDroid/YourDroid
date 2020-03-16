@@ -619,8 +619,15 @@ void install::registerGrub4dos()
 bool install::installGrub2BootmgrUefi(bool forTablet)
 {
 #if WIN
-    #define returnFault() _copy(qApp->applicationDirPath() + "/bootmgfw.efi", \
-            QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); return false;
+    #define returnFault() if(bootmgfwReplaced && \
+        QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi")) \
+        { \
+            _remove(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); \
+            _copy(qApp->applicationDirPath() + "/bootmgfw.efi", \
+            QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); \
+        } return false;
+
+
 
     qDebug().noquote() << "Installing Grub2 for uefi (replacing bootmgr)...";
 
@@ -633,6 +640,7 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
 
     QString path;
     bool res = false;
+    bool bootmgfwReplaced = false;
 
 
     qDebug().noquote() << "Copying the efi file";
@@ -640,22 +648,41 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
     if((res = QFile((path = QString("%1/efi/Microsoft/Boot/bootmgfw_.efi")
                     .arg(efiMountPoint))).exists()))
     {
+        logDirExist();
         if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+        {
+            qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+                               << " doesn't exist, so copying bootmgfw_.efi to there";
             COPY(QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint),
                  qApp->applicationDirPath() + "/bootmgfw.efi");
-
-        REMOVE(path);
+        }
+        else qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+                           << " already exists";
     }
-    else if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+    else
+    {
+        logDirExist();
+        if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+        {
+            qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+                               << " doesn't exist, so copying bootmgfw.efi to there";
+            COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
+                 qApp->applicationDirPath() + "/bootmgfw.efi");
+        }
+        else qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+                           << " already exists";
+
+
         COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
-             qApp->applicationDirPath() + "/bootmgfw.efi");
-    logDirExist();
+             QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint));
+    }
 
-
-    COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
-         QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint));
-
-    REMOVE(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint));
+    if(QFile(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)).exists())
+    {
+        REMOVE(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint));
+    }
+    else qDebug().noquote() << "bootmgfw.efi doesn't exist";
+    bootmgfwReplaced = true;
 
     QString sourceEfiFile = efiFile;
     if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
@@ -862,14 +889,38 @@ void install::registerGrub2Uefi(bool forTablet, bool replaceWinBootloader) {
     QString menuentry = grub2Configure(QString(), false, false);
 
     QFile _config(mountPoint + "/yourdroid_cfg/grub.cfg");
-    if(!_config.open(QIODevice::Append)) {
-        emit abort(QObject::tr("Could not open the grub's config-file"));
+    if(!_config.open(QIODevice::ReadOnly)) {
+        emit abort(QObject::tr("Could not open the grub's config-file for read-only"));
         return;
     }
+
+    QString configText = _config.readAll();
+    qDebug().noquote() << "Before editing: " << configText;
+    if(replaceWinBootloader)
+    {
+        qDebug().noquote() << "Changing bootmgfw.efi to bootmgfw_.efi";
+        configText.replace("bootmgfw.efi", "bootmgfw_.efi");
+    }
+    //        else
+    //        {
+    //            qDebug().noquote() << "Changing bootmgfw_.efi to bootmgfw.efi";
+    //            configText.replace("bootmgfw_.efi", "bootmgfw.efi");
+    //        }
+    configText += menuentry + '\n';
+    qDebug().noquote() << "After editing: " << configText;
+
+    _config.close();
+    if(!_config.open(QIODevice::WriteOnly)) {
+        emit abort(QObject::tr("Could not open the grub's config-file for write-only"));
+        return;
+    }
+
+    qDebug().noquote() << "Writing down the edited config";
     QTextStream config(&_config);
 
-    config << menuentry + '\n';
+    config << configText;
     _config.close();
+
 
 #endif
 }
