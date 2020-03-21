@@ -303,6 +303,21 @@ void Window::on_installButtonMain_clicked()
         QStringList groups = s.childGroups();
         qDebug().noquote() << "Android list groups: " << groups;
 
+        QStringList androidx86List;
+        for(auto x : groups)
+        {
+            if(x.contains("Android"))
+            {
+                qDebug().noquote() << "Found an android x86 system: " << x;
+                androidx86List.push_back(x);
+                groups.removeOne(x);
+            }
+        }
+        qDebug().noquote() << "Android x86 systems: " << androidx86List;
+
+        groups = groups + androidx86List;
+        qDebug().noquote() << "Sorted android list: " << groups;
+
         for(auto x : groups)
         {
             s.beginGroup(x);

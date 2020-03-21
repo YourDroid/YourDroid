@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "YourDroid"
-#define MyAppVersion "2.0"
+#define MyAppVersion "2.1"
 #define MyAppPublisher "Profi_GMan"
 #define MyAppURL "https://yourdroid.github.io/"
 #define MyAppExeName "yourdroid.exe"
@@ -53,20 +53,34 @@ Source: "C:\programming\YourDroid\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: igno
 Source: "C:\programming\YourDroid\bin\Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\programming\YourDroid\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\programming\YourDroid\bin\Qt5WinExtras.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\programming\YourDroid\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\programming\YourDroid\bin\libcrypto-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\programming\YourDroid\bin\libssl-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\programming\YourDroid\bin\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\config\*"; DestDir: "{app}\config"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "C:\programming\YourDroid\bin\config\*"; DestDir: "{app}\config"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\programming\YourDroid\bin\translations\*"; DestDir: "{app}\translations"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\programming\YourDroid\bin\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\programming\YourDroid\bin\iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\programming\YourDroid\bin\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\programming\YourDroid\bin\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\programming\Ext2Fsd-0.69.exe"; AfterInstall: RunExt4FsdInstaller; Flags: deleteafterinstall ignoreversion; DestDir: {tmp}
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+[Dirs]
+Name: "{app}\config"
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
-[Run]
-Filename: "{app}\data\ext2fsd-driver\Setup.bat"; Parameters: "install"; Flags: runhidden
-;Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: skipifsilent
-
+[Code]
+procedure RunExt4FsdInstaller;
+var
+  ResultCode: Integer;
+begin
+  if (not FileExists('C:\Windows\System32\drivers\Ext2Fsd.sys')) then
+    if not Exec(ExpandConstant('{tmp}\Ext2Fsd-0.69.exe'), '', '', SW_SHOW, ewWaitUntilTerminated, ResultCode)
+    then
+      MsgBox('Other installer failed to run!' + #13#10 +
+        SysErrorMessage(ResultCode), mbError, MB_OK);
+end;
