@@ -1575,8 +1575,9 @@ void install::downloadImage(QUrl url)
 }
 
 void install::delSystemFiles(int numSys) {
-    progressBarDelete->setValue(0);
     qDebug().noquote() << "Deleting android files...";
+
+    emit abort("A FUCKING SCARY BLAH"); //omg I almost died
 
     if(systems[numSys].place.count() > 3)
     {
@@ -1597,7 +1598,6 @@ void install::delSystemFiles(int numSys) {
         QVector<QString> files = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img",
                                   "/system.sfs", "/data.img"};
         for(auto file : files) {
-            progressBarDelete->setValue(progressBarDelete->value() + 1);
             qDebug().noquote() << QObject::tr("log", "Deleting ") + systems[numSys].place + file;
             statusBar->showMessage(QObject::tr("log", "Deleting ") + file);
             QFile(systems[numSys].place + file).remove();
@@ -1624,7 +1624,6 @@ void install::delSystemFiles(int numSys) {
 void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QStatusBar *status) {
     qDebug().noquote() << "Exec progress and status bars";
     progressBarInstall = progressins;
-    progressBarDelete = progressdel;
     statusBar = status;
 }
 
@@ -1649,7 +1648,7 @@ void install::deleteGrubLEntry(int numSys)
     QFile config(cfgPath);
     if(!config.open(QIODevice::ReadOnly))
     {
-        emit abort(QObject::tr("The config cannot be found"));
+        qCritical().noquote() << QString("^" + QObject::tr("The config cannot be found"));
         return;
     }
     else
@@ -1659,14 +1658,14 @@ void install::deleteGrubLEntry(int numSys)
         int entryBeginIndex = configText.indexOf(QString("title %1").arg(systems[numSys].name));
         if(entryBeginIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the begining of the entry"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the begining of the entry"));
             return;
         }
 
         int entryEndIndex = configText.indexOf("initrd.img", entryBeginIndex);
         if(entryEndIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the end of the entry"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the end of the entry"));
             return;
         }
         entryEndIndex += 9; //index of the last letter
@@ -1679,13 +1678,11 @@ void install::deleteGrubLEntry(int numSys)
         config.close();
         if(!config.open(QIODevice::WriteOnly))
         {
-            emit abort(QObject::tr("Cannot open the grub legacy config as write only"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot open the grub legacy config as write only"));
             return;
         }
         else configTStream << configText;
     }
-
-    progressBarDelete->setValue(7);
 #endif
 }
 
@@ -1695,7 +1692,7 @@ void install::deleteGrub2Entry(int numSys) {
 #if LINUX
     if(QFile(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove())
     {
-        emit abort(QObject::tr("Cannot delete the entry in grub2"));
+        qCritical().noquote() << QString("^" + QObject::tr("Cannot delete the entry in grub2"));
         return;
     }
     if(cmd::exec("update-grub").first != 0)
@@ -1711,24 +1708,26 @@ void install::deleteGrub2Entry(int numSys) {
     QFile config(cfgPath);
     if(!config.open(QIODevice::ReadOnly))
     {
-        emit abort(QObject::tr("The config cannot be found"));
+        qCritical().noquote() << QString("^" + QObject::tr("The config cannot be found"));
         return;
     }
     else
     {
+        qDebug().noquote() << "Config opened";
         QTextStream configTStream(&config);
         QString configText = configTStream.readAll();
         int entryBeginIndex = configText.indexOf(QString("menuentry '%1'").arg(systems[numSys].name));
         if(entryBeginIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the begining of the entry"));
+            qDebug().noquote() << "Cannot find the begining of the entry";
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the begining of the entry"));
             return;
         }
 
         int entryEndIndex = configText.indexOf('}', entryBeginIndex);
         if(entryEndIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the end of the entry"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the end of the entry"));
             return;
         }
 
@@ -1740,13 +1739,12 @@ void install::deleteGrub2Entry(int numSys) {
         config.close();
         if(!config.open(QIODevice::WriteOnly))
         {
-            emit abort(QObject::tr("Cannot open the grub2 config as write only"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot open the grub2 config as write only"));
             return;
         }
         else configTStream << configText;
     }
 #endif
-    progressBarDelete->setValue(7);
 }
 
 void install::deleteGrub2UsbEntry(int index)
@@ -1760,7 +1758,7 @@ void install::deleteGrub2UsbEntry(int index)
     QFile config(cfgPath);
     if(!config.open(QIODevice::ReadOnly))
     {
-        emit abort(QObject::tr("The config cannot be found"));
+        qCritical().noquote() << QString("^" + QObject::tr("The config cannot be found"));
         return;
     }
     else
@@ -1770,14 +1768,14 @@ void install::deleteGrub2UsbEntry(int index)
         int entryBeginIndex = configText.indexOf(QString("submenu '%1'").arg(systems[index].name));
         if(entryBeginIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the begining of the entry"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the begining of the entry"));
             return;
         }
 
         int entryEndIndex = configText.indexOf("\n}", entryBeginIndex);
         if(entryEndIndex == -1)
         {
-            emit abort(QObject::tr("Cannot find the end of the entry"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot find the end of the entry"));
             return;
         }
         entryEndIndex += 1; //index of the } itself
@@ -1790,13 +1788,11 @@ void install::deleteGrub2UsbEntry(int index)
         config.close();
         if(!config.open(QIODevice::WriteOnly))
         {
-            emit abort(QObject::tr("Cannot open the grub legacy config as write only"));
+            qCritical().noquote() << QString("^" + QObject::tr("Cannot open the grub legacy config as write only"));
             return;
         }
         else configTStream << configText;
     }
-
-    progressBarDelete->setValue(7);
 #endif
 }
 

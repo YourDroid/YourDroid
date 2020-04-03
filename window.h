@@ -82,10 +82,6 @@ private slots:
 
     void on_comboBoot_currentIndexChanged(const QString &arg1);
 
-    void on_deleteButtonMain_clicked();
-
-    void on_comboSystemDelete_currentIndexChanged(int index);
-
     void on_buttonDeleteDelete_clicked();
 
     void on_comboLanguageSettings_currentIndexChanged(int index);

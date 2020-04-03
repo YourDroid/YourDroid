@@ -41,7 +41,6 @@ Window::Window(bool f, QWidget *parent) :
         else Settings_clicked();
     });
     connect(ui->buttonAboutReturn,SIGNAL(clicked()),SLOT(returnMainWindow()));
-    connect(ui->buttonReturnMainDelete,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->windows, &QStackedWidget::currentChanged, [=](){
         if(ui->windows->currentWidget() != ui->settingsPage) lastPage = ui->windows->currentWidget();
     });
@@ -51,14 +50,14 @@ Window::Window(bool f, QWidget *parent) :
     //    });
     //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
 
-    ui->progressDelete->setHidden(true);
+    //ui->progressDelete->setHidden(true);
     ui->progressInstall->setAlignment(Qt::AlignCenter);
     ui->progressInstall->setValue(0);
-    ui->progressDelete->setRange(0, 7);
-    ui->progressDelete->setValue(0);
+    //ui->progressDelete->setRange(0, 7);
+    //ui->progressDelete->setValue(0);
     ui->editSizeDataInstall->setValidator(new QIntValidator(100, 999999));
     ui->editDirForInstall->setValidator(new QRegExpValidator(QRegExp("[^а-яА-Я^ ]{0,999}")));
-    global->insSet->execBars(ui->progressInstall, ui->progressDelete, ui->statusbar);
+    global->insSet->execBars(ui->progressInstall, 0, ui->statusbar);
     ui->buttonInstallInstall->setShortcut(Qt::Key_Return);
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
@@ -93,6 +92,23 @@ Window::~Window()
 }
 
 void Window::returnMainWindow() {
+    qDebug().noquote() << tr("Clearing systems list...");
+    ui->systemsTree->blockSignals(true);
+    ui->systemsTree->clear();
+    ui->systemsTree->blockSignals(false);
+
+    qDebug().noquote() << tr("Filling systems list...");
+    for(auto sys : global->insSet->systemsVector())
+    {
+        QStringList itemInfo;
+        itemInfo << sys.name << QString::fromStdString(_bootloaderHelper::to_string(sys.bootloader))
+                 << QString::fromStdString(_typePlaceHelper::to_string(sys.typePlace))
+                 << sys.place;
+        qDebug().noquote() << "Adding a system: " << itemInfo;
+        QTreeWidgetItem *item = new QTreeWidgetItem(itemInfo);
+        ui->systemsTree->addTopLevelItem(item);
+    }
+
     setWindowTitle(tr("YourDroid | Main menu"));
     ui->windows->setCurrentWidget(ui->mainWindowPage);
 }
@@ -362,7 +378,7 @@ void Window::on_back_settings_clicked()
     else if(lastPage == ui->mainWindowPage) returnMainWindow();
     else if(lastPage == ui->aboutPage) on_buttonAboutMain_clicked();
     else if(lastPage == ui->installPage) on_installButtonMain_clicked();
-    else if(lastPage == ui->deletePage) on_deleteButtonMain_clicked();
+    //else if(lastPage == ui->deletePage) on_deleteButtonMain_clicked();
 }
 
 void Window::on_buttonChooseDirForInstall_clicked()
@@ -376,6 +392,8 @@ void Window::on_buttonChooseDirForInstall_clicked()
 
 void Window::on_buttonInstallInstall_clicked()
 {
+    QObject *context = new QObject(this);
+
     QString installPath;
     if(ui->radioInstallOnPart->isChecked()) installPath = ui->comboDriveSelect->currentText();
     else if(ui->radioInstallFlashDriveIns->isChecked())
@@ -421,8 +439,11 @@ void Window::on_buttonInstallInstall_clicked()
     auto end = [=](QString mess = QObject::tr("Ready")){
         ui->statusbar->showMessage(mess);
         setBlocked(false);
+        qDebug().noquote() << "KILLING THE POOR CONTEXT OBJECT";
+        delete context;
+        //context = 0;
     };
-    connect(this, &Window::ending, this, [=](QString mess) {
+    connect(this, &Window::ending, context, [=](QString mess) {
         end(mess);
     });
 
@@ -502,10 +523,15 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
     for(int i = 0; i < global->insSet->systemsVector().length(); i++) {
-        if(ui->editName->text() == (global->insSet->systemsVector())[i].name) {
-            qCritical().noquote() << QObject::tr("^The system with written name already exists");
-            end();
-            return;
+        auto sys = (global->insSet->systemsVector())[i];
+        if(ui->editName->text() == sys.name) {
+            if((ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace == _typePlace::flash_drive) ||
+                    (!ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace != _typePlace::flash_drive))
+            {
+                qCritical().noquote() << QObject::tr("^The system with written name already exists");
+                end();
+                return;
+            }
         }
     }
 //    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
@@ -590,7 +616,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     global->insSet->addSystem(bootloader, typePlace, installPath, ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
-    connect(resMonitor, &QFutureWatcher<void>::finished, this, [&](){
+    connect(resMonitor, &QFutureWatcher<void>::finished, context, [&](){
         qApp->alert(this, 2000);
         if(aborted) {
             emit ending(QObject::tr("Aborted"));
@@ -630,7 +656,7 @@ void Window::on_buttonInstallInstall_clicked()
     taskBarProgress->setValue(5);
 #endif
 
-    connect(this, &Window::progressAddStep, this, [step, this](){
+    connect(this, &Window::progressAddStep, context, [step, this](){
         qDebug().noquote() << "Current steps: " << currentSteps;
         if(currentSteps > progressSteps)
         {
@@ -643,7 +669,7 @@ void Window::on_buttonInstallInstall_clicked()
 #endif
         currentSteps++;
     });
-    connect(global->insSet, &install::downloadProgress, this, [step, this](qint64 received, qint64 total) {
+    connect(global->insSet, &install::downloadProgress, context, [step, this](qint64 received, qint64 total) {
         float progress = (received * 100) / total;
         qDebug().noquote() << "The download progress is " << progress;
         int totalProgress = 5 + step * (currentSteps - 1) + progress * step / 100;
@@ -657,11 +683,11 @@ void Window::on_buttonInstallInstall_clicked()
     auto logMain = [=](QtMsgType type, QString mess){
         QDebug(type).noquote() << mess;
     };
-    connect(global->insSet, &install::logWindow, this, [=](QtMsgType type, QString mess) {
+    connect(global->insSet, &install::logWindow, context, [=](QtMsgType type, QString mess) {
         emit logFromMainThread(type, mess);
     });
-    connect(this, &Window::logFromMainThread, this, logMain);
-    connect(this, &Window::setAborted, this, [=](bool a) {
+    connect(this, &Window::logFromMainThread, context, logMain);
+    connect(this, &Window::setAborted, context, [=](bool a) {
         aborted = a;
     });
 
@@ -679,7 +705,7 @@ void Window::on_buttonInstallInstall_clicked()
     //taskBarProgress->setValue(step);
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
-        connect(global->insSet, &install::abort, [&](QString mes){
+        connect(global->insSet, &install::abort, context, [&](QString mes){
             emit setAborted(true);
             global->insSet->delBackSystem();
             abort = true;
@@ -809,32 +835,9 @@ void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
     //    else if(arg1 == "Grub legasy") ui->labelAboutBootloader->setText("Рекомендуется для старых компьютеров. Текстовый");
 }
 
-void Window::on_deleteButtonMain_clicked()
-{
-    ui->progressDelete->setValue(0);
-    ui->labelPlaceDeleteText->clear();
-    ui->labelbootloaderDeleteText->clear();
-
-    qDebug().noquote() << tr("Clearing systems list...");
-    ui->comboSystemDelete->blockSignals(true);
-    ui->comboSystemDelete->clear();
-    ui->comboSystemDelete->blockSignals(false);
-
-    qDebug().noquote() << tr("Filling systems list...");
-    for(auto sys : global->insSet->systemsVector()) ui->comboSystemDelete->addItem(sys.name);
-
-    setWindowTitle(tr("YourDroid | Delete"));
-    ui->windows->setCurrentWidget(ui->deletePage);
-}
-
-void Window::on_comboSystemDelete_currentIndexChanged(int index)
-{
-    ui->labelPlaceDeleteText->setText(global->insSet->systemsVector()[index].place);
-    ui->labelbootloaderDeleteText->setText(QString::fromStdString(_bootloaderHelper::to_string(global->insSet->systemsVector()[index].bootloader)));
-}
 void Window::on_buttonDeleteDelete_clicked()
 {
-    if(ui->comboSystemDelete->currentIndex() == -1) return;
+    if(ui->systemsTree->selectedItems().isEmpty()) return;
     qDebug().noquote() << QString("^%1|+-|").arg(QObject::tr("Are you sure?"));
     auto choice = log::getLastPressedButton();
     if(choice == QMessageBox::Ok)
@@ -861,21 +864,20 @@ void Window::on_buttonDeleteDelete_clicked()
 void Window::androidDelete()
 {
     ui->buttonDeleteDelete->setEnabled(false);
-    ui->buttonReturnMainDelete->setEnabled(false);
     ui->settingsMini->setEnabled(false);
-    ui->comboSystemDelete->setEnabled(false);
-    int num = ui->comboSystemDelete->currentIndex();
+    ui->systemsTree->setEnabled(false);
+    int num = ui->systemsTree->selectionModel()->selectedIndexes()[0].row();
     qDebug().noquote() << qApp->translate("log", "Deleting ") + (global->insSet->systemsVector().begin() + num)->name;
     global->insSet->delSystemFiles(num);
     global->insSet->deleteBootloaderEntry(num);
     global->insSet->oldSysEdit() = true;
     global->insSet->deleteSettingsEntry(num);
-    on_deleteButtonMain_clicked();
+    //on_deleteButtonMain_clicked();
+    returnMainWindow();
     ui->statusbar->showMessage(tr("Ready"));
     ui->buttonDeleteDelete->setEnabled(true);
-    ui->buttonReturnMainDelete->setEnabled(true);
     ui->settingsMini->setEnabled(true);
-    ui->comboSystemDelete->setEnabled(true);
+    ui->systemsTree->setEnabled(true);
 }
 
 void Window::receiveMesToStatusbar(QString mes) {
