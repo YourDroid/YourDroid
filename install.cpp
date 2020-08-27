@@ -21,6 +21,19 @@ install::install(options *d)
     dat = d;
 }
 
+void install::logWindowHandler(QtMsgType type, QString mess)
+{
+    emit logWindow(type, mess);
+    while(true)
+    {
+        if(logWindowEnded) break;
+        qDebug().noquote() << "Log window not closed yet";
+        QThread::sleep(1);
+    }
+    logWindowEnded = false;
+    qDebug().noquote() << "Log window closed";
+}
+
 void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e) {
     systems.push_back(install::_installSet(b, t, p, i, n, e));
 }
@@ -95,7 +108,7 @@ void install::read() {
     for(auto x : flashDrives)
     {
         x.replace('\\', '/');
-        if(!QFile::exists(x + "yourdroid_usb_cfg/yourdroid_usb.cfg"))
+        if(!QFile::exists(x + "yourdroid_usb_cfg/yourdroid_formatted"))
         {
             qDebug().noquote() << QString("%1 is not a drive formatted with yourdroid").arg(x);
             continue;
@@ -359,19 +372,6 @@ bool install::installGrubUsb()
     qDebug().noquote() << "Copying boot config";
     COPY(QString("%1/data/bootloaders/grub2/windows/grub-usb-boot.cfg")
          .arg(qApp->applicationDirPath()), usbBootPart + "grub/grub.cfg");
-
-    qDebug().noquote() << "Making main yourdroid_usb_cfg";
-    if(!QDir().exists(usbMainPart + "yourdroid_usb_cfg"))
-        MKDIR(usbMainPart + "yourdroid_usb_cfg");
-
-    qDebug().noquote() << "Making main config";
-    QFile config(usbMainPart + "yourdroid_usb_cfg/grub.cfg");
-    if(!config.open(QIODevice::WriteOnly))
-    {
-        emit abort(QObject::tr("Can't make a grub config"));
-        return false;
-    }
-    config.close();
 
     return true;
 #undef returnFault
@@ -1300,10 +1300,18 @@ void install::formatPartExt4()
 
 }
 
-void install::unpackSystem(sysImgExtractType sysType) {
+void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
+    install::_installSet sys;
+    bool updating = false;
+    if(sysNum != -1)
+    {
+        updating = true;
+        sys = systems[sysNum];
+    }
+    else sys = systems.back();
     QPair<int, QString> expr;
-    if(!QFile::exists(systems.back().place) && systems.back().typePlace != _typePlace::flash_drive) {
-        if(systems.back().place.length() <= 3)
+    if(!QFile::exists(sys.place) && sys.typePlace != _typePlace::flash_drive) {
+        if(sys.place.length() <= 3)
         {
             emit abort(QObject::tr("Can't access the selected drive. Please make sure you have "
                                    "ext4fsd installed on your computer"));
@@ -1312,7 +1320,7 @@ void install::unpackSystem(sysImgExtractType sysType) {
         else
         {
             qDebug().noquote() << QObject::tr("Making dir for install");
-            expr = cmd::exec(QString("mkdir ") + systems.back().place);
+            expr = cmd::exec(QString("mkdir ") + sys.place);
             if(expr.first) {
                 emit abort(QObject::tr("Could not make dir for install: %1").arg(expr.second));
                 return;
@@ -1321,12 +1329,13 @@ void install::unpackSystem(sysImgExtractType sysType) {
     }
 
     QFile copier;
-    QString place = systems.back().place;
+    QString place = sys.place;
     if(place.back() == '/' || place.back() == '\\') place.chop(1);
 
-    if(systems.back().typePlace == _typePlace::flash_drive)
+    if(sys.typePlace == _typePlace::flash_drive && !updating)
     {
-        place = usbMainPart + "yourdroid_usb/" + systems.back().name;
+        place = usbMainPart + "yourdroid_usb/" + sys.name;
+        systems.back().place = place;
         if(!QDir().exists(usbMainPart + "yourdroid_usb/"))
         {
             qDebug().noquote() << "yourdroid_usb doesn't exist";
@@ -1345,11 +1354,41 @@ void install::unpackSystem(sysImgExtractType sysType) {
         }
     }
     qDebug().noquote() << "The installation path is " << place;
-    systems.back().place = place;
+    sys.place = place;
 
     QVector<QString> filesCopy = { "/kernel", "/ramdisk.img", "/initrd.img" };
 
-    if(systems.back().typePlace == _typePlace::flash_drive) filesCopy.push_back("/install.img");
+    if(sys.typePlace == _typePlace::flash_drive) filesCopy.push_back("/install.img");
+
+    if(updating)
+    {
+        if(QFile::remove(sys.place + "/system.img"))
+        {
+            qDebug().noquote() << "system.img deleted";
+        }
+        else qWarning().noquote() << "system.img not deleted";
+
+        if(QFile::remove(sys.place + "/system.sfs"))
+        {
+            qDebug().noquote() << "system.sfs deleted";
+        }
+        else qWarning().noquote() << "system.sfs not deleted";
+
+        if(QDir().exists(sys.place + "/system"))
+        {
+            if(QDir(sys.place + "/system").removeRecursively())
+            {
+                qDebug().noquote() << "/system recursively deleted";
+            }
+            else qWarning().noquote() << "/system not recursively deleted";
+
+            if(QDir().remove(sys.place + "/system"))
+            {
+                qDebug().noquote() << "/system itself deleted";
+            }
+            else qWarning().noquote() << "/system itself not deleted";
+        }
+    }
 
     QString systemFile;
 #if LINUX
@@ -1384,7 +1423,7 @@ void install::unpackSystem(sysImgExtractType sysType) {
 //#endif
 //            auto expr = cmd::exec(command.arg(place + file));
 //            if(expr.first) {
-//                emit logWindow(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
+//                logWindowHandler(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
 //            }
         }
         else qDebug().noquote() << QObject::tr("%1 does not exist").arg(place + file);
@@ -1395,7 +1434,7 @@ void install::unpackSystem(sysImgExtractType sysType) {
 #elif WIN
         QPair<int, QString> expr;
         res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
-                                 .arg(qApp->applicationDirPath(), systems.back().image,
+                                 .arg(qApp->applicationDirPath(), sys.image,
                                       file.remove(0, 1), place),
                                  false, QStringList(), filesExist ? "a\n" : "", true)).first;
         QString advancedInfo = QString(": %1").arg(expr.second);
@@ -1410,7 +1449,7 @@ void install::unpackSystem(sysImgExtractType sysType) {
 //        int size = QFile(mountPoint + file).size();
 //#elif WIN
 //        QString command = QString("%1/data/iso-editor.exe size %2 %3")
-//                .arg(qApp->applicationDirPath(), systems.back().image);
+//                .arg(qApp->applicationDirPath(), sys.image);
 //        expr = cmd::exec(command.arg(file));
 //        int size = (!expr.first) ? expr.second.toInt() : 50;
 //#endif
@@ -1456,14 +1495,14 @@ void install::unpackSystem(sysImgExtractType sysType) {
             if(res && QFile::exists(place + "/system.img"))
             {
                 qDebug().noquote() << "Success. Deleting system.sfs";
-                if(!QFile::remove(place + "/system.sfs")) qWarning().noquote()
-                        << QObject::tr("^Cannot delete system.sfs");
+                if(!QFile::remove(place + "/system.sfs"))
+                    logWindowHandler(QtWarningMsg, QObject::tr("^Cannot delete system.sfs"));
             }
             else
             {
-                qWarning().noquote() << QObject::tr("^The system is going to be set as read-only"
+                logWindowHandler(QtWarningMsg, QObject::tr("^The system is going to be set as read-only"
                                                      " because of the failure in extracting "
-                                                     "system.img") + advancedInfo;
+                                                     "system.img") + advancedInfo);
                 return;
             }
         }
@@ -1483,15 +1522,15 @@ void install::unpackSystem(sysImgExtractType sysType) {
             if(res.first == 0 && QDir(place + "/system").exists())
             {
                 qDebug().noquote() << "Success. Deleting the system.img";
-                if(!QFile::remove(place + "/system.img")) qWarning().noquote()
-                        << QObject::tr("^Cannot delete system.img");
+                if(!QFile::remove(place + "/system.img"))
+                    logWindowHandler(QtWarningMsg, QObject::tr("^Cannot delete system.img"));
             }
             else
             {
-                qWarning().noquote() << QObject::tr("^The system is extracted as .img "
+                logWindowHandler(QtWarningMsg, QObject::tr("^The system is extracted as .img "
                                                     "because of the failure in "
                                                     "extracting system.img: %1")
-                                        .arg(res.second);
+                                        .arg(res.second));
                 return;
             }
         }
@@ -1830,7 +1869,7 @@ void install::deleteSettingsEntry(int num) {
 
 bool install::isUsbAlreadyFormatted(QString path)
 {
-    usbAlreadyFormatted = QFile::exists(path + "/yourdroid_usb_cfg/yourdroid_usb.cfg");
+    usbAlreadyFormatted = QFile::exists(path + "/yourdroid_usb_cfg/yourdroid_formatted");
     if(usbAlreadyFormatted) qDebug().noquote() << QString("%1 is already formatted")
                                                   .arg(path);
     else
@@ -1964,78 +2003,209 @@ void install::formatFlashDrive()
         if(lst.contains(part.chopped(1)))
         {
             diskIndex = i;
+            usbDiskIndex = diskIndex;
             qDebug().noquote() << QString("Found the disk: %1").arg(diskIndex);
+            break;
         }
         else qDebug().noquote() << QString("Not the required disk");
     }
 
-    if(freeMountLetters.count() < 2)
+    if(freeMountLetters.count() < 1)
     {
         emit abort(QObject::tr("Too few free drive letters"));
         return;
     }
 
-    if(script.open(QIODevice::WriteOnly))
+    auto runDiskPartScript = [&](QString command) -> bool
     {
-        usbMainPart = freeMountLetters.at(0);
-        usbBootPart = freeMountLetters.at(1);
+        if(script.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream(&script);
+            qDebug().noquote() << command;
+            stream << command;
+        }
+        else
+        {
+            emit abort(QObject::tr("Failed to create a diskpart script"));
+            return false;
+        }
+        script.close();
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        if(res.first)
+        {
+            emit abort(QObject::tr("Failed to execute the diskpart script"));
+            return false;
+        }
+        return true;
+    };
 
-        usbMainPart.replace('\\', '/');
-        usbBootPart.replace('\\', '/');
+    usbMainPart = part + "/";
+    usbBootPart = freeMountLetters.at(0);
 
-        QTextStream stream(&script);
-        QString text = QString("select disk %1\n"
-                               "clean\n"
-                               "convert mbr\n"
-                               "create partition primary size=%2\n"
-                               "format fs=ntfs quick label=YourDroid-Android\n"
-                               "assign letter=%3\n"
-                               "create partition primary\n"
-                               "format fs=fat32 quick label=boot\n"
-                               "assign letter=%4\n")
-                .arg(QString::number(diskIndex), QString::number(newPartSize),
-                     usbMainPart.chopped(2),
-                     usbBootPart.chopped(2));
-        qDebug().noquote() << text;
-        stream << text;
+    //usbMainPart.replace('\\', '/');
+    usbBootPart.replace('\\', '/');
+
+
+    auto current = QOperatingSystemVersion::current();
+    if(current.majorVersion() == 10 && current.microVersion() >= 15063)
+    {
+        qDebug().noquote() << "This Windows version supports multiple partitions on a flash drive";
+
+        if(script.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream(&script);
+            QString command = QString("select disk %1\n"
+                                      "clean\n"
+                                      "convert mbr\n"
+                                      "create partition primary size=%2\n"
+                                      "format fs=ntfs quick label=YourDroid-Android\n"
+                                      "assign letter=%3\n"
+                                      "create partition primary\n"
+                                      "format fs=fat32 quick label=boot\n"
+                                      "assign letter=%4\n")
+                    .arg(QString::number(diskIndex), QString::number(newPartSize),
+                         usbMainPart.chopped(2),
+                         usbBootPart.chopped(2));
+            qDebug().noquote() << command;
+            stream << command;
+        }
+        else
+        {
+            emit abort(QObject::tr("Failed to create a diskpart script"));
+            return;
+        }
+        script.close();
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        if(res.first)
+        {
+            emit abort("Failed to execute the diskpart script");
+            return;
+        }
+        else
+        {
+            QFile file(usbBootPart + "/yourdroid_usb_boot");
+            file.open(QIODevice::WriteOnly);
+            file.close();
+            if(!global->insSet->installGrubUsb()) return;
+        }
     }
     else
     {
-        emit abort(QObject::tr("Failed to create a diskpart script"));
-        return;
-    }
-    script.close();
-    res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
-    if(res.first)
-    {
-        emit abort(QObject::tr("Failed to execute the diskpart script"));
-        return;
+        qDebug().noquote() << "This Windows version doesn't support multiple partitions on a flash drive";
+
+//        if(!runDiskPartScript(QString("select disk %1\n"
+//                                      "clean\n"
+//                                      "convert mbr\n"
+//                                      "create partition primary\n"
+//                                      "format fs=ntfs quick label=Temp\n"
+//                                      "assign letter=%2\n")
+//                              .arg(QString::number(diskIndex), usbMainPart.chopped(2)))) return;
+
+        char driveLetter = 'a' + diskIndex;
+        qDebug().noquote() << "The drive is" << driveLetter;
+
+
+        QString command = QString("d\n"
+                                  "n\n"
+                                  "\n"
+                                  "2\n"
+                                  "\n"
+                                  "+%1M\n"
+                                  "y\n"
+                                  "n\n"
+                                  "\n"
+                                  "1\n"
+                                  "\n"
+                                  "\n"
+                                  "y\n"
+                                  "w\n").arg(usbMainSize);
+        qDebug().noquote() << command;
+        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(qApp->applicationDirPath(), QString(driveLetter)),
+                        false, QStringList(), command);
+        if(res.first)
+        {
+            emit abort(QObject::tr("Failed to execute fdisk"));
+            return;
+        }
+
+        if(!runDiskPartScript("list volume\n")) return;
+
+        lst = res.second.split(QRegExp("\\s+"));
+        qDebug().noquote() << lst;
+
+        int i = lst.indexOf(usbMainPart.chopped(2));
+        qDebug().noquote() << "DriveLetter index: " << i;
+        if(i < 0)
+        {
+            emit abort(QObject::tr("Failed to find the drive letter"));
+            return;
+        }
+
+        QString volumeIndexStr = lst.at(i - 1);
+        int volumeIndex = volumeIndexStr.toInt();
+        qDebug().noquote() << "VolumeIndexString: " << volumeIndexStr << " VolumeIndexInt: " << volumeIndex;
+
+        if(!runDiskPartScript(QString("select disk %1\n"
+                                      "select partition 1\n"
+                                      "select volume %2\n"
+                                      "format fs=fat32 quick label=boot\n"
+                                      "assign letter=%3\n")
+                              .arg(QString::number(diskIndex), QString::number(volumeIndex), usbMainPart.chopped(2))))
+            return;
+
+        usbBootPart = usbMainPart;
+
+        QFile file(usbBootPart + "/yourdroid_usb_boot");
+        file.open(QIODevice::WriteOnly);
+        file.close();
+
+        qDebug().noquote() << "#### Boot partition is successfully created ####\nInstalling grub on it";
+
+        if(!global->insSet->installGrubUsb()) return;
+
+        command = "x\n"
+                  "f\n"
+                  "r\n"
+                  "w\n";
+        qDebug().noquote() << command;
+        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(qApp->applicationDirPath(), QString(driveLetter)),
+                        false, QStringList(), command);
+        if(res.first)
+        {
+            emit abort(QObject::tr("Failed to execute fdisk"));
+            return;
+        }
+
+        if(!runDiskPartScript(QString("select disk %1\n"
+                                      "select partition 1\n"
+                                      "select volume %2\n"
+                                      "format fs=ntfs quick label=YourDroid-Android\n"
+                                      "assign letter=%3\n")
+                              .arg(QString::number(diskIndex), QString::number(volumeIndex), usbMainPart.chopped(2))))
+            return;
     }
 
-    usbDiskIndex = diskIndex;
+
+    qDebug().noquote() << "Making main yourdroid_usb_cfg";
+    if(!QDir().exists(usbMainPart + "yourdroid_usb_cfg"))
+        MKDIR(usbMainPart + "yourdroid_usb_cfg");
+
+    qDebug().noquote() << "Making main config";
+    QFile config(usbMainPart + "yourdroid_usb_cfg/grub.cfg");
+    if(!config.open(QIODevice::WriteOnly))
+    {
+        emit abort(QObject::tr("Can't make a grub config"));
+        return;
+    }
+    config.close();
+
+    qDebug().noquote() << "Flash drive formated successfully, saving the data";
 
     QDir().mkdir(usbMainPart + "/yourdroid_usb_cfg");
     QFile file(usbMainPart + "/yourdroid_usb_cfg/yourdroid_formatted");
     file.open(QIODevice::WriteOnly);
     file.close();
 
-    if(global->insSet->installGrubUsb())
-    {
-        qDebug().noquote() << "Flash drive formated successfully, saving the data";
-
-        QString iniPath = usbMainPart + "yourdroid_usb_cfg/yourdroid_usb.cfg";
-        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
-        QSettings usbCfg(iniPath, QSettings::IniFormat);
-        usbCfg.setValue("main_size", usbMainSize);
-
-        iniPath = usbBootPart + "yourdroid_usb_boot.cfg";
-        qDebug().noquote() << QString("Saving usb data to %1").arg(iniPath);
-        QSettings usbBootCfg(iniPath, QSettings::IniFormat);
-        usbBootCfg.setValue("formatted", true);
-    }
-    else return;
-
-    //execAbort(QString("format %1 /q /v:android /fs:ntfs").arg(part));
 #undef returnFault
 #endif
 }

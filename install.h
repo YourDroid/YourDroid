@@ -54,6 +54,7 @@ class install : public QObject {
     QPair<int, QString> resCmd;
     bool resFile = false;
     bool sysTypeSfs; // img - false, sfs - true
+    void logWindowHandler(QtMsgType, QString);
 signals:
     void logWindow(QtMsgType, QString);
     void abort(QString);
@@ -61,6 +62,7 @@ signals:
     void fileEnded(int);
     void downloadEnded();
 public:
+    bool logWindowEnded = false;
     install(options*);
     const QVector<install::_installSet>& systemsVector() { return systems; }
     int cntSys() { return systems.count(); }
@@ -84,7 +86,7 @@ public:
             );
     QPair<bool, QString> mountImage(QString);
     void unmountImage();
-    void unpackSystem(sysImgExtractType);
+    void unpackSystem(sysImgExtractType, int);
     QString obsolutePath(QString);
     QStringList getDrives(QString);
     void formatPartExt4();

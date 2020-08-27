@@ -547,7 +547,7 @@ Try creating an .img file instead</source>
     <message>
         <location filename="window.cpp" line="428"/>
         <source>^Image path must not contain any spaces</source>
-        <translation>В путе до образа не должно быть пробелов</translation>
+        <translation>^В путе до образа не должно быть пробелов</translation>
     </message>
     <message>
         <location filename="window.cpp" line="434"/>

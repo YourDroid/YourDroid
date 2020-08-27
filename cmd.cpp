@@ -78,7 +78,9 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
     }
     else if(input.count()) //if "input" contains something
     {
-        long long int res = proc.write(input.toLatin1());
+        long long int res = proc.write(input.toUtf8());
+        proc.closeWriteChannel();
+        qDebug().noquote() << res << " bytes were written";
         if (res == -1) //if impossible to write the input data
         {
             QString message = QObject::tr("Couldn't put the input data to the input");

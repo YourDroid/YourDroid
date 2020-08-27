@@ -195,7 +195,8 @@ void Window::on_buttonRefreshInstall_clicked()
         {
             for(int i = 0; i < mountedDrives.count(); i++)
             {
-                if(QFile::exists(mountedDrives[i] + "yourdroid_usb_boot.cfg"))
+                if(QFile::exists(mountedDrives[i] + "yourdroid_usb_boot")
+                        || QFile::exists(mountedDrives[i] + "yourdroid_usb_boot.cfg"))
                 {
                     qDebug().noquote() << QString("%1 is a boot partition, skipping it")
                                           .arg(mountedDrives[i]);
@@ -216,6 +217,13 @@ void Window::on_buttonRefreshInstall_clicked()
 }
 
 void Window::on_installButtonMain_clicked()
+{
+    setUpdating(false);
+
+    setInstallPage();
+}
+
+void Window::setInstallPage()
 {
     ui->radioInstallOnDir->setChecked(true);
 
@@ -247,17 +255,20 @@ void Window::on_installButtonMain_clicked()
 #endif
         ui->comboBoot->addItem("Grub2 for tablets");
 
-        qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
-        auto choice = log::getLastPressedButton();
-        if(choice == QMessageBox::Yes)
+        if(updating == false)
         {
-            qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
-            ui->comboBoot->setCurrentText("Grub2 for tablets");
-        }
-        else
-        {
-            qDebug().noquote() << "No. Setting grub2 the default";
-            ui->comboBoot->setCurrentText("Grub2");
+            qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
+            auto choice = log::getLastPressedButton();
+            if(choice == QMessageBox::Yes)
+            {
+                qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
+                ui->comboBoot->setCurrentText("Grub2 for tablets");
+            }
+            else
+            {
+                qDebug().noquote() << "No. Setting grub2 the default";
+                ui->comboBoot->setCurrentText("Grub2");
+            }
         }
     }
 
@@ -268,6 +279,7 @@ void Window::on_installButtonMain_clicked()
     ui->comboVersionDown->clear();
     ui->radioDownload->setEnabled(false);
     QStringList androidNameList;
+    androidListDownloaded = true; //temporary
     if(!androidListDownloaded)
     {
         QVBoxLayout *layout = new QVBoxLayout(this);
@@ -353,7 +365,10 @@ void Window::on_installButtonMain_clicked()
     }
 
 
-    setWindowTitle(tr("YourDroid | Install"));
+    if(!updating) setWindowTitle(tr("YourDroid | Install"));
+    else setWindowTitle(tr("YourDroid | Update %1")
+                        .arg(global->insSet->systemsVector().begin()
+                             [ui->systemsTree->selectionModel()->selectedIndexes()[0].row()].name));
     ui->windows->setCurrentWidget(ui->installPage);
 }
 
@@ -484,63 +499,66 @@ void Window::on_buttonInstallInstall_clicked()
             return;
         }
     }
-    if((dir = ui->editDirForInstall->text()).length() == 0 && ui->radioDataToFolder->isChecked()
-            && !ui->radioInstallOnPart->isChecked() && !ui->radioInstallFlashDriveIns->isChecked()) {
-        qCritical().noquote() << tr("^The folder is not chosen");
-        end();
-        return;
-    }
-    if(dir.contains(' '))
+    if(!updating)
     {
-        qCritical().noquote() << QObject::tr("^The installation path must not contain any spaces");
-        end();
-        return;
-    }
-//    if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
-//        qCritical().noquote() << tr("^Choosen folder is root");
-//        end();
-//        return;
-//    }
-    if(!ui->editDirForInstall->hasAcceptableInput()) {
-        qCritical().noquote() << tr("^Invalid path");
-        end();
-        return;
-    }
-    //    if(!(new QDir())->exists(dir)) {
-    //        qCritical().noquote() << tr("^Selected folder does not exist");
-    //        end();
-    //        return;
-    //    }
-    if((name = ui->editName->text()).length() == 0) {
-        qCritical().noquote() << tr("^Did not fill in the name");
-        end();
-        return;
-    }
-    if((name = ui->editSizeDataInstall->text()).length() == 0 &&
-            !ui->radioDataToFolder->isChecked()) {
-        qCritical().noquote() << tr("^Did not fill in the size of data.img");
-        end();
-        return;
-    }
-    for(int i = 0; i < global->insSet->systemsVector().length(); i++) {
-        auto sys = (global->insSet->systemsVector())[i];
-        if(ui->editName->text() == sys.name) {
-            if((ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace == _typePlace::flash_drive) ||
-                    (!ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace != _typePlace::flash_drive))
-            {
-                qCritical().noquote() << QObject::tr("^The system with written name already exists");
-                end();
-                return;
+        if((dir = ui->editDirForInstall->text()).length() == 0 && ui->radioDataToFolder->isChecked()
+                && !ui->radioInstallOnPart->isChecked() && !ui->radioInstallFlashDriveIns->isChecked()) {
+            qCritical().noquote() << tr("^The folder is not chosen");
+            end();
+            return;
+        }
+        if(dir.contains(' '))
+        {
+            qCritical().noquote() << QObject::tr("^The installation path must not contain any spaces");
+            end();
+            return;
+        }
+        //    if((dir = ui->editDirForInstall->text()).length() == OS * 2 + 1 ) {
+        //        qCritical().noquote() << tr("^Choosen folder is root");
+        //        end();
+        //        return;
+        //    }
+        if(!ui->editDirForInstall->hasAcceptableInput()) {
+            qCritical().noquote() << tr("^Invalid path");
+            end();
+            return;
+        }
+        //    if(!(new QDir())->exists(dir)) {
+        //        qCritical().noquote() << tr("^Selected folder does not exist");
+        //        end();
+        //        return;
+        //    }
+        if((name = ui->editName->text()).length() == 0) {
+            qCritical().noquote() << tr("^Did not fill in the name");
+            end();
+            return;
+        }
+        if((name = ui->editSizeDataInstall->text()).length() == 0 &&
+                !ui->radioDataToFolder->isChecked()) {
+            qCritical().noquote() << tr("^Did not fill in the size of data.img");
+            end();
+            return;
+        }
+        for(int i = 0; i < global->insSet->systemsVector().length(); i++) {
+            auto sys = (global->insSet->systemsVector())[i];
+            if(ui->editName->text() == sys.name) {
+                if((ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace == _typePlace::flash_drive) ||
+                        (!ui->radioInstallFlashDriveIns->isChecked() && sys.typePlace != _typePlace::flash_drive))
+                {
+                    qCritical().noquote() << QObject::tr("^The system with written name already exists");
+                    end();
+                    return;
+                }
             }
         }
+        //    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
+        //        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
+        //        if(log::getLastPressedButton() == QMessageBox::Cancel) {
+        //            end();
+        //            return;
+        //        }
+        //    }
     }
-//    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
-//        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
-//        if(log::getLastPressedButton() == QMessageBox::Cancel) {
-//            end();
-//            return;
-//        }
-//    }
 
 #if LINUX
     QPair<bool, QString> result = global->insSet->mountImage(ui->editImageFromDisk->text());
@@ -614,7 +632,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     //installPath is defined at the begining of this function
 
-    global->insSet->addSystem(bootloader, typePlace, installPath, ui->editImageFromDisk->text(), ui->editName->text(), false);
+    if(!updating) global->insSet->addSystem(bootloader, typePlace, installPath, ui->editImageFromDisk->text(), ui->editName->text(), false);
     QFutureWatcher<void> *resMonitor = new QFutureWatcher<void>;
     connect(resMonitor, &QFutureWatcher<void>::finished, context, [&](){
         qApp->alert(this, 2000);
@@ -645,6 +663,7 @@ void Window::on_buttonInstallInstall_clicked()
     if(ui->radioInstallOnPart->isChecked() || ui->radioInstallFlashDriveIns->isChecked())
         progressSteps++;
     if(ui->radioDownload->isChecked()) progressSteps++;
+    if(updating) progressSteps -= 2;
     int step = 100 / progressSteps;
     qDebug().noquote() << "The number of progress steps is " << progressSteps;
     qDebug().noquote() << "Progress step is " << step;
@@ -680,11 +699,13 @@ void Window::on_buttonInstallInstall_clicked()
 #endif
     }, Qt::QueuedConnection);
 
-    auto logMain = [=](QtMsgType type, QString mess){
+    auto logMain = [=](QtMsgType type, QString mess, bool installMsg){
         QDebug(type).noquote() << mess;
+        qDebug().noquote() << "C'est tout bien!";
+        if(installMsg) global->insSet->logWindowEnded = true;
     };
     connect(global->insSet, &install::logWindow, context, [=](QtMsgType type, QString mess) {
-        emit logFromMainThread(type, mess);
+        emit logFromMainThread(type, mess, true);
     });
     connect(this, &Window::logFromMainThread, context, logMain);
     connect(this, &Window::setAborted, context, [=](bool a) {
@@ -706,12 +727,12 @@ void Window::on_buttonInstallInstall_clicked()
     auto res = QtConcurrent::run([=](){ // auto - QFuture
         bool abort = false;
         connect(global->insSet, &install::abort, context, [&](QString mes){
+            abort = true;
             emit setAborted(true);
             global->insSet->delBackSystem();
-            abort = true;
             emit logFromMainThread(QtCriticalMsg,
                                    tr("^Fatal error while installing: %1")
-                                   .arg(mes.isEmpty() ? "Message about error is empty" : mes));
+                                   .arg(mes.isEmpty() ? "Message about error is empty" : mes), false);
 #if LINUX
             global->insSet->unmountImage();
 #endif
@@ -757,7 +778,7 @@ void Window::on_buttonInstallInstall_clicked()
             emit progressAddStep();
         }
 
-        if(ui->radioInstallFlashDriveIns->isChecked())
+        if(ui->radioInstallFlashDriveIns->isChecked() && !updating)
         {
             qDebug().noquote() << tr("Formating flash drive and installing the bootloader (may take a while)...");
             emit sendMesToStausbar(tr("Formating flash drive and installing the bootloader (may take a while)..."));
@@ -765,7 +786,7 @@ void Window::on_buttonInstallInstall_clicked()
             CHECK_ABORT();
             emit progressAddStep();
         }
-        else if(ui->radioInstallOnPart->isChecked())
+        else if(ui->radioInstallOnPart->isChecked() && !updating)
         {
             qDebug().noquote() << tr("Formating the selected drive...");
             emit sendMesToStausbar(tr("Formating the selected drive..."));
@@ -774,25 +795,31 @@ void Window::on_buttonInstallInstall_clicked()
             emit progressAddStep();
         }
 
+        int numSys = -1;
+        if(updating)
+            numSys = ui->systemsTree->selectionModel()->selectedIndexes()[0].row();
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
         global->insSet->unpackSystem(static_cast<sysImgExtractType>
-                                     (ui->comboSysMountAs->currentIndex()));
+                                     (ui->comboSysMountAs->currentIndex()), numSys);
         CHECK_ABORT();
         emit progressAddStep();
 
-        qDebug().noquote() << tr("Creating data.img...");
-        emit sendMesToStausbar(tr("Creating data.img..."));
-        global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt(),
-                                      ui->radioDataToFolder->isChecked());
-        CHECK_ABORT();
-        emit progressAddStep();
+        if(!updating)
+        {
+            qDebug().noquote() << tr("Creating data.img...");
+            emit sendMesToStausbar(tr("Creating data.img..."));
+            global->insSet->createDataImg(ui->editSizeDataInstall->text().toInt(),
+                                          ui->radioDataToFolder->isChecked());
+            CHECK_ABORT();
+            emit progressAddStep();
 
-        qDebug().noquote() << tr("Installing and configuring bootloader...");
-        emit sendMesToStausbar(tr("Installing and configuring bootloader..."));
-        global->insSet->registerBootloader(ui->checkReplaceWinBootloader->isChecked());
-        CHECK_ABORT();
-        emit progressAddStep();
+            qDebug().noquote() << tr("Installing and configuring bootloader...");
+            emit sendMesToStausbar(tr("Installing and configuring bootloader..."));
+            global->insSet->registerBootloader(ui->checkReplaceWinBootloader->isChecked());
+            CHECK_ABORT();
+            emit progressAddStep();
+        }
 
 #if LINUX
         emit sendMesToStausbar(tr("Unmounting image..."));
@@ -941,4 +968,26 @@ void Window::on_radioInstallFlashDriveIns_clicked()
 void Window::on_radioInstallOnPart_clicked()
 {
     ui->comboBoot->setEnabled(true);
+}
+
+void Window::on_updateButtonMain_clicked()
+{
+    if(ui->systemsTree->selectedItems().isEmpty()) return;
+
+    setUpdating(true);
+
+    setInstallPage();
+}
+
+void Window::setUpdating(bool upd)
+{
+    updating = upd;
+
+    ui->groupWhere->setVisible(!upd);
+    ui->groupOtherInfo->setVisible(!upd);
+    ui->radioDataToImg->setVisible(!upd);
+    ui->radioDataToFolder->setVisible(!upd);
+    ui->labelSizeDataInstall->setVisible(!upd);
+    ui->editSizeDataInstall->setVisible(!upd);
+    ui->line->setVisible(!upd);
 }

@@ -13,6 +13,7 @@ struct _global
     const QString VERSION = VER_PRODUCTVERSION_STR;
     options * const set;
     install * const insSet;
+    bool updating = false;
     _global(options *s, install *ins) : set(s), insSet(ins) {}
 
 };

@@ -73,7 +73,7 @@
     <item row="1" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -124,6 +124,13 @@
            <widget class="QPushButton" name="buttonDeleteDelete">
             <property name="text">
              <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="updateButtonMain">
+            <property name="text">
+             <string>Update</string>
             </property>
            </widget>
           </item>
@@ -420,6 +427,9 @@
           </item>
           <item row="0" column="1" rowspan="2">
            <widget class="QGroupBox" name="groupWhere">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="title">
              <string>Output</string>
             </property>
@@ -523,7 +533,7 @@
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <layout class="QHBoxLayout" name="horizontalLayoutData">
                <item>
                 <widget class="QLabel" name="labelSizeDataInstall">
                  <property name="text">
@@ -592,7 +602,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QGroupBox" name="groupBox_2">
+           <widget class="QGroupBox" name="groupOtherInfo">
             <property name="title">
              <string>Other information</string>
             </property>
@@ -698,6 +708,7 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="updatePage"/>
       <widget class="QWidget" name="aboutPage">
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>

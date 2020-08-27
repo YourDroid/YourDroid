@@ -39,7 +39,7 @@ signals:
 
     void setAborted(int);
 
-    void logFromMainThread(QtMsgType, QString);
+    void logFromMainThread(QtMsgType, QString, bool);
 
     void proccessFinished();
 
@@ -96,7 +96,13 @@ private slots:
 
     void on_radioInstallOnPart_clicked();
 
+    void on_updateButtonMain_clicked();
+
 private:
+    void setInstallPage();
+
+    void setUpdating(bool);
+
     void androidDelete();
 
     void setLabelSetInfo();
@@ -123,6 +129,7 @@ private:
     bool androidListDownloaded = false;
     int progressSteps = 0;
     int currentSteps = 1;
+    bool updating = false;
 };
 
 #endif // WINDOW_H

@@ -102,6 +102,10 @@ int main(int argc, char *argv[])
         install ins(&set);
         ins.read();
 
+        qDebug().noquote() << "Major: " << QOperatingSystemVersion::current().majorVersion()
+                        << " Minor: " << QOperatingSystemVersion::current().minorVersion()
+                        << " Micro: " << QOperatingSystemVersion::current().microVersion();
+
         if(!set.installExt4fsd())
         {
             qWarning().noquote() << QObject::tr("^Ext2fsd driver is not installed. "
