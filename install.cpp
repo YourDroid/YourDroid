@@ -1175,7 +1175,7 @@ bool install::isInvalidImage(
             QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
             QFile(mountPoint + "/ramdisk.img").exists();
 #elif WIN
-    auto res = cmd::exec(QString("%1/data/7zip/7z.exe l %2")
+    auto res = cmd::exec(QString("%1/data/7zip/7z.exe l \"%2\"")
                          .arg(qApp->applicationDirPath(), iso));
     if(res.first != 0)
     {
@@ -1433,7 +1433,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
         QString advancedInfo = "";
 #elif WIN
         QPair<int, QString> expr;
-        res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
+        res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" %3 -o\"%4\"")
                                  .arg(qApp->applicationDirPath(), sys.image,
                                       file.remove(0, 1), place),
                                  false, QStringList(), filesExist ? "a\n" : "", true)).first;
@@ -1475,7 +1475,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
             bool res = false;
 #if WIN
             QPair<int, QString> expr;
-            res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x %2 %3 -o\"%4\"")
+            res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" %3 -o\"%4\"")
                                      .arg(qApp->applicationDirPath(), place + "/system.sfs",
                                           "system.img", place),
                                      false, QStringList(), filesExist ? "a\n" : "", true)).first;
@@ -1515,7 +1515,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
                                  .arg(qApp->applicationDirPath(), place + "/system.img",
                                       place + "/system"));
 #elif WIN
-            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x %2 -o\"%4\"")
+            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
                                  .arg(qApp->applicationDirPath(), place + "/system.img",
                                       place + "/system"));
 #endif
@@ -1592,12 +1592,19 @@ void install::downloadImage(QUrl url)
     if(loop != 0) delete loop;
     loop = new QEventLoop();
 
+    bool failed = false;
+
     if(downloader != 0) delete downloader;
     downloader = new Downloader;
     systems.back().image = qApp->applicationDirPath() + "/android.iso";
 
     QObject::connect(downloader, &Downloader::updateDownloadProgress,
                      this, &install::downloadProgress);
+
+    QObject::connect(downloader, &Downloader::error, [this, &failed](QString mess){
+        emit abort(QObject::tr("\nFailed downloading the image: %1").arg(mess));
+        failed = true;
+    });
 
     QObject::connect(downloader, &Downloader::ended, [this](){
         qDebug().noquote() << "Download is finished";
@@ -1606,9 +1613,9 @@ void install::downloadImage(QUrl url)
         emit downloadEnded();
     });
 
-    downloader->get(systems.back().image, url);
+    if(!downloader->get(systems.back().image, url)) return;
 
-    loop->exec();
+    if(!failed) loop->exec();
     qDebug().noquote() << "###### Download ended";
     _downloadEnded = false;
 }
@@ -1616,7 +1623,7 @@ void install::downloadImage(QUrl url)
 void install::delSystemFiles(int numSys) {
     qDebug().noquote() << "Deleting android files...";
 
-    emit abort("A FUCKING SCARY BLAH"); //omg I almost died
+    //emit abort("A FUCKING SCARY BLAH"); //omg I almost died
 
     if(systems[numSys].place.count() > 3)
     {
@@ -1650,6 +1657,7 @@ void install::delSystemFiles(int numSys) {
         sysDir.removeRecursively();
         sysDir.remove(systems[numSys].place + "/system");
     }
+    else qDebug().noquote() << "/system doesn't exist";
 
     QDir dataDir = systems[numSys].place + "/data";
     if(sysDir.exists())
@@ -1658,6 +1666,7 @@ void install::delSystemFiles(int numSys) {
         dataDir.removeRecursively();
         dataDir.remove(systems[numSys].place + "/data");
     }
+    else qDebug().noquote() << "/data doesn't exist";
 }
 
 void install::execBars(QProgressBar *progressins, QProgressBar *progressdel, QStatusBar *status) {
@@ -2137,7 +2146,7 @@ void install::formatFlashDrive()
         qDebug().noquote() << "DriveLetter index: " << i;
         if(i < 0)
         {
-            emit abort(QObject::tr("Failed to find the drive letter"));
+            emit abort(QObject::tr("Failed to find the volume index"));
             return;
         }
 

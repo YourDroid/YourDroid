@@ -7,7 +7,7 @@ void options::autowrite_set() {
 }
 
 void options::write_set(bool needSet, bool a, bool tb, bool con, _lang l) {
-    qDebug().noquote() << qApp->translate("log", "Writing settings...");
+    qDebug().noquote() << "### Saving settings... ";
 
     if(needSet) {
         arch = a;
@@ -32,23 +32,23 @@ void options::write_set(bool needSet, bool a, bool tb, bool con, _lang l) {
 #endif
     settings.endGroup();
 
-    //qDebug().noquote() << qApp->translate("log", "Settings wrote succesfull");
+    qDebug().noquote() << "--- Saving settings ended ---";
 }
 
 bool options::read_set(bool dflt) {
-    qDebug().noquote() << qApp->translate("log", "Reading settings...");
+    qDebug().noquote() << "### Reading settings...";
 
     QString language = QLocale::languageToString(QLocale::system().language());
-    qDebug().noquote() << language;
+    qDebug().noquote() << "System language is " << language;
     if(language == "Russian") language = "ru";
     else language = "en";
-    qDebug().noquote() << language;
+    qDebug().noquote() << "The language to translate to: " << language;
 
     bool existConf;
     if (!dflt) existConf = QFile::exists(qApp->applicationDirPath() + "/config.ini");
     else existConf = false;
     if(existConf) {
-        qDebug().noquote() << qApp->translate("log", "Settings does exist");
+        qDebug().noquote() << "Config file exists";
 
         QSettings settings("config.ini", QSettings::IniFormat);
 
@@ -59,8 +59,13 @@ bool options::read_set(bool dflt) {
         settings.endGroup();
 
         settings.beginGroup("feutures_of_pc");
-        arch = (settings.value("archeticture", "x86").toString() == "x86") ? 0 : 1;
-        tbios = (settings.value("type_of_bios", "uefi").toString() == "uefi") ? 1 : 0;
+        QString archStr = settings.value("archeticture", "x86").toString();
+        qDebug().noquote() << "Setting " << archStr;
+        arch = (archStr == "x86") ? 0 : 1;
+
+        QString tbiosStr = settings.value("type_of_bios", "uefi").toString();
+        qDebug().noquote() << "Setting" << tbiosStr;
+        tbios = (tbiosStr == "uefi") ? 1 : 0;
 #if WIN
         //efiMountPoint = settings.value("efi_part_mountpoint", "").toString();
         efiGuid = settings.value("efi_part_guid", "").toString();
@@ -68,41 +73,38 @@ bool options::read_set(bool dflt) {
         settings.endGroup();
     }
     else {
-        qDebug().noquote() << qApp->translate("log", "Settings does not exist or settings restoring default");
+        qDebug().noquote() << "Config file does not exist or user is restoring defaults";
         //mountEfiPart();
-        tbios = defbios();
-        arch = defarch();
         conEnable = false;
         lang = _langHelper::from_string(language.toStdString());
     }
+    qDebug().noquote() << "--- Reading settings ended ---";
     return existConf;
-
-    qDebug().noquote() << qApp->translate("log", "Settings read succesfull");
 }
 
 bool options::defbios() {
-    qDebug().noquote() << qApp->translate("log", "Defining type of bios...");
+    qDebug().noquote() << "# Defining type of bios...";
 #if LINUX
     bool efiExist = QDir().exists("/boot/efi");
     bool efibootmgr = !cmd().exec("efibootmgr").first;
     qDebug().noquote() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
     qDebug().noquote() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
-    return efiExist || efibootmgr;
+    return (tbios = efiExist || efibootmgr);
 #elif WIN
 
     bool ret;
-    auto expr = cmd::exec("bcdedit", true);
-    bool efiContain = expr.second.contains("efi");
+    auto expr = cmd::exec("bcdedit /v", true);
+    bool efiContain = expr.second.contains("winload.efi");
     qDebug().noquote()
-            << QObject::tr("Efi partition mounted: %1. Bcdedit output contains efi: %2. "
+            << QObject::tr("# Efi partition mounted: %1. Bcdedit output contains efi: %2. "
                            "So, type of bios is %3")
                .arg(efiMounted).arg(efiContain).arg((ret = efiContain) ? "uefi" : "bios");
-    return ret;
+    return (tbios = ret);
 #endif
 }
 
 bool options::defarch() {
-    qDebug().noquote() << qApp->translate("log", "Defining architecture...");
+    qDebug().noquote() << "# Defining architecture...";
 #if LINUX
     FILE *fp = popen("uname -m", "r");
 
@@ -112,117 +114,44 @@ bool options::defarch() {
 
     QString tarch = buf;
     qDebug().noquote() << (qApp->translate("log", "Uname returned ") + tarch);
-    return (tarch=="x86\n") ? 0 : 1;
+    return (arch = (tarch=="x86\n") ? 0 : 1);
 #elif WIN
-    auto res = cmd::exec("wmic OS get OSArchitecture");
-    if(res.first == 0)
+    QString archStr = QSysInfo::currentCpuArchitecture();
+    qDebug().noquote() << "# Current architecture is " << archStr;
+    if(archStr == "x86_64")
     {
-        qDebug().noquote() << "Can't execute wmic, trying another way";
-        SYSTEM_INFO inf;
-        GetNativeSystemInfo(&inf);
-        qDebug().noquote() << QString("Processor type is ") + char(inf.dwProcessorType + 48);
-        return inf.dwProcessorType;
+        qDebug().noquote() << "# Detected x64";
+        return (arch = true);
+    }
+    else if(archStr == "i386")
+    {
+        qDebug().noquote() << "# Detected x86";
+        return (arch = false);
     }
     else
     {
-        return res.second.contains("64");
+        qDebug().noquote() << "# Unknown architecture, setting x64";
+        return (arch = true);
     }
+
+//    auto res = cmd::exec("wmic OS get OSArchitecture");
+//    if(res.first == 0)
+//    {
+//        qDebug().noquote() << "Can't execute wmic, trying another way";
+//        SYSTEM_INFO inf;
+//        GetNativeSystemInfo(&inf);
+//        qDebug().noquote() << QString("Processor type is ") + char(inf.dwProcessorType + 48);
+//        return inf.dwProcessorType;
+//    }
+//    else
+//    {
+//        return res.second.contains("64");
+//    }
 
 #endif
 }
 
 #if WIN
-bool options::installExt4fsd()
-{
-    qDebug().noquote() << "Installing the ext2fsd driver";
-
-    if(QFile::exists("C:/windows/INF/ext2fsd.inf"))
-    {
-        qDebug().noquote() << "The driver is already installed";
-        ext2fsdDrvInstalled = true;
-        return true;
-    }
-
-//    auto res = cmd::exec(QString("%1/data/ext2fsd-driver/Setup.bat").arg(qApp->applicationDirPath()));
-//    if(res.first != 0)
-//    {
-//        qWarning().noquote() << "Fail";
-//        QFile::remove("C:/windows/inf/ext2fsd.inf");
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-
-
-//    if(QFile::exists(QString("%1/data/ext2fsd-driver/ext2fsd.sys").arg(qApp->applicationDirPath())))
-//    {
-//        qDebug().noquote() << "ext2fsd.sys exists and is going to be deleted";
-//        if(!QFile::remove(
-//                    QString("%1/data/ext2fsd-driver/ext2fsd.sys").arg(qApp->applicationDirPath())))
-//        {
-//            qWarning().noquote() << "Cannot delete ext2fsd.sys";
-//            ext2fsdDrvInstalled = false;
-//            return false;
-//        }
-//    }
-
-//    QString copyFrom = QString("%1/data/ext2fsd-driver/wxp/%2/ext2fsd.sys")
-//            .arg(qApp->applicationDirPath(), arch ? "amd64" : "i386");
-//    qDebug().noquote() << QString("Copying ") + copyFrom;
-//    if(!QFile::copy(copyFrom, qApp->applicationDirPath() + "/data/ext2fsd-driver/ext2fsd.sys"))
-//    {
-//        qWarning().noquote() << "Cannot copy ext2fsd.sys";
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-
-//    qDebug().noquote() << "Copying ext2fsd.inf";
-//    if(!QFile::copy(QString("%1/data/ext2fsd-driver/ext2fsd.inf").arg(qApp->applicationDirPath()),
-//                    "C:/windows/inf/ext2fsd.inf"))
-//    {
-//        qWarning().noquote() << "Cannot copy ext2fsd.inf";
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-
-//    QFile file("ext2fsd_ins.bat");
-//    if(!file.open(QIODevice::WriteOnly))
-//    {
-//        qWarning().noquote() << "Cannot create a script for installing ext2fsd";
-//        QFile::remove("C:/windows/inf/ext2fsd.inf");
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-//    QTextStream stream(&file);
-//    stream << QString("C:/windows/system32/rundll32.exe setupapi.dll,InstallHinfSection "
-//                      "DefaultInstall 132 %1/data/ext2fsd-driver/ext2fsd.inf")
-//              .arg(qApp->applicationDirPath());
-//    file.close();
-
-//    auto res = cmd::exec(QString("%1/ext2fsd_ins.bat").arg(qApp->applicationDirPath()));
-//    if(res.first != 0)
-//    {
-//        qWarning().noquote() << "Fail";
-//        QFile::remove("C:/windows/inf/ext2fsd.inf");
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-
-//    res = cmd::exec("net start ext2fsd");
-//    if(res.first != 0)
-//    {
-//        qWarning().noquote() << "Fail";
-//        QFile::remove("C:/windows/inf/ext2fsd.inf");
-//        ext2fsdDrvInstalled = false;
-//        return false;
-//    }
-
-//    QFile::remove(qApp->applicationDirPath() + "/data/ext2fsd-driver/ext2fsd.sys");
-
-    qDebug().noquote() << "Success";
-    ext2fsdDrvInstalled = true;
-    return true;
-}
-
 QPair<bool, QString> options::mountEfiPart()
 {
     if(!tbios) return QPair<bool, QString> (false, "");

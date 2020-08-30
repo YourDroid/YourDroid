@@ -14,16 +14,16 @@
 
 Window::Window(bool f, QWidget *parent) :
     QMainWindow(parent),
-    fierst(!f),
+    first(!f),
     ui(new Ui::Window)
 {
     if(global->set->tbios == false && OS == 0) {
-        qCritical().noquote() << tr("^This PC does not supported");
+        qCritical().noquote() << tr("^This PC is not supported");
     }
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
-    qDebug().noquote() << tr("Setting window");
+    qDebug().noquote() << "Setting window";
 
     ui->setupUi(this);
     setLabelSetInfo();
@@ -66,11 +66,10 @@ Window::Window(bool f, QWidget *parent) :
     setTaskProgress();
 #endif
 
-    if(fierst) Settings_clicked();
-    else returnMainWindow();
+    if(first) global->set->autowrite_set();
+    returnMainWindow();
 
-    qDebug().noquote() << "############## STARTED ##############";
-
+    qDebug().noquote() << "------------- STARTED -------------";
 }
 
 void Window::setLabelSetInfo() {
@@ -81,9 +80,13 @@ void Window::setLabelSetInfo() {
 
 void Window::retranslateUi(QString lang) {
     translator.load(QString("%1/translations/yourdroid_%2").arg(qApp->applicationDirPath(), lang));
+    qDebug().noquote() << "Loaded the ts file";
     qApp->installTranslator(&translator);
+    qDebug().noquote() << "Installed translator";
     ui->retranslateUi(this);
+    qDebug().noquote() << "Retranslated ui";
     ui->labelVersion->setText(QString("<b>") + tr("Version:") + QString(" ") + global->VERSION + "<\b>");
+    qDebug().noquote() << "Set the version label";
 }
 
 Window::~Window()
@@ -115,7 +118,7 @@ void Window::returnMainWindow() {
 
 void Window::Settings_clicked()
 {
-    if(!fierst) global->set->read_set(false);
+    if(!first) global->set->read_set(false);
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
 #if LINUX
@@ -130,11 +133,22 @@ void Window::Settings_clicked()
 
 void Window::on_applaySettings_clicked()
 {
-    if(langChanged) {
+    qDebug().noquote() << "Applying settings";
+    if((int)global->set->getLang() != ui->comboLanguageSettings->currentIndex()) {
         langChanged = false;
+        qDebug().noquote() << "Retranslating";
         //qInfo().noquote() << tr("^For applying language application should restart");
-        retranslateUi(QString::fromStdString(_langHelper::to_string(
-                                                 (_lang)ui->comboLanguageSettings->currentIndex())));
+        QString lang;
+        int langIndex = ui->comboLanguageSettings->currentIndex();
+        switch(langIndex)
+        {
+        case 0: lang = "en"; break;
+        case 1: lang = "ru"; break;
+        default: lang = "en";
+        }
+
+        qDebug().noquote() << "Language index: " << langIndex << " Language: " << lang;
+        retranslateUi(lang);
     }
     global->set->write_set(true, ui->arch->currentIndex(),
                            ui->typeBios->currentIndex(),
@@ -178,7 +192,7 @@ void Window::on_buttonRefreshInstall_clicked()
             ui->comboDriveSelect->addItems(mountedDrives);
         }
     }
-    if(global->set->ext2fsdDrvInstalled && ui->comboDriveSelect->count() > 0)
+    if(ui->comboDriveSelect->count() > 0)
         ui->radioInstallOnPart->setEnabled(true);
     else ui->radioInstallOnPart->setEnabled(false);
 
@@ -261,13 +275,16 @@ void Window::setInstallPage()
             auto choice = log::getLastPressedButton();
             if(choice == QMessageBox::Yes)
             {
-                qDebug().noquote() << "Yes. Setting grub2 for tablet the default";
+                qDebug().noquote() << "Yes. Setting grub2 for tablet the default and checking the "
+                                      "\"Replace Windows Bootloader\" box ";
                 ui->comboBoot->setCurrentText("Grub2 for tablets");
+                ui->checkReplaceWinBootloader->setChecked(true);
             }
             else
             {
                 qDebug().noquote() << "No. Setting grub2 the default";
                 ui->comboBoot->setCurrentText("Grub2");
+                ui->checkReplaceWinBootloader->setChecked(false);
             }
         }
     }
@@ -384,14 +401,14 @@ void Window::on_buttonChooseImage_clicked()
 void Window::on_back_settings_clicked()
 {
     emit on_applaySettings_clicked();
-    if(fierst) {
-        fierst = !fierst;
-        on_applaySettings_clicked();
+    if(first) {
+        first = !first;
+        //on_applaySettings_clicked();
         returnMainWindow();
     }
-    else if(lastPage == ui->settingsPage) Settings_clicked();
+    //else if(lastPage == ui->settingsPage) Settings_clicked();
     else if(lastPage == ui->mainWindowPage) returnMainWindow();
-    else if(lastPage == ui->aboutPage) on_buttonAboutMain_clicked();
+    //else if(lastPage == ui->aboutPage) on_buttonAboutMain_clicked();
     else if(lastPage == ui->installPage) on_installButtonMain_clicked();
     //else if(lastPage == ui->deletePage) on_deleteButtonMain_clicked();
 }
@@ -438,25 +455,30 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
 
+    installing = true;
+
     ui->progressInstall->setStyleSheet(QProgressBar().styleSheet());
     ui->progressInstall->setValue(0);
     auto setBlocked = [=](bool _blocked)
     {
+        if(_blocked) qDebug().noquote() << "Blocking the ui";
+        else qDebug().noquote() << "Unblocking the ui";
         _blocked = !_blocked;
-        ui->returnInstallButton->setEnabled(_blocked);
-        ui->buttonInstallInstall->setEnabled(_blocked);
-        ui->buttonRefreshInstall->setEnabled(_blocked);
+        ui->buttonsWidgetInstall->setEnabled(_blocked);
+        ui->mainWidgetInstall->setEnabled(_blocked);
+        ui->settingsMini->setEnabled(_blocked);
     };
     setBlocked(true);
     ui->statusbar->showMessage(tr("Checking"));
     qDebug().noquote() << tr("Checking data for install...");
     QString image, dir, name;
-    auto end = [=](QString mess = QObject::tr("Ready")){
+    auto end = [=, this](QString mess = QObject::tr("Ready")){
         ui->statusbar->showMessage(mess);
         setBlocked(false);
-        qDebug().noquote() << "KILLING THE POOR CONTEXT OBJECT";
+        qDebug().noquote() << "Killing the context object";
         delete context;
         //context = 0;
+        this->installing = false;
     };
     connect(this, &Window::ending, context, [=](QString mess) {
         end(mess);
@@ -473,21 +495,17 @@ void Window::on_buttonInstallInstall_clicked()
 //        return;
 //    }
 
+    if(ui->radioInstallOnPart->isChecked() && !QFile::exists("C:/windows/INF/ext2fsd.inf"))
+    {
+        qDebug().noquote() << "C:/windows/INF/ext2fsd.inf doesn't exist";
+        qCritical().noquote() << QObject::tr("^You should install Ext2fsd first to be able to install "
+                                             "to a separate partition:"
+                                             "https://sourceforge.net/projects/ext2fsd/files/latest/download");
+        end();
+        return;
+    }
+    else qDebug().noquote() << "C:/windows/INF/ext2fsd.inf exists";
     if(!ui->radioDownload->isChecked()) {
-        if(ui->editImageFromDisk->text().contains(' '))
-        {
-            qCritical().noquote() << QObject::tr("^Image path must not contain any spaces");
-            end();
-            return;
-        }
-
-        if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
-            qCritical().noquote() << QObject::tr("^Can't access the image");
-            end();
-            return;
-        }
-        else qDebug().noquote() << QObject::tr("Successfully opened the image");
-
         if((image = ui->editImageFromDisk->text()).length() == 0) {
             qCritical().noquote() << tr("^The image is not chosen");
             end();
@@ -498,6 +516,13 @@ void Window::on_buttonInstallInstall_clicked()
             end();
             return;
         }
+
+        if(!QFile(ui->editImageFromDisk->text()).open(QIODevice::ReadWrite)) {
+            qCritical().noquote() << QObject::tr("^Can't access the image");
+            end();
+            return;
+        }
+        else qDebug().noquote() << QObject::tr("Successfully opened the image");
     }
     if(!updating)
     {
@@ -578,7 +603,8 @@ void Window::on_buttonInstallInstall_clicked()
                  ui->editImageFromDisk->text()
 #endif
                  ))) {
-            if(ret != 2) qCritical().noquote() << QObject::tr("^Image has not needed files");
+            if(ret != 2) qCritical().noquote() << QObject::tr("^The downloaded image doesn't contain "
+                                                              "some of the required files");
             end();
             return;
         }
@@ -771,7 +797,7 @@ void Window::on_buttonInstallInstall_clicked()
 #endif
                      ))) {
                 if(ret != 2) global->insSet->abort(tr("The downloaded image doesn't contain "
-                                                      "all of the required files"));
+                                                      "some of the required files"));
             }
 
             CHECK_ABORT();
@@ -912,9 +938,26 @@ void Window::receiveMesToStatusbar(QString mes) {
 }
 
 void Window::closeEvent(QCloseEvent *event) {
+    if(installing)
+    {
+        QMessageBox::StandardButton resBtn = QMessageBox::warning(this, QObject::tr("Warning!"),
+                                                                  tr("Are you sure you want to close YourDroid "
+                                                                     "during installation?\n"
+                                                                     "Please note that this will not stop it, "
+                                                                     "you are just going to close the window and "
+                                                                     "the installation is going to continue "
+                                                                     "in the background!"),
+                                                                  QMessageBox::Cancel |
+                                                                  QMessageBox::Yes,
+                                                                  QMessageBox::Yes);
+        if (resBtn != QMessageBox::Yes) {
+            event->ignore();
+            return;
+        }
+    }
+
     exiting = true;
-    //emit closed();
-    //event->accept();
+    event->accept();
 }
 
 void Window::changeEvent(QEvent *event) {

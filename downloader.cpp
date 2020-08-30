@@ -41,10 +41,8 @@ bool Downloader::get(const QString& targetFile, const QUrl& url)
     QNetworkRequest request(url);
     // Обязательно разрешаем переходить по редиректам
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
-    qDebug() << "11111";
     // Запускаем скачивание
     m_currentReply = m_manager.get(request);
-    qDebug() << "666";
 
     // После чего сразу подключаемся к сигналам о готовности данных к чтению и обновлению прогресса скачивания
     connect(m_currentReply, &QNetworkReply::readyRead, this, &Downloader::onReadyRead);

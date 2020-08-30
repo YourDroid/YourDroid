@@ -83,6 +83,14 @@ int main(int argc, char *argv[])
         }
 #endif
         options set;
+        qDebug().noquote() << "########## System specifications ##########";
+        qDebug().noquote() << "# OS name - " << QOperatingSystemVersion::current().name();
+        qDebug().noquote() << "# OS version - Major: " << QOperatingSystemVersion::current().majorVersion()
+                        << " Minor: " << QOperatingSystemVersion::current().minorVersion()
+                        << " Micro: " << QOperatingSystemVersion::current().microVersion();
+        set.defarch();
+        set.defbios();
+        qDebug().noquote() << "###########################################";
         bool readSet = set.read_set(false);
 
         qDebug().noquote() << QObject::tr("Translating...");
@@ -101,17 +109,6 @@ int main(int argc, char *argv[])
 
         install ins(&set);
         ins.read();
-
-        qDebug().noquote() << "Major: " << QOperatingSystemVersion::current().majorVersion()
-                        << " Minor: " << QOperatingSystemVersion::current().minorVersion()
-                        << " Micro: " << QOperatingSystemVersion::current().microVersion();
-
-        if(!set.installExt4fsd())
-        {
-            qWarning().noquote() << QObject::tr("^Ext2fsd driver is not installed. "
-                                                "Please run install.bat as administrator first "
-                                                "otherwise some features will be unavailable");
-        }
 
         global = new _global(&set, &ins);
 

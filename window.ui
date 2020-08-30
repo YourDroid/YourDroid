@@ -48,13 +48,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonAboutMain">
-        <property name="text">
-         <string>About</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="settingsMini">
         <property name="text">
          <string>Settings</string>
@@ -70,7 +63,7 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
        <number>2</number>
@@ -102,20 +95,6 @@
             <string>Path</string>
            </property>
           </column>
-          <item>
-           <property name="text">
-            <string>jakis androind</string>
-           </property>
-           <property name="text">
-            <string>grub3</string>
-           </property>
-           <property name="text">
-            <string>calculator</string>
-           </property>
-           <property name="text">
-            <string>c: kurwa</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item>
@@ -359,356 +338,367 @@
       </widget>
       <widget class="QWidget" name="installPage">
        <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0" rowspan="2">
-           <widget class="QGroupBox" name="groupFrom">
-            <property name="title">
-             <string>Input</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="radioDownload">
-               <property name="text">
-                <string>Download &amp;ISO image</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QRadioButton" name="radioChooseFromDisk">
-               <property name="text">
-                <string>Choose I&amp;SO image from HD</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <item>
-                <widget class="QLabel" name="labelVersionDown">
-                 <property name="text">
-                  <string>Version:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboVersionDown"/>
-               </item>
-              </layout>
-             </item>
-             <item row="3" column="0">
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <item>
-                <widget class="QLineEdit" name="editImageFromDisk"/>
-               </item>
-               <item>
-                <widget class="QPushButton" name="buttonChooseImage">
-                 <property name="text">
-                  <string notr="true">...</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="4" column="0">
-              <spacer name="verticalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="0" column="1" rowspan="2">
-           <widget class="QGroupBox" name="groupWhere">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="title">
-             <string>Output</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
-             <item>
-              <widget class="QRadioButton" name="radioInstallOnPart">
-               <property name="text">
-                <string>Install to separate &amp;partition with loss of the data</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_20">
-               <item>
-                <widget class="QLabel" name="labelDriveSelect">
-                 <property name="text">
-                  <string>Select a drive to format:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboDriveSelect"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioInstallFlashDriveIns">
-               <property name="text">
-                <string>Install to flash drive</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_18">
-               <item>
-                <widget class="QComboBox" name="comboFlashDrivesInstall"/>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioInstallOnDir">
-               <property name="text">
-                <string>Install to directory</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_6">
-               <item>
-                <widget class="QLineEdit" name="editDirForInstall"/>
-               </item>
-               <item>
-                <widget class="QPushButton" name="buttonChooseDirForInstall">
-                 <property name="text">
-                  <string notr="true">...</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_9">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QGroupBox" name="groupBox">
-            <property name="title">
-             <string>System and data</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <widget class="QRadioButton" name="radioDataToImg">
-               <property name="text">
-                <string>Create an .img file for data</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayoutData">
-               <item>
-                <widget class="QLabel" name="labelSizeDataInstall">
-                 <property name="text">
-                  <string>Size of data.img(mb):</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="editSizeDataInstall"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioDataToFolder">
-               <property name="text">
-                <string>Create a folder for data (only for ext4 partitions!)</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_19">
-               <item>
-                <widget class="QLabel" name="labelSysMountAs">
-                 <property name="text">
-                  <string>Extract /system to:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboSysMountAs">
-                 <item>
-                  <property name="text">
-                   <string>.img (read-write)</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>.sfs (read-only)</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QGroupBox" name="groupOtherInfo">
-            <property name="title">
-             <string>Other information</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
-                <widget class="QLabel" name="labelName">
-                 <property name="text">
-                  <string>Title:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="editName"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QLabel" name="labelBoot">
-                 <property name="text">
-                  <string>Bootloader:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBoot"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkReplaceWinBootloader">
-               <property name="text">
-                <string>Replace Windows bootloader 
-(the only way for some tablets)</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_7">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <item>
-           <widget class="QPushButton" name="returnInstallButton">
-            <property name="text">
-             <string>To main menu</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonRefreshInstall">
-            <property name="text">
-             <string>Refresh</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonInstallInstall">
-            <property name="text">
-             <string>Install</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="2" column="0">
+        <item row="5" column="0">
          <widget class="QProgressBar" name="progressInstall">
           <property name="value">
            <number>24</number>
           </property>
          </widget>
         </item>
+        <item row="6" column="0">
+         <widget class="QWidget" name="buttonsWidgetInstall" native="true">
+          <layout class="QVBoxLayout" name="layout_123">
+           <item>
+            <layout class="QHBoxLayout" name="layout_8">
+             <item>
+              <widget class="QPushButton" name="returnInstallButton">
+               <property name="text">
+                <string>To main menu</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonRefreshInstall">
+               <property name="text">
+                <string>Refresh</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonInstallInstall">
+               <property name="text">
+                <string>Install</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QWidget" name="mainWidgetInstall" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0" rowspan="2">
+              <widget class="QGroupBox" name="groupFrom">
+               <property name="title">
+                <string>Input</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_5">
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="radioDownload">
+                  <property name="text">
+                   <string>Download &amp;ISO image</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QRadioButton" name="radioChooseFromDisk">
+                  <property name="text">
+                   <string>Choose I&amp;SO image from HD</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="labelVersionDown">
+                    <property name="text">
+                     <string>Version:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboVersionDown"/>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_5">
+                  <item>
+                   <widget class="QLineEdit" name="editImageFromDisk"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="buttonChooseImage">
+                    <property name="text">
+                     <string notr="true">...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="4" column="0">
+                 <spacer name="verticalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QGroupBox" name="groupOtherInfo">
+               <property name="title">
+                <string>Other information</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QLabel" name="labelName">
+                    <property name="text">
+                     <string>Title:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="editName"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QLabel" name="labelBoot">
+                    <property name="text">
+                     <string>Bootloader:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBoot"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkReplaceWinBootloader">
+                  <property name="text">
+                   <string>Replace Windows bootloader 
+(the only way for some tablets)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="0" column="1" rowspan="2">
+              <widget class="QGroupBox" name="groupWhere">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="title">
+                <string>Output</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_7">
+                <item>
+                 <widget class="QRadioButton" name="radioInstallOnPart">
+                  <property name="text">
+                   <string>Install to separate &amp;partition with loss of the data</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_20">
+                  <item>
+                   <widget class="QLabel" name="labelDriveSelect">
+                    <property name="text">
+                     <string>Select a drive to format:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboDriveSelect"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="radioInstallFlashDriveIns">
+                  <property name="text">
+                   <string>Install to flash drive</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_18">
+                  <item>
+                   <widget class="QComboBox" name="comboFlashDrivesInstall"/>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="radioInstallOnDir">
+                  <property name="text">
+                   <string>Install to directory</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QLineEdit" name="editDirForInstall"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="buttonChooseDirForInstall">
+                    <property name="text">
+                     <string notr="true">...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_9">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QGroupBox" name="groupBox">
+               <property name="title">
+                <string>System and data</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <item>
+                 <widget class="QRadioButton" name="radioDataToImg">
+                  <property name="text">
+                   <string>Create an .img file for data</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayoutData">
+                  <item>
+                   <widget class="QLabel" name="labelSizeDataInstall">
+                    <property name="text">
+                     <string>Size of data.img(mb):</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="editSizeDataInstall"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="radioDataToFolder">
+                  <property name="text">
+                   <string>Create a folder for data (only for ext4 partitions!)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Line" name="line">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_19">
+                  <item>
+                   <widget class="QLabel" name="labelSysMountAs">
+                    <property name="text">
+                     <string>Extract /system to:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboSysMountAs">
+                    <item>
+                     <property name="text">
+                      <string>.img (read-write)</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>.sfs (read-only)</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="updatePage"/>
       <widget class="QWidget" name="aboutPage">
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
@@ -717,7 +707,7 @@
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;Description:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-style:italic;&quot;&gt;The open-source program installing android to pc(android x86)&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:11pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;

@@ -119,7 +119,7 @@ private:
     void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *);
     QTranslator translator;
-    bool fierst;
+    bool first;
     bool exiting = false;
     bool langChanged = false;
     //int thisIsTablet = 2; //0 - no; 1 - yes; 2 - not set yet
@@ -130,6 +130,7 @@ private:
     int progressSteps = 0;
     int currentSteps = 1;
     bool updating = false;
+    bool installing = false;
 };
 
 #endif // WINDOW_H

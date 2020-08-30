@@ -47,7 +47,6 @@ public:
     bool defbios();
     bool defarch();
 #if WIN
-    bool installExt4fsd();
     QString getEfiMountPoint() const { return efiMountPoint; }
     QPair<bool, QString> mountEfiPart();
     bool isEfiPartMounted() { return efiMounted; }
