@@ -22,10 +22,10 @@ public:
 private:
     _lang lang;
     bool needSave = false;
-    bool tbios;
-    bool arch;
+    bool tbios = true;
+    bool arch = true;
+    bool downloadList = true;
     const bool os = OS;
-    bool conEnable = false;
 #if WIN
     QString efiGuid;
     QString efiMountPoint;
@@ -34,12 +34,10 @@ private:
     bool ext2fsdDrvInstalled = false;
 #endif
 public slots:
-    void write_set(bool, bool, bool, bool, _lang);
+    void write_set(bool, bool, bool, _lang, bool);
 public:
     bool getBios() const { return tbios; }
     bool getArch() const { return arch; }
-    bool getConEnable() const { return conEnable; }
-    void setConEnable(bool con) { conEnable = con; }
     _lang getLang() { return lang; }
     void setLang(_lang l) { lang = l; }
     void autowrite_set();

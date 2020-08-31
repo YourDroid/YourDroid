@@ -8,11 +8,11 @@
 
 class console : public QPlainTextEdit {
     Q_OBJECT
-    void keyPressEvent(QKeyEvent *) {}
-    void mousePressEvent(QMouseEvent *) { }
-    void mouseDoubleClickEvent(QMouseEvent *) {}
-    void contextMenuEvent(QContextMenuEvent *) {}
-    void focusInEvent(QFocusEvent *) { }
+//    void keyPressEvent(QKeyEvent *) {}
+//    void mousePressEvent(QMouseEvent *) { }
+//    void mouseDoubleClickEvent(QMouseEvent *) {}
+//    void contextMenuEvent(QContextMenuEvent *) {}
+//    void focusInEvent(QFocusEvent *) { }
     void closeEvent(QCloseEvent *event) { emit hided(); hide(); event->ignore(); }
 //    bool event(QEvent *);
 //    bool gestureEvent(QGestureEvent *);

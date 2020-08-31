@@ -12,9 +12,11 @@ console::console(QWidget *parent) :
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::white);
     setPalette(p);
-    setFixedSize(600, 400);
+    setReadOnly(true);
+    resize(600, 400);
+
     //grabGesture(Qt::SwipeGesture);
-    QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
+    //QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
 }
 
 void console::output(QString mes, Qt::GlobalColor color) {

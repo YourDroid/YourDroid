@@ -50,8 +50,6 @@ signals:
     void progressAddStep();
 
 public slots:
-    void consoleHided();
-
     void returnMainWindow();
 
     void Settings_clicked();
@@ -98,6 +96,8 @@ private slots:
 
     void on_updateButtonMain_clicked();
 
+    void on_checkEnableConSettings_stateChanged(int arg1);
+
 private:
     void setInstallPage();
 
@@ -131,6 +131,7 @@ private:
     int currentSteps = 1;
     bool updating = false;
     bool installing = false;
+    bool restoredDefaults = false;
 };
 
 #endif // WINDOW_H

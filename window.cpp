@@ -49,6 +49,9 @@ Window::Window(bool f, QWidget *parent) :
     //        taskBarProgress->setValue(val);
     //    });
     //connect(ui->progressDelete, &QProgressBar::valueChanged, taskBarProgress, &QWinTaskbarProgress::setValue);
+    connect(log::getConsole(), &console::hided, [=](){
+        ui->checkEnableConSettings->setChecked(false);
+    });
 
     //ui->progressDelete->setHidden(true);
     ui->progressInstall->setAlignment(Qt::AlignCenter);
@@ -61,6 +64,8 @@ Window::Window(bool f, QWidget *parent) :
     ui->buttonInstallInstall->setShortcut(Qt::Key_Return);
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
+
+    log::consoleSetParent(this);
 
 #if WIN
     setTaskProgress();
@@ -121,10 +126,10 @@ void Window::Settings_clicked()
     if(!first) global->set->read_set(false);
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
+    ui->downloadListCheck->setChecked(global->set->downloadList);
 #if LINUX
     ui->winVer->setEnabled(false);
 #endif
-    ui->checkEnableConSettings->setChecked(global->set->getConEnable());
     ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
     //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
@@ -134,37 +139,40 @@ void Window::Settings_clicked()
 void Window::on_applaySettings_clicked()
 {
     qDebug().noquote() << "Applying settings";
-    if((int)global->set->getLang() != ui->comboLanguageSettings->currentIndex()) {
+
+    QString lang;
+    int langIndex = ui->comboLanguageSettings->currentIndex();
+    switch(langIndex)
+    {
+    case 0: lang = "en"; break;
+    case 1: lang = "ru"; break;
+    default: lang = "en";
+    }
+    qDebug().noquote() << "Language index: " << langIndex << " Language: " << lang
+                       << "Current language:" << translator.language();
+
+    if(translator.language() != lang) {
         langChanged = false;
         qDebug().noquote() << "Retranslating";
-        //qInfo().noquote() << tr("^For applying language application should restart");
-        QString lang;
-        int langIndex = ui->comboLanguageSettings->currentIndex();
-        switch(langIndex)
-        {
-        case 0: lang = "en"; break;
-        case 1: lang = "ru"; break;
-        default: lang = "en";
-        }
-
-        qDebug().noquote() << "Language index: " << langIndex << " Language: " << lang;
         retranslateUi(lang);
     }
     global->set->write_set(true, ui->arch->currentIndex(),
                            ui->typeBios->currentIndex(),
-                           ui->checkEnableConSettings->checkState() == Qt::Checked,
-                           (_lang)ui->comboLanguageSettings->currentIndex());
-    log::setEnabledCon(ui->checkEnableConSettings->checkState() == Qt::Checked);
+                           (_lang)ui->comboLanguageSettings->currentIndex(),
+                           ui->downloadListCheck->isChecked());
     setLabelSetInfo();
+    restoredDefaults = false;
 }
 
 void Window::on_restoreSettings_clicked()
 {
+    qDebug().noquote() << "Restoring defaults";
+    restoredDefaults = true;
     global->set->read_set(true);
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
-    ui->checkEnableConSettings->setChecked(global->set->getConEnable());
     ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
+    ui->downloadListCheck->setChecked(global->set->downloadList);
 }
 
 void Window::on_buttonRefreshInstall_clicked()
@@ -296,7 +304,7 @@ void Window::setInstallPage()
     ui->comboVersionDown->clear();
     ui->radioDownload->setEnabled(false);
     QStringList androidNameList;
-    androidListDownloaded = true; //temporary
+    if(!global->set->downloadList) androidListDownloaded = true;
     if(!androidListDownloaded)
     {
         QVBoxLayout *layout = new QVBoxLayout(this);
@@ -477,7 +485,6 @@ void Window::on_buttonInstallInstall_clicked()
         setBlocked(false);
         qDebug().noquote() << "Killing the context object";
         delete context;
-        //context = 0;
         this->installing = false;
     };
     connect(this, &Window::ending, context, [=](QString mess) {
@@ -956,6 +963,7 @@ void Window::closeEvent(QCloseEvent *event) {
         }
     }
 
+    log::setEnabledCon(false);
     exiting = true;
     event->accept();
 }
@@ -964,13 +972,6 @@ void Window::changeEvent(QEvent *event) {
     //    if(event->type() == QEvent::WindowStateChange) emit deactived();
     //    else if(event->type() == QEvent::WindowActivate) emit actived();
     event->accept();
-}
-
-void Window::consoleHided() {
-    if(exiting) return;
-    global->set->setConEnable(false);
-    global->set->autowrite_set();
-    ui->checkEnableConSettings->setChecked(false);
 }
 
 void Window::on_comboLanguageSettings_currentIndexChanged(int index)
@@ -1033,4 +1034,9 @@ void Window::setUpdating(bool upd)
     ui->labelSizeDataInstall->setVisible(!upd);
     ui->editSizeDataInstall->setVisible(!upd);
     ui->line->setVisible(!upd);
+}
+
+void Window::on_checkEnableConSettings_stateChanged(int arg1)
+{
+    log::setEnabledCon(arg1, this);
 }

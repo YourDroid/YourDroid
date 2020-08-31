@@ -3,23 +3,23 @@
 #include "cmd.h"
 
 void options::autowrite_set() {
-    write_set(false, arch, tbios, conEnable, lang);
+    write_set(false, arch, tbios, lang, downloadList);
 }
 
-void options::write_set(bool needSet, bool a, bool tb, bool con, _lang l) {
+void options::write_set(bool needSet, bool a, bool tb, _lang l, bool _downloadList) {
     qDebug().noquote() << "### Saving settings... ";
 
     if(needSet) {
         arch = a;
         tbios = tb;
-        conEnable = con;
         lang = l;
+        downloadList = _downloadList;
     }
 
     QSettings settings("config.ini", QSettings::IniFormat);
 
     settings.beginGroup("settings");
-    settings.setValue("enable_debug_console", con);
+    settings.setValue("download_list", downloadList);
     settings.setValue("language", QString::fromStdString(_langHelper::to_string(lang)));
     settings.endGroup();
 
@@ -53,7 +53,7 @@ bool options::read_set(bool dflt) {
         QSettings settings("config.ini", QSettings::IniFormat);
 
         settings.beginGroup("settings");
-        conEnable = settings.value("enable_debug_console", false).toBool();
+        downloadList = settings.value("download_list", true).toBool();
 
         lang = _langHelper::from_string(settings.value("language", language).toString().toStdString());
         settings.endGroup();
@@ -74,8 +74,9 @@ bool options::read_set(bool dflt) {
     }
     else {
         qDebug().noquote() << "Config file does not exist or user is restoring defaults";
-        //mountEfiPart();
-        conEnable = false;
+        defarch();
+        defbios();
+        downloadList = true;
         lang = _langHelper::from_string(language.toStdString());
     }
     qDebug().noquote() << "--- Reading settings ended ---";

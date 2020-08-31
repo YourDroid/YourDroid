@@ -48,6 +48,16 @@
        </spacer>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkEnableConSettings">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Show the log</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="settingsMini">
         <property name="text">
          <string>Settings</string>
@@ -66,7 +76,7 @@
     <item row="2" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -250,12 +260,13 @@
               </layout>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkEnableConSettings">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
+              <widget class="QCheckBox" name="downloadListCheck">
                <property name="text">
-                <string>Output debugging console</string>
+                <string>Download the list of links to android images
+(uncheck if YourDroid crashes when downloading it)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -273,8 +284,8 @@
               </spacer>
              </item>
             </layout>
-            <zorder>checkEnableConSettings</zorder>
             <zorder>verticalSpacer_5</zorder>
+            <zorder>downloadListCheck</zorder>
            </widget>
           </item>
          </layout>

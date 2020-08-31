@@ -57,12 +57,12 @@ int main(int argc, char *argv[])
         qRegisterMetaType<QTextCursor>("QTextCursor");
         qRegisterMetaType<QTextBlock>("QTextBlock");
         qInstallMessageHandler(log::message);
+
+        log::init();
 #if LINUX
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
             system("touch ~/.config/QtProject/qtlogging.ini");
-#endif
-        //console *widget = log::init();
-#if LINUX
+
         int uid = geteuid();
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
         if(uid != 0) {
@@ -90,6 +90,10 @@ int main(int argc, char *argv[])
                         << " Micro: " << QOperatingSystemVersion::current().microVersion();
         set.defarch();
         set.defbios();
+        auto screenSize = QGuiApplication::primaryScreen()->geometry();
+        qDebug().noquote() << "# Screen resolution: " << screenSize.height()
+                           << "x" << screenSize.width();
+        qDebug() << "OpenSSL version:" << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString() << QSslSocket::sslLibraryVersionString();
         qDebug().noquote() << "###########################################";
         bool readSet = set.read_set(false);
 
@@ -98,8 +102,8 @@ int main(int argc, char *argv[])
         translator.load("yourdroid_" + QString::fromStdString(_langHelper::to_string(set.getLang())));
         app.installTranslator(&translator);
 
-        qDebug().noquote() << QObject::tr("Setting debug console...");
-        if((argc == 2 && argv[1] == "c") || set.getConEnable()) log::setEnabledCon(true);
+        //qDebug().noquote() << QObject::tr("Setting debug console...");
+        //if((argc == 2 && QString(argv[1]) == "c")) log::setEnabledCon(true);
 //        qDebug().noquote() << "fix";
 
 //        *(int*)0 = 0;

@@ -25,44 +25,40 @@ QMessageBox::StandardButtons log::lastPressedButton;
 //   return TRUE;
 //}
 
-void log::setEnabledCon(bool c) {
-//    static bool open = false, succes = false;
-//    static HWND hWnd;
-//    if(c)
-//    {
-//        if(!open)
-//        {
-//            FreeConsole();        //на всякий случай
-//            if ((succes = AllocConsole()))
-//            {
-//                open = true;
-
-//                int hCrt = _open_osfhandle((long)
-//                                           GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
-//                *stdout = *(::_fdopen(hCrt, "w"));
-//                ::setvbuf(stdout, NULL, _IONBF, 0);
-//                //        *stderr = *(::_fdopen(hCrt, "w"));
-//                //        ::setvbuf(stderr, NULL, _IONBF, 0);
-//                EnumWindows(EnumWndProc, (LPARAM)&hWnd);
-//            }
-//            else return;
-//        }
-//        else
-//        {
-//            ShowWindow(hWnd, SW_SHOW);
-//        }
-//    }
-//    else if(open)
-//    {
-//        ShowWindow(hWnd, SW_HIDE);
-//    }
-//    return;
+void log::setEnabledCon(bool c, QWidget *parent) {
+    if(c)
+    {
+        if(parent != 0)
+        {
+            QRect newGeometry = con->geometry();
+            int newX = parent->width() + parent->geometry().x();
+            int screenWidth =
+                    QGuiApplication::primaryScreen()->geometry().width();
+            if(newX + 600 > screenWidth)
+            {
+                newX = screenWidth - 600;
+            }
+            newGeometry.setX(newX);
+            newGeometry.setY(parent->y() + 30);
+            newGeometry.setWidth(600);
+            newGeometry.setHeight(400);
+            con->setGeometry(newGeometry);
+        }
+        con->show();
+    }
+    else con->hide();
 }
 
 console *log::init() {
-    con = new console;
+    con = new console();
     con->setWindowTitle(QString("YourDroid | %1").arg(QObject::tr("Debug console")));
     return con;
+}
+
+void log::consoleSetParent(QWidget *parent)
+{
+    con->setParent(parent);
+    con->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
 }
 
 void log::message(QtMsgType level, const QMessageLogContext &context, const QString &message) {
@@ -127,7 +123,7 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     case QtFatalMsg: _color = Qt::red; break;
     default: _color = Qt::white; break;
     }
-    //con->output(typeName + QString(' ') + mess, _color);
+    con->output(typeName + QString(' ') + mess, _color);
 
     //if(mess.isEmpty()) return;
     if(window) {

@@ -14,7 +14,9 @@ class log {
 public:
     static QMessageBox::StandardButtons getLastPressedButton() { return lastPressedButton; }
     static console *init();
-    static void setEnabledCon(bool);
+    static void consoleSetParent(QWidget *parent);
+    static console *getConsole() { return con; }
+    static void setEnabledCon(bool, QWidget * = 0);
     static void message(QtMsgType, const QMessageLogContext&, const QString&);
 };
 
