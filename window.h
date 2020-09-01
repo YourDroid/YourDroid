@@ -98,6 +98,14 @@ private slots:
 
     void on_checkEnableConSettings_stateChanged(int arg1);
 
+    void on_radioDownload_clicked();
+
+    void on_radioChooseFromDisk_clicked();
+
+    void on_radioDataToImg_clicked();
+
+    void on_radioDataToFolder_clicked();
+
 private:
     void setInstallPage();
 

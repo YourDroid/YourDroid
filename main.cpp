@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         auto screenSize = QGuiApplication::primaryScreen()->geometry();
         qDebug().noquote() << "# Screen resolution: " << screenSize.height()
                            << "x" << screenSize.width();
-        qDebug() << "OpenSSL version:" << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString() << QSslSocket::sslLibraryVersionString();
+        qDebug() << "# OpenSSL version:" << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString() << QSslSocket::sslLibraryVersionString();
         qDebug().noquote() << "###########################################";
         bool readSet = set.read_set(false);
 

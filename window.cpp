@@ -248,11 +248,15 @@ void Window::on_installButtonMain_clicked()
 void Window::setInstallPage()
 {
     ui->radioInstallOnDir->setChecked(true);
+    on_radioInstallOnDir_clicked();
 
     ui->radioDataToImg->setChecked(true);
+    on_radioDataToImg_clicked();
 
     ui->radioDownload->setEnabled(false);
+
     ui->radioChooseFromDisk->setChecked(true);
+    on_radioChooseFromDisk_clicked();
 
     //ui->progressInstall->setRange(0, 100);
     ui->comboBoot->clear();
@@ -1002,16 +1006,50 @@ void Window::on_radioInstallOnDir_clicked()
     //ui->comboFlashDrivesInstall->setEnabled(false);
     ui->editDirForInstall->setEnabled(true);
     ui->buttonChooseDirForInstall->setEnabled(true);
+    ui->checkReplaceWinBootloader->setEnabled(true);
+    ui->radioDataToFolder->setEnabled(false);
+    if(ui->radioDataToFolder->isChecked())
+        ui->radioDataToImg->setChecked(true);
+
+    ui->comboDriveSelect->setEnabled(false);
+    ui->labelDriveSelect->setEnabled(false);
+
+    ui->comboFlashDrivesInstall->setEnabled(false);
+
+    ui->editDirForInstall->setEnabled(true);
+    ui->buttonChooseDirForInstall->setEnabled(true);
 }
 
 void Window::on_radioInstallFlashDriveIns_clicked()
 {
     ui->comboBoot->setEnabled(false);
+    ui->checkReplaceWinBootloader->setEnabled(false);
+    ui->radioDataToFolder->setEnabled(false);
+    if(ui->radioDataToFolder->isChecked())
+        ui->radioDataToImg->setChecked(true);
+
+    ui->comboDriveSelect->setEnabled(false);
+    ui->labelDriveSelect->setEnabled(false);
+
+    ui->comboFlashDrivesInstall->setEnabled(true);
+
+    ui->editDirForInstall->setEnabled(false);
+    ui->buttonChooseDirForInstall->setEnabled(false);
 }
 
 void Window::on_radioInstallOnPart_clicked()
 {
     ui->comboBoot->setEnabled(true);
+    ui->checkReplaceWinBootloader->setEnabled(true);
+    ui->radioDataToFolder->setEnabled(true);
+
+    ui->comboDriveSelect->setEnabled(true);
+    ui->labelDriveSelect->setEnabled(true);
+
+    ui->comboFlashDrivesInstall->setEnabled(false);
+
+    ui->editDirForInstall->setEnabled(false);
+    ui->buttonChooseDirForInstall->setEnabled(false);
 }
 
 void Window::on_updateButtonMain_clicked()
@@ -1039,4 +1077,34 @@ void Window::setUpdating(bool upd)
 void Window::on_checkEnableConSettings_stateChanged(int arg1)
 {
     log::setEnabledCon(arg1, this);
+}
+
+void Window::on_radioDownload_clicked()
+{
+    ui->comboVersionDown->setEnabled(true);
+    ui->labelVersionDown->setEnabled(true);
+
+    ui->editImageFromDisk->setEnabled(false);
+    ui->buttonChooseImage->setEnabled(false);
+}
+
+void Window::on_radioChooseFromDisk_clicked()
+{
+    ui->comboVersionDown->setEnabled(false);
+    ui->labelVersionDown->setEnabled(false);
+
+    ui->editImageFromDisk->setEnabled(true);
+    ui->buttonChooseImage->setEnabled(true);
+}
+
+void Window::on_radioDataToImg_clicked()
+{
+    ui->editSizeDataInstall->setEnabled(true);
+    ui->labelSizeDataInstall->setEnabled(true);
+}
+
+void Window::on_radioDataToFolder_clicked()
+{
+    ui->editSizeDataInstall->setEnabled(false);
+    ui->labelSizeDataInstall->setEnabled(false);
 }
