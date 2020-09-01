@@ -15,6 +15,10 @@ console::console(QWidget *parent) :
     setReadOnly(true);
     resize(600, 400);
 
+    connect(this, &console::consoleWriteMess, this, [=](QString mess, Qt::GlobalColor color){
+        output(mess, color);
+    }, Qt::QueuedConnection);
+
     //grabGesture(Qt::SwipeGesture);
     //QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
 }

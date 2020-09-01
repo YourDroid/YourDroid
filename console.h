@@ -19,6 +19,7 @@ class console : public QPlainTextEdit {
     void scrollDown();
 signals:
     void hided();
+    void consoleWriteMess(QString, Qt::GlobalColor);
 public:
     explicit console(QWidget *parent = 0);
     void output(QString, Qt::GlobalColor);

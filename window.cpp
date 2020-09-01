@@ -35,6 +35,8 @@ Window::Window(bool f, QWidget *parent) :
         QtWin::resetExtendedFrame(this);
 #endif
 
+    log::consoleSetParent(this);
+
     connect(ui->returnInstallButton,SIGNAL(clicked()),SLOT(returnMainWindow()));
     connect(ui->settingsMini,&QPushButton::clicked,[=](){
         if(ui->windows->currentWidget() == ui->settingsPage) on_back_settings_clicked();
@@ -64,8 +66,6 @@ Window::Window(bool f, QWidget *parent) :
     ui->buttonInstallInstall->setShortcut(Qt::Key_Return);
 
     retranslateUi(QString::fromStdString(_langHelper::to_string(global->set->getLang())));
-
-    log::consoleSetParent(this);
 
 #if WIN
     setTaskProgress();
