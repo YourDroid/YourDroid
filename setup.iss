@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "YourDroid"
-#define MyAppVersion "2.1"
+#define MyAppVersion "2.2.beta"
 #define MyAppPublisher "Profi_GMan"
 #define MyAppURL "https://yourdroid.github.io/"
 #define MyAppExeName "yourdroid.exe"
@@ -24,9 +24,9 @@ AppUpdatesURL={#MyAppURL}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\programming
-OutputBaseFilename=yourdroid-setup
-SetupIconFile=C:\programming\YourDroid\yourdroid.ico
+OutputDir=D:\
+OutputBaseFilename=YourDroid-{#MyAppVersion}
+SetupIconFile=D:\User\Programming\YourDroid\yourdroid.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -39,31 +39,33 @@ Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\programming\YourDroid\bin\yourdroid.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\install.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libGLESV2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5WinExtras.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libcrypto-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\libssl-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\programming\YourDroid\bin\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-;Source: "C:\programming\YourDroid\bin\config\*"; DestDir: "{app}\config"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\translations\*"; DestDir: "{app}\translations"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\YourDroid\bin\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\programming\Ext2Fsd-0.69.exe"; AfterInstall: RunExt4FsdInstaller; Flags: deleteafterinstall ignoreversion; DestDir: {tmp}
+Source: "D:\User\Programming\YourDroid\bin\yourdroid.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "D:\User\Programming\YourDroid\bin\install.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libGLESV2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5WinExtras.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libcrypto-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\libssl-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\User\Programming\YourDroid\bin\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "D:\User\Programming\YourDroid\bin\config\*"; DestDir: "{app}\config"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\translations\*"; DestDir: "{app}\translations"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\YourDroid\bin\bearer\*"; DestDir: "{app}\bearer"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\User\Programming\Ext2Fsd-0.69.exe"; AfterInstall: RunExt4FsdInstaller; Flags: deleteafterinstall ignoreversion; DestDir: {tmp}
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Dirs]
