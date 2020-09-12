@@ -86,11 +86,10 @@ bool options::read_set(bool dflt) {
 bool options::defbios() {
     qDebug().noquote() << "# Defining type of bios...";
 #if LINUX
-    bool efiExist = QDir().exists("/boot/efi");
-    bool efibootmgr = !cmd().exec("efibootmgr").first;
-    qDebug().noquote() << "/boot/efi " << qApp->translate("log", (efiExist ? "exists" : "does not exist"));
-    qDebug().noquote() << "efibootmgr " << qApp->translate("log", (efibootmgr ? "exists" : "does not exist"));
-    return (tbios = efiExist || efibootmgr);
+    bool tbios = QDir().exists("/sys/firmware/efi");
+    qDebug().noquote() << "# /sys/firmware/efi" << (tbios ? "exists." : "does not exist.")
+                       << "So, type of bios is" << (tbios ? "UEFI" : "BIOS");
+    return tbios;
 #elif WIN
 
     bool ret;
@@ -99,7 +98,7 @@ bool options::defbios() {
     qDebug().noquote()
             << QObject::tr("# Efi partition mounted: %1. Bcdedit output contains efi: %2. "
                            "So, type of bios is %3")
-               .arg(efiMounted).arg(efiContain).arg((ret = efiContain) ? "uefi" : "bios");
+               .arg(efiMounted).arg(efiContain).arg((ret = efiContain) ? "UEFI" : "BIOS");
     return (tbios = ret);
 #endif
 }
@@ -114,19 +113,24 @@ bool options::defarch() {
     pclose(fp);
 
     QString tarch = buf;
-    qDebug().noquote() << (qApp->translate("log", "Uname returned ") + tarch);
-    return (arch = (tarch=="x86\n") ? 0 : 1);
+    qDebug().noquote() << "# Uname returned" << tarch;
+    arch = (tarch=="x86\n") ? 0 : 1;
+    if(arch)
+        qDebug().noquote() << "# Setting x64";
+    else
+        qDebug().noquote() << "# Setting x86";
+    return arch;
 #elif WIN
     QString archStr = QSysInfo::currentCpuArchitecture();
     qDebug().noquote() << "# Current architecture is " << archStr;
     if(archStr == "x86_64")
     {
-        qDebug().noquote() << "# Detected x64";
+        qDebug().noquote() << "# Setting x64";
         return (arch = true);
     }
     else if(archStr == "i386")
     {
-        qDebug().noquote() << "# Detected x86";
+        qDebug().noquote() << "# Setting x86";
         return (arch = false);
     }
     else

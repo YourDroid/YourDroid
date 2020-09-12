@@ -16,7 +16,7 @@ using install2Flash = tagged_bool<class install2FlashTag>;
 
 STRING_ENUM(_bootloader, grub2, grub4dos, refind, gummiboot, win_bootloader, grub2_flash, grub2_tablet)
 STRING_ENUM(_typePlace, dir, partition, flash_drive)
-enum sysImgExtractType {toImg = 0, toSfs = 1, toFolder = 2};
+enum sysImgExtractType {toFolder = 0, toImg = 1, toSfs = 2};
 
 class install : public QObject {
     Q_OBJECT
@@ -45,7 +45,8 @@ class install : public QObject {
     QStatusBar *statusBar;
     QVector<int> deletedSys;
     QString abortMes;
-    QString mountPoint;
+    QString isoMountPoint;
+    QString systemImgMountPoint;
     QString usbBootPart;
     QString usbMainPart;
     qint64 usbMainSize = 0;
@@ -84,8 +85,8 @@ public:
             QString
         #endif
             );
-    QPair<bool, QString> mountImage(QString);
-    void unmountImage();
+    QPair<bool, QString> mountImage(QString, bool = false);
+    void unmountImage(bool = false);
     void unpackSystem(sysImgExtractType, int);
     QString obsolutePath(QString);
     QStringList getDrives(QString);

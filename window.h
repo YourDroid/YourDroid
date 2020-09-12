@@ -125,7 +125,7 @@ private:
 #endif
     bool aborted = false;
     void closeEvent(QCloseEvent *);
-    void changeEvent(QEvent *);
+    bool event(QEvent *);
     QTranslator translator;
     bool first;
     bool exiting = false;

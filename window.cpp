@@ -84,7 +84,9 @@ void Window::setLabelSetInfo() {
 }
 
 void Window::retranslateUi(QString lang) {
-    translator.load(QString("%1/translations/yourdroid_%2").arg(qApp->applicationDirPath(), lang));
+    QString tsFile = QString("%1/translations/yourdroid_%2").arg(qApp->applicationDirPath(), lang);
+    qDebug().noquote() << "The ts file is" << tsFile;
+    translator.load(tsFile);
     qDebug().noquote() << "Loaded the ts file";
     qApp->installTranslator(&translator);
     qDebug().noquote() << "Installed translator";
@@ -127,9 +129,6 @@ void Window::Settings_clicked()
     ui->typeBios->setCurrentIndex((int)global->set->tbios);
     ui->arch->setCurrentIndex((int)global->set->arch);
     ui->downloadListCheck->setChecked(global->set->downloadList);
-#if LINUX
-    ui->winVer->setEnabled(false);
-#endif
     ui->comboLanguageSettings->setCurrentIndex((int)global->set->getLang());
     //ui->applaySettings->setEnabled(false);
     ui->windows->setCurrentWidget(ui->settingsPage);
@@ -247,6 +246,11 @@ void Window::on_installButtonMain_clicked()
 
 void Window::setInstallPage()
 {
+#if WIN
+    if(ui->comboSysMountAs->count() == 3)
+        ui->comboSysMountAs->removeItem(0);
+#endif
+
     ui->radioInstallOnDir->setChecked(true);
     on_radioInstallOnDir_clicked();
 
@@ -278,11 +282,13 @@ void Window::setInstallPage()
     {
 #if WIN
         replaceWinBtldr = true;
-#endif
+
         ui->comboBoot->addItem("Grub2 for tablets");
+#endif
 
         if(updating == false)
         {
+#if WIN
             qDebug().noquote() << QString("^%1|yn|").arg(QObject::tr("Is this a tablet?"));
             auto choice = log::getLastPressedButton();
             if(choice == QMessageBox::Yes)
@@ -298,6 +304,7 @@ void Window::setInstallPage()
                 ui->comboBoot->setCurrentText("Grub2");
                 ui->checkReplaceWinBootloader->setChecked(false);
             }
+#endif
         }
     }
 
@@ -308,8 +315,7 @@ void Window::setInstallPage()
     ui->comboVersionDown->clear();
     ui->radioDownload->setEnabled(false);
     QStringList androidNameList;
-    if(!global->set->downloadList) androidListDownloaded = true;
-    if(!androidListDownloaded)
+    if(global->set->downloadList && !androidListDownloaded)
     {
         QVBoxLayout *layout = new QVBoxLayout(this);
         QLabel *label = new QLabel(this);
@@ -495,17 +501,7 @@ void Window::on_buttonInstallInstall_clicked()
         end(mess);
     });
 
-//    auto retExpr = cmd::exec(QString("%1/data/iso-editor.exe")
-//                             .arg(qApp->applicationDirPath()));
-//    if(retExpr.second.contains("Too few arguments")) //It output this message if it works fine
-//        qDebug().noquote() << QObject::tr("iso-editor works fine");
-//    else
-//    {
-//        qCritical().noquote() << tr("^iso-editor doesn't work:\n%1").arg(retExpr.second);
-//        end();
-//        return;
-//    }
-
+#if WIN
     if(ui->radioInstallOnPart->isChecked() && !QFile::exists("C:/windows/INF/ext2fsd.inf"))
     {
         qDebug().noquote() << "C:/windows/INF/ext2fsd.inf doesn't exist";
@@ -516,6 +512,7 @@ void Window::on_buttonInstallInstall_clicked()
         return;
     }
     else qDebug().noquote() << "C:/windows/INF/ext2fsd.inf exists";
+#endif
     if(!ui->radioDownload->isChecked()) {
         if((image = ui->editImageFromDisk->text()).length() == 0) {
             qCritical().noquote() << tr("^The image is not chosen");
@@ -587,6 +584,56 @@ void Window::on_buttonInstallInstall_clicked()
                 }
             }
         }
+
+#if LINUX
+        if(ui->radioDataToFolder->isChecked() ||
+                static_cast<sysImgExtractType>(ui->comboSysMountAs->currentIndex()) == sysImgExtractType::toFolder)
+        {
+            auto expr = cmd::exec("df -T /");
+            if(expr.first)
+            {
+                qWarning().noquote() << "Can't check if the file system of the partition is okay";
+            }
+            else
+            {
+                QStringList lines = expr.second.split("\n");
+                qDebug().noquote() << "df output split by endlines:" << lines;
+                if(!(lines.count() > 1))
+                {
+                    qWarning().noquote() << "df output contains less than one line, "
+                                          "can't check the partition's file system";
+                }
+                else
+                {
+                    QString secondLine = lines[1];
+                    qDebug().noquote() << "The second line of the df output:" << secondLine;
+
+                    QStringList splitBySpaces = secondLine.split(QRegExp("\\s+"));
+                    qDebug().noquote() << "df output split by spaces:" << splitBySpaces;
+                    if(!(splitBySpaces.count() > 1))
+                    {
+                        qWarning().noquote() << "df output split by spaces contains less than one line, "
+                                              "can't check the partition's file system";
+                    }
+                    else
+                    {
+                        QString secondWord = splitBySpaces[1];
+                        qDebug().noquote() << "The file system of the partition:" << secondWord;
+
+                        if(secondWord.left(3) != "ext")
+                        {
+                            qCritical().noquote()
+                                    << QObject::tr("^The file system of the chosen folder or partition is not ext*, "
+                                                   "so you can't extract /system or mount /data as a directory");
+                            end();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+#endif
+
         //    if(!QDir(ui->editDirForInstall->text()).isEmpty()) { //if dir is not empty
         //        qWarning().noquote() << tr("^Choosen folder is not empty. Some files will overwrite. Press cancel to abort|+-|");
         //        if(log::getLastPressedButton() == QMessageBox::Cancel) {
@@ -596,18 +643,19 @@ void Window::on_buttonInstallInstall_clicked()
         //    }
     }
 
-#if LINUX
-    QPair<bool, QString> result = global->insSet->mountImage(ui->editImageFromDisk->text());
-    if(!result.first) {
-        qCritical().noquote() << QObject::tr("^Could not mount image: %1").arg(result.second);
-        global->insSet->unmountImage();
-        end();
-        return;
-    }
-#endif
 
     if(!ui->radioDownload->isChecked())
     {
+#if LINUX
+        QPair<bool, QString> result = global->insSet->mountImage(ui->editImageFromDisk->text());
+        if(!result.first) {
+            qCritical().noquote() << QObject::tr("^Could not mount image: %1").arg(result.second);
+            global->insSet->unmountImage();
+            end();
+            return;
+        }
+#endif
+
         int ret = 0;
         if(!(ret = global->insSet->isInvalidImage(
 #if WIN
@@ -701,6 +749,9 @@ void Window::on_buttonInstallInstall_clicked()
         progressSteps++;
     if(ui->radioDownload->isChecked()) progressSteps++;
     if(updating) progressSteps -= 2;
+#if LINUX
+    progressSteps++; //unmounting image
+#endif
     int step = 100 / progressSteps;
     qDebug().noquote() << "The number of progress steps is " << progressSteps;
     qDebug().noquote() << "Progress step is " << step;
@@ -738,7 +789,7 @@ void Window::on_buttonInstallInstall_clicked()
 
     auto logMain = [=](QtMsgType type, QString mess, bool installMsg){
         QDebug(type).noquote() << mess;
-        qDebug().noquote() << "C'est tout bien!";
+        qDebug().noquote() << "Tout est bien!";
         if(installMsg) global->insSet->logWindowEnded = true;
     };
     connect(global->insSet, &install::logWindow, context, [=](QtMsgType type, QString mess) {
@@ -801,6 +852,16 @@ void Window::on_buttonInstallInstall_clicked()
             }
             else global->insSet->downloadImage(url);
 
+#if LINUX
+            QPair<bool, QString> result = global->insSet->mountImage(qApp->applicationDirPath() + "/android.iso");
+            if(!result.first) {
+                emit global->insSet->abort(tr("^Could not mount image: %1").arg(result.second));
+                global->insSet->unmountImage();
+            }
+
+            CHECK_ABORT();
+#endif
+
             int ret = 0;
             if(!(ret = global->insSet->isInvalidImage(
 #if WIN
@@ -835,10 +896,14 @@ void Window::on_buttonInstallInstall_clicked()
         int numSys = -1;
         if(updating)
             numSys = ui->systemsTree->selectionModel()->selectedIndexes()[0].row();
+        int sysMountAs = ui->comboSysMountAs->currentIndex();
+#if WIN
+        sysMountAs++;
+#endif
         qDebug().noquote() << tr("Unpacking iso...");
         emit sendMesToStausbar(tr("Unpacking iso..."));
         global->insSet->unpackSystem(static_cast<sysImgExtractType>
-                                     (ui->comboSysMountAs->currentIndex()), numSys);
+                                     (sysMountAs), numSys);
         CHECK_ABORT();
         emit progressAddStep();
 
@@ -972,10 +1037,19 @@ void Window::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
-void Window::changeEvent(QEvent *event) {
-    //    if(event->type() == QEvent::WindowStateChange) emit deactived();
-    //    else if(event->type() == QEvent::WindowActivate) emit actived();
-    event->accept();
+bool Window::event(QEvent *e)
+{
+    if (e->type() == QEvent::WindowStateChange) {
+        if (isMinimized())
+        {
+            log::getConsole()->setWindowState(Qt::WindowMinimized);
+        }
+        else
+        {
+            log::getConsole()->setWindowState(Qt::WindowActive);
+        }
+    }
+    return QMainWindow::event(e);
 }
 
 void Window::on_comboLanguageSettings_currentIndexChanged(int index)
@@ -1007,9 +1081,13 @@ void Window::on_radioInstallOnDir_clicked()
     ui->editDirForInstall->setEnabled(true);
     ui->buttonChooseDirForInstall->setEnabled(true);
     ui->checkReplaceWinBootloader->setEnabled(true);
+#if WIN
     ui->radioDataToFolder->setEnabled(false);
     if(ui->radioDataToFolder->isChecked())
         ui->radioDataToImg->setChecked(true);
+#elif LINUX
+    ui->radioDataToFolder->setEnabled(true);
+#endif
 
     ui->comboDriveSelect->setEnabled(false);
     ui->labelDriveSelect->setEnabled(false);

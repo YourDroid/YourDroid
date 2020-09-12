@@ -104,6 +104,7 @@ void install::read() {
     }
     qDebug().noquote() << configs;
 
+#if WIN
     QStringList flashDrives = getDrives("where drivetype=2");
     for(auto x : flashDrives)
     {
@@ -124,6 +125,7 @@ void install::read() {
         qDebug().noquote() << usbConfigs;
         configs << usbConfigs;
     }
+#endif
     qDebug().noquote() << configs;
 
     for(auto x : configs)
@@ -1170,10 +1172,10 @@ bool install::isInvalidImage(
         #endif
         ) {
 #if LINUX
-    sysTypeSfs = QFile(mountPoint + "/system.sfs").exists();
-    return (QFile(mountPoint + "/system.img").exists() || QFile(mountPoint + "/system.sfs").exists()) &&
-            QFile(mountPoint + "/kernel").exists() && QFile(mountPoint + "/initrd.img").exists() &&
-            QFile(mountPoint + "/ramdisk.img").exists();
+    sysTypeSfs = QFile(isoMountPoint + "/system.sfs").exists();
+    return (QFile(isoMountPoint + "/system.img").exists() || QFile(isoMountPoint + "/system.sfs").exists()) &&
+            QFile(isoMountPoint + "/kernel").exists() && QFile(isoMountPoint + "/initrd.img").exists() &&
+            QFile(isoMountPoint + "/ramdisk.img").exists();
 #elif WIN
     auto res = cmd::exec(QString("%1/data/7zip/7z.exe l \"%2\"")
                          .arg(qApp->applicationDirPath(), iso));
@@ -1201,12 +1203,23 @@ bool install::isInvalidImage(
 #endif
 }
 
-QPair<bool, QString> install::mountImage(QString image) {
-    mountPoint = qApp->applicationDirPath() + QString("/iso_") + QDate::currentDate().toString("dMyy") +
+QPair<bool, QString> install::mountImage(QString image, bool systemImgImage) {
+    QString prefix;
+    if(systemImgImage)
+    {
+        prefix = "/system_img_";
+    }
+    else prefix = "/iso_";
+
+    QString mountPoint = qApp->applicationDirPath() + prefix + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
-    //    while(!QDir().exists(path)) {
-    //        path += QString::number(rand());
-    //    }
+
+    if(systemImgImage)
+    {
+        systemImgMountPoint = mountPoint;
+    }
+    else isoMountPoint = mountPoint;
+
     if(!QDir().mkdir(mountPoint)) {
         return QPair<bool, QString>(false, QObject::tr("Cannot make dir for image's mount point!"));
     }
@@ -1218,7 +1231,13 @@ QPair<bool, QString> install::mountImage(QString image) {
     return QPair<bool, QString>(true, mountPoint);
 }
 
-void install::unmountImage() {
+void install::unmountImage(bool systemImgImage) {
+    QString mountPoint;
+    if(systemImgImage)
+        mountPoint = systemImgMountPoint;
+    else
+        mountPoint = isoMountPoint;
+
     QString command = QString("umount %1").arg(mountPoint);
     auto expr = cmd::exec(command);
     if(expr.first) {
@@ -1392,13 +1411,13 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
 
     QString systemFile;
 #if LINUX
-    if(QFile(mountPoint + "/system.img").exists())
+    if(QFile(isoMountPoint + "/system.img").exists())
 #elif WIN
     if(!sysTypeSfs) // img
 #endif
         filesCopy.push_back((systemFile = "/system.img"));
 #if LINUX
-    else if(QFile(mountPoint + "/system.sfs").exists())
+    else if(QFile(isoMountPoint + "/system.sfs").exists())
 #elif WIN
     else if(sysTypeSfs) //sfs
 #endif
@@ -1416,20 +1435,19 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
         if(QFile::exists(place + file)) {
             filesExist = true;
             qDebug().noquote() << QObject::tr("%1 exists. So it is going to be deleted").arg(place + file);
-//#if LINUX
-//            QString command = "rm -f %1";
-//#elif WIN
-//            QString command = "del /f /q %1";
-//#endif
-//            auto expr = cmd::exec(command.arg(place + file));
-//            if(expr.first) {
-//                logWindowHandler(QtWarningMsg, QObject::tr("^Could not overwrite %1: %2").arg(place + file, expr.second));
-//            }
+#if LINUX
+            auto expr = cmd::exec(QString("rm -f %1").arg(place + file));
+            if(expr.first)
+            {
+                qWarning().noquote() << "Cannot delete" << file;
+            }
+#endif
+
         }
         else qDebug().noquote() << QObject::tr("%1 does not exist").arg(place + file);
         bool res = 0;
 #if LINUX
-        res = copier.copy(mountPoint + file, place + file);
+        res = copier.copy(isoMountPoint + file, place + file);
         QString advancedInfo = "";
 #elif WIN
         QPair<int, QString> expr;
@@ -1481,16 +1499,23 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
                                      false, QStringList(), filesExist ? "a\n" : "", true)).first;
             QString advancedInfo = QString(": %1").arg(expr.second);
 #elif LINUX
+            QString advancedInfo;
             QPair<int, QString> expr;
-            expr = cmd::exec(QString("chmod +x %1/data/p7zip/7z")
-                             .arg(qApp->applicationDirPath()));
-            if(expr.first != 0) qWarning().noquote() << "Cannot do chmod +x 7z";
 
-            res = !(expr = cmd::exec(QString("%1/data/p7zip/7z x %2 %3 -o\"%4\"")
-                                     .arg(qApp->applicationDirPath(), place + "/system.sfs",
-                                          "system.img", place),
+            res = !(expr = cmd::exec(QString("unsquashfs -d %1/system_img %1/system.sfs")
+                                     .arg(place),
                                      false, QStringList(), filesExist ? "a\n" : "", true)).first;
-            QString advancedInfo = QString(": %1").arg(expr.second);
+            advancedInfo = QObject::tr(". Squashfs-tools might not be installed on your computer.\n"
+                                   "Here is the error message: %1").arg(expr.second);
+
+            if(res)
+            {
+                expr = cmd::exec(QString("mv %1/system_img/system.img %1").arg(place));
+                res = !expr.first;
+                advancedInfo = QObject::tr(".\nCan't move extracted system.img to the root folder: ") + expr.second;
+
+                cmd::exec(QString("rm -rf %1/system_img").arg(place));
+            }
 #endif
             if(res && QFile::exists(place + "/system.img"))
             {
@@ -1509,15 +1534,15 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
         else qDebug().noquote() << "The system file is already .img";
         if(sysType == sysImgExtractType::toFolder)
         {
-            qDebug().noquote() << "extracting system.img to /system";
+            qDebug().noquote() << "Extracting system.img to /system";
+            mountImage(place + "/system.img", true);
 #if LINUX
-            auto res = cmd::exec(QString("%1/data/p7zip/7z x %2 -o\"%4\"")
-                                 .arg(qApp->applicationDirPath(), place + "/system.img",
-                                      place + "/system"));
+            auto res = cmd::exec(QString("cp -avr %1 %2")
+                                 .arg(systemImgMountPoint, place + "/system"));
 #elif WIN
-            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
-                                 .arg(qApp->applicationDirPath(), place + "/system.img",
-                                      place + "/system"));
+//            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
+//                                 .arg(qApp->applicationDirPath(), place + "/system.img",
+//                                      place + "/system"));
 #endif
             if(res.first == 0 && QDir(place + "/system").exists())
             {
@@ -1531,8 +1556,10 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
                                                     "because of the failure in "
                                                     "extracting system.img: %1")
                                         .arg(res.second));
+                unmountImage(true);
                 return;
             }
+            unmountImage(true);
         }
     }
 
@@ -1628,6 +1655,7 @@ void install::delSystemFiles(int numSys) {
     if(systems[numSys].place.count() > 3)
     {
         statusBar->showMessage(QObject::tr("log", "Deleting android files"));
+#if WIN
         if(!QDir(systems[numSys].place).removeRecursively())
         {
             qCritical().noquote() << QObject::tr("^Cannot delete android files");
@@ -1638,6 +1666,14 @@ void install::delSystemFiles(int numSys) {
         {
             qDebug().noquote() << "Cannot delete the folder";
         }
+#elif LINUX
+        auto res = cmd::exec(QString("rm -rf %1").arg(systems[numSys].place));
+        if(res.first)
+        {
+            qCritical().noquote() << QObject::tr("^Cannot delete android files") + ": " + res.second;
+            return;
+        }
+#endif
     }
     else
     {
@@ -1646,7 +1682,11 @@ void install::delSystemFiles(int numSys) {
         for(auto file : files) {
             qDebug().noquote() << QObject::tr("log", "Deleting ") + systems[numSys].place + file;
             statusBar->showMessage(QObject::tr("log", "Deleting ") + file);
+#if WIN
             QFile(systems[numSys].place + file).remove();
+#elif LINUX
+            cmd::exec(QString("rm -rf %1").arg(systems[numSys].place + file));
+#endif
         }
     }
 
@@ -1654,8 +1694,12 @@ void install::delSystemFiles(int numSys) {
     if(sysDir.exists())
     {
         qDebug().noquote() << "Deleting /system folder";
+#if WIN
         sysDir.removeRecursively();
         sysDir.remove(systems[numSys].place + "/system");
+#elif LINUX
+        cmd::exec(QString("rm -rf %1").arg(sysDir.path()));
+#endif
     }
     else qDebug().noquote() << "/system doesn't exist";
 
@@ -1663,8 +1707,12 @@ void install::delSystemFiles(int numSys) {
     if(sysDir.exists())
     {
         qDebug().noquote() << "Deleting /data folder";
+#if WIN
         dataDir.removeRecursively();
         dataDir.remove(systems[numSys].place + "/data");
+#elif LINUX
+        cmd::exec(QString("rm -rf %1").arg(sysDir.path()));
+#endif
     }
     else qDebug().noquote() << "/data doesn't exist";
 }
@@ -1738,9 +1786,10 @@ void install::deleteGrub2Entry(int numSys) {
     qDebug().noquote() << QObject::tr("Deleting the grub2 entry of android...");
     statusBar->showMessage(QObject::tr("Deleting the grub2 entry of android"));
 #if LINUX
-    if(QFile(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg").remove())
+    auto res = cmd::exec(QString("rm -rf %1").arg(QString("/etc/grub.d/android/") + systems[numSys].name + ".cfg"));
+    if(res.first)
     {
-        qCritical().noquote() << QString("^" + QObject::tr("Cannot delete the entry in grub2"));
+        qCritical().noquote() << QObject::tr("^Cannot delete the grub2 config file: ") << res.second;
         return;
     }
     if(cmd::exec("update-grub").first != 0)

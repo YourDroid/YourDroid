@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 //    });
     auto exceptionAbort = [&](QString what) {
         qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
-        errorAbort(1);
+        //errorAbort(1);
     };
 
     try {
@@ -93,7 +93,9 @@ int main(int argc, char *argv[])
         auto screenSize = QGuiApplication::primaryScreen()->geometry();
         qDebug().noquote() << "# Screen resolution: " << screenSize.height()
                            << "x" << screenSize.width();
-        qDebug() << "# OpenSSL version:" << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString() << QSslSocket::sslLibraryVersionString();
+        qDebug().noquote() << "# Supports SSL:" << QSslSocket::supportsSsl();
+        qDebug().noquote() << "# OpenSSL version:" << QSslSocket::sslLibraryBuildVersionString()
+                           << QSslSocket::sslLibraryVersionString();
         qDebug().noquote() << "###########################################";
         bool readSet = set.read_set(false);
 
