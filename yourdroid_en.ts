@@ -1034,7 +1034,7 @@ Try rebooting your computer</source>
     <message>
         <location filename="window.ui" line="360"/>
         <source>Input</source>
-        <translation type="unfinished"></translation>
+        <translation>The image to install</translation>
     </message>
     <message>
         <location filename="window.ui" line="56"/>
@@ -1066,7 +1066,7 @@ Try rebooting your computer</source>
     <message>
         <location filename="window.ui" line="517"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Where to install to</translation>
     </message>
     <message>
         <location filename="window.ui" line="523"/>
@@ -1180,7 +1180,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="491"/>
         <source>Checking data for install...</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I don&apos;t really know what to call it, by &quot;input data&quot; I mean the information the user typed in at the installation menu</translatorcomment>
+        <translation>Checking if input data is valid...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="518"/>
@@ -1233,12 +1234,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="565"/>
         <source>^Did not fill in the name</source>
-        <translation type="unfinished"></translation>
+        <translation>^You didn&apos;t type in a name for the system</translation>
     </message>
     <message>
         <location filename="window.cpp" line="571"/>
         <source>^Did not fill in the size of data.img</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">You didn&apos;t fill in the size of data.img</translation>
     </message>
     <message>
         <location filename="window.cpp" line="822"/>
@@ -1248,7 +1249,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="828"/>
         <source>Start install</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Starting installation</translation>
     </message>
     <message>
         <location filename="window.cpp" line="871"/>
