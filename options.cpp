@@ -1,6 +1,7 @@
 #include "options.h"
 #include "log.h"
 #include "cmd.h"
+#include "global.h"
 
 void options::autowrite_set() {
     write_set(false, arch, tbios, lang, downloadList);
@@ -16,7 +17,7 @@ void options::write_set(bool needSet, bool a, bool tb, _lang l, bool _downloadLi
         downloadList = _downloadList;
     }
 
-    QSettings settings("config.ini", QSettings::IniFormat);
+    QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
 
     settings.beginGroup("settings");
     settings.setValue("download_list", downloadList);
@@ -45,12 +46,12 @@ bool options::read_set(bool dflt) {
     qDebug().noquote() << "The language to translate to: " << language;
 
     bool existConf;
-    if (!dflt) existConf = QFile::exists(qApp->applicationDirPath() + "/config.ini");
+    if (!dflt) existConf = QFile::exists(globalGetWorkDir() + "/config.ini");
     else existConf = false;
     if(existConf) {
         qDebug().noquote() << "Config file exists";
 
-        QSettings settings("config.ini", QSettings::IniFormat);
+        QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
 
         settings.beginGroup("settings");
         downloadList = settings.value("download_list", true).toBool();
@@ -199,7 +200,7 @@ QPair<bool, QString> options::mountEfiPart()
         return QPair<bool, QString>(false, "");
     }
     script.close();
-    res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+    res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(globalGetWorkDir()));
     if(res.first)
     {
         qCritical().noquote() << "Failed to execute the diskpart script";
@@ -253,7 +254,7 @@ QPair<bool, QString> options::mountEfiPart()
             qCritical().noquote() << "Failed to open the diskpart script";
             return QPair<bool, QString>(false, "");
         }
-        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(globalGetWorkDir()));
         if(res.first)
         {
             qCritical().noquote() << "Failed to execute the diskpart script";

@@ -82,13 +82,15 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     }
     else buttons = QMessageBox::Ok;
 
-    if(!QDir("log").exists()) QDir().mkdir("log");
-    static QString logName = qApp->applicationDirPath() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
+    if(!QDir(globalGetWorkDir() + "/log").exists()) QDir().mkdir(globalGetWorkDir() + "/log");
+    static QString logName = globalGetWorkDir() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
     static QFile preLog(logName);
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);
-        logFile << QString("# Created by YourDroid %1\n# Work dir: %2\n\n").arg(QString(VER_PRODUCTVERSION_STR), qApp->applicationDirPath());
+        logFile << QString("# Created by YourDroid %1\n# Aplication dir: %2\n# Work dir: %3\n\n")
+                   .arg(QString(VER_PRODUCTVERSION_STR), qApp->applicationDirPath(),
+                        QDir("./").absolutePath());
         std::freopen(logName.toStdString().c_str(), "a+", stderr);
     }
     //static ofstream logFile("log.txt");

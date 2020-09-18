@@ -84,7 +84,7 @@ void Window::setLabelSetInfo() {
 }
 
 void Window::retranslateUi(QString lang) {
-    QString tsFile = QString("%1/translations/yourdroid_%2").arg(qApp->applicationDirPath(), lang);
+    QString tsFile = QString("%1/translations/yourdroid_%2").arg(globalGetWorkDir(), lang);
     qDebug().noquote() << "The ts file is" << tsFile;
     translator.load(tsFile);
     qDebug().noquote() << "Loaded the ts file";
@@ -354,15 +354,15 @@ void Window::setInstallPage()
             progressBar->setValue(progress);
         });
 
-        downloader->get(qApp->applicationDirPath() + "/android_list.ini",
+        downloader->get(globalGetWorkDir() + "/android_list.ini",
                        QUrl("https://raw.githubusercontent.com/YourDroid/Info/master/android_list.ini"));
         dialog.exec();
         delete context;
         delete downloader;
     }
-    if(QFile::exists(qApp->applicationDirPath() + "/android_list.ini"))
+    if(QFile::exists(globalGetWorkDir() + "/android_list.ini"))
     {
-        QSettings s(qApp->applicationDirPath() + "/android_list.ini", QSettings::IniFormat);
+        QSettings s(globalGetWorkDir() + "/android_list.ini", QSettings::IniFormat);
         QStringList groups = s.childGroups();
         qDebug().noquote() << "Android list groups: " << groups;
 
@@ -563,6 +563,12 @@ void Window::on_buttonInstallInstall_clicked()
         //    }
         if((name = ui->editName->text()).length() == 0) {
             qCritical().noquote() << tr("^Did not fill in the name");
+            end();
+            return;
+        }
+        if(ui->editName->text() == "android_list" ||
+                ui->editName->text() == "config") {
+            qCritical().noquote() << tr("^You can't call Android \"config\" or \"android_list\"");
             end();
             return;
         }
@@ -853,7 +859,7 @@ void Window::on_buttonInstallInstall_clicked()
             else global->insSet->downloadImage(url);
 
 #if LINUX
-            QPair<bool, QString> result = global->insSet->mountImage(qApp->applicationDirPath() + "/android.iso");
+            QPair<bool, QString> result = global->insSet->mountImage(globalGetWorkDir() + "/android.iso");
             if(!result.first) {
                 emit global->insSet->abort(tr("^Could not mount image: %1").arg(result.second));
                 global->insSet->unmountImage();
@@ -865,7 +871,7 @@ void Window::on_buttonInstallInstall_clicked()
             int ret = 0;
             if(!(ret = global->insSet->isInvalidImage(
 #if WIN
-                     qApp->applicationDirPath() + "/android.iso"
+                     globalGetWorkDir() + "/android.iso"
 #endif
                      ))) {
                 if(ret != 2) global->insSet->abort(tr("The downloaded image doesn't contain "
@@ -982,6 +988,8 @@ void Window::on_buttonDeleteDelete_clicked()
 #if WIN
     taskBarProgress->resume();
 #endif
+
+    ui->statusbar->showMessage(tr("Please wait..."));
 
     androidDelete();
 

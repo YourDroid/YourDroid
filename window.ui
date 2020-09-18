@@ -76,7 +76,7 @@
     <item row="2" column="0">
      <widget class="QStackedWidget" name="windows">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="mainWindowPage">
        <layout class="QVBoxLayout" name="verticalLayout_10">

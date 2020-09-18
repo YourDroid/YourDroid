@@ -19,6 +19,8 @@ struct _global
 };
 extern const _global *global;
 
+QString globalGetWorkDir();
+
 auto _copy = [](QString src, QString dst) -> bool
 {
     qDebug().noquote() << QObject::tr("Copying %1 to %2").arg(src, dst);

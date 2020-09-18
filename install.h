@@ -34,7 +34,7 @@ class install : public QObject {
         _installSet(_bootloader b, _typePlace t, QString p, QString i, QString n, bool e, bool o = OS, QString bId = "") : bootloader(b), typePlace(t), place(p), image(i), name(n), ended(e), os(o), bcdId(bId) {}
     };
     QVector<install::_installSet> systems;
-    QString settingsPath = QCoreApplication::instance()->applicationDirPath() + "/config";
+    QString settingsPath;
     Downloader *downloader = 0;
     QEventLoop *loop = 0;
     bool _downloadEnded = false;

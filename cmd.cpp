@@ -1,5 +1,6 @@
 #include "cmd.h"
 #include "log.h"
+#include "global.h"
 #include <QFile>
 #include <stdlib.h>
 #include <QtGlobal>
@@ -27,7 +28,7 @@ QPair<int, QString> cmd::exec(QString command, bool disFsRedir,
     }
 #endif
 
-    QString appDir = qApp->applicationDirPath();
+    QString appDir = globalGetWorkDir();
     if(appDir.contains(' ') && command.contains(appDir))
     {
         qDebug().noquote() << QString("There is the dirPath in the command"

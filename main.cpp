@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
         qDebug().noquote() << "# OS version - Major: " << QOperatingSystemVersion::current().majorVersion()
                         << " Minor: " << QOperatingSystemVersion::current().minorVersion()
                         << " Micro: " << QOperatingSystemVersion::current().microVersion();
+        qDebug().noquote() << "# Working directory:" << globalGetWorkDir();
         set.defarch();
         set.defbios();
         auto screenSize = QGuiApplication::primaryScreen()->geometry();
@@ -121,7 +122,7 @@ int main(int argc, char *argv[])
         Window *window = new Window(readSet);
         //global->insSet->downloadImage(QUrl("https://raw.githubusercontent.com/YourDroid/Info/master/android_list.ini"));
 //        Downloader downloader;
-//        downloader.get(qApp->applicationDirPath() + "/andra.iso", QUrl("https://dotsrc.dl.osdn.net/osdn/android-x86/71931/android-x86-9.0-r1.iso"));
+//        downloader.get(globalWorkDir() + "/andra.iso", QUrl("https://dotsrc.dl.osdn.net/osdn/android-x86/71931/android-x86-9.0-r1.iso"));
         window->show();
         //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
         //        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });

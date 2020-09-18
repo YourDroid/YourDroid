@@ -25,6 +25,7 @@ HEADERS += log.h window.h \
     downloader.h
 FORMS += window.ui
 SOURCES += \
+    global.cpp \
            log.cpp \
            main.cpp \
     options.cpp \

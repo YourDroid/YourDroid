@@ -19,6 +19,7 @@
 install::install(options *d)
 {
     dat = d;
+    settingsPath = globalGetWorkDir() + "/config";
 }
 
 void install::logWindowHandler(QtMsgType type, QString mess)
@@ -41,7 +42,7 @@ void install::addSystem(_bootloader b, _typePlace t, QString p, QString i, QStri
 void install::write() {
     qDebug().noquote() << "Saving all systems' configs";
 
-    settingsPath = qApp->applicationDirPath() + "/config";
+    settingsPath = globalGetWorkDir() + "/config";
     QDir settingsDir(settingsPath);
     if(!settingsDir.exists())
     {
@@ -50,7 +51,7 @@ void install::write() {
         {
             qWarning().noquote() << "Can't make a settings dir. "
                                      "Everything is going to be saved to the application dir";
-            settingsPath = qApp->applicationDirPath();
+            settingsPath = globalGetWorkDir();
         }
     }
 
@@ -88,15 +89,17 @@ void install::read() {
     QDir settingsDir(settingsPath);
     if(!settingsDir.exists())
     {
-        qDebug().noquote() << QString("%1 doesn't exist. Looking in the application dir");
-        settingsPath = qApp->applicationDirPath();
+        qDebug().noquote() << QString("%1 doesn't exist. Looking in the application dir").arg(settingsPath);
+        settingsPath = globalGetWorkDir();
         settingsDir = QDir(settingsPath);
     }
 
     QStringList configs = settingsDir.entryList(QStringList() << "*.ini", QDir::Files);
     qDebug().noquote() << configs;
-    qDebug().noquote() << "Excluding config.ini";
+    qDebug().noquote() << "Excluding config.ini and android_list.ini";
     configs.removeOne("config.ini");
+    configs.removeOne("android_list.ini");
+    configs.removeOne("maintenanceTool.ini");
     qDebug().noquote() << "Adding the path";
     for(int i = 0; i < configs.count(); i++)
     {
@@ -331,7 +334,7 @@ bool install::installGrubUsb()
                               "--target=x86_64-efi --efi-directory=%2 "
                               "--boot-directory=%2 "
                               "--removable")
-                      .arg(qApp->applicationDirPath(), usbBootPart.chopped(1)));
+                      .arg(globalGetWorkDir(), usbBootPart.chopped(1)));
 
     if(res.first != 0) //fault
     {
@@ -345,7 +348,7 @@ bool install::installGrubUsb()
                               "--target=i386-efi --efi-directory=%2 "
                               "--boot-directory=%2 "
                               "--removable")
-                      .arg(qApp->applicationDirPath(), usbBootPart.chopped(1)));
+                      .arg(globalGetWorkDir(), usbBootPart.chopped(1)));
 
     if(res.first != 0) //fault
     {
@@ -360,7 +363,7 @@ bool install::installGrubUsb()
                               "--target=i386-pc "
                               "--boot-directory=%2 "
                               "//./PHYSICALDRIVE%3")
-                      .arg(qApp->applicationDirPath(), usbBootPart.chopped(1),
+                      .arg(globalGetWorkDir(), usbBootPart.chopped(1),
                            QString::number(usbDiskIndex)));
 
     if(res.first != 0) //fault
@@ -373,7 +376,7 @@ bool install::installGrubUsb()
 
     qDebug().noquote() << "Copying boot config";
     COPY(QString("%1/data/bootloaders/grub2/windows/grub-usb-boot.cfg")
-         .arg(qApp->applicationDirPath()), usbBootPart + "grub/grub.cfg");
+         .arg(globalGetWorkDir()), usbBootPart + "grub/grub.cfg");
 
     return true;
 #undef returnFault
@@ -463,7 +466,7 @@ bool install::installGrub4dos()
     {
         COPY(QString("%1/data/bootloaders/grub4dos"
                      "/yourdroid_grub4dos.mbr")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -474,7 +477,7 @@ bool install::installGrub4dos()
     {
         COPY(QString("%1/data/bootloaders/grub4dos"
                      "/yg4d")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -485,7 +488,7 @@ bool install::installGrub4dos()
     {
         COPY(QString("%1/data/bootloaders/grub4dos"
                      "/ycfg.lst")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -622,10 +625,10 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
 {
 #if WIN
     #define returnFault() if(bootmgfwReplaced && \
-        QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi")) \
+        QFile::exists(globalGetWorkDir() + "/bootmgfw.efi")) \
         { \
             _remove(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); \
-            _copy(qApp->applicationDirPath() + "/bootmgfw.efi", \
+            _copy(globalGetWorkDir() + "/bootmgfw.efi", \
             QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)); \
         } return false;
 
@@ -651,27 +654,27 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
                     .arg(efiMountPoint))).exists()))
     {
         logDirExist();
-        if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+        if(!QFile::exists(globalGetWorkDir() + "/bootmgfw.efi"))
         {
-            qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+            qDebug().noquote() << globalGetWorkDir() + "/bootmgfw.efi"
                                << " doesn't exist, so copying bootmgfw_.efi to there";
             COPY(QString("%1/efi/Microsoft/Boot/bootmgfw_.efi").arg(efiMountPoint),
-                 qApp->applicationDirPath() + "/bootmgfw.efi");
+                 globalGetWorkDir() + "/bootmgfw.efi");
         }
-        else qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+        else qDebug().noquote() << globalGetWorkDir() + "/bootmgfw.efi"
                            << " already exists";
     }
     else
     {
         logDirExist();
-        if(!QFile::exists(qApp->applicationDirPath() + "/bootmgfw.efi"))
+        if(!QFile::exists(globalGetWorkDir() + "/bootmgfw.efi"))
         {
-            qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+            qDebug().noquote() << globalGetWorkDir() + "/bootmgfw.efi"
                                << " doesn't exist, so copying bootmgfw.efi to there";
             COPY(QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint),
-                 qApp->applicationDirPath() + "/bootmgfw.efi");
+                 globalGetWorkDir() + "/bootmgfw.efi");
         }
-        else qDebug().noquote() << qApp->applicationDirPath() + "/bootmgfw.efi"
+        else qDebug().noquote() << globalGetWorkDir() + "/bootmgfw.efi"
                            << " already exists";
 
 
@@ -688,7 +691,7 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
 
     QString sourceEfiFile = efiFile;
     if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
-    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
+    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(globalGetWorkDir(), sourceEfiFile),
          (path = QString("%1/efi/Microsoft/Boot/bootmgfw.efi").arg(efiMountPoint)));
     logDirExist();
 
@@ -705,7 +708,7 @@ bool install::installGrub2BootmgrUefi(bool forTablet)
                       .arg(efiMountPoint))).exists()))
     {
         COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi-tablet.cfg")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -739,7 +742,7 @@ bool install::installGrub2Uefi(bool forTablet) {
                               "--target=%2 --efi-directory=%3 "
                               "--boot-directory=%3/yourdroid_cfg "
                               "--bootloader-id=yourdroid_grub2")
-                      .arg(qApp->applicationDirPath(), target, efiMountPoint));
+                      .arg(globalGetWorkDir(), target, efiMountPoint));
 
     if(resGrubIns.first != 0) //fault
     {
@@ -754,7 +757,7 @@ bool install::installGrub2Uefi(bool forTablet) {
 
     QString sourceEfiFile = efiFile;
     if(forTablet) sourceEfiFile = (dat->arch ? "grubx64_tablet.efi" : "grubia32_tablet.efi");
-    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(qApp->applicationDirPath(), sourceEfiFile),
+    COPY(QString("%1/data/bootloaders/grub2/windows/%2").arg(globalGetWorkDir(), sourceEfiFile),
          (path = QString("%1/efi/yourdroid_grub2/%2").arg(efiMountPoint, efiFile)));
     logDirExist();
 
@@ -863,7 +866,7 @@ bool install::installGrub2Uefi(bool forTablet) {
                       .arg(efiMountPoint))).exists()))
     {
         COPY(QString("%1/data/bootloaders/grub2/windows/grub-uefi.cfg")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -960,7 +963,7 @@ bool install::installGrub2Bios() {
                               "--target=i386-pc "
                               "--boot-directory=c:/yourdroid_cfg "
                               "//./PHYSICALDRIVE%2")
-                      .arg(qApp->applicationDirPath(), resCmd.second.at(driveIndex)));
+                      .arg(globalGetWorkDir(), resCmd.second.at(driveIndex)));
 
     if(resGrubIns.first != 0) //fault
     {
@@ -972,7 +975,7 @@ bool install::installGrub2Bios() {
     if(!(res = QFile((path = QString("c:/yourdroid_cfg/grub/grub.cfg"))).exists()))
     {
         COPY(QString("%1/data/bootloaders/grub2/windows/grub-bios.cfg")
-             .arg(qApp->applicationDirPath()),
+             .arg(globalGetWorkDir()),
              path);
     }
     logDirExist();
@@ -1178,7 +1181,7 @@ bool install::isInvalidImage(
             QFile(isoMountPoint + "/ramdisk.img").exists();
 #elif WIN
     auto res = cmd::exec(QString("%1/data/7zip/7z.exe l \"%2\"")
-                         .arg(qApp->applicationDirPath(), iso));
+                         .arg(globalGetWorkDir(), iso));
     if(res.first != 0)
     {
         qCritical().noquote() << "Can't execute 7zip";
@@ -1211,7 +1214,7 @@ QPair<bool, QString> install::mountImage(QString image, bool systemImgImage) {
     }
     else prefix = "/iso_";
 
-    QString mountPoint = qApp->applicationDirPath() + prefix + QDate::currentDate().toString("dMyy") +
+    QString mountPoint = globalGetWorkDir() + prefix + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
 
     if(systemImgImage)
@@ -1251,7 +1254,7 @@ void install::unmountImage(bool systemImgImage) {
 QString install::obsolutePath(QString path) {
 #if LINUX
     auto expr = cmd::exec(QString("sh %1/data/fstab.sh")
-                          .arg(qApp->applicationDirPath()));
+                          .arg(globalGetWorkDir()));
     QStringList fstab = expr.second.split(QRegExp("\\s+"));
     qDebug().noquote() << fstab;
     for(auto x : fstab)
@@ -1308,7 +1311,7 @@ void install::formatPartExt4()
 {
     qDebug().noquote() << QString("%1 is going to be formated to ext4").arg(systems.back().place);
     auto res = cmd::exec(QString("%1/data/ext2fsd/mke2fs.exe -t ext4 %2")
-                         .arg(qApp->applicationDirPath(), systems.back().place),
+                         .arg(globalGetWorkDir(), systems.back().place),
                          false, QStringList(), "\n");
     if(res.first != 0)
     {
@@ -1452,7 +1455,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
 #elif WIN
         QPair<int, QString> expr;
         res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" %3 -o\"%4\"")
-                                 .arg(qApp->applicationDirPath(), sys.image,
+                                 .arg(globalGetWorkDir(), sys.image,
                                       file.remove(0, 1), place),
                                  false, QStringList(), filesExist ? "a\n" : "", true)).first;
         QString advancedInfo = QString(": %1").arg(expr.second);
@@ -1467,7 +1470,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
 //        int size = QFile(mountPoint + file).size();
 //#elif WIN
 //        QString command = QString("%1/data/iso-editor.exe size %2 %3")
-//                .arg(qApp->applicationDirPath(), sys.image);
+//                .arg(globalGetWorkDir(), sys.image);
 //        expr = cmd::exec(command.arg(file));
 //        int size = (!expr.first) ? expr.second.toInt() : 50;
 //#endif
@@ -1494,7 +1497,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
 #if WIN
             QPair<int, QString> expr;
             res = !(expr = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" %3 -o\"%4\"")
-                                     .arg(qApp->applicationDirPath(), place + "/system.sfs",
+                                     .arg(globalGetWorkDir(), place + "/system.sfs",
                                           "system.img", place),
                                      false, QStringList(), filesExist ? "a\n" : "", true)).first;
             QString advancedInfo = QString(": %1").arg(expr.second);
@@ -1541,7 +1544,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
                                  .arg(systemImgMountPoint, place + "/system"));
 #elif WIN
 //            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
-//                                 .arg(qApp->applicationDirPath(), place + "/system.img",
+//                                 .arg(globalGetWorkDir(), place + "/system.img",
 //                                      place + "/system"));
 #endif
             if(res.first == 0 && QDir(place + "/system").exists())
@@ -1596,11 +1599,11 @@ void install::createDataImg(int size, bool toFolder) {
     else
     {
 #if LINUX
-        system((QString("chmod 777 ") + qApp->applicationDirPath() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
-        QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
+        system((QString("chmod 777 ") + globalGetWorkDir() + "/data/make_ext4fs/make_ext4fs").toStdString().c_str());
+        QString command = globalGetWorkDir() + QString("/data/make_ext4fs/make_ext4fs") + QString(" -l ") + QString::number(size) +
                 QString("M -a data ") + systems.back().place + QString("/data.img ");
 #elif WIN
-        QString command = qApp->applicationDirPath() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
+        QString command = globalGetWorkDir() + QString("/data/make_ext4fs/make_ext4fs.exe") + QString(" -l ") + QString::number(size) +
                 QString("M -a data \"") + systems.back().place + QString("/data.img\" ");
 #endif
         auto res = cmd::exec(command);
@@ -1623,7 +1626,7 @@ void install::downloadImage(QUrl url)
 
     if(downloader != 0) delete downloader;
     downloader = new Downloader;
-    systems.back().image = qApp->applicationDirPath() + "/android.iso";
+    systems.back().image = globalGetWorkDir() + "/android.iso";
 
     QObject::connect(downloader, &Downloader::updateDownloadProgress,
                      this, &install::downloadProgress);
@@ -2034,7 +2037,7 @@ void install::formatFlashDrive()
             return;
         }
         script.close();
-        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(globalGetWorkDir()));
         if(res.first)
         {
             emit abort(QObject::tr("Failed to execute the diskpart script"));
@@ -2088,7 +2091,7 @@ void install::formatFlashDrive()
             return false;
         }
         script.close();
-        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(globalGetWorkDir()));
         if(res.first)
         {
             emit abort(QObject::tr("Failed to execute the diskpart script"));
@@ -2133,7 +2136,7 @@ void install::formatFlashDrive()
             return;
         }
         script.close();
-        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(qApp->applicationDirPath()));
+        res = cmd::exec(QString("diskpart /s %1/diskpart_script").arg(globalGetWorkDir()));
         if(res.first)
         {
             emit abort("Failed to execute the diskpart script");
@@ -2178,7 +2181,7 @@ void install::formatFlashDrive()
                                   "y\n"
                                   "w\n").arg(usbMainSize);
         qDebug().noquote() << command;
-        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(qApp->applicationDirPath(), QString(driveLetter)),
+        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(globalGetWorkDir(), QString(driveLetter)),
                         false, QStringList(), command);
         if(res.first)
         {
@@ -2226,7 +2229,7 @@ void install::formatFlashDrive()
                   "r\n"
                   "w\n";
         qDebug().noquote() << command;
-        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(qApp->applicationDirPath(), QString(driveLetter)),
+        res = cmd::exec(QString("%1/data/fdisk/fdisk.exe /dev/sd%2").arg(globalGetWorkDir(), QString(driveLetter)),
                         false, QStringList(), command);
         if(res.first)
         {

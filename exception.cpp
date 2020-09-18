@@ -307,7 +307,7 @@
 
 //void errorAbort(int ret) {
 //#if LINUX
-//    cmd::exec(QString("gcore %1 -o %2").arg(getpid()).arg(qApp->applicationDirPath() + QString("/log/dump-") +
+//    cmd::exec(QString("gcore %1 -o %2").arg(getpid()).arg(globalGetWorkDir() + QString("/log/dump-") +
 //                                                          QDate::currentDate().toString("dMyy") +
 //                                                          QTime::currentTime().toString("hhmmss")));
 //    return;
@@ -438,7 +438,7 @@
 //    HANDLE hFile;
 
 //    hFile = CreateFile(
-//                (qApp->applicationDirPath() + QString("/log/dump-") +
+//                (globalGetWorkDir() + QString("/log/dump-") +
 //                 QDate::currentDate().toString("dMyy") +
 //                 QTime::currentTime().toString("hhmmss") + ".dmp").toStdWString().c_str(),
 //                GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
