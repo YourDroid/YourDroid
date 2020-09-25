@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QFile>
 #include <QDir>
+#include <QDebug>
 
 Downloader::Downloader(QObject* parent) :
     BaseClass(parent)

@@ -17,7 +17,9 @@ void options::write_set(bool needSet, bool a, bool tb, _lang l, bool _downloadLi
         downloadList = _downloadList;
     }
 
-    QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
+    //QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
+    QSettings settings("Profi_GMan", "YourDroid");
+    qDebug().noquote() << settings.fileName();
 
     settings.beginGroup("settings");
     settings.setValue("download_list", downloadList);
@@ -48,10 +50,13 @@ bool options::read_set(bool dflt) {
     bool existConf;
     if (!dflt) existConf = QFile::exists(globalGetWorkDir() + "/config.ini");
     else existConf = false;
+    existConf = true; // temporary
     if(existConf) {
         qDebug().noquote() << "Config file exists";
 
-        QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
+        //QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
+        QSettings settings("Profi_GMan", "YourDroid");
+        qDebug().noquote() << settings.fileName();
 
         settings.beginGroup("settings");
         downloadList = settings.value("download_list", true).toBool();
