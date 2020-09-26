@@ -17,9 +17,6 @@ Window::Window(bool f, QWidget *parent) :
     first(!f),
     ui(new Ui::Window)
 {
-    if(global->set->tbios == false && OS == 0) {
-        qCritical().noquote() << tr("^This PC is not supported");
-    }
 
     //setWindowIcon(QIcon(":/yourdroid.png"));
 
@@ -254,8 +251,13 @@ void Window::setInstallPage()
     ui->radioInstallOnDir->setChecked(true);
     on_radioInstallOnDir_clicked();
 
+#if WIN
     ui->radioDataToImg->setChecked(true);
     on_radioDataToImg_clicked();
+#elif LINUX
+    ui->radioDataToFolder->setChecked(true);
+    on_radioDataToFolder_clicked();
+#endif
 
     ui->radioDownload->setEnabled(false);
 
@@ -315,6 +317,13 @@ void Window::setInstallPage()
     ui->comboVersionDown->clear();
     ui->radioDownload->setEnabled(false);
     QStringList androidNameList;
+    QString androidListPath = globalGetWorkDir() + "/android_list.ini";
+#if LINUX
+    if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+        androidListPath = "/tmp/android_list.ini";
+#endif
+    qDebug().noquote() << "Android list file path: " << androidListPath;
+
     if(global->set->downloadList && !androidListDownloaded)
     {
         QVBoxLayout *layout = new QVBoxLayout(this);
@@ -354,15 +363,15 @@ void Window::setInstallPage()
             progressBar->setValue(progress);
         });
 
-        downloader->get(globalGetWorkDir() + "/android_list.ini",
+        downloader->get(androidListPath,
                        QUrl("https://raw.githubusercontent.com/YourDroid/Info/master/android_list.ini"));
         dialog.exec();
         delete context;
         delete downloader;
     }
-    if(QFile::exists(globalGetWorkDir() + "/android_list.ini"))
+    if(QFile::exists(androidListPath))
     {
-        QSettings s(globalGetWorkDir() + "/android_list.ini", QSettings::IniFormat);
+        QSettings s(androidListPath, QSettings::IniFormat);
         QStringList groups = s.childGroups();
         qDebug().noquote() << "Android list groups: " << groups;
 
@@ -859,7 +868,10 @@ void Window::on_buttonInstallInstall_clicked()
             else global->insSet->downloadImage(url);
 
 #if LINUX
-            QPair<bool, QString> result = global->insSet->mountImage(globalGetWorkDir() + "/android.iso");
+            QString imagePath = globalGetWorkDir() + "/android.iso";
+            if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+                imagePath = "/tmp/android.iso";
+            QPair<bool, QString> result = global->insSet->mountImage(imagePath);
             if(!result.first) {
                 emit global->insSet->abort(tr("^Could not mount image: %1").arg(result.second));
                 global->insSet->unmountImage();

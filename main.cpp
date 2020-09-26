@@ -29,7 +29,7 @@
 #endif
 
 #if !WIN && !LINUX
-#error This system does not support
+#error This system is not supported
 #endif
 
 const _global *global;
@@ -38,8 +38,9 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     //qDebug() << QString::number(getpid()).prepend('^');
+    system("mkdir ./log");
     std::freopen("./log/stderr.txt", "a+", stderr);
-    fprintf(stderr, "\n\n###NEW###");
+    fprintf(stderr, "\n\n###NEW###\n");
 
     //set_signal_handler();
 //    std::set_terminate([=]() -> void {
@@ -47,12 +48,16 @@ int main(int argc, char *argv[])
 //        errorAbort(1);
 //    });
     auto exceptionAbort = [&](QString what) {
-        qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
+        qCritical().noquote() << QObject::tr("^Fatal error: %1").arg(what);
         //errorAbort(1);
     };
 
     try {
         QApplication app(argc,argv);
+#if LINUX
+        bool globalRunAsAppimage = QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists();
+#endif
+
         qRegisterMetaType<QtMsgType>("QtMsgType");
         qRegisterMetaType<QTextCursor>("QTextCursor");
         qRegisterMetaType<QTextBlock>("QTextBlock");
@@ -63,21 +68,30 @@ int main(int argc, char *argv[])
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
             system("touch ~/.config/QtProject/qtlogging.ini");
 
+        system("echo $APPIMAGE");
+
         int uid = geteuid();
+        int ret = 0;
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
         if(uid != 0) {
-            qCritical().noquote() << QObject::tr("^Program must be run with root. "
-                                                 "Press ok to try run it as root. "
-                                                 "Or press cancel to exit and run \'sudo %1\' in the terminal to fix it|+-|")
-                                     .arg(qApp->applicationFilePath());
-            switch(log::getLastPressedButton()) {
-            case QMessageBox::Ok: if(!QProcess::startDetached(QString("gksudo %1").arg(argv[0]))) {
-                    qCritical().noquote() << QObject::tr("^Could not run it as root. "
-                                                         "Please run \'sudo %1\' in the terminal to fix it")
-                                             .arg(qApp->applicationFilePath());
-                    return 1;
-                } break;
-            case QMessageBox::Cancel: return 1;
+            QString command;
+            if(globalRunAsAppimage)
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE";
+            }
+            else
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath();
+            }
+
+            qDebug().noquote() << command.toStdString().c_str();
+            ret = system(command.toStdString().c_str());
+            qDebug().noquote() << ret;
+
+            if(ret)
+            {
+                qCritical().noquote() << QObject::tr("^Program must be run with root.");
+                return 1;
             }
             return 0;
         }
@@ -94,9 +108,9 @@ int main(int argc, char *argv[])
         auto screenSize = QGuiApplication::primaryScreen()->geometry();
         qDebug().noquote() << "# Screen resolution: " << screenSize.height()
                            << "x" << screenSize.width();
-//        qDebug().noquote() << "# Supports SSL:" << QSslSocket::supportsSsl();
-//        qDebug().noquote() << "# OpenSSL version:" << QSslSocket::sslLibraryBuildVersionString()
-//                           << QSslSocket::sslLibraryVersionString();
+        qDebug().noquote() << "# Supports SSL:" << QSslSocket::supportsSsl();
+        qDebug().noquote() << "# OpenSSL version:" << QSslSocket::sslLibraryBuildVersionString()
+                           << QSslSocket::sslLibraryVersionString();
         qDebug().noquote() << "###########################################";
         bool readSet = set.read_set(false);
 

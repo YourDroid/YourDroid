@@ -19,7 +19,7 @@ void options::write_set(bool needSet, bool a, bool tb, _lang l, bool _downloadLi
 
     //QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
     QSettings settings("Profi_GMan", "YourDroid");
-    qDebug().noquote() << settings.fileName();
+    qDebug().noquote() << "Config file: " << settings.fileName();
 
     settings.beginGroup("settings");
     settings.setValue("download_list", downloadList);
@@ -47,16 +47,22 @@ bool options::read_set(bool dflt) {
     else language = "en";
     qDebug().noquote() << "The language to translate to: " << language;
 
+    QSettings settings("Profi_GMan", "YourDroid");
+
+//    settings.beginGroup("feutures_of_pc");
+//    QString defaultStr = "111";
+//    QString architecture = settings.value("archeticture", defaultStr).toString();
+//    qDebug().noquote() << architecture << (architecture != defaultStr);
+//    settings.endGroup();
+
     bool existConf;
-    if (!dflt) existConf = QFile::exists(globalGetWorkDir() + "/config.ini");
+    if (!dflt) existConf = QFile().exists(settings.fileName());
     else existConf = false;
-    existConf = true; // temporary
     if(existConf) {
         qDebug().noquote() << "Config file exists";
 
         //QSettings settings(globalGetWorkDir() + "/config.ini", QSettings::IniFormat);
-        QSettings settings("Profi_GMan", "YourDroid");
-        qDebug().noquote() << settings.fileName();
+        qDebug().noquote() << "Config file: " << settings.fileName();
 
         settings.beginGroup("settings");
         downloadList = settings.value("download_list", true).toBool();
@@ -92,7 +98,7 @@ bool options::read_set(bool dflt) {
 bool options::defbios() {
     qDebug().noquote() << "# Defining type of bios...";
 #if LINUX
-    bool tbios = QDir().exists("/sys/firmware/efi");
+    tbios = QDir().exists("/sys/firmware/efi");
     qDebug().noquote() << "# /sys/firmware/efi" << (tbios ? "exists." : "does not exist.")
                        << "So, type of bios is" << (tbios ? "UEFI" : "BIOS");
     return tbios;

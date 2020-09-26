@@ -43,6 +43,10 @@ void install::write() {
     qDebug().noquote() << "Saving all systems' configs";
 
     settingsPath = globalGetWorkDir() + "/config";
+#if LINUX
+    settingsPath = QFileInfo(QSettings("Profi_GMan", "YourDroid").fileName()).absolutePath() + "/config";
+#endif
+    qDebug().noquote() << "Config dir path: " << settingsPath;
     QDir settingsDir(settingsPath);
     if(!settingsDir.exists())
     {
@@ -94,18 +98,35 @@ void install::read() {
         settingsDir = QDir(settingsPath);
     }
 
-    QStringList configs = settingsDir.entryList(QStringList() << "*.ini", QDir::Files);
-    qDebug().noquote() << configs;
-    qDebug().noquote() << "Excluding config.ini and android_list.ini";
-    configs.removeOne("config.ini");
-    configs.removeOne("android_list.ini");
-    configs.removeOne("maintenanceTool.ini");
-    qDebug().noquote() << "Adding the path";
-    for(int i = 0; i < configs.count(); i++)
+    QStringList configs;
+    auto configArray = [&](QString path, QStringList &list)
     {
-        configs[i] = settingsPath + '/' + configs[i];
-    }
-    qDebug().noquote() << configs;
+        list = QDir(path).entryList(QStringList() << "*.ini", QDir::Files);
+        qDebug().noquote() << list;
+        qDebug().noquote() << "Excluding config.ini and android_list.ini";
+        list.removeOne("config.ini");
+        list.removeOne("android_list.ini");
+        list.removeOne("maintenanceTool.ini");
+        qDebug().noquote() << "Adding the path";
+        for(int i = 0; i < list.count(); i++)
+        {
+            list[i] = path + '/' + list[i];
+        }
+        qDebug().noquote() << list;
+    };
+    configArray(settingsPath, configs);
+
+#if LINUX
+#if LINUX
+    settingsPath = QFileInfo(QSettings("Profi_GMan", "YourDroid").fileName()).absolutePath() + "/config";
+#endif
+    qDebug().noquote() << "Looking for config files at the user config directory";
+    QString path = QFileInfo(QSettings("Profi_GMan", "YourDroid").fileName()).absolutePath() + "/config";
+    qDebug().noquote() << "User config folder:" << path;
+    QStringList userFolderConfigs;
+    configArray(path, userFolderConfigs);
+    configs.append(userFolderConfigs);
+#endif
 
 #if WIN
     QStringList flashDrives = getDrives("where drivetype=2");
@@ -1214,8 +1235,14 @@ QPair<bool, QString> install::mountImage(QString image, bool systemImgImage) {
     }
     else prefix = "/iso_";
 
-    QString mountPoint = globalGetWorkDir() + prefix + QDate::currentDate().toString("dMyy") +
+    QString workDir = globalGetWorkDir();
+    if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+        workDir = "/tmp";
+
+    QString mountPoint = workDir + prefix + QDate::currentDate().toString("dMyy") +
             QTime::currentTime().toString("hhmmss");
+
+    qDebug().noquote() << "Mount point:" << mountPoint;
 
     if(systemImgImage)
     {
@@ -1627,6 +1654,10 @@ void install::downloadImage(QUrl url)
     if(downloader != 0) delete downloader;
     downloader = new Downloader;
     systems.back().image = globalGetWorkDir() + "/android.iso";
+#if LINUX
+    if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+        systems.back().image = "/tmp/android.iso";
+#endif
 
     QObject::connect(downloader, &Downloader::updateDownloadProgress,
                      this, &install::downloadProgress);
