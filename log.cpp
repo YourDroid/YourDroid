@@ -106,7 +106,7 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     {
         if(preLog.exists()) preLog.setFileName(logName.chopped(4) + "_.txt");
         first = false;
-        QString str = QString("DEBUG: Log file path: " + preLog.fileName());
+        QString str = QString("DEBUG: Log file path: " + QFileInfo(preLog.fileName()).absoluteFilePath());
         fputs(str.toStdString().c_str(), stderr);
         system(QString("echo \"%1\"").arg(str).toStdString().c_str());
     }
