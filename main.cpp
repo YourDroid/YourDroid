@@ -50,6 +50,15 @@ int main(int argc, char *argv[])
             fork = true;
             puts("This is a fork. Redirecting stderr to stderr_.txt");
             stderrTxt = std::freopen("./log/stderr_.txt", "a+", stderr);
+
+            if(argc >= 3)
+            {
+                puts("Changing working directory to:");
+                puts(argv[2]);
+                if(QDir::setCurrent(argv[2]))
+                    puts("Success");
+                else puts("Failed");
+            }
         }
     }
     if(!fork) stderrTxt = std::freopen("./log/stderr.txt", "a+", stderr);
@@ -90,18 +99,33 @@ int main(int argc, char *argv[])
             qDebug().noquote() << "Executing itself as root...";
             fflush(stderr);
             fclose(stderrTxt);
-            QString command;
-            if(globalRunAsAppimage)
+
+            QString workDir;
+            if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
             {
-                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE -fork";
+                workDir = "./";
             }
             else
             {
-                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath() + " -fork";
+                workDir = globalGetWorkDir() + "/";
+            }
+            workDir = QFileInfo(workDir).absolutePath();
+            qDebug().noquote() << "Working dir of a fork:" << workDir;
+
+            QString command;
+            if(globalRunAsAppimage)
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE -fork \"" + workDir + "\"";
+            }
+            else
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath()
+                        + " -fork \"" + workDir + "\"";
             }
 
             qDebug().noquote() << command.toStdString().c_str();
-            ret = system(command.toStdString().c_str());
+
+            system(command.toStdString().c_str());
             qDebug().noquote() << ret;
 
             if(ret)
