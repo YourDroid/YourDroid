@@ -86,7 +86,6 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     static bool first = true;
     if(first)
     {
-        first = false;
         if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
         {
             system("echo \"Running as an appimage\"");
@@ -103,6 +102,14 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     if(!QDir(logDir).exists()) QDir().mkdir(logDir);
     static QString logName = logDir + QString("/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
     static QFile preLog(logName);
+    if(first)
+    {
+        if(preLog.exists()) preLog.setFileName(logName.chopped(4) + "_.txt");
+        first = false;
+        QString str = QString("DEBUG: Log file path: " + preLog.fileName());
+        fputs(str.toStdString().c_str(), stderr);
+        system(QString("echo \"%1\"").arg(str).toStdString().c_str());
+    }
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);

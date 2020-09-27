@@ -39,7 +39,20 @@ int main(int argc, char *argv[])
 {
     //qDebug() << QString::number(getpid()).prepend('^');
     system("mkdir ./log");
-    std::freopen("./log/stderr.txt", "a+", stderr);
+    FILE *stderrTxt = 0;
+    bool fork = false;
+    if(argc >= 2)
+    {
+        puts("There is an argument: ");
+        puts(argv[1]);
+        if(QString(argv[1]) == "-fork")
+        {
+            fork = true;
+            puts("This is a fork. Redirecting stderr to stderr_.txt");
+            stderrTxt = std::freopen("./log/stderr_.txt", "a+", stderr);
+        }
+    }
+    if(!fork) stderrTxt = std::freopen("./log/stderr.txt", "a+", stderr);
     fprintf(stderr, "\n\n###NEW###\n");
 
     //set_signal_handler();
@@ -74,14 +87,17 @@ int main(int argc, char *argv[])
         int ret = 0;
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
         if(uid != 0) {
+            qDebug().noquote() << "Executing itself as root...";
+            fflush(stderr);
+            fclose(stderrTxt);
             QString command;
             if(globalRunAsAppimage)
             {
-                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE";
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE -fork";
             }
             else
             {
-                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath();
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath() + " -fork";
             }
 
             qDebug().noquote() << command.toStdString().c_str();
