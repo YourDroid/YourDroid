@@ -181,15 +181,15 @@ int main(int argc, char *argv[])
         //        QObject::connect(window, &Window::closed, [=](){ widget->close(); });
         //        QObject::connect(widget, &console::hided, [=](){ window->consoleHided(); });
 
-        qDebug().noquote() << app.translate("log", "Window exec");
+        qDebug().noquote() << "Window exec";
         int res = app.exec();
-        qDebug().noquote() << app.translate("log", "Window closed");
+        qDebug().noquote() << "Window closed";
         set.autowrite_set();
         //ins.write();
 #if WIN
         set.unmountEfiPart();
 #endif
-        qDebug().noquote() << QObject::tr("Exiting... Returned ") << QString::number(res);
+        qDebug().noquote() << "Exiting... Returned " << QString::number(res);
         return res;
     }
     catch(std::exception ex) {

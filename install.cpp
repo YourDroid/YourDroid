@@ -1458,7 +1458,7 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
     for(QString file : filesCopy) {
 
         if(file.isEmpty()) {
-            emit abort(tr("File for copy is empty"));
+            emit abort(tr("One of the files that have to be copied is empty"));
             return;
         }
         qDebug().noquote() << QObject::tr("Copying %1").arg(file);
@@ -1691,7 +1691,7 @@ void install::delSystemFiles(int numSys) {
 
     if(systems[numSys].place.count() > 3)
     {
-        statusBar->showMessage(QObject::tr("log", "Deleting android files"));
+        statusBar->showMessage(QObject::tr("Deleting android files"));
 #if WIN
         if(!QDir(systems[numSys].place).removeRecursively())
         {
@@ -1717,8 +1717,8 @@ void install::delSystemFiles(int numSys) {
         QVector<QString> files = {"/kernel", "/initrd.img", "/ramdisk.img", "/system.img",
                                   "/system.sfs", "/data.img"};
         for(auto file : files) {
-            qDebug().noquote() << QObject::tr("log", "Deleting ") + systems[numSys].place + file;
-            statusBar->showMessage(QObject::tr("log", "Deleting ") + file);
+            qDebug().noquote() << QObject::tr("Deleting ") + systems[numSys].place + file;
+            statusBar->showMessage(QObject::tr("Deleting ") + file);
 #if WIN
             QFile(systems[numSys].place + file).remove();
 #elif LINUX

@@ -26,7 +26,7 @@ auto _copy = [](QString src, QString dst) -> bool
     qDebug().noquote() << QObject::tr("Copying %1 to %2").arg(src, dst);
     bool res = QFile(src).copy(dst);
     if(res) qDebug().noquote() << QObject::tr("Сopied successfully");
-    else qDebug().noquote() << QObject::tr("Сopied unsuccessfully");
+    else qDebug().noquote() << QObject::tr("Failed copying");
     return res;
 };
 

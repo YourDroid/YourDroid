@@ -419,10 +419,10 @@ void Window::setInstallPage()
 void Window::on_buttonChooseImage_clicked()
 {
     QString image = QFileDialog::getOpenFileName(0, tr("Choose image for install"), "", "*.iso");
-    if(image.length() > 0) {
-        ui->editImageFromDisk->setText(image);
-        qDebug().noquote() << qApp->translate("log", "Choose image for install: ") + image;
-    }
+//    if(image.length() > 0) {
+//        ui->editImageFromDisk->setText(image);
+//        qDebug().noquote() << qApp->translate("log", "Choose image for install: ") + image;
+//    }
 }
 
 void Window::on_back_settings_clicked()
@@ -443,10 +443,10 @@ void Window::on_back_settings_clicked()
 void Window::on_buttonChooseDirForInstall_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(0, tr("Choose directory for install"), "");
-    if(dir.length() > 0) {
-        ui->editDirForInstall->setText(dir);
-        qDebug().noquote() << qApp->translate("log", "Choose dir for install: ") + dir;
-    }
+//    if(dir.length() > 0) {
+//        ui->editDirForInstall->setText(dir);
+//        qDebug().noquote() << qApp->translate("log", "Choose dir for install: ") + dir;
+//    }
 }
 
 void Window::on_buttonInstallInstall_clicked()
@@ -967,7 +967,7 @@ void Window::on_buttonAboutMain_clicked()
 
 void Window::on_comboBoot_currentIndexChanged(const QString &arg1)
 {
-    qDebug().noquote() << qApp->translate("log", "Choose ") + arg1;
+    //qDebug().noquote() << qApp->translate("log", "Choose ") + arg1;
     //    if(arg1 == "Grub2") {
     //        ui->labelAboutBootloader->setText("Рекомендуется для компьютеров.");
     //        ui->labelAboutBootloader_2->setText("Текстовый.");
@@ -1016,7 +1016,7 @@ void Window::androidDelete()
     ui->settingsMini->setEnabled(false);
     ui->systemsTree->setEnabled(false);
     int num = ui->systemsTree->selectionModel()->selectedIndexes()[0].row();
-    qDebug().noquote() << qApp->translate("log", "Deleting ") + (global->insSet->systemsVector().begin() + num)->name;
+    qDebug().noquote() << tr("Deleting ") + (global->insSet->systemsVector().begin() + num)->name;
     global->insSet->delSystemFiles(num);
     global->insSet->deleteBootloaderEntry(num);
     global->insSet->oldSysEdit() = true;
