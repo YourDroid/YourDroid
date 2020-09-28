@@ -82,9 +82,34 @@ void log::message(QtMsgType level, const QMessageLogContext &context, const QStr
     }
     else buttons = QMessageBox::Ok;
 
-    if(!QDir(globalGetWorkDir() + "/log").exists()) QDir().mkdir(globalGetWorkDir() + "/log");
-    static QString logName = globalGetWorkDir() + QString("/log/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
+    static QString logDir;
+    static bool first = true;
+    if(first)
+    {
+        if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+        {
+            system("echo \"Running as an appimage\"");
+            logDir = "./log";
+        }
+        else
+        {
+            system("echo \"Not running as an appimage\"");
+            logDir = globalGetWorkDir() + "/log";
+        }
+        //qDebug().noquote() << "Log directory path: " << logDir;
+    }
+
+    if(!QDir(logDir).exists()) QDir().mkdir(logDir);
+    static QString logName = logDir + QString("/log-") + QDate::currentDate().toString("dMyy") + QTime::currentTime().toString("hhmmss") + ".txt";
     static QFile preLog(logName);
+    if(first)
+    {
+        if(preLog.exists()) preLog.setFileName(logName.chopped(4) + "_.txt");
+        first = false;
+        QString str = QString("DEBUG: Log file path: " + QFileInfo(preLog.fileName()).absoluteFilePath());
+        fputs(str.toStdString().c_str(), stderr);
+        system(QString("echo \"%1\"").arg(str).toStdString().c_str());
+    }
     static QTextStream logFile(&preLog);
     if(!preLog.isOpen()) {
         preLog.open(QIODevice::WriteOnly);

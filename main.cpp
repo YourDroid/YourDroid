@@ -29,7 +29,7 @@
 #endif
 
 #if !WIN && !LINUX
-#error This system does not support
+#error This system is not supported
 #endif
 
 const _global *global;
@@ -38,8 +38,31 @@ console *log::con;
 int main(int argc, char *argv[])
 {
     //qDebug() << QString::number(getpid()).prepend('^');
-    std::freopen("./log/stderr.txt", "a+", stderr);
-    fprintf(stderr, "\n\n###NEW###");
+    system("mkdir ./log");
+    FILE *stderrTxt = 0;
+    bool fork = false;
+    if(argc >= 2)
+    {
+        puts("There is an argument: ");
+        puts(argv[1]);
+        if(QString(argv[1]) == "-fork")
+        {
+            fork = true;
+            puts("This is a fork. Redirecting stderr to stderr_.txt");
+            stderrTxt = std::freopen("./log/stderr_.txt", "a+", stderr);
+
+            if(argc >= 3)
+            {
+                puts("Changing working directory to:");
+                puts(argv[2]);
+                if(QDir::setCurrent(argv[2]))
+                    puts("Success");
+                else puts("Failed");
+            }
+        }
+    }
+    if(!fork) stderrTxt = std::freopen("./log/stderr.txt", "a+", stderr);
+    fprintf(stderr, "\n\n###NEW###\n");
 
     //set_signal_handler();
 //    std::set_terminate([=]() -> void {
@@ -47,12 +70,16 @@ int main(int argc, char *argv[])
 //        errorAbort(1);
 //    });
     auto exceptionAbort = [&](QString what) {
-        qCritical().noquote().noquote() << QObject::tr("^Fatal error: %1").arg(what);
+        qCritical().noquote() << QObject::tr("^Fatal error: %1").arg(what);
         //errorAbort(1);
     };
 
     try {
         QApplication app(argc,argv);
+#if LINUX
+        bool globalRunAsAppimage = QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists();
+#endif
+
         qRegisterMetaType<QtMsgType>("QtMsgType");
         qRegisterMetaType<QTextCursor>("QTextCursor");
         qRegisterMetaType<QTextBlock>("QTextBlock");
@@ -63,21 +90,48 @@ int main(int argc, char *argv[])
         if(!QFile().exists(QString::fromLocal8Bit(qgetenv("HOME")) + "/.config/QtProject/qtlogging.ini"))
             system("touch ~/.config/QtProject/qtlogging.ini");
 
+        system("echo $APPIMAGE");
+
         int uid = geteuid();
+        int ret = 0;
         qDebug().noquote() << QObject::tr("getuid() returned %1").arg(uid);
         if(uid != 0) {
-            qCritical().noquote() << QObject::tr("^Program must be run with root. "
-                                                 "Press ok to try run it as root. "
-                                                 "Or press cancel to exit and run \'sudo %1\' in the terminal to fix it|+-|")
-                                     .arg(qApp->applicationFilePath());
-            switch(log::getLastPressedButton()) {
-            case QMessageBox::Ok: if(!QProcess::startDetached(QString("gksudo %1").arg(argv[0]))) {
-                    qCritical().noquote() << QObject::tr("^Could not run it as root. "
-                                                         "Please run \'sudo %1\' in the terminal to fix it")
-                                             .arg(qApp->applicationFilePath());
-                    return 1;
-                } break;
-            case QMessageBox::Cancel: return 1;
+            qDebug().noquote() << "Executing itself as root...";
+            fflush(stderr);
+            fclose(stderrTxt);
+
+            QString workDir;
+            if(QFile(QCoreApplication::applicationDirPath() + "/run_as_appimage").exists())
+            {
+                workDir = "./";
+            }
+            else
+            {
+                workDir = globalGetWorkDir() + "/";
+            }
+            workDir = QFileInfo(workDir).absolutePath();
+            qDebug().noquote() << "Working dir of a fork:" << workDir;
+
+            QString command;
+            if(globalRunAsAppimage)
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY $APPIMAGE -fork \"" + workDir + "\"";
+            }
+            else
+            {
+                command = "pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY " + qApp->applicationFilePath()
+                        + " -fork \"" + workDir + "\"";
+            }
+
+            qDebug().noquote() << command.toStdString().c_str();
+
+            system(command.toStdString().c_str());
+            qDebug().noquote() << ret;
+
+            if(ret)
+            {
+                qCritical().noquote() << QObject::tr("^Program must be run with root.");
+                return 1;
             }
             return 0;
         }
