@@ -1543,9 +1543,12 @@ void install::unpackSystem(sysImgExtractType sysType, int sysNum) {
             auto res = cmd::exec(QString("cp -avr %1 %2")
                                  .arg(systemImgMountPoint, place + "/system"));
 #elif WIN
-//            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
-//                                 .arg(globalGetWorkDir(), place + "/system.img",
-//                                      place + "/system"));
+            qWarning().noquote() << "Unpacking system.img to a folder isn't available yet on Windows";
+            return;
+
+            auto res = cmd::exec(QString("%1/data/7zip/7z.exe x \"%2\" -o\"%4\"")
+                                 .arg(globalGetWorkDir(), place + "/system.img",
+                                      place + "/system"));
 #endif
             if(res.first == 0 && QDir(place + "/system").exists())
             {

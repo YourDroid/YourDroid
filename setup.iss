@@ -2,14 +2,14 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "YourDroid"
-#define MyAppVersion "2.2.beta"
+#define MyAppVersion "2.2-beta.1"
 #define MyAppPublisher "Profi_GMan"
 #define MyAppURL "https://yourdroid.github.io/"
 #define MyAppExeName "yourdroid.exe"
 
 [Setup]
 ;DisableDirPage=yes
-DefaultDirName=c:\{#MyAppName}
+DefaultDirName=C:\{#MyAppName}
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{C441E1AC-42FC-4058-A531-4B4C3EB76D0E}
