@@ -912,208 +912,210 @@ Try rebooting your computer</source>
     <message>
         <location filename="window.ui" line="63"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="window.ui" line="115"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <location filename="window.ui" line="142"/>
         <location filename="window.ui" line="796"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation>Install</translation>
     </message>
     <message>
         <location filename="window.ui" line="90"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="window.ui" line="95"/>
         <source>Bootloader</source>
-        <translation type="unfinished"></translation>
+        <translation>Bootloader</translation>
     </message>
     <message>
         <location filename="window.ui" line="100"/>
         <source>Location type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="window.ui" line="105"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Path</translation>
     </message>
     <message>
         <location filename="window.ui" line="122"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Update</translation>
     </message>
     <message>
         <location filename="window.ui" line="157"/>
         <source>Features of pc</source>
-        <translation type="unfinished"></translation>
+        <translation>Host System</translation>
     </message>
     <message>
         <location filename="window.ui" line="165"/>
         <source>Architecture of cpu</source>
-        <translation type="unfinished"></translation>
+        <translation>Architecture</translation>
     </message>
     <message>
         <location filename="window.ui" line="189"/>
         <source>Type of bios</source>
-        <translation type="unfinished"></translation>
+        <translation>BIOS</translation>
     </message>
     <message>
         <location filename="window.ui" line="231"/>
         <source>Settings of the app</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="window.ui" line="311"/>
         <source>Return</source>
-        <translation type="unfinished"></translation>
+        <translation>Return</translation>
     </message>
     <message>
         <location filename="window.ui" line="333"/>
         <source>Restore defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Restore defaults</translation>
     </message>
     <message>
         <location filename="window.ui" line="340"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Apply</translation>
     </message>
     <message>
         <location filename="window.ui" line="662"/>
         <source>Create an .img file for data</source>
-        <translation type="unfinished"></translation>
+        <translation>Create an .img file for data</translation>
     </message>
     <message>
         <location filename="window.ui" line="687"/>
         <source>Size of data.img(mb):</source>
-        <translation type="unfinished"></translation>
+        <translation>Size of data.img (mb)</translation>
     </message>
     <message>
         <location filename="window.ui" line="699"/>
         <source>Create a folder for data (only for ext4 partitions!)</source>
         <oldsource>Create a folder for data</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Create a folder for data (only for ext4 partitions!)</translation>
     </message>
     <message>
         <location filename="window.ui" line="456"/>
         <source>Other information</source>
-        <translation type="unfinished"></translation>
+        <translation>Misc</translation>
     </message>
     <message>
         <location filename="window.ui" line="464"/>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Title:</translation>
     </message>
     <message>
         <location filename="window.ui" line="478"/>
         <source>Bootloader:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bootloader:</translation>
     </message>
     <message>
         <location filename="window.ui" line="715"/>
         <source>Extract /system to:</source>
-        <translation type="unfinished"></translation>
+        <translation>Extract system to:</translation>
     </message>
     <message>
         <location filename="window.ui" line="728"/>
         <source>.img (read-write)</source>
-        <translation type="unfinished"></translation>
+        <translation>.img (read-write)</translation>
     </message>
     <message>
         <location filename="window.ui" line="733"/>
         <source>.sfs (read-only)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="window.ui" line="360"/>
         <source>Input</source>
-        <translation>The image to install</translation>
+        <translation>Image to install</translation>
     </message>
     <message>
         <location filename="window.ui" line="56"/>
         <source>Show the log</source>
-        <translation type="unfinished"></translation>
+        <translation>Show the log</translation>
     </message>
     <message>
         <location filename="window.ui" line="265"/>
         <source>Download the list of links to android images
 (uncheck if YourDroid crashes when downloading it)</source>
-        <translation type="unfinished"></translation>
+        <translation>Download list of links to android images
+(uncheck if YourDroid crashes when downloading it)</translation>
     </message>
     <message>
         <location filename="window.ui" line="366"/>
         <source>Download &amp;ISO image</source>
-        <translation type="unfinished"></translation>
+        <translation>Download Android &amp;ISO image</translation>
     </message>
     <message>
         <location filename="window.ui" line="391"/>
         <location filename="window.cpp" line="95"/>
         <source>Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="window.ui" line="446"/>
         <source>Choose I&amp;SO image from HD</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose an I&amp;SO image</translation>
     </message>
     <message>
         <location filename="window.ui" line="517"/>
         <source>Output</source>
-        <translation>Where to install to</translation>
+        <translation>Install destination</translation>
     </message>
     <message>
         <location filename="window.ui" line="523"/>
         <source>Install to separate &amp;partition with loss of the data</source>
-        <translation type="unfinished"></translation>
+        <translation>Install to separate &amp;partition with loss of the data</translation>
     </message>
     <message>
         <location filename="window.ui" line="548"/>
         <source>Select a drive to format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Drive to format</translation>
     </message>
     <message>
         <location filename="window.ui" line="560"/>
         <source>Install to flash drive</source>
         <oldsource>Install to flash drive with loss of the data</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Install to flash drive</translation>
     </message>
     <message>
         <location filename="window.ui" line="603"/>
         <source>Install to directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Install to directory</translation>
     </message>
     <message>
         <location filename="window.ui" line="656"/>
         <source>System and data</source>
-        <translation type="unfinished"></translation>
+        <translation>System and data</translation>
     </message>
     <message>
         <location filename="window.ui" line="490"/>
         <source>Replace Windows bootloader 
 (the only way for some tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>Replace Windows bootloader
+(the only way for some tablets)</translation>
     </message>
     <message>
         <location filename="window.ui" line="723"/>
         <source>a folder (read-write)</source>
-        <translation type="unfinished"></translation>
+        <translation>directory (read-write)</translation>
     </message>
     <message>
         <location filename="window.ui" line="769"/>
         <source>To main menu</source>
-        <translation type="unfinished"></translation>
+        <translation>main menu</translation>
     </message>
     <message>
         <location filename="window.ui" line="776"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Refresh</translation>
     </message>
     <message>
         <location filename="window.ui" line="825"/>
@@ -1134,102 +1136,102 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.ui" line="843"/>
         <source>Return to main menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Return to main menu</translation>
     </message>
     <message>
         <location filename="window.cpp" line="21"/>
         <source>^This PC is not supported</source>
         <oldsource>^This PC does not supported</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>^This PC is not supported</translation>
     </message>
     <message>
         <location filename="window.cpp" line="122"/>
         <source>YourDroid | Main menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Yourdroid | Main Menu</translation>
     </message>
     <message>
         <location filename="window.cpp" line="135"/>
         <source>YourDroid | Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>YourDroid | Settings</translation>
     </message>
     <message>
         <location filename="window.cpp" line="403"/>
         <source>YourDroid | Install</source>
-        <translation type="unfinished"></translation>
+        <translation>YourDroid | Install</translation>
     </message>
     <message>
         <location filename="window.cpp" line="404"/>
         <source>YourDroid | Update %1</source>
-        <translation type="unfinished"></translation>
+        <translation>YourDroid | Update %1</translation>
     </message>
     <message>
         <location filename="window.cpp" line="412"/>
         <source>Choose image for install</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose the image to install</translation>
     </message>
     <message>
         <location filename="window.cpp" line="436"/>
         <source>Choose directory for install</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose install directory</translation>
     </message>
     <message>
         <location filename="window.cpp" line="490"/>
         <source>Checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Checking</translation>
     </message>
     <message>
         <location filename="window.cpp" line="491"/>
         <source>Checking data for install...</source>
         <translatorcomment>I don&apos;t really know what to call it, by &quot;input data&quot; I mean the information the user typed in at the installation menu</translatorcomment>
-        <translation>Checking if input data is valid...</translation>
+        <translation>Checking if the input is valid...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="518"/>
         <source>^The image is not chosen</source>
-        <translation type="unfinished"></translation>
+        <translation>^Image not chosen</translation>
     </message>
     <message>
         <location filename="window.cpp" line="832"/>
         <location filename="window.cpp" line="833"/>
         <source>Downloading the image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloading the image...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="851"/>
         <source>Can&apos;t find the url of the chosen image</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid image url</translation>
     </message>
     <message>
         <location filename="window.cpp" line="858"/>
         <source>^Could not mount image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>^Could not mount the image: %1</translation>
     </message>
     <message>
         <location filename="window.cpp" line="881"/>
         <location filename="window.cpp" line="882"/>
         <source>Formating flash drive and installing the bootloader (may take a while)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Formating flash drive and installing the bootloader (this may take a while)...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="919"/>
         <location filename="window.cpp" line="920"/>
         <source>Installing and configuring bootloader...</source>
-        <translation type="unfinished"></translation>
+        <translation>Installing and configuring the bootloader...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="523"/>
         <source>^Chosen image does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>The chosen image does not exist</translation>
     </message>
     <message>
         <location filename="window.cpp" line="539"/>
         <source>^The folder is not chosen</source>
-        <translation type="unfinished"></translation>
+        <translation>^Install destination not chosen</translation>
     </message>
     <message>
         <location filename="window.cpp" line="555"/>
         <source>^Invalid path</source>
-        <translation type="unfinished"></translation>
+        <translation>^Invalid path</translation>
     </message>
     <message>
         <location filename="window.cpp" line="565"/>
@@ -1239,71 +1241,72 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="window.cpp" line="571"/>
         <source>^Did not fill in the size of data.img</source>
-        <translation type="unfinished">You didn&apos;t fill in the size of data.img</translation>
+        <translation>You didn&apos;t fill in the size of data.img</translation>
     </message>
     <message>
         <location filename="window.cpp" line="822"/>
         <source>^Fatal error while installing: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>^Fatal error while installing: %1</translation>
     </message>
     <message>
         <location filename="window.cpp" line="828"/>
         <source>Start install</source>
-        <translation type="unfinished">Starting installation</translation>
+        <translation>Starting installation</translation>
     </message>
     <message>
         <location filename="window.cpp" line="871"/>
         <source>The downloaded image doesn&apos;t contain some of the required files</source>
-        <translation type="unfinished"></translation>
+        <translation>The downloaded image doesn&apos;t contain some of the required files</translation>
     </message>
     <message>
         <location filename="window.cpp" line="889"/>
         <location filename="window.cpp" line="890"/>
         <source>Formating the selected drive...</source>
-        <translation type="unfinished"></translation>
+        <translation>Formating the selected drive...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="903"/>
         <location filename="window.cpp" line="904"/>
         <source>Unpacking iso...</source>
-        <translation type="unfinished"></translation>
+        <translation>Unpacking ISO file...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="912"/>
         <location filename="window.cpp" line="913"/>
         <source>Creating data.img...</source>
-        <translation type="unfinished"></translation>
+        <translation>Creatind data.img file...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="927"/>
         <source>Unmounting image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Unmounting image...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="946"/>
         <source>YourDroid | About</source>
-        <translation type="unfinished"></translation>
+        <translation>YourDroid | About</translation>
     </message>
     <message>
         <location filename="window.cpp" line="1020"/>
         <source>Are you sure you want to close YourDroid during installation?
 Please note that this will not stop it, you are just going to close the window and the installation is going to continue in the background!</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to close YourDroid during installation?
+Please note that the installation will continue in the background!</translation>
     </message>
     <message>
         <location filename="window.cpp" line="105"/>
         <source>Clearing systems list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Clearing systems list...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="110"/>
         <source>Filling systems list...</source>
-        <translation type="unfinished"></translation>
+        <translation>Filling systems list...</translation>
     </message>
     <message>
         <location filename="window.cpp" line="1006"/>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Ready</translation>
     </message>
 </context>
 <context>

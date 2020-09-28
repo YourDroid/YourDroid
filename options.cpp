@@ -49,14 +49,11 @@ bool options::read_set(bool dflt) {
 
     QSettings settings("Profi_GMan", "YourDroid");
 
-//    settings.beginGroup("feutures_of_pc");
-//    QString defaultStr = "111";
-//    QString architecture = settings.value("archeticture", defaultStr).toString();
-//    qDebug().noquote() << architecture << (architecture != defaultStr);
-//    settings.endGroup();
+    QStringList groupList = settings.childGroups();
+    qDebug().noquote() << "Config groups:" << groupList;
 
     bool existConf;
-    if (!dflt) existConf = QFile().exists(settings.fileName());
+    if (!dflt) existConf = !groupList.isEmpty();
     else existConf = false;
     if(existConf) {
         qDebug().noquote() << "Config file exists";
